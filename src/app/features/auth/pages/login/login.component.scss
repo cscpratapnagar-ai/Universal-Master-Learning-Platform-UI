@@ -6,3 +6,17 @@
 .light-mode{--bg:#f6f7fc;--panel:#fff;--card:#fff;--text:#1d2438;--muted:#69738b;--line:rgba(48,62,96,.14);background:radial-gradient(circle at 15% 20%,rgba(105,75,255,.12),transparent 29%),linear-gradient(130deg,#f9faff,#edf0f8)}.light-mode .mini-dashboard{background:linear-gradient(145deg,#182047,#0b112b)}.light-mode .divider span{background:var(--bg)}.light-mode .cube{color:white}.light-mode .check span{background:white}
 @keyframes float{50%{transform:translateY(-9px)}}@keyframes pulse{50%{box-shadow:0 0 30px rgba(89,181,255,.28);transform:scale(1.04)}}
 @media(max-width:900px){.auth-layout{grid-template-columns:1fr}.showcase{display:none}.form-zone{min-height:calc(100vh - 82px)}.form-card{max-width:460px}.switch-mobile{display:block;text-align:center;color:var(--muted);font-size:10px}.new-here,.outline-btn{display:none}}@media(max-width:560px){.auth-nav{width:calc(100% - 34px);height:68px}.brand strong{font-size:13px}.cube{width:36px;height:36px}.nav-right b{display:none}.theme-toggle{padding:4px}.auth-layout{width:calc(100% - 34px)}.form-zone{padding:35px 0}.form-intro h2{font-size:34px}.mobile-brand{display:flex;align-items:center;gap:8px;margin-bottom:30px;color:var(--muted);font-size:10px}.mobile-brand .cube{width:28px;height:28px;font-size:13px}}
+
+/* Cinematic login enhancements */
+.auth-beam{position:absolute;width:60vw;height:60vw;left:-18vw;top:8vh;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.18),transparent 62%);filter:blur(18px);pointer-events:none;animation:beamPulse 7s ease-in-out infinite}
+.auth-orbit{position:absolute;width:540px;height:540px;border:1px dashed rgba(167,139,250,.22);border-radius:50%;left:-170px;bottom:-220px;animation:authOrbit 24s linear infinite;pointer-events:none}
+.floating-proof{position:absolute;z-index:3;padding:9px 13px;border:1px solid rgba(167,139,250,.25);border-radius:999px;background:rgba(16,12,38,.52);backdrop-filter:blur(16px);font-size:11px;font-weight:700;letter-spacing:.04em;box-shadow:0 16px 40px rgba(0,0,0,.16);animation:proofFloat 5.5s ease-in-out infinite}
+.proof-one{left:5%;bottom:16%}.proof-two{left:35%;top:18%;animation-delay:-2.7s}
+.form-card{animation:cardReveal .8s cubic-bezier(.2,.8,.2,1) both}
+.input-wrap{transition:border-color .25s ease,box-shadow .25s ease,transform .25s ease}.input-wrap:focus-within{transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,58,237,.14)}
+.submit-btn{position:relative;overflow:hidden}.submit-btn:before{content:"";position:absolute;inset:-30%;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.28) 50%,transparent 65%);transform:translateX(-120%);transition:transform .8s ease}.submit-btn:hover:before{transform:translateX(120%)}
+@keyframes beamPulse{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes authOrbit{to{transform:rotate(360deg)}}
+@keyframes proofFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+@keyframes cardReveal{from{opacity:0;transform:translateY(28px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.auth-beam,.auth-orbit,.floating-proof,.form-card{animation:none!important}}
