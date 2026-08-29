@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import {
-  ThemeMode,
-  ThemeService
-} from '../../../../core/services/theme.service';
+import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
-interface LandingFeature {
+interface FeatureCard {
   icon: string;
   title: string;
   description: string;
+  badge?: string;
 }
 
-interface LandingStatistic {
+interface StatCard {
+  icon: string;
   value: string;
   label: string;
 }
@@ -26,29 +25,22 @@ export class LandingComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
   mobileMenuOpen = false;
 
-  readonly features: LandingFeature[] = [
-    {
-      icon: '✦',
-      title: 'Adaptive Learning',
-      description: 'AI continuously adapts your next learning step.'
-    },
-    {
-      icon: '◉',
-      title: 'Live Intelligence',
-      description: 'Understand progress while learning happens.'
-    },
-    {
-      icon: '↗',
-      title: 'Measurable Growth',
-      description: 'Turn every learning signal into momentum.'
-    }
+  readonly features: FeatureCard[] = [
+    { icon: '◆', title: 'Expert Courses', description: 'Learn from industry experts & educators' },
+    { icon: '▣', title: 'Live Classes', description: 'Interactive live sessions with real-time Q&A' },
+    { icon: '◉', title: 'AI Tutor', description: 'Get instant help anytime, anywhere', badge: 'New' },
+    { icon: '▤', title: 'Smart Assessments', description: 'AI-powered tests to track your progress' },
+    { icon: '⬡', title: 'Certificates', description: 'Earn recognized certificates' },
+    { icon: '♧', title: 'Community', description: 'Connect, collaborate & grow together' }
   ];
 
-  readonly statistics: LandingStatistic[] = [
-    { value: '10K+', label: 'Active learners' },
-    { value: '500+', label: 'Expert educators' },
-    { value: '1,200+', label: 'Learning paths' },
-    { value: '50+', label: 'Countries connected' }
+  readonly statistics: StatCard[] = [
+    { icon: '♙', value: '10K+', label: 'Active Learners' },
+    { icon: '♙', value: '500+', label: 'Expert Instructors' },
+    { icon: '▤', value: '1,200+', label: 'Courses Available' },
+    { icon: '◷', value: '25K+', label: 'Hours of Content' },
+    { icon: '⌁', value: '95%', label: 'Satisfaction Rate' },
+    { icon: '◉', value: '50+', label: 'Countries' }
   ];
 
   private themeSubscription?: Subscription;
@@ -56,11 +48,9 @@ export class LandingComponent implements OnInit, OnDestroy {
   constructor(private readonly themeService: ThemeService) {}
 
   ngOnInit(): void {
-    this.themeSubscription = this.themeService.theme$.subscribe(
-      (theme: ThemeMode) => {
-        this.theme = theme;
-      }
-    );
+    this.themeSubscription = this.themeService.theme$.subscribe((theme: ThemeMode) => {
+      this.theme = theme;
+    });
   }
 
   ngOnDestroy(): void {
