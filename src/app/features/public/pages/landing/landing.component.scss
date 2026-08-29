@@ -527,3 +527,21 @@ nav{display:flex;align-items:center;gap:37px;margin-left:80px}nav a{height:74px;
 .landing-cta>div{max-width:720px}.landing-cta>div>span{font-size:11px;font-weight:800;letter-spacing:.13em;color:#9f8cff}.landing-cta h2{margin:12px 0;font:800 clamp(28px,3vw,46px)/1.08 'Plus Jakarta Sans',sans-serif;letter-spacing:-1.7px}.landing-cta p{margin:0;color:var(--muted);line-height:1.75}.landing-footer{width:calc(100% - 76px);max-width:1420px;margin:0 auto;padding:28px 0 36px;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.light-mode .platform-status{background:rgba(51,61,95,.05)}
 @media(max-width:980px){.platform-status{display:none}.landing-cta{width:calc(100% - 36px);padding:34px;flex-direction:column;align-items:flex-start}.landing-footer{width:calc(100% - 36px)}}
 @media(max-width:640px){.landing-cta{padding:26px}.landing-footer{flex-direction:column;gap:8px}}
+
+
+/* Premium motion layer */
+.premium-grid{position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(139,92,246,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,.13) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at 60% 30%,#000,transparent 68%);animation:gridDrift 24s linear infinite}
+.orbit{position:absolute;border:1px solid rgba(167,139,250,.22);border-radius:50%;pointer-events:none;filter:drop-shadow(0 0 18px rgba(124,58,237,.2))}
+.orbit-a{width:720px;height:720px;right:-230px;top:-190px;animation:orbitSpin 28s linear infinite}
+.orbit-b{width:460px;height:460px;right:90px;top:80px;border-style:dashed;animation:orbitSpin 18s linear infinite reverse}
+.ambient-chip{position:absolute;z-index:3;padding:10px 14px;border:1px solid rgba(167,139,250,.25);border-radius:999px;background:rgba(15,12,35,.42);backdrop-filter:blur(16px);box-shadow:0 16px 45px rgba(0,0,0,.16);font-size:12px;font-weight:700;letter-spacing:.03em;animation:chipFloat 6s ease-in-out infinite}
+.light-mode .ambient-chip{background:rgba(255,255,255,.5);color:#312e81}
+.chip-a{left:7%;top:42%}.chip-b{right:8%;top:72%;animation-delay:-3s}
+.dashboard{transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s ease}
+.dashboard:hover{transform:translateY(-8px) rotateX(1deg) rotateY(-1deg)!important;box-shadow:0 35px 100px rgba(76,29,149,.28)}
+.primary-btn,.get-started{position:relative;overflow:hidden}.primary-btn:after,.get-started:after{content:"";position:absolute;inset:0;transform:translateX(-120%) skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transition:transform .8s ease}.primary-btn:hover:after,.get-started:hover:after{transform:translateX(130%) skewX(-18deg)}
+.feature-strip article{transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}.feature-strip article:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(76,29,149,.14)}
+@keyframes gridDrift{to{background-position:64px 64px}}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+@keyframes chipFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+@media (prefers-reduced-motion:reduce){.premium-grid,.orbit,.ambient-chip{animation:none!important}.dashboard:hover,.feature-strip article:hover{transform:none!important}}
