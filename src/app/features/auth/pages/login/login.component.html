@@ -8,15 +8,12 @@
   <section class="login-layout">
     <!-- Learning Showcase -->
     <aside class="login-showcase">
-      <a
-        class="brand"
-        routerLink="/"
-      >
-        <span class="brand__mark">▣</span>
+      <a class="brand" routerLink="/">
+        <b>▣</b>
 
         <span>
           Master Learning
-          <span>System</span>
+          <small>System</small>
         </span>
       </a>
 
@@ -37,10 +34,7 @@
         </p>
       </div>
 
-      <div
-        class="learning-visual"
-        aria-hidden="true"
-      >
+      <div class="learning-visual" aria-hidden="true">
         <div class="visual-orbit visual-orbit--one"></div>
         <div class="visual-orbit visual-orbit--two"></div>
 
@@ -84,10 +78,7 @@
     <!-- Authentication Panel -->
     <section class="login-panel">
       <div class="panel-top">
-        <a
-          routerLink="/"
-          class="back-link"
-        >
+        <a routerLink="/" class="back-link">
           <span>←</span>
           Back to home
         </a>
@@ -180,7 +171,7 @@
               <span>Keep me signed in</span>
             </label>
 
-            <a href="#forgot-password">
+            <a routerLink="/auth/forgot-password">
               Forgot password?
             </a>
           </div>
