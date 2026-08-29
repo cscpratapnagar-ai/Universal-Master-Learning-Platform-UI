@@ -1,4 +1,4 @@
-<main class="landing-page">
+<main class="landing-page" [class.light-mode]="theme === 'light'">
   <div class="ambient ambient--one"></div>
   <div class="ambient ambient--two"></div>
 
@@ -17,6 +17,10 @@
       </div>
 
       <div class="nav-actions">
+        <button class="theme-toggle" type="button" (click)="toggleTheme()">
+          <span class="theme-toggle__icon">{{ theme === 'dark' ? '☀' : '☾' }}</span>
+          <span class="theme-toggle__text">{{ theme === 'dark' ? 'Light' : 'Dark' }}</span>
+        </button>
         <a class="login-link" routerLink="/auth/login">Sign in</a>
         <a class="nav-cta" routerLink="/auth/register">Start learning <span>↗</span></a>
         <button class="menu-button" type="button" (click)="toggleMenu()" aria-label="Toggle menu">

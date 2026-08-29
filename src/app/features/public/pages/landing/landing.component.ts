@@ -8,6 +8,7 @@ import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 export class LandingComponent implements AfterViewInit, OnDestroy {
   isMenuOpen = false;
   activeFaq = 0;
+  theme: 'light' | 'dark' = 'dark';
   private observer?: IntersectionObserver;
 
   stats = [
@@ -40,6 +41,10 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  toggleTheme(): void {
+    this.theme = this.theme === 'dark' ? 'light' : 'dark';
   }
 
   toggleMenu(): void {
