@@ -12,9 +12,7 @@ export class PlatformStatusService {
 
   check(): Observable<boolean> {
     return this.http
-      .get<ApiResponse<PlatformStatus>>(
-        `${API_CONFIG.baseUrl}/public/status`
-      )
+      .get<ApiResponse<PlatformStatus>>(`${API_CONFIG.baseUrl}/public/status`)
       .pipe(
         map((response) => response.success && response.data.status === 'ONLINE'),
         catchError(() => of(false))
