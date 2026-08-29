@@ -21,3 +21,43 @@ nav{display:flex;align-items:center;gap:37px;margin-left:80px}nav a{height:74px;
 @media(max-width:980px){.nav-shell{width:calc(100% - 32px)}nav{display:none;position:absolute;top:70px;left:0;right:0;padding:18px;border:1px solid var(--line);border-radius:14px;background:#10162b;flex-direction:column;align-items:stretch;gap:0}nav.open{display:flex}nav a{height:38px}.mobile-menu{display:block;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--text)}.language,.login{display:none}.hero{width:calc(100% - 36px);grid-template-columns:1fr}.hero-copy{padding-top:45px;text-align:center}.hero-copy>p{margin:auto}.hero-actions,.social-proof{justify-content:center}.books{display:none}.hero-stage{height:610px;margin-top:10px}.dashboard{left:50%;transform:translateX(-50%) scale(.82);transform-origin:top center}.side-card{transform:scale(.82)}.student{right:50%;transform:translateX(50%) scale(.78);transform-origin:bottom center}.trusted{width:calc(100% - 36px);overflow:auto}.feature-strip,.stats-strip{width:calc(100% - 36px)}}
 @media(max-width:640px){.brand strong{font-size:14px}.get-started{display:none}.theme-switch{width:44px}.theme-switch span{width:28px}.hero-copy h1{font-size:43px}.hero-stage{height:500px}.dashboard{transform:translateX(-50%) scale(.54)}.student{transform:translateX(50%) scale(.56);bottom:-25px}.side-card,.ai-message{display:none}.trusted{padding:10px}.trusted>span{display:none}.logo-row{min-width:650px}.feature-strip,.stats-strip{grid-template-columns:1fr}.feature-strip article,.stats-strip article{border-right:0}.feature-strip article:last-child{border-bottom:0}.stats-strip article{border-bottom:1px solid var(--line)}.stats-strip article:last-child{border-bottom:0}.primary-btn,.demo-btn{padding:0 16px}.hero-copy>p{font-size:12px}.social-proof{margin-top:20px}.feature-strip{margin-top:9px}.logo-row{justify-content:flex-start}.trusted{overflow:hidden}.logo-row{animation:logos 18s linear infinite}.feature-strip article{min-height:75px}.stats-strip{margin-bottom:18px}}
 @keyframes logos{to{transform:translateX(-45%)}}
+
+/* Premium reference fidelity: motion and complete light-theme polish */
+.hero-animate{isolation:isolate}
+.hero-copy-animate{animation:heroCopyReveal .9s cubic-bezier(.2,.8,.2,1) both}
+.hero-stage-animate{animation:heroStageReveal 1.1s .08s cubic-bezier(.2,.8,.2,1) both}
+.dashboard-float{animation:dashboardFloat 7s ease-in-out infinite}
+.widget-float{animation:widgetFloat 5.5s ease-in-out infinite}
+.widget-float-delay{animation-delay:-2.2s}
+.widget-float-slow{animation-duration:7.5s;animation-delay:-3.5s}
+.student-animate{animation:studentReveal 1.25s .2s cubic-bezier(.16,1,.3,1) both}
+
+.light-mode .hero-copy>p,.light-mode .social-proof p{color:#5e6880}
+.light-mode .smart-pill{background:rgba(76,84,140,.08);color:#5f6780}
+.light-mode .demo-btn{color:#27304a;background:rgba(255,255,255,.78);box-shadow:0 10px 24px rgba(42,52,86,.08)}
+.light-mode .brand small,.light-mode .feature-strip p,.light-mode .stats-strip small{color:#68728a}
+.light-mode .logo-row b{color:#39435a}
+.light-mode .theme-switch{background:rgba(55,63,100,.06)}
+.light-mode .nav-shell nav a.active{color:#5936c9}
+
+@keyframes heroCopyReveal{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes heroStageReveal{from{opacity:0;transform:translateX(38px) scale(.96)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes dashboardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes widgetFloat{0%,100%{margin-top:0}50%{margin-top:-9px}}
+@keyframes studentReveal{from{opacity:0;transform:translateX(55px) scale(.94)}to{opacity:1;transform:translateX(0) scale(1)}}
+
+@media(prefers-reduced-motion:reduce){
+  .hero-copy-animate,.hero-stage-animate,.dashboard-float,.widget-float,.student-animate{animation:none!important}
+}
+@media(max-width:1250px){
+  .dashboard-float{transform:scale(.9);animation:none}
+  .student-animate{transform:scale(.88);animation:none}
+}
+@media(max-width:980px){
+  .dashboard-float{transform:translateX(-50%) scale(.82)}
+  .student-animate{transform:translateX(50%) scale(.78)}
+}
+@media(max-width:640px){
+  .dashboard-float{transform:translateX(-50%) scale(.54)}
+  .student-animate{transform:translateX(50%) scale(.56)}
+}
