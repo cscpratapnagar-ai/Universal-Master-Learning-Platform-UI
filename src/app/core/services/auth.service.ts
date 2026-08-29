@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
 
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
@@ -61,7 +61,7 @@ export class AuthService {
 
     return this.http
       .post<ApiResponse<void>>(`${this.authUrl}/logout`, request)
-      .pipe(tap(() => this.tokenService.clearSession()));
+      .pipe(finalize(() => this.tokenService.clearSession()));
   }
 
   isAuthenticated(): boolean {
