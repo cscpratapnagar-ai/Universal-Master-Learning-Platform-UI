@@ -13,14 +13,8 @@ interface LandingFeature {
 }
 
 interface LandingStatistic {
-  icon: string;
   value: string;
   label: string;
-}
-
-interface LandingFaq {
-  question: string;
-  answer: string;
 }
 
 @Component({
@@ -30,66 +24,31 @@ interface LandingFaq {
 })
 export class LandingComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
-  activeFaqIndex = -1;
-
-  readonly statistics: LandingStatistic[] = [
-    { icon: '◉', value: '10K+', label: 'Active Learners' },
-    { icon: '♙', value: '500+', label: 'Expert Instructors' },
-    { icon: '▣', value: '1,200+', label: 'Courses Available' },
-    { icon: '◷', value: '25K+', label: 'Hours of Content' },
-    { icon: '⌁', value: '95%', label: 'Satisfaction Rate' },
-    { icon: '◉', value: '50+', label: 'Countries' }
-  ];
+  mobileMenuOpen = false;
 
   readonly features: LandingFeature[] = [
     {
-      icon: '◆',
-      title: 'Expert Courses',
-      description: 'Learn from industry experts & educators'
-    },
-    {
-      icon: '▮▮',
-      title: 'Live Classes',
-      description: 'Interactive live sessions with real-time Q&A'
+      icon: '✦',
+      title: 'Adaptive Learning',
+      description: 'AI continuously adapts your next learning step.'
     },
     {
       icon: '◉',
-      title: 'AI Tutor',
-      description: 'Get instant help anytime with AI'
+      title: 'Live Intelligence',
+      description: 'Understand progress while learning happens.'
     },
     {
-      icon: '▣',
-      title: 'Smart Assessments',
-      description: 'AI-powered tests to track progress'
-    },
-    {
-      icon: '⬡',
-      title: 'Certificates',
-      description: 'Earn recognized certificates'
-    },
-    {
-      icon: '♧',
-      title: 'Community',
-      description: 'Connect, collaborate & grow together'
+      icon: '↗',
+      title: 'Measurable Growth',
+      description: 'Turn every learning signal into momentum.'
     }
   ];
 
-  readonly faqs: LandingFaq[] = [
-    {
-      question: 'What is Universal Master Learning Platform?',
-      answer:
-        'A connected learning ecosystem for learners, educators and institutions.'
-    },
-    {
-      question: 'Who can use the platform?',
-      answer:
-        'The experience scales from individual learners to institutions and organizations.'
-    },
-    {
-      question: 'Does it include AI guidance?',
-      answer:
-        'Yes. AI guidance supports discovery, practice and personalized next steps.'
-    }
+  readonly statistics: LandingStatistic[] = [
+    { value: '10K+', label: 'Active learners' },
+    { value: '500+', label: 'Expert educators' },
+    { value: '1,200+', label: 'Learning paths' },
+    { value: '50+', label: 'Countries connected' }
   ];
 
   private themeSubscription?: Subscription;
@@ -112,12 +71,11 @@ export class LandingComponent implements OnInit, OnDestroy {
     this.themeService.toggle();
   }
 
-  toggleFaq(index: number): void {
-    this.activeFaqIndex =
-      this.activeFaqIndex === index ? -1 : index;
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
-  isFaqOpen(index: number): boolean {
-    return this.activeFaqIndex === index;
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
   }
 }

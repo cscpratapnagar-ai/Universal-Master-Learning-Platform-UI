@@ -2,366 +2,406 @@
   class="landing-page"
   [class.light-mode]="theme === 'light'"
 >
-  <!-- Navigation -->
-  <header class="nav">
-    <a class="brand" routerLink="/">
-      <b>▣</b>
+  <div class="page-noise"></div>
+  <div class="ambient ambient--violet"></div>
+  <div class="ambient ambient--cyan"></div>
 
-      <span>
-        Master Learning
-        <small>System</small>
+  <!-- Navigation -->
+  <header class="navbar">
+    <a
+      class="brand"
+      routerLink="/"
+    >
+      <span class="brand-mark">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+
+      <span class="brand-copy">
+        Master
+        <b>Learning System</b>
       </span>
     </a>
 
-    <nav class="nav-links">
-      <a class="active">Home</a>
-      <a>Features</a>
-      <a>Courses</a>
-      <a>Live Classes</a>
-      <a>AI Tutor</a>
-      <a>Pricing</a>
-      <a>About Us</a>
+    <nav
+      class="nav-links"
+      [class.nav-links--open]="mobileMenuOpen"
+    >
+      <a href="#ecosystem" (click)="closeMobileMenu()">Ecosystem</a>
+      <a href="#experience" (click)="closeMobileMenu()">Experience</a>
+      <a href="#intelligence" (click)="closeMobileMenu()">Intelligence</a>
+      <a href="#impact" (click)="closeMobileMenu()">Impact</a>
     </nav>
 
-    <div class="actions">
+    <div class="nav-actions">
       <button
-        class="theme"
+        class="theme-toggle"
         type="button"
         (click)="toggleTheme()"
         aria-label="Toggle theme"
       >
-        ☼ {{ theme === 'dark' ? '☾' : '☀' }}
+        <span>{{ theme === 'dark' ? '☀' : '☾' }}</span>
       </button>
 
-      <span>◎ EN⌄</span>
-
-      <a routerLink="/auth/login">
-        Login
+      <a
+        class="login-link"
+        routerLink="/auth/login"
+      >
+        Sign in
       </a>
 
       <a
+        class="nav-cta"
         routerLink="/auth/register"
-        class="cta"
       >
-        Get Started Free →
+        Start learning
+        <b>↗</b>
       </a>
+
+      <button
+        class="menu-button"
+        type="button"
+        (click)="toggleMobileMenu()"
+        aria-label="Toggle menu"
+      >
+        <i></i>
+        <i></i>
+      </button>
     </div>
   </header>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="copy">
-      <div class="badge">
-        ✦ &nbsp;
-        <b>Smart Learning.</b>
-        Limitless Possibilities.
+  <section class="hero" id="ecosystem">
+    <div class="hero-copy">
+      <div class="eyebrow">
+        <span class="eyebrow-pulse"></span>
+        THE UNIVERSAL LEARNING OS
       </div>
 
       <h1>
-        Learn Anything.
-        <span>Achieve Everything.</span>
+        Learning,
+        <br />
+        <span>reimagined.</span>
       </h1>
 
-      <p>
-        Master Learning System is your all-in-one platform to explore
-        courses, attend live classes, get AI support and track your
-        progress — all in one place.
+      <p class="hero-description">
+        One intelligent environment where curiosity becomes capability.
+        Learn, practice, connect and evolve through a system that
+        understands how you grow.
       </p>
 
-      <div class="buttons">
-        <a routerLink="/auth/register">
-          Start Learning Free →
+      <div class="hero-actions">
+        <a
+          class="primary-action"
+          routerLink="/auth/register"
+        >
+          <span>Enter the future of learning</span>
+          <b>→</b>
         </a>
 
-        <button type="button">
-          ◉ &nbsp; Watch Demo
-        </button>
+        <a
+          class="secondary-action"
+          href="#experience"
+        >
+          <span class="play-icon">▶</span>
+          Explore the experience
+        </a>
       </div>
 
-      <div class="trust">
-        <i>●</i>
-        <i>●</i>
-        <i>●</i>
+      <div class="hero-proof">
+        <div class="proof-line"></div>
 
-        <b>10K+</b>
-
-        <span>
-          Join 10,000+ learners
-          <br />
-          growing their future 🚀
-        </span>
-      </div>
-
-      <div class="books" aria-hidden="true">
-        <i></i>
-        <i></i>
-        <i></i>
-        <b>⌑</b>
+        <p>
+          <strong>Built for every learner.</strong>
+          Designed for what comes next.
+        </p>
       </div>
     </div>
 
-    <!-- Animated Learning Experience -->
-    <div class="stage">
-      <!-- Main Dashboard -->
-      <div class="dashboard">
-        <aside>
-          ▣
-          <span>⌂</span>
-          <span>◈</span>
-          <span>▤</span>
-          <span>▱</span>
-        </aside>
+    <!-- Cinematic Learning Universe -->
+    <div class="hero-visual">
+      <div class="visual-grid"></div>
+      <div class="orbit orbit--outer"></div>
+      <div class="orbit orbit--middle"></div>
+      <div class="orbit orbit--inner"></div>
 
-        <main>
-          <div class="top">
-            ☰
+      <div class="signal signal--one"></div>
+      <div class="signal signal--two"></div>
+      <div class="signal signal--three"></div>
 
-            <div>
-              ⌕ &nbsp; Search for courses, topics, live classes...
+      <!-- Student -->
+      <div class="student-scene">
+        <div class="student-glow"></div>
+
+        <div class="student">
+          <div class="student-head">
+            <div class="student-hair"></div>
+            <div class="student-face"></div>
+          </div>
+
+          <div class="student-neck"></div>
+          <div class="student-body"></div>
+          <div class="student-arm student-arm--left"></div>
+          <div class="student-arm student-arm--right"></div>
+
+          <div class="student-laptop">
+            <div class="laptop-screen">
+              <div class="screen-top">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="screen-layout">
+                <aside>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </aside>
+
+                <section>
+                  <div class="screen-title">
+                    <span>YOUR LEARNING FLOW</span>
+                    <b>Vishal's universe</b>
+                  </div>
+
+                  <div class="screen-flow">
+                    <article class="flow-node flow-node--learn">
+                      <span>01</span>
+                      <strong>Learn</strong>
+                      <small>Course signals</small>
+                    </article>
+
+                    <div class="flow-line">
+                      <i></i>
+                    </div>
+
+                    <article class="flow-node flow-node--ai">
+                      <span>02</span>
+                      <strong>AI analyzes</strong>
+                      <small>Understanding patterns</small>
+                    </article>
+
+                    <div class="flow-line">
+                      <i></i>
+                    </div>
+
+                    <article class="flow-node flow-node--plan">
+                      <span>03</span>
+                      <strong>Personal path</strong>
+                      <small>Next best step</small>
+                    </article>
+                  </div>
+
+                  <div class="screen-progress">
+                    <span>LIVE MOMENTUM</span>
+
+                    <div>
+                      <i></i>
+                    </div>
+
+                    <b>84%</b>
+                  </div>
+                </section>
+              </div>
             </div>
 
-            ♧<sup>3</sup>
-            ◧<sup>2</sup>
-            ●
+            <div class="laptop-base"></div>
           </div>
-
-          <h3>Welcome back, Vishal! 👋</h3>
-
-          <small>
-            Let's continue your learning journey.
-          </small>
-
-          <div class="continue">
-            <b>⚖</b>
-
-            <section>
-              <small>Continue Learning</small>
-              <strong>Advanced Mathematics</strong>
-              <em>Next: Integrals</em>
-
-              <i>
-                <u></u>
-              </i>
-            </section>
-
-            <button type="button">
-              Continue
-            </button>
-          </div>
-
-          <div class="ai">
-            <small>AI Tutor</small>
-            <strong>Hi Vishal! 👋</strong>
-            <p>How can I help you today?</p>
-
-            <button type="button">
-              Ask AI Tutor
-            </button>
-
-            <b>🤖</b>
-          </div>
-
-          <div class="metrics">
-            <article>
-              ▣
-              <small>Courses Enrolled</small>
-              <b>24</b>
-            </article>
-
-            <article>
-              ◷
-              <small>Learning Hours</small>
-              <b>48.5</b>
-            </article>
-
-            <article>
-              ▤
-              <small>Tests Taken</small>
-              <b>15</b>
-            </article>
-
-            <article>
-              ♛
-              <small>Badges Earned</small>
-              <b>8</b>
-            </article>
-          </div>
-
-          <div class="bottom">
-            <article>
-              <b>Upcoming Live Class</b>
-              <span>Physics Fundamentals</span>
-              <small>Tomorrow, 11:00 AM</small>
-            </article>
-
-            <article>
-              <b>Recent Achievement</b>
-              <span>Math Quiz · Scored 90%</span>
-              <span>Physics Assignment · Submitted</span>
-            </article>
-          </div>
-        </main>
+        </div>
       </div>
 
-      <!-- Live Learning Flow -->
-      <div class="journey">
-        <header>
-          Your Learning Journey
-          <span>(Live Flow)</span>
-        </header>
+      <!-- Floating intelligence cards -->
+      <article class="float-card float-card--progress">
+        <div class="float-icon">↗</div>
 
         <div>
-          <article>
-            ◈
-            <b>1. Learn</b>
-            <small>Watching & Practicing</small>
-          </article>
-
-          →
-
-          <article>
-            ♧
-            <b>2. AI Analyze</b>
-            <small>Smart Understanding</small>
-          </article>
-
-          →
-
-          <article>
-            ◎
-            <b>3. Personal Plan</b>
-            <small>Customized Future</small>
-          </article>
-
-          →
-
-          <article>
-            ▥
-            <b>4. Progress</b>
-            <small>Track & Improve</small>
-          </article>
+          <span>LEARNING MOMENTUM</span>
+          <strong>+24.8%</strong>
+          <small>Above your weekly rhythm</small>
         </div>
 
-        <footer>
-          ● &nbsp; Live Status: Analyzing your performance...
-        </footer>
-      </div>
+        <i class="chart">
+          <b></b>
+          <b></b>
+          <b></b>
+          <b></b>
+          <b></b>
+        </i>
+      </article>
 
-      <!-- AI Status Hologram -->
-      <div class="holo">
-        <b>Vishal is learning</b>
-        <span>AI is analyzing...</span>
-        <span>Creating personal plan...</span>
-        <strong>Almost ready! 🚀</strong>
-      </div>
+      <article class="float-card float-card--ai">
+        <div class="ai-orb">
+          <span>✦</span>
+        </div>
 
-      <!-- CSS Student Illustration -->
-      <div class="student" aria-hidden="true">
-        <i class="head"></i>
-        <i class="hair"></i>
-        <i class="body"></i>
-        <i class="laptop"></i>
-        <i class="hands"></i>
-      </div>
+        <div>
+          <span>AI LEARNING GUIDE</span>
+          <strong>I found your next step.</strong>
+          <small>Ready when you are</small>
+        </div>
 
-      <!-- Floating Widgets -->
-      <div class="widgets">
-        <article>
-          <small>● Live Learners Online</small>
-          <b>2,548</b>
-        </article>
+        <em>LIVE</em>
+      </article>
 
-        <article>
-          <small>🔥 Your Streak</small>
-          <b>🔥 12 Days</b>
-        </article>
+      <article class="float-card float-card--focus">
+        <span class="focus-label">FOCUS SESSION</span>
+        <strong>42:18</strong>
+        <div class="focus-wave">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i>
+        </div>
+      </article>
 
-        <article>
-          <small>Focus Time 🔥</small>
-          <b>25:30</b>
-          <span>Deep Work Session</span>
-        </article>
+      <article class="float-card float-card--community">
+        <div class="community-stack">
+          <i>✦</i>
+          <i>◉</i>
+          <i>◆</i>
+        </div>
+
+        <div>
+          <span>GLOBAL CLASSROOM</span>
+          <strong>2,548 learning now</strong>
+        </div>
+      </article>
+
+      <div class="visual-caption">
+        <span class="caption-line"></span>
+        <p>
+          <b>THE SYSTEM RESPONDS.</b>
+          Every action creates a more personal path.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Partners -->
-  <section class="partners">
-    <span>Trusted by learners & institutions worldwide</span>
-    <b>▦ Microsoft</b>
-    <b>Google</b>
-    <b>coursera</b>
-    <b>edX</b>
-    <b>aws</b>
-    <b>Adobe</b>
-    <b>◉ Pearson</b>
-    <b>Udemy</b>
+  <!-- Marquee -->
+  <section class="marquee-strip">
+    <div>
+      <span>LEARN</span>
+      <i>✦</i>
+      <span>UNDERSTAND</span>
+      <i>✦</i>
+      <span>CREATE</span>
+      <i>✦</i>
+      <span>EVOLVE</span>
+      <i>✦</i>
+      <span>LEARN</span>
+      <i>✦</i>
+      <span>UNDERSTAND</span>
+      <i>✦</i>
+      <span>CREATE</span>
+      <i>✦</i>
+      <span>EVOLVE</span>
+    </div>
   </section>
 
-  <!-- Features -->
-  <section class="features">
-    <article *ngFor="let feature of features">
-      <i>{{ feature.icon }}</i>
+  <!-- Intelligence statement -->
+  <section
+    class="statement-section"
+    id="experience"
+  >
+    <span class="section-kicker">ONE CONNECTED EXPERIENCE</span>
 
-      <div>
-        <b>{{ feature.title }}</b>
-        <span>{{ feature.description }}</span>
-      </div>
+    <h2>
+      Education shouldn't feel like
+      <span>switching between systems.</span>
+    </h2>
+
+    <p>
+      Master Learning System brings learning, intelligence, community
+      and measurable progress into one continuously connected world.
+    </p>
+  </section>
+
+  <!-- Feature cards -->
+  <section
+    class="feature-grid"
+    id="intelligence"
+  >
+    <article *ngFor="let feature of features; let index = index">
+      <span class="feature-index">0{{ index + 1 }}</span>
+
+      <div class="feature-icon">{{ feature.icon }}</div>
+
+      <h3>{{ feature.title }}</h3>
+
+      <p>{{ feature.description }}</p>
+
+      <span class="feature-arrow">↗</span>
     </article>
   </section>
 
   <!-- Statistics -->
-  <section class="stats">
-    <article *ngFor="let statistic of statistics">
-      <i>{{ statistic.icon }}</i>
+  <section
+    class="impact-section"
+    id="impact"
+  >
+    <div class="impact-copy">
+      <span class="section-kicker">A GLOBAL LEARNING SIGNAL</span>
 
-      <div>
-        <b>{{ statistic.value }}</b>
+      <h2>
+        Progress is more
+        <span>powerful when visible.</span>
+      </h2>
+    </div>
+
+    <div class="statistics">
+      <article *ngFor="let statistic of statistics">
+        <strong>{{ statistic.value }}</strong>
         <span>{{ statistic.label }}</span>
-      </div>
-    </article>
+      </article>
+    </div>
   </section>
 
-  <!-- Content -->
-  <section class="content">
-    <span>ONE INTELLIGENT ECOSYSTEM</span>
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="cta-orbit"></div>
+
+    <span class="section-kicker">YOUR NEXT CHAPTER STARTS HERE</span>
 
     <h2>
-      Everything you need to
-      <em>learn, grow and master.</em>
+      Don't just consume
+      <span>knowledge.</span>
+      <br />
+      Build your universe.
     </h2>
 
-    <p>
-      Courses, live learning, assessments, AI guidance and measurable
-      progress in one connected experience.
-    </p>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq">
-    <h2>
-      Built for what comes
-      <span>next.</span>
-    </h2>
-
-    <article
-      *ngFor="let faq of faqs; let i = index"
-      [class.open]="isFaqOpen(i)"
+    <a
+      routerLink="/auth/register"
+      class="primary-action"
     >
-      <button
-        type="button"
-        (click)="toggleFaq(i)"
-      >
-        {{ faq.question }}
-        <b>{{ isFaqOpen(i) ? '−' : '+' }}</b>
-      </button>
-
-      <p>{{ faq.answer }}</p>
-    </article>
+      <span>Create your learning space</span>
+      <b>→</b>
+    </a>
   </section>
 
-  <!-- Footer -->
-  <footer class="foot">
-    © 2026 Master Learning System · Designed for limitless learning
+  <footer class="footer">
+    <a
+      class="brand"
+      routerLink="/"
+    >
+      <span class="brand-mark">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+
+      <span class="brand-copy">
+        Master
+        <b>Learning System</b>
+      </span>
+    </a>
+
+    <span>
+      Universal Master Learning Platform · 2026
+    </span>
+
+    <span>
+      Built for limitless growth
+    </span>
   </footer>
 </main>
