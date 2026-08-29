@@ -1,1 +1,5 @@
-export const STORAGE_KEYS={accessToken:'umlp_access_token',refreshToken:'umlp_refresh_token',user:'umlp_user'} as const;
+export const STORAGE_KEYS = {
+  accessToken: 'uml-access-token',
+  refreshToken: 'uml-refresh-token',
+  currentUser: 'uml-current-user'
+} as const;

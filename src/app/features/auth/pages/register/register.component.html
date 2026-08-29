@@ -22,7 +22,8 @@
           <label>Confirm password<span class="input-wrap" [class.invalid]="!passwordsMatch"><i>✓</i><input [type]="showConfirmPassword ? 'text' : 'password'" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Repeat your password" required><button type="button" (click)="toggleConfirmPassword()">{{ showConfirmPassword ? '◉' : '○' }}</button></span></label>
           <small class="error" *ngIf="!passwordsMatch">Passwords don't match yet.</small>
           <label class="terms"><input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" required><span></span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
-          <button class="submit-btn" type="submit" [disabled]="registerForm.invalid || !passwordsMatch">Create my learning space <span>→</span></button>
+          <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+          <button class="submit-btn" type="submit" [disabled]="registerForm.invalid || !passwordsMatch || isSubmitting">{{ isSubmitting ? 'Creating your account...' : 'Create my learning space' }} <span>→</span></button>
           <div class="divider"><span>or sign up with</span></div>
           <div class="social-buttons"><button type="button"><b>G</b> Google</button><button type="button"><b>◆</b> Microsoft</button></div>
         </form>

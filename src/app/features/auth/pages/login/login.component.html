@@ -44,7 +44,8 @@
 
           <div class="form-options"><label class="check"><input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe"><span></span>Remember me</label><a routerLink="/auth/forgot-password">Forgot password?</a></div>
 
-          <button class="submit-btn" type="submit" [disabled]="loginForm.invalid">Continue to Learning <span>→</span></button>
+          <p class="form-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+          <button class="submit-btn" type="submit" [disabled]="loginForm.invalid || isSubmitting">{{ isSubmitting ? 'Signing you in...' : 'Continue to Learning' }} <span>→</span></button>
 
           <div class="divider"><span>or continue with</span></div>
           <div class="social-buttons"><button type="button"><b class="google">G</b> Google</button><button type="button"><b>◆</b> Microsoft</button></div>

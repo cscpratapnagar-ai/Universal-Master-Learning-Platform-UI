@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+import { AuthService } from '../../../../core/services/auth.service';
 import {
   ThemeMode,
   ThemeService
@@ -17,10 +19,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   rememberMe = true;
   email = '';
   password = '';
+  isSubmitting = false;
+  errorMessage = '';
 
   private themeSubscription?: Subscription;
 
-  constructor(private readonly themeService: ThemeService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     this.themeSubscription = this.themeService.theme$.subscribe(
@@ -43,9 +51,46 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    console.log('Login requested', {
-      email: this.email,
-      rememberMe: this.rememberMe
-    });
+    if (this.isSubmitting) {
+      return;
+    }
+
+    this.errorMessage = '';
+    this.isSubmitting = true;
+
+    this.authService
+      .login(
+        {
+          email: this.email.trim().toLowerCase(),
+          password: this.password
+        },
+        this.rememberMe
+      )
+      .subscribe({
+        next: (response) => {
+          this.isSubmitting = false;
+          this.router.navigateByUrl(this.resolveDashboard(response.data.user.roles));
+        },
+        error: (error: Error) => {
+          this.isSubmitting = false;
+          this.errorMessage = error.message;
+        }
+      });
+  }
+
+  private resolveDashboard(roles: string[]): string {
+    if (roles.includes('SUPER_ADMIN')) {
+      return '/super-admin';
+    }
+
+    if (roles.includes('ORG_ADMIN')) {
+      return '/organization';
+    }
+
+    if (roles.includes('INSTRUCTOR')) {
+      return '/instructor';
+    }
+
+    return '/learner';
   }
 }
