@@ -1,210 +1,57 @@
-<main
-  class="login-page"
-  [class.light-mode]="theme === 'light'"
->
-  <div class="ambient ambient--one"></div>
-  <div class="ambient ambient--two"></div>
+<main class="auth-page" [class.light-mode]="theme === 'light'">
+  <div class="grid"></div><div class="orb orb-one"></div><div class="orb orb-two"></div>
 
-  <section class="login-layout">
-    <!-- Learning Showcase -->
-    <aside class="login-showcase">
-      <a class="brand" routerLink="/">
-        <b>▣</b>
+  <header class="auth-nav">
+    <a routerLink="/" class="brand"><span class="cube">✦</span><span><strong>Master Learning</strong><small>System</small></span></a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" (click)="toggleTheme()"><span>{{ theme === 'dark' ? '☼' : '☾' }}</span><b>{{ theme === 'dark' ? 'Light' : 'Dark' }}</b></button>
+      <span class="new-here">New to Master Learning?</span>
+      <a routerLink="/auth/register" class="outline-btn">Create account</a>
+    </div>
+  </header>
 
-        <span>
-          Master Learning
-          <small>System</small>
-        </span>
-      </a>
+  <section class="auth-layout">
+    <aside class="showcase">
+      <div class="eyebrow"><i></i> AI-POWERED LEARNING ECOSYSTEM</div>
+      <h1>Pick up exactly<br>where your <span>future</span><br>left off.</h1>
+      <p>Your courses, live classrooms, AI tutor and personalized learning path — beautifully connected in one intelligent system.</p>
 
-      <div class="showcase-content">
-        <div class="showcase-badge">
-          <span></span>
-          The future of learning is connected
+      <div class="mini-dashboard">
+        <div class="mini-head"><span>Welcome back, Vishal 👋</span><i>●</i></div>
+        <div class="mini-main">
+          <article class="learning-card"><small>CONTINUE LEARNING</small><b>Advanced Mathematics</b><span><i></i> 75% complete</span></article>
+          <article class="ai-orb">◉<small>AI Tutor<br>Online</small></article>
         </div>
-
-        <h1>
-          Welcome back to your
-          <em>universe.</em>
-        </h1>
-
-        <p>
-          Continue exactly where curiosity left off.
-          Your learning world is ready.
-        </p>
+        <div class="mini-stats"><article><b>24</b><span>Courses</span></article><article><b>48.5</b><span>Learning hours</span></article><article><b>8</b><span>New badges</span></article></div>
       </div>
 
-      <div class="learning-visual" aria-hidden="true">
-        <div class="visual-orbit visual-orbit--one"></div>
-        <div class="visual-orbit visual-orbit--two"></div>
-
-        <div class="visual-core">
-          <div class="visual-core__ring"></div>
-          <strong>✦</strong>
-          <span>LEARN</span>
-        </div>
-
-        <article class="visual-card visual-card--progress">
-          <span class="card-icon">↗</span>
-
-          <div>
-            <small>YOUR MOMENTUM</small>
-            <strong>84% this week</strong>
-          </div>
-
-          <i></i>
-        </article>
-
-        <article class="visual-card visual-card--ai">
-          <span class="card-icon card-icon--ai">AI</span>
-
-          <div>
-            <small>INTELLIGENCE</small>
-            <strong>Ready to guide you</strong>
-          </div>
-        </article>
-
-        <span class="visual-signal signal--one"></span>
-        <span class="visual-signal signal--two"></span>
-      </div>
-
-      <div class="showcase-footer">
-        <span>Trusted learning infrastructure</span>
-        <span class="footer-line"></span>
-        <span>Universal Master Platform</span>
-      </div>
+      <div class="showcase-bottom"><div class="avatars"><i>V</i><i>S</i><i>A</i><b>10K+</b></div><span>Join learners building<br>their next chapter.</span></div>
     </aside>
 
-    <!-- Authentication Panel -->
-    <section class="login-panel">
-      <div class="panel-top">
-        <a routerLink="/" class="back-link">
-          <span>←</span>
-          Back to home
-        </a>
+    <section class="form-zone">
+      <div class="form-card">
+        <div class="mobile-brand"><span class="cube">✦</span> Master Learning System</div>
+        <div class="form-intro"><span class="step">01 / 02</span><h2>Welcome back<span>.</span></h2><p>Enter your details to continue your learning journey.</p></div>
 
-        <div class="panel-actions">
-          <button
-            class="theme-toggle"
-            type="button"
-            (click)="toggleTheme()"
-            aria-label="Toggle theme"
-          >
-            {{ theme === 'dark' ? '☀ Light' : '☾ Dark' }}
-          </button>
-
-          <span class="new-account">
-            New here?
-            <a routerLink="/auth/register">Create account</a>
-          </span>
-        </div>
-      </div>
-
-      <div class="login-form-wrap">
-        <div class="form-heading">
-          <span class="form-kicker">Secure access</span>
-
-          <h2>Sign in.</h2>
-
-          <p>
-            Enter your details to continue your learning journey.
-          </p>
-        </div>
-
-        <form
-          #loginForm="ngForm"
-          class="login-form"
-          (ngSubmit)="submit()"
-        >
-          <label>
-            <span>Email address</span>
-
-            <div class="input-wrap">
-              <span class="input-icon">✉</span>
-
-              <input
-                type="email"
-                name="email"
-                [(ngModel)]="email"
-                required
-                email
-                autocomplete="email"
-                placeholder="you@example.com"
-              />
-            </div>
+        <form (ngSubmit)="submit()" #loginForm="ngForm">
+          <label>Email address
+            <span class="input-wrap"><i>✉</i><input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required email></span>
           </label>
 
-          <label>
-            <span>Password</span>
-
-            <div class="input-wrap">
-              <span class="input-icon">◌</span>
-
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                name="password"
-                [(ngModel)]="password"
-                required
-                autocomplete="current-password"
-                placeholder="Enter your password"
-              />
-
-              <button
-                type="button"
-                class="password-toggle"
-                (click)="togglePassword()"
-              >
-                {{ showPassword ? 'Hide' : 'Show' }}
-              </button>
-            </div>
+          <label>Password
+            <span class="input-wrap"><i>⌑</i><input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Enter your password" required><button type="button" (click)="togglePassword()">{{ showPassword ? '◉' : '○' }}</button></span>
           </label>
 
-          <div class="form-options">
-            <label class="check-control">
-              <input
-                type="checkbox"
-                name="rememberMe"
-                [(ngModel)]="rememberMe"
-              />
+          <div class="form-options"><label class="check"><input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe"><span></span>Remember me</label><a routerLink="/auth/forgot-password">Forgot password?</a></div>
 
-              <span class="check-box"></span>
-              <span>Keep me signed in</span>
-            </label>
+          <button class="submit-btn" type="submit" [disabled]="loginForm.invalid">Continue to Learning <span>→</span></button>
 
-            <a routerLink="/auth/forgot-password">
-              Forgot password?
-            </a>
-          </div>
-
-          <button
-            class="submit-button"
-            type="submit"
-            [disabled]="loginForm.invalid"
-          >
-            <span>Enter your learning space</span>
-            <b>→</b>
-          </button>
-
-          <div class="form-divider">
-            <span>or continue with</span>
-          </div>
-
-          <div class="social-actions">
-            <button type="button">
-              <span class="google-mark">G</span>
-              Google
-            </button>
-
-            <button type="button">
-              <span class="apple-mark">●</span>
-              Apple
-            </button>
-          </div>
+          <div class="divider"><span>or continue with</span></div>
+          <div class="social-buttons"><button type="button"><b class="google">G</b> Google</button><button type="button"><b>◆</b> Microsoft</button></div>
         </form>
 
-        <p class="privacy-note">
-          Protected by enterprise-grade security and privacy controls.
-        </p>
+        <p class="switch-mobile">New here? <a routerLink="/auth/register">Create your free account</a></p>
+        <div class="secure-note"><i>✦</i> Your learning data is private and securely protected.</div>
       </div>
     </section>
   </section>

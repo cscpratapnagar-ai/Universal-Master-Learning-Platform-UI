@@ -3,9 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export type ThemeMode = 'light' | 'dark';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ThemeService {
   private readonly storageKey = 'uml-theme';
 
@@ -14,6 +12,10 @@ export class ThemeService {
   );
 
   readonly theme$ = this.themeSubject.asObservable();
+
+  constructor() {
+    this.applyTheme(this.themeSubject.value);
+  }
 
   get theme(): ThemeMode {
     return this.themeSubject.value;
@@ -26,7 +28,7 @@ export class ThemeService {
   setTheme(theme: ThemeMode): void {
     this.themeSubject.next(theme);
     localStorage.setItem(this.storageKey, theme);
-    document.documentElement.setAttribute('data-theme', theme);
+    this.applyTheme(theme);
   }
 
   private getInitialTheme(): ThemeMode {
@@ -36,6 +38,12 @@ export class ThemeService {
       return savedTheme;
     }
 
-    return 'dark';
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  }
+
+  private applyTheme(theme: ThemeMode): void {
+    document.documentElement.setAttribute('data-theme', theme);
   }
 }

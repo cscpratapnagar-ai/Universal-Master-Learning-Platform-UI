@@ -1,313 +1,50 @@
-<main
-  class="register-page"
-  [class.light-mode]="theme === 'light'"
->
-  <div class="ambient ambient--one"></div>
-  <div class="ambient ambient--two"></div>
+<main class="register-page" [class.light-mode]="theme === 'light'">
+  <div class="noise"></div><div class="glow glow-a"></div><div class="glow glow-b"></div>
+  <header class="auth-nav">
+    <a routerLink="/" class="brand"><span class="cube">✦</span><span><strong>Master Learning</strong><small>System</small></span></a>
+    <div class="nav-right"><button class="theme-toggle" type="button" (click)="toggleTheme()"><span>{{ theme === 'dark' ? '☼' : '☾' }}</span><b>{{ theme === 'dark' ? 'Light' : 'Dark' }}</b></button><span>Already learning?</span><a routerLink="/auth/login">Sign in</a></div>
+  </header>
 
   <section class="register-layout">
-    <!-- Registration Panel -->
-    <section class="register-panel">
-      <div class="panel-top">
-        <a
-          routerLink="/"
-          class="brand"
-        >
-          <span class="brand__mark">▣</span>
+    <section class="form-zone">
+      <div class="form-card">
+        <div class="progress-top"><span>CREATE YOUR ACCOUNT</span><div><i class="active"></i><i></i><i></i></div></div>
+        <h1>Start your <span>next chapter.</span></h1>
+        <p class="intro">Build a learning experience that adapts to your goals, pace and potential.</p>
 
-          <span>
-            Master Learning
-            <span>System</span>
-          </span>
-        </a>
-
-        <div class="panel-actions">
-          <button
-            class="theme-toggle"
-            type="button"
-            (click)="toggleTheme()"
-            aria-label="Toggle theme"
-          >
-            {{ theme === 'dark' ? '☀ Light' : '☾ Dark' }}
-          </button>
-
-          <span class="existing-account">
-            Already a member?
-            <a routerLink="/auth/login">Sign in</a>
-          </span>
-        </div>
-      </div>
-
-      <div class="register-form-wrap">
-        <div class="form-heading">
-          <span class="form-kicker">
-            <i></i>
-            Begin your journey
-          </span>
-
-          <h1>
-            Create your
-            <em>space.</em>
-          </h1>
-
-          <p>
-            One account. A universe of knowledge,
-            intelligence and possibilities.
-          </p>
-        </div>
-
-        <form
-          #registerForm="ngForm"
-          class="register-form"
-          (ngSubmit)="submit()"
-        >
-          <div class="name-grid">
-            <label>
-              <span>Your name</span>
-
-              <div class="input-wrap">
-                <span class="input-icon">◉</span>
-
-                <input
-                  type="text"
-                  name="fullName"
-                  [(ngModel)]="fullName"
-                  required
-                  autocomplete="name"
-                  placeholder="How should we know you?"
-                />
-              </div>
-            </label>
-
-            <label>
-              <span>Email address</span>
-
-              <div class="input-wrap">
-                <span class="input-icon">✉</span>
-
-                <input
-                  type="email"
-                  name="email"
-                  [(ngModel)]="email"
-                  required
-                  email
-                  autocomplete="email"
-                  placeholder="you@example.com"
-                />
-              </div>
-            </label>
+        <form (ngSubmit)="submit()" #registerForm="ngForm">
+          <div class="name-row">
+            <label>Full name<span class="input-wrap"><i>◌</i><input name="fullName" [(ngModel)]="fullName" placeholder="Your full name" required></span></label>
+            <label>Email<span class="input-wrap"><i>✉</i><input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required email></span></label>
           </div>
-
-          <label>
-            <span>Create password</span>
-
-            <div class="input-wrap">
-              <span class="input-icon">◌</span>
-
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                name="password"
-                [(ngModel)]="password"
-                required
-                minlength="8"
-                autocomplete="new-password"
-                placeholder="At least 8 characters"
-              />
-
-              <button
-                type="button"
-                class="password-toggle"
-                (click)="togglePassword()"
-              >
-                {{ showPassword ? 'Hide' : 'Show' }}
-              </button>
-            </div>
-          </label>
-
-          <label>
-            <span>Confirm password</span>
-
-            <div
-              class="input-wrap"
-              [class.input-wrap--error]="!passwordsMatch"
-            >
-              <span class="input-icon">✓</span>
-
-              <input
-                [type]="showConfirmPassword ? 'text' : 'password'"
-                name="confirmPassword"
-                [(ngModel)]="confirmPassword"
-                required
-                autocomplete="new-password"
-                placeholder="Repeat your password"
-              />
-
-              <button
-                type="button"
-                class="password-toggle"
-                (click)="toggleConfirmPassword()"
-              >
-                {{ showConfirmPassword ? 'Hide' : 'Show' }}
-              </button>
-            </div>
-
-            <small
-              class="field-error"
-              *ngIf="!passwordsMatch"
-            >
-              Passwords do not match yet.
-            </small>
-          </label>
-
-          <label class="terms-control">
-            <input
-              type="checkbox"
-              name="acceptedTerms"
-              [(ngModel)]="acceptedTerms"
-              required
-            />
-
-            <span class="check-box"></span>
-
-            <span>
-              I agree to the
-              <a href="#terms">Terms</a>
-              and
-              <a href="#privacy">Privacy Policy</a>.
-            </span>
-          </label>
-
-          <button
-            class="submit-button"
-            type="submit"
-            [disabled]="
-              registerForm.invalid ||
-              !passwordsMatch ||
-              !acceptedTerms
-            "
-          >
-            <span>Create my learning space</span>
-            <b>→</b>
-          </button>
+          <label>Password<span class="input-wrap"><i>⌑</i><input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password" placeholder="Create a strong password" required minlength="8"><button type="button" (click)="togglePassword()">{{ showPassword ? '◉' : '○' }}</button></span></label>
+          <div class="strength"><span>Password strength</span><div><i [class.on]="password.length > 0"></i><i [class.on]="password.length > 5"></i><i [class.on]="password.length > 9"></i><i [class.on]="password.length > 13"></i></div></div>
+          <label>Confirm password<span class="input-wrap" [class.invalid]="!passwordsMatch"><i>✓</i><input [type]="showConfirmPassword ? 'text' : 'password'" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Repeat your password" required><button type="button" (click)="toggleConfirmPassword()">{{ showConfirmPassword ? '◉' : '○' }}</button></span></label>
+          <small class="error" *ngIf="!passwordsMatch">Passwords don't match yet.</small>
+          <label class="terms"><input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" required><span></span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</label>
+          <button class="submit-btn" type="submit" [disabled]="registerForm.invalid || !passwordsMatch">Create my learning space <span>→</span></button>
+          <div class="divider"><span>or sign up with</span></div>
+          <div class="social-buttons"><button type="button"><b>G</b> Google</button><button type="button"><b>◆</b> Microsoft</button></div>
         </form>
-
-        <div class="form-divider">
-          <span>or join instantly with</span>
-        </div>
-
-        <div class="social-actions">
-          <button type="button">
-            <span class="social-symbol">G</span>
-            Continue with Google
-          </button>
-
-          <button type="button">
-            <span class="social-symbol">●</span>
-            Continue with Apple
-          </button>
-        </div>
-
-        <p class="security-note">
-          <span>◈</span>
-          Your learning identity is protected by enterprise-grade security.
-        </p>
+        <p class="mobile-switch">Already have an account? <a routerLink="/auth/login">Sign in</a></p>
       </div>
     </section>
 
-    <!-- Journey Showcase -->
-    <aside class="journey-showcase">
-      <a
-        routerLink="/"
-        class="back-home"
-      >
-        ← Back to home
-      </a>
+    <aside class="vision">
+      <div class="vision-content">
+        <div class="live-pill"><i></i> YOUR LEARNING OS IS READY</div>
+        <h2>One system.<br><span>Infinite paths.</span></h2>
+        <p>Master Learning System combines human expertise with intelligent technology to create a truly personal education journey.</p>
 
-      <div class="showcase-content">
-        <span class="showcase-kicker">
-          Your universe is waiting
-        </span>
-
-        <h2>
-          Start with curiosity.
-          <br />
-          <em>Grow without limits.</em>
-        </h2>
-
-        <p>
-          Every meaningful journey begins with a first step.
-          We'll help you discover what comes next.
-        </p>
-      </div>
-
-      <div
-        class="journey-visual"
-        aria-hidden="true"
-      >
-        <div class="journey-orbit journey-orbit--one"></div>
-        <div class="journey-orbit journey-orbit--two"></div>
-        <div class="journey-orbit journey-orbit--three"></div>
-
-        <div class="journey-core">
-          <div class="journey-core__glow"></div>
-          <span>✦</span>
-          <strong>
-            YOUR
-            <br />
-            JOURNEY
-          </strong>
+        <div class="path-visual">
+          <div class="path-line"></div>
+          <article class="node node-one"><span>⌑</span><div><b>01 · Learn</b><small>Courses & live classes</small></div></article>
+          <article class="node node-two"><span>◉</span><div><b>02 · AI Understands</b><small>Patterns, pace & performance</small></div></article>
+          <article class="node node-three"><span>◎</span><div><b>03 · Personal Path</b><small>A plan designed for you</small></div></article>
+          <article class="node node-four"><span>↗</span><div><b>04 · Grow</b><small>Track progress. Go further.</small></div></article>
         </div>
 
-        <article class="journey-card journey-card--discover">
-          <span class="journey-card__icon">◈</span>
-
-          <div>
-            <small>STEP 01</small>
-            <strong>Discover</strong>
-            <p>Find what inspires you</p>
-          </div>
-        </article>
-
-        <article class="journey-card journey-card--grow">
-          <span class="journey-card__icon journey-card__icon--alt">
-            ↗
-          </span>
-
-          <div>
-            <small>STEP 02</small>
-            <strong>Grow</strong>
-            <p>Build real momentum</p>
-          </div>
-        </article>
-
-        <article class="journey-card journey-card--master">
-          <span class="journey-card__icon journey-card__icon--light">
-            ✦
-          </span>
-
-          <div>
-            <small>STEP 03</small>
-            <strong>Master</strong>
-            <p>Turn potential into impact</p>
-          </div>
-        </article>
-
-        <span class="signal signal--one"></span>
-        <span class="signal signal--two"></span>
-        <span class="signal signal--three"></span>
-      </div>
-
-      <div class="showcase-bottom">
-        <div class="member-avatars">
-          <i>✦</i>
-          <i>◈</i>
-          <i>◉</i>
-          <i>+</i>
-        </div>
-
-        <span>
-          Join a growing global learning ecosystem
-        </span>
+        <div class="quote-card"><div class="quote-mark">“</div><p>The platform doesn't just give you content. It learns how you learn.</p><footer><span>✦</span><div><b>Intelligence that adapts</b><small>Master Learning System</small></div></footer></div>
       </div>
     </aside>
   </section>
