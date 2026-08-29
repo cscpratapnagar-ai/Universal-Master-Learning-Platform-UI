@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { PlatformStatusService } from '../../../../core/services/platform-status.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 interface FeatureCard {
@@ -24,6 +25,7 @@ interface StatCard {
 export class LandingComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
   mobileMenuOpen = false;
+  platformOnline = false;
 
   readonly features: FeatureCard[] = [
     { icon: '◆', title: 'Expert Courses', description: 'Learn from industry experts & educators' },
@@ -43,18 +45,29 @@ export class LandingComponent implements OnInit, OnDestroy {
     { icon: '◉', value: '50+', label: 'Countries' }
   ];
 
-  private themeSubscription?: Subscription;
+  private readonly subscriptions = new Subscription();
 
-  constructor(private readonly themeService: ThemeService) {}
+  constructor(
+    private readonly themeService: ThemeService,
+    private readonly platformStatusService: PlatformStatusService
+  ) {}
 
   ngOnInit(): void {
-    this.themeSubscription = this.themeService.theme$.subscribe((theme: ThemeMode) => {
-      this.theme = theme;
-    });
+    this.subscriptions.add(
+      this.themeService.theme$.subscribe((theme: ThemeMode) => {
+        this.theme = theme;
+      })
+    );
+
+    this.subscriptions.add(
+      this.platformStatusService.check().subscribe((online) => {
+        this.platformOnline = online;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.themeSubscription?.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   toggleTheme(): void {

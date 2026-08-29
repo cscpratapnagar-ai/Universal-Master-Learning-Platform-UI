@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { API_CONFIG } from '../config/api.config';
 import { TokenService } from '../services/token.service';
 
 @Injectable()
@@ -19,7 +20,11 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokenService.getAccessToken();
 
-    if (!accessToken || this.isPublicAuthRequest(request.url)) {
+    if (
+      !accessToken ||
+      !request.url.startsWith(API_CONFIG.baseUrl) ||
+      this.isPublicRequest(request.url)
+    ) {
       return next.handle(request);
     }
 
@@ -32,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private isPublicAuthRequest(url: string): boolean {
-    return /\/api\/v1\/auth\/(login|register|refresh|logout)$/.test(url);
+  private isPublicRequest(url: string): boolean {
+    return /\/api\/v1\/(auth\/(login|register|refresh|logout)|public\/)/.test(url);
   }
 }
