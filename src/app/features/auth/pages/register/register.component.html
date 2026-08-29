@@ -1,7 +1,174 @@
 <main class="register-page">
-  <section class="register-page__content">
-    <span class="register-page__eyebrow">Create your account</span>
-    <h1>Begin your next learning journey.</h1>
-    <p>Join a connected ecosystem built for modern education.</p>
+  <div class="ambient ambient--one"></div>
+  <div class="ambient ambient--two"></div>
+
+  <section class="register-layout">
+    <section class="register-panel">
+      <div class="panel-top">
+        <a routerLink="/" class="brand">
+          <span class="brand__mark">U</span>
+          <span>Universal<span>Learn</span></span>
+        </a>
+        <span class="existing-account">Already a member? <a routerLink="/auth/login">Sign in</a></span>
+      </div>
+
+      <div class="register-form-wrap">
+        <div class="form-heading">
+          <span class="form-kicker"><i></i> Begin your journey</span>
+          <h1>Create your <em>space.</em></h1>
+          <p>One account. A universe of knowledge, intelligence and possibilities.</p>
+        </div>
+
+        <form #registerForm="ngForm" (ngSubmit)="submit()" class="register-form">
+          <div class="name-grid">
+            <label>
+              <span>Your name</span>
+              <div class="input-wrap">
+                <span class="input-icon">◉</span>
+                <input
+                  type="text"
+                  name="fullName"
+                  [(ngModel)]="fullName"
+                  required
+                  autocomplete="name"
+                  placeholder="How should we know you?">
+              </div>
+            </label>
+
+            <label>
+              <span>Email address</span>
+              <div class="input-wrap">
+                <span class="input-icon">✉</span>
+                <input
+                  type="email"
+                  name="email"
+                  [(ngModel)]="email"
+                  required
+                  email
+                  autocomplete="email"
+                  placeholder="you@example.com">
+              </div>
+            </label>
+          </div>
+
+          <label>
+            <span>Create password</span>
+            <div class="input-wrap">
+              <span class="input-icon">◌</span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                name="password"
+                [(ngModel)]="password"
+                required
+                minlength="8"
+                autocomplete="new-password"
+                placeholder="At least 8 characters">
+              <button type="button" class="password-toggle" (click)="togglePassword()">
+                {{ showPassword ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+          </label>
+
+          <label>
+            <span>Confirm password</span>
+            <div class="input-wrap" [class.input-wrap--error]="!passwordsMatch">
+              <span class="input-icon">✓</span>
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                name="confirmPassword"
+                [(ngModel)]="confirmPassword"
+                required
+                autocomplete="new-password"
+                placeholder="Repeat your password">
+              <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
+                {{ showConfirmPassword ? 'Hide' : 'Show' }}
+              </button>
+            </div>
+            <small class="field-error" *ngIf="!passwordsMatch">Passwords do not match yet.</small>
+          </label>
+
+          <label class="terms-control">
+            <input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" required>
+            <span class="check-box"></span>
+            <span>I agree to the <a href="#terms">Terms</a> and <a href="#privacy">Privacy Policy</a>.</span>
+          </label>
+
+          <button
+            class="submit-button"
+            type="submit"
+            [disabled]="registerForm.invalid || !passwordsMatch || !acceptedTerms">
+            <span>Create my learning space</span>
+            <b>→</b>
+          </button>
+        </form>
+
+        <div class="form-divider"><span>or join instantly with</span></div>
+
+        <div class="social-actions">
+          <button type="button"><span class="social-symbol">G</span> Continue with Google</button>
+          <button type="button"><span class="social-symbol">●</span> Continue with Apple</button>
+        </div>
+
+        <p class="security-note"><span>◈</span> Your learning identity is protected by enterprise-grade security.</p>
+      </div>
+    </section>
+
+    <aside class="journey-showcase">
+      <a routerLink="/" class="back-home">← Back to home</a>
+
+      <div class="showcase-content">
+        <span class="showcase-kicker">Your universe is waiting</span>
+        <h2>Start with curiosity.<br><em>Grow without limits.</em></h2>
+        <p>Every meaningful journey begins with a first step. We'll help you discover what comes next.</p>
+      </div>
+
+      <div class="journey-visual" aria-hidden="true">
+        <div class="journey-orbit journey-orbit--one"></div>
+        <div class="journey-orbit journey-orbit--two"></div>
+        <div class="journey-orbit journey-orbit--three"></div>
+
+        <div class="journey-core">
+          <div class="journey-core__glow"></div>
+          <span>✦</span>
+          <strong>YOUR<br>JOURNEY</strong>
+        </div>
+
+        <article class="journey-card journey-card--discover">
+          <span class="journey-card__icon">◈</span>
+          <div>
+            <small>STEP 01</small>
+            <strong>Discover</strong>
+            <p>Find what inspires you</p>
+          </div>
+        </article>
+
+        <article class="journey-card journey-card--grow">
+          <span class="journey-card__icon journey-card__icon--alt">↗</span>
+          <div>
+            <small>STEP 02</small>
+            <strong>Grow</strong>
+            <p>Build real momentum</p>
+          </div>
+        </article>
+
+        <article class="journey-card journey-card--master">
+          <span class="journey-card__icon journey-card__icon--light">✦</span>
+          <div>
+            <small>STEP 03</small>
+            <strong>Master</strong>
+            <p>Turn potential into impact</p>
+          </div>
+        </article>
+
+        <span class="signal signal--one"></span>
+        <span class="signal signal--two"></span>
+        <span class="signal signal--three"></span>
+      </div>
+
+      <div class="showcase-bottom">
+        <div class="member-avatars"><i>✦</i><i>◈</i><i>◉</i><i>+</i></div>
+        <span>Join a growing global learning ecosystem</span>
+      </div>
+    </aside>
   </section>
 </main>
