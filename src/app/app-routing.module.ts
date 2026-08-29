@@ -4,27 +4,24 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./features/public/public.module').then(m => m.PublicModule)
+    redirectTo: 'auth/login',
+    pathMatch: 'full'
   },
   {
     path: 'auth',
     loadChildren: () =>
-      import('./features/auth/auth.module').then(m => m.AuthModule)
+      import('./features/auth/auth.module').then(module => module.AuthModule)
   },
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: 'auth/login'
   }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'enabled',
-      anchorScrolling: 'enabled'
-    })
-  ],
+  imports: [RouterModule.forRoot(routes, {
+    scrollPositionRestoration: 'enabled'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
