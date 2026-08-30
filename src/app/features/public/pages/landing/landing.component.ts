@@ -17,6 +17,11 @@ interface StatCard {
   label: string;
 }
 
+interface Metric {
+  value: string;
+  label: string;
+}
+
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
@@ -27,71 +32,29 @@ export class LandingComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   platformOnline = false;
 
+  readonly metrics: Metric[] = [
+    { value: '10K+', label: 'Active learners' },
+    { value: '500+', label: 'Expert educators' },
+    { value: '1,200+', label: 'Learning experiences' },
+    { value: '95%', label: 'Learner satisfaction' }
+  ];
+
   readonly features: FeatureCard[] = [
-    {
-      icon: '◆',
-      title: 'Expert Courses',
-      description: 'Learn from industry experts & educators'
-    },
-    {
-      icon: '▣',
-      title: 'Live Classes',
-      description: 'Interactive live sessions with real-time Q&A'
-    },
-    {
-      icon: '◉',
-      title: 'AI Tutor',
-      description: 'Get instant help anytime, anywhere',
-      badge: 'New'
-    },
-    {
-      icon: '▤',
-      title: 'Smart Assessments',
-      description: 'AI-powered tests to track your progress'
-    },
-    {
-      icon: '⬡',
-      title: 'Certificates',
-      description: 'Earn recognized certificates'
-    },
-    {
-      icon: '♧',
-      title: 'Community',
-      description: 'Connect, collaborate & grow together'
-    }
+    { icon: '◆', title: 'Expert Courses', description: 'Learn from industry experts & educators' },
+    { icon: '▣', title: 'Live Classes', description: 'Interactive live sessions with real-time Q&A' },
+    { icon: '◉', title: 'AI Tutor', description: 'Get instant help anytime, anywhere', badge: 'New' },
+    { icon: '▤', title: 'Smart Assessments', description: 'AI-powered tests to track your progress' },
+    { icon: '⬡', title: 'Certificates', description: 'Earn recognized certificates' },
+    { icon: '♧', title: 'Community', description: 'Connect, collaborate & grow together' }
   ];
 
   readonly statistics: StatCard[] = [
-    {
-      icon: '♛',
-      value: '10K+',
-      label: 'Active Learners'
-    },
-    {
-      icon: '♛',
-      value: '500+',
-      label: 'Expert Instructors'
-    },
-    {
-      icon: '▤',
-      value: '1,200+',
-      label: 'Courses Available'
-    },
-    {
-      icon: '◷',
-      value: '25K+',
-      label: 'Hours of Content'
-    },
-    {
-      icon: '◉',
-      value: '95%',
-      label: 'Satisfaction Rate'
-    },
-    {
-      icon: '◎',
-      value: '50+',
-      label: 'Countries'
-    }
+    { icon: '♛', value: '10K+', label: 'Active Learners' },
+    { icon: '♛', value: '500+', label: 'Expert Instructors' },
+    { icon: '▤', value: '1,200+', label: 'Courses Available' },
+    { icon: '◷', value: '25K+', label: 'Hours of Content' },
+    { icon: '◉', value: '95%', label: 'Satisfaction Rate' },
+    { icon: '◎', value: '50+', label: 'Countries' }
   ];
 
   private readonly subscriptions = new Subscription();
