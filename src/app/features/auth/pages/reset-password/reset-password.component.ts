@@ -1,72 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
-import {
-  ThemeMode,
-  ThemeService
-} from '../../../../core/services/theme.service';
-
-@Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss']
-})
-export class ResetPasswordComponent implements OnInit, OnDestroy {
-  theme: ThemeMode = 'dark';
-  password = '';
-  confirmPassword = '';
-  showPassword = false;
-  showConfirmPassword = false;
-  passwordReset = false;
-
-  private themeSubscription?: Subscription;
-
-  constructor(private readonly themeService: ThemeService) {}
-
-  ngOnInit(): void {
-    this.themeSubscription = this.themeService.theme$.subscribe(
-      (theme: ThemeMode) => {
-        this.theme = theme;
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.themeSubscription?.unsubscribe();
-  }
-
-  get passwordsMatch(): boolean {
-    return !this.confirmPassword || this.password === this.confirmPassword;
-  }
-
-  get passwordStrength(): number {
-    let score = 0;
-
-    if (this.password.length >= 8) score++;
-    if (/[A-Z]/.test(this.password)) score++;
-    if (/[0-9]/.test(this.password)) score++;
-    if (/[^A-Za-z0-9]/.test(this.password)) score++;
-
-    return score;
-  }
-
-  toggleTheme(): void {
-    this.themeService.toggle();
-  }
-
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
-  }
-
-  toggleConfirmPassword(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-
-  submit(): void {
-    if (this.passwordStrength < 3 || !this.passwordsMatch) {
-      return;
-    }
-
-    this.passwordReset = true;
-  }
+@Component({selector:'app-reset-password',templateUrl:'./reset-password.component.html',styleUrls:['./reset-password.component.scss']})
+export class ResetPasswordComponent implements OnInit {
+ token=''; password=''; confirmPassword=''; loading=false; success=false; error='';
+ constructor(private route:ActivatedRoute,private router:Router,private auth:AuthService){}
+ ngOnInit():void{this.token=this.route.snapshot.queryParamMap.get('token')||''; if(!this.token)this.error='This password reset link is invalid.';}
+ submit():void{if(!this.token||this.password.length<8||this.password!==this.confirmPassword||this.loading)return;this.loading=true;this.error='';
+ this.auth.resetPassword(this.token,this.password).subscribe({next:()=>{this.success=true;this.loading=false;},error:e=>{this.error=e?.error?.message||'Unable to reset password.';this.loading=false;}});}
+ login(){this.router.navigate(['/auth/login']);}
 }
