@@ -48,6 +48,14 @@ export class AuthService {
     ).pipe(tap(response => this.storeSession(response, true)));
   }
 
+  forgotPassword(email: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.authUrl}/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.authUrl}/reset-password`, { token, newPassword });
+  }
+
   logout(): Observable<ApiResponse<void>> | null {
     const refreshToken = this.tokenService.getRefreshToken();
     if (!refreshToken) {
