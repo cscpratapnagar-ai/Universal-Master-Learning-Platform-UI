@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { User } from '../../../../core/models/auth.model';
 import { AuthService } from '../../../../core/services/auth.service';
+import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 interface DashboardStat {
   label: string;
@@ -35,6 +36,7 @@ export class LearnerDashboardComponent implements OnInit {
   isLoggingOut = false;
   activeNav = 'Overview';
   notificationsOpen = false;
+  theme: ThemeMode = 'dark';
 
   readonly navigation = [
     { label: 'Overview', icon: '⌂' },
@@ -66,16 +68,24 @@ export class LearnerDashboardComponent implements OnInit {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly themeService: ThemeService,
     private readonly router: Router
   ) {}
 
   ngOnInit(): void {
+    this.theme = this.themeService.theme;
+    this.themeService.theme$.subscribe((theme: ThemeMode) => this.theme = theme);
+
     if (!this.authService.isAuthenticated()) {
       this.router.navigateByUrl('/auth/login');
       return;
     }
 
     this.user = this.authService.currentUser();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggle();
   }
 
   selectNav(label: string): void {
