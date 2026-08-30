@@ -1,0 +1,54 @@
+<main class="portal-shell">
+  <header class="portal-header">
+    <div>
+      <p class="eyebrow">INTERNAL CONTROL PLANE</p>
+      <h1>Super Admin Portal</h1>
+      <p>Live platform data from the backend.</p>
+    </div>
+    <div class="actions">
+      <button type="button" (click)="loadOverview()" [disabled]="loading">Refresh</button>
+      <button type="button" class="secondary" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <section *ngIf="loading" class="state-card">Loading live platform data…</section>
+
+  <section *ngIf="!loading && errorMessage" class="state-card error">
+    <p>{{ errorMessage }}</p>
+    <button type="button" (click)="loadOverview()">Try again</button>
+  </section>
+
+  <ng-container *ngIf="!loading && overview">
+    <section class="metrics">
+      <article>
+        <span>Platform</span>
+        <strong>{{ overview.status }}</strong>
+        <small>{{ overview.service }}</small>
+      </article>
+      <article>
+        <span>Total Users</span>
+        <strong>{{ overview.totalUsers }}</strong>
+        <small>Live database count</small>
+      </article>
+      <article>
+        <span>Organizations</span>
+        <strong>{{ overview.totalOrganizations }}</strong>
+        <small>Live database count</small>
+      </article>
+      <article>
+        <span>Last Response</span>
+        <strong>{{ overview.timestamp | date:'mediumTime' }}</strong>
+        <small>{{ overview.timestamp | date:'mediumDate' }}</small>
+      </article>
+    </section>
+
+    <section class="data-panel">
+      <h2>Data verification</h2>
+      <p>
+        This screen is intentionally connected to the real backend endpoint, not mock data.
+        When the backend and PostgreSQL are running, these counts verify that the internal portal
+        can read platform data end-to-end.
+      </p>
+    </section>
+  </ng-container>
+</main>
