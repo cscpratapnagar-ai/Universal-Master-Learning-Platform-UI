@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { SharedModule } from '../../shared/shared.module';
 import { SuperAdminRoutingModule } from './super-admin-routing.module';
@@ -8,6 +9,6 @@ import { OrganizationManagementComponent } from './pages/organization-management
 
 @NgModule({
   declarations: [SuperAdminDashboardComponent, OrganizationManagementComponent],
-  imports: [CommonModule, SharedModule, SuperAdminRoutingModule]
+  imports: [CommonModule, FormsModule, SharedModule, SuperAdminRoutingModule]
 })
 export class SuperAdminModule {}
