@@ -1,0 +1,21 @@
+<main class="control-shell" [attr.data-theme]="theme">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">M</div><div><strong>MASTER</strong><span>CONTROL CENTER</span></div></div>
+    <nav>
+      <a *ngFor="let section of sections" [routerLink]="section.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: section.route === '/super-admin' }">
+        <span>{{ section.icon }}</span>{{ section.label }}
+      </a>
+    </nav>
+    <div class="sidebar-footer"><span class="live-dot"></span><div><strong>{{ user?.firstName || 'Super Admin' }}</strong><small>Internal access only</small></div></div>
+  </aside>
+  <section class="workspace">
+    <header class="topbar">
+      <div><p class="eyebrow">COMMAND CENTER · SUPER ADMIN</p><h1>Master Control Center <span class="live-label">LIVE</span></h1></div>
+      <div class="top-actions">
+        <button class="icon-btn" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch theme'">{{ theme === 'dark' ? '☀' : '☾' }}</button>
+        <button type="button" class="logout-btn" (click)="logout()" [disabled]="isLoggingOut">{{ isLoggingOut ? 'Logging out…' : 'Logout' }}</button>
+      </div>
+    </header>
+    <router-outlet></router-outlet>
+  </section>
+</main>
