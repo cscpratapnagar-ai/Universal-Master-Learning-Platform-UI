@@ -3,10 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from '../../../../core/services/auth.service';
-import {
-  ThemeMode,
-  ThemeService
-} from '../../../../core/services/theme.service';
+import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +14,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
   showPassword = false;
   showConfirmPassword = false;
-
   fullName = '';
   email = '';
   password = '';
@@ -35,11 +31,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.themeSubscription = this.themeService.theme$.subscribe(
-      (theme: ThemeMode) => {
-        this.theme = theme;
-      }
-    );
+    if (this.authService.isAuthenticated()) {
+      this.router.navigateByUrl(
+        this.authService.resolveDashboard(this.authService.currentUser()?.roles)
+      );
+      return;
+    }
+
+    this.themeSubscription = this.themeService.theme$.subscribe(theme => {
+      this.theme = theme;
+    });
   }
 
   ngOnDestroy(): void {
@@ -50,56 +51,48 @@ export class RegisterComponent implements OnInit, OnDestroy {
     return !this.confirmPassword || this.password === this.confirmPassword;
   }
 
-  toggleTheme(): void {
-    this.themeService.toggle();
-  }
-
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
-  }
-
-  toggleConfirmPassword(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
+  toggleTheme(): void { this.themeService.toggle(); }
+  togglePassword(): void { this.showPassword = !this.showPassword; }
+  toggleConfirmPassword(): void { this.showConfirmPassword = !this.showConfirmPassword; }
 
   submit(): void {
-    if (!this.passwordsMatch || this.isSubmitting) {
+    if (
+      this.isSubmitting ||
+      !this.acceptedTerms ||
+      !this.fullName.trim() ||
+      !this.email.trim() ||
+      this.password.length < 8 ||
+      !this.passwordsMatch
+    ) {
       return;
     }
 
     const { firstName, lastName } = this.splitName(this.fullName);
-
     this.errorMessage = '';
     this.isSubmitting = true;
 
-    this.authService
-      .register({
-        firstName,
-        lastName,
-        email: this.email.trim().toLowerCase(),
-        password: this.password
-      })
-      .subscribe({
-        next: () => {
-          this.isSubmitting = false;
-          this.router.navigateByUrl('/learner');
-        },
-        error: (error: Error) => {
-          this.isSubmitting = false;
-          this.errorMessage = error.message;
-        }
-      });
+    this.authService.register({
+      firstName,
+      lastName,
+      email: this.email.trim().toLowerCase(),
+      password: this.password
+    }).subscribe({
+      next: response => {
+        this.isSubmitting = false;
+        this.router.navigateByUrl(this.authService.resolveDashboard(response.data?.user?.roles));
+      },
+      error: (error: Error) => {
+        this.isSubmitting = false;
+        this.errorMessage = error.message || 'Unable to create your account.';
+      }
+    });
   }
 
-  private splitName(fullName: string): {
-    firstName: string;
-    lastName: string | null;
-  } {
-    const [firstName, ...remaining] = fullName.trim().split(/\s+/);
-
+  private splitName(fullName: string): { firstName: string; lastName: string | null } {
+    const parts = fullName.trim().split(/\s+/);
     return {
-      firstName,
-      lastName: remaining.length ? remaining.join(' ') : null
+      firstName: parts[0],
+      lastName: parts.length > 1 ? parts.slice(1).join(' ') : null
     };
   }
 }
