@@ -1,102 +1,91 @@
-<main class="landing" [class.light-mode]="theme === 'light'">
-  <div class="aurora aurora-one"></div>
-  <div class="aurora aurora-two"></div>
-  <div class="stars"></div>
+<main class="landing">
+  <div class="mesh mesh-a"></div><div class="mesh mesh-b"></div><div class="grid-noise"></div>
 
-  <header class="nav-shell">
-    <a routerLink="/" class="brand" aria-label="Master Learning System home">
-      <span class="brand-cube"><i></i><i></i><i></i></span>
-      <span><strong>Master Learning</strong><small>System</small></span>
+  <header class="navbar app-container">
+    <a routerLink="/" class="brand" aria-label="Master Learning home">
+      <span class="brand-mark"><i></i><i></i><i></i></span>
+      <span><strong>Master Learning</strong><small>INTELLIGENCE PLATFORM</small></span>
     </a>
 
-    <nav [class.open]="mobileMenuOpen">
-      <a class="active" href="#home" (click)="closeMobileMenu()">Home</a>
+    <nav class="desktop-nav" [class.open]="mobileMenuOpen">
+      <a href="#home" (click)="closeMobileMenu()">Home</a>
+      <a href="#ecosystem" (click)="closeMobileMenu()">Ecosystem</a>
+      <a href="#intelligence" (click)="closeMobileMenu()">AI Intelligence</a>
       <a href="#features" (click)="closeMobileMenu()">Features</a>
-      <a href="#ecosystem" (click)="closeMobileMenu()">Learning Ecosystem</a>
-      <a href="#ai" (click)="closeMobileMenu()">AI Tutor</a>
-      <a href="#about" (click)="closeMobileMenu()">About</a>
     </nav>
 
     <div class="nav-actions">
-      <button class="theme-switch" type="button" (click)="toggleTheme()" aria-label="Toggle theme">
-        <span>{{ theme === 'dark' ? '☼' : '☾' }}</span>
-      </button>
-      <span class="platform-status" [class.online]="platformOnline">
-        <i></i>{{ platformOnline ? 'Platform Online' : 'Connecting...' }}
-      </span>
-      <a routerLink="/auth/login" class="login">Login</a>
-      <a routerLink="/auth/register" class="get-started">Get Started Free <b>→</b></a>
-      <button class="mobile-menu" type="button" (click)="toggleMobileMenu()" aria-label="Open menu">☰</button>
+      <button class="theme-toggle" type="button" (click)="toggleTheme()" aria-label="Toggle theme">{{ theme === 'dark' ? '☼' : '☾' }}</button>
+      <span class="status" [class.online]="platformOnline"><i></i>{{ platformOnline ? 'Platform online' : 'Connecting' }}</span>
+      <a routerLink="/auth/login" class="login-link">Log in</a>
+      <a routerLink="/auth/register" class="nav-cta">Get started <span>→</span></a>
+      <button class="menu-button" type="button" (click)="toggleMobileMenu()">☰</button>
     </div>
   </header>
 
-  <section id="home" class="hero hero-animate">
-    <div class="hero-copy hero-copy-animate">
-      <div class="smart-pill"><span>✦</span><b>Smart Learning.</b> Limitless Possibilities.</div>
-      <h1>Learn Anything.<br><span>Achieve Everything.</span></h1>
-      <p>One intelligent learning ecosystem for courses, live classes, AI guidance, assessments and measurable progress.</p>
+  <section id="home" class="hero app-container">
+    <div class="hero-copy">
+      <div class="eyebrow"><span>✦</span> THE INTELLIGENT WAY TO LEARN</div>
+      <h1>Learning that <span class="gradient-text">understands</span> where you want to go.</h1>
+      <p>One premium ecosystem for learning, teaching, practice, assessment and AI-powered progress—designed to make every next step clearer.</p>
       <div class="hero-actions">
-        <a routerLink="/auth/register" class="primary-btn">Start Learning Free <b>→</b></a>
-        <a href="#features" class="demo-btn"><i>↓</i> Explore Platform</a>
+        <a routerLink="/auth/register" class="primary-action">Start learning free <span>→</span></a>
+        <a href="#ecosystem" class="secondary-action">Explore the platform <span>↓</span></a>
       </div>
-      <div class="social-proof">
-        <div class="avatars"><span>V</span><span>S</span><span>A</span><b>10K+</b></div>
-        <p>Built for learners, educators<br>and institutions worldwide.</p>
-      </div>
+      <div class="proof"><div class="avatar-stack"><b>V</b><b>A</b><b>S</b><em>10K+</em></div><span>Built for ambitious learners,<br>educators and institutions.</span></div>
     </div>
 
-    <div class="hero-stage hero-stage-animate">
-      <div class="halo"></div>
-      <div class="dashboard dashboard-float">
-        <div class="dash-top"><button type="button">☰</button><div class="search">⌕ <span>Search courses, topics and live classes...</span></div><div class="dash-icons"><span>♧<b>3</b></span><span>▢<b>2</b></span><i>V</i></div></div>
-        <h2>Your learning command center 👋</h2>
-        <p class="dash-subtitle">Everything important, connected in one intelligent workspace.</p>
-        <div class="continue-row">
-          <article class="continue-card"><div class="math-icon">△<br>⌁</div><div><small>CONTINUE LEARNING</small><h3>Advanced Mathematics</h3><p>Chapter 5 · Integrals</p><div class="progress"><i></i><span>75% Complete</span></div></div><div class="continue-action">Continue</div></article>
-          <article class="tutor-card"><small>AI TUTOR</small><b><i></i> Online</b><p>What would you like to understand today?</p><div><button type="button">Ask AI Tutor</button><span class="bot">◉</span></div></article>
+    <div class="hero-visual" aria-label="Learning intelligence dashboard preview">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+      <div class="floating-card card-progress"><small>LEARNING MOMENTUM</small><strong>+24%</strong><span>This week <b>↗</b></span></div>
+      <div class="floating-card card-streak"><span>🔥</span><div><small>YOUR STREAK</small><strong>12 days</strong></div></div>
+      <div class="dashboard">
+        <div class="dash-head"><div class="dash-brand"><i></i><b>Learning Space</b></div><div class="dash-tools"><span></span><span></span><b>V</b></div></div>
+        <div class="dash-title"><div><small>GOOD MORNING, VISHAL</small><h2>Your next breakthrough starts here.</h2></div><button>View journey →</button></div>
+        <div class="focus-panel"><div><span class="chip">CONTINUE LEARNING</span><h3>Advanced Mathematics</h3><p>Chapter 5 · Integration techniques</p><div class="bar"><i></i></div><small>75% complete</small></div><button class="play">▶</button></div>
+        <div class="dash-grid">
+          <article><span>◷</span><small>Learning time</small><strong>48.5h</strong><em>+15% this week</em></article>
+          <article><span>✦</span><small>AI insights</small><strong>126</strong><em>Personalized for you</em></article>
+          <article><span>✓</span><small>Mastery score</small><strong>84%</strong><em>↑ Strong progress</em></article>
         </div>
-        <div class="metrics">
-          <article><span class="metric-icon purple">▤</span><div><small>Courses</small><strong>24</strong><p>↑ 12% this month</p></div></article>
-          <article><span class="metric-icon cyan">◷</span><div><small>Learning Hours</small><strong>48.5</strong><p>↑ 15% this week</p></div></article>
-          <article><span class="metric-icon indigo">▣</span><div><small>Assessments</small><strong>15</strong><p>↑ 10% this week</p></div></article>
-          <article><span class="metric-icon orange">☀</span><div><small>Badges</small><strong>8</strong><p>↑ 2 new badges</p></div></article>
-        </div>
-        <div class="dashboard-bottom">
-          <article class="upcoming"><header><b>Upcoming Live Class</b><span>View all</span></header><div class="class-row"><i>⌁</i><div><strong>Physics Fundamentals</strong><small>Tomorrow, 10:00 AM · Live</small></div><button type="button">Join</button></div><footer><span class="mini-avatars">● ● ●</span><b>+32 Learners</b></footer></article>
-          <article class="achievement"><header><b>Recent Achievement</b><span>View →</span></header><div><i>▣</i><p><strong>Math Quiz</strong><small>Scored 90%</small></p><span>2 days ago ›</span></div><div><i>▤</i><p><strong>Assignment</strong><small>Completed</small></p><span>3 days ago ›</span></div></article>
+        <div class="bottom-row">
+          <article class="upcoming"><div><small>UP NEXT</small><strong>Physics live session</strong><span>Tomorrow · 10:00 AM</span></div><button>Join</button></article>
+          <article class="ai-mini"><span>✦</span><div><small>AI LEARNING GUIDE</small><strong>What would you like to understand?</strong></div></article>
         </div>
       </div>
-
-      <article class="side-card learners widget-float"><button type="button">×</button><small><i></i> Live Learners Online</small><strong>2,548</strong><div class="mini-chart">⌁⌁⌁⌁⌁⌁⌁</div></article>
-      <article class="side-card streak widget-float widget-float-delay"><button type="button">×</button><small>🔥 Your Streak</small><strong>12 Days</strong><div class="days"><i>✓</i><i>✓</i><i>✓</i><i>✓</i><i>✓</i><i>✓</i><i>✓</i></div></article>
-      <article class="side-card focus widget-float widget-float-slow"><small>Focus Time 🔥</small><strong>25:30</strong><p>Deep Work Session</p><button type="button">Ⅱ</button></article>
-
-      <div class="learner-artwork student-animate" aria-hidden="true">
-        <img src="assets/images/landing/learner-reference.webp" alt="" class="learner-artwork__image" loading="eager" decoding="async">
-        <div class="learner-artwork__glow"></div>
-      </div>
-      <article class="ai-message"><b>AI understands your learning</b><span>Analyzing progress...<br>Adapting your next path...<br>Ready when you are. ✨</span></article>
+      <div class="ai-orb"><div class="orb-core">✦</div><span>AI adapts with you</span></div>
     </div>
   </section>
 
-  <section id="features" class="feature-strip">
-    <article *ngFor="let feature of features">
-      <span class="feature-icon">{{ feature.icon }}</span>
-      <div><h3>{{ feature.title }} <em *ngIf="feature.badge">{{ feature.badge }}</em></h3><p>{{ feature.description }}</p></div>
-    </article>
+  <section class="metrics app-container">
+    <article *ngFor="let metric of metrics"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></article>
   </section>
 
-  <section id="ecosystem" class="stats-strip">
-    <article *ngFor="let statistic of statistics">
-      <span class="stat-icon">{{ statistic.icon }}</span>
-      <div><strong>{{ statistic.value }}</strong><small>{{ statistic.label }}</small></div>
-    </article>
+  <section id="ecosystem" class="ecosystem app-container">
+    <div class="section-intro"><span class="eyebrow">ONE CONNECTED ECOSYSTEM</span><h2>Everything learning needs.<br><span class="gradient-text">Finally working together.</span></h2></div>
+    <div class="ecosystem-grid">
+      <article class="ecosystem-card large"><div class="card-icon">◉</div><h3>Personal learning space</h3><p>Courses, goals, notes, practice and progress organized around the learner—not around disconnected software.</p><div class="mini-ui"><span></span><span></span><span></span><i></i></div></article>
+      <article class="ecosystem-card ai-card"><div class="card-icon">✦</div><h3>Intelligence at every step</h3><p>AI helps explain concepts, surface patterns and recommend the right next move.</p><div class="signal"><i></i><i></i><i></i><i></i><i></i></div></article>
+      <article class="ecosystem-card"><div class="card-icon">▦</div><h3>Live & collaborative</h3><p>Bring classes, discussions and shared learning experiences into the same flow.</p></article>
+      <article class="ecosystem-card"><div class="card-icon">↗</div><h3>Visible progress</h3><p>Turn activity into meaningful signals for learners and educators.</p></article>
+    </div>
   </section>
 
-  <section id="ai" class="landing-cta">
-    <div><span>AI-POWERED PERSONALIZATION</span><h2>Your learning path should adapt to you.</h2><p>Start with a secure account today. Your courses, progress and future intelligence layer will grow together.</p></div>
-    <a routerLink="/auth/register" class="primary-btn">Create Free Account <b>→</b></a>
+  <section id="intelligence" class="intelligence">
+    <div class="app-container intelligence-inner">
+      <div class="intel-copy"><span class="eyebrow">ADAPTIVE INTELLIGENCE</span><h2>Not another chatbot.<br>A <span class="gradient-text">learning intelligence layer.</span></h2><p>It connects what you learn, where you struggle and what you want to achieve—then helps shape a smarter path forward.</p>
+        <ul><li><b>01</b> Understand your learning context</li><li><b>02</b> Identify gaps and momentum</li><li><b>03</b> Recommend meaningful next actions</li></ul>
+      </div>
+      <div class="intel-visual"><div class="intel-ring ring-1"></div><div class="intel-ring ring-2"></div><div class="intel-core">AI<span>Learning<br>Intelligence</span></div><div class="node node-a">Goals</div><div class="node node-b">Progress</div><div class="node node-c">Practice</div><div class="node node-d">Understanding</div></div>
+    </div>
   </section>
 
-  <footer id="about" class="landing-footer"><span>© 2026 Master Learning System</span><span>Learn · Understand · Build · Achieve</span></footer>
+  <section id="features" class="features app-container">
+    <div class="section-intro centered"><span class="eyebrow">PLATFORM CAPABILITIES</span><h2>Designed for how people<br><span class="gradient-text">actually learn.</span></h2></div>
+    <div class="feature-grid"><article *ngFor="let feature of features"><span>{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><i>Learn more →</i></article></div>
+  </section>
+
+  <section class="final-cta app-container"><div><span class="eyebrow">YOUR NEXT CHAPTER</span><h2>Build momentum.<br><span class="gradient-text">Make it count.</span></h2><p>Start with a free account and grow into a learning system that grows with you.</p></div><a routerLink="/auth/register" class="primary-action">Create free account <span>→</span></a></section>
+
+  <footer class="footer app-container"><div class="brand"><span class="brand-mark"><i></i><i></i><i></i></span><strong>Master Learning</strong></div><span>© 2026 Master Learning System</span><span>Learn · Understand · Build · Achieve</span></footer>
 </main>
