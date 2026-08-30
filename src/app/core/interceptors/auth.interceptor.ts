@@ -53,6 +53,6 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private isPublicRequest(url: string): boolean {
-    return /\/api\/v1\/(auth\/(login|register|refresh|logout)|public\/|health)/.test(url);
+    return /\/api\/v1\/(auth\/(login|register|refresh|logout|forgot-password|reset-password)|public\/|health)/.test(url);
   }
 }
