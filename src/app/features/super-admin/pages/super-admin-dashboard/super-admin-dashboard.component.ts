@@ -41,7 +41,7 @@ export class SuperAdminDashboardComponent implements OnInit {
     this.errorMessage = '';
 
     this.internalPortalService.overview().subscribe({
-      next: (response) => {
+      next: response => {
         this.loading = false;
         this.overview = response.data;
         this.lastRefresh = new Date();
