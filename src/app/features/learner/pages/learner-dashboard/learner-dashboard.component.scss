@@ -197,3 +197,96 @@ h1 { font-size:clamp(27px,3vw,42px); letter-spacing:-.04em; }
   .course-art { width:42px; height:42px; }
   .notification-panel { right:0; top:50px; }
 }
+
+
+/* Theme toggle */
+.theme-toggle {
+  font-size:17px;
+  transition:transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.theme-toggle:hover { transform:translateY(-1px) rotate(10deg); }
+
+/* Light theme */
+:host-context([data-theme='light']) { color:#20243a; }
+:host-context([data-theme='light']) .learner-app {
+  background:
+    radial-gradient(circle at 72% 4%, rgba(107,72,255,.10), transparent 24rem),
+    radial-gradient(circle at 15% 100%, rgba(16,191,255,.08), transparent 28rem),
+    #f4f6fb;
+}
+:host-context([data-theme='light']) .sidebar {
+  border-color:rgba(35,43,73,.09);
+  background:rgba(255,255,255,.82);
+}
+:host-context([data-theme='light']) .brand { color:#20243a; }
+:host-context([data-theme='light']) .brand-copy small,
+:host-context([data-theme='light']) .nav-caption,
+:host-context([data-theme='light']) .section-kicker,
+:host-context([data-theme='light']) .banner-label,
+:host-context([data-theme='light']) .profile-mini small,
+:host-context([data-theme='light']) .course-main small,
+:host-context([data-theme='light']) .course-main p,
+:host-context([data-theme='light']) .schedule-item small,
+:host-context([data-theme='light']) .activity-item small,
+:host-context([data-theme='light']) .progress-summary p,
+:host-context([data-theme='light']) .days,
+:host-context([data-theme='light']) .data-note { color:#69718c; }
+:host-context([data-theme='light']) .nav-item { color:#66708c; }
+:host-context([data-theme='light']) .nav-item:hover { color:#252a40; background:rgba(62,72,112,.06); }
+:host-context([data-theme='light']) .nav-item.active {
+  color:#3e2aa1;
+  background:linear-gradient(90deg,rgba(110,76,255,.13),rgba(110,76,255,.04));
+}
+:host-context([data-theme='light']) .focus-card {
+  background:linear-gradient(145deg,rgba(100,72,220,.10),rgba(255,255,255,.72));
+  border-color:rgba(96,77,191,.14);
+}
+:host-context([data-theme='light']) .focus-card small { color:#69718c; }
+:host-context([data-theme='light']) .profile-mini { border-color:rgba(35,43,73,.08); }
+:host-context([data-theme='light']) .mini-progress,
+:host-context([data-theme='light']) .progress-line { background:rgba(47,55,88,.10); }
+:host-context([data-theme='light']) .search-box,
+:host-context([data-theme='light']) .icon-button {
+  color:#65708c;
+  border-color:rgba(35,43,73,.10);
+  background:rgba(255,255,255,.72);
+}
+:host-context([data-theme='light']) .search-box input { color:#252a40; }
+:host-context([data-theme='light']) .search-box kbd { color:#69718c; border-color:rgba(35,43,73,.10); }
+:host-context([data-theme='light']) .notification-panel {
+  color:#252a40;
+  background:#fff;
+  border-color:rgba(96,77,191,.18);
+  box-shadow:0 20px 60px rgba(38,44,70,.14);
+}
+:host-context([data-theme='light']) .notification-panel p { color:#69718c; }
+:host-context([data-theme='light']) .command-banner {
+  border-color:rgba(105,81,215,.18);
+  background:linear-gradient(105deg,rgba(109,84,220,.15),rgba(255,255,255,.92) 50%,rgba(239,242,252,.9));
+}
+:host-context([data-theme='light']) .command-banner p { color:#606982; }
+:host-context([data-theme='light']) .command-banner p strong,
+:host-context([data-theme='light']) .banner-label { color:#654cc7; }
+:host-context([data-theme='light']) .visual-caption { color:#78819a; }
+:host-context([data-theme='light']) .stat-card,
+:host-context([data-theme='light']) .panel {
+  border-color:rgba(35,43,73,.09);
+  background:rgba(255,255,255,.82);
+  box-shadow:0 14px 40px rgba(38,44,70,.07);
+}
+:host-context([data-theme='light']) .stat-card>span:last-child { color:#69718c; }
+:host-context([data-theme='light']) .course-row+.course-row,
+:host-context([data-theme='light']) .schedule-item+.schedule-item { border-color:rgba(35,43,73,.08); }
+:host-context([data-theme='light']) .text-action { color:#654cc7; }
+:host-context([data-theme='light']) .round-action {
+  color:#654cc7;
+  border-color:rgba(35,43,73,.12);
+  background:#fff;
+}
+:host-context([data-theme='light']) .ai-panel {
+  background:linear-gradient(135deg,rgba(112,88,221,.16),rgba(255,255,255,.94));
+}
+:host-context([data-theme='light']) .ai-panel p { color:#65708a; }
+:host-context([data-theme='light']) .schedule-item.muted { opacity:.72; }
+:host-context([data-theme='light']) .progress-summary h2 small { color:#69718c; }
+:host-context([data-theme='light']) .chart span { opacity:.78; }
