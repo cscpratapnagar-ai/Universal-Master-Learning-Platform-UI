@@ -4,8 +4,18 @@ import { Subscription } from 'rxjs';
 import { PlatformStatusService } from '../../../../core/services/platform-status.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
-interface Metric { value: string; label: string; }
-interface Feature { icon: string; title: string; description: string; }
+interface FeatureCard {
+  icon: string;
+  title: string;
+  description: string;
+  badge?: string;
+}
+
+interface StatCard {
+  icon: string;
+  value: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-landing',
@@ -17,20 +27,71 @@ export class LandingComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   platformOnline = false;
 
-  readonly metrics: Metric[] = [
-    { value: '10K+', label: 'Active learners' },
-    { value: '500+', label: 'Expert educators' },
-    { value: '1,200+', label: 'Learning experiences' },
-    { value: '95%', label: 'Learner satisfaction' }
+  readonly features: FeatureCard[] = [
+    {
+      icon: '◆',
+      title: 'Expert Courses',
+      description: 'Learn from industry experts & educators'
+    },
+    {
+      icon: '▣',
+      title: 'Live Classes',
+      description: 'Interactive live sessions with real-time Q&A'
+    },
+    {
+      icon: '◉',
+      title: 'AI Tutor',
+      description: 'Get instant help anytime, anywhere',
+      badge: 'New'
+    },
+    {
+      icon: '▤',
+      title: 'Smart Assessments',
+      description: 'AI-powered tests to track your progress'
+    },
+    {
+      icon: '⬡',
+      title: 'Certificates',
+      description: 'Earn recognized certificates'
+    },
+    {
+      icon: '♧',
+      title: 'Community',
+      description: 'Connect, collaborate & grow together'
+    }
   ];
 
-  readonly features: Feature[] = [
-    { icon: '◎', title: 'Adaptive learning', description: 'A learning path that responds to your pace, strengths and goals.' },
-    { icon: '✦', title: 'AI guidance', description: 'Ask, explore and understand with contextual help whenever you need it.' },
-    { icon: '▦', title: 'Live experiences', description: 'Bring classrooms, workshops and communities into one connected space.' },
-    { icon: '↗', title: 'Progress intelligence', description: 'Turn learning activity into clear insight and meaningful next actions.' },
-    { icon: '✓', title: 'Smart assessment', description: 'Practice, feedback and evaluation designed for continuous improvement.' },
-    { icon: '∞', title: 'One ecosystem', description: 'Students, educators and institutions connected without fragmented tools.' }
+  readonly statistics: StatCard[] = [
+    {
+      icon: '♛',
+      value: '10K+',
+      label: 'Active Learners'
+    },
+    {
+      icon: '♛',
+      value: '500+',
+      label: 'Expert Instructors'
+    },
+    {
+      icon: '▤',
+      value: '1,200+',
+      label: 'Courses Available'
+    },
+    {
+      icon: '◷',
+      value: '25K+',
+      label: 'Hours of Content'
+    },
+    {
+      icon: '◉',
+      value: '95%',
+      label: 'Satisfaction Rate'
+    },
+    {
+      icon: '◎',
+      value: '50+',
+      label: 'Countries'
+    }
   ];
 
   private readonly subscriptions = new Subscription();
@@ -41,12 +102,32 @@ export class LandingComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.add(this.themeService.theme$.subscribe(theme => this.theme = theme));
-    this.subscriptions.add(this.platformStatusService.check().subscribe(online => this.platformOnline = online));
+    this.subscriptions.add(
+      this.themeService.theme$.subscribe((theme: ThemeMode) => {
+        this.theme = theme;
+      })
+    );
+
+    this.subscriptions.add(
+      this.platformStatusService.check().subscribe((online: boolean) => {
+        this.platformOnline = online;
+      })
+    );
   }
 
-  ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
-  toggleTheme(): void { this.themeService.toggle(); }
-  toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
-  closeMobileMenu(): void { this.mobileMenuOpen = false; }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggle();
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
 }
