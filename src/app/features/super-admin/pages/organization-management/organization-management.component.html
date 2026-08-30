@@ -1,9 +1,65 @@
 <section class="page">
-  <header class="page-head"><div><p class="eyebrow">PLATFORM GOVERNANCE</p><h1>Organizations</h1><p>Manage institutions, tenants and their platform lifecycle.</p></div><button class="primary" (click)="showCreate=true">＋ New Organization</button></header>
-  <div class="stats"><article><span>Total organizations</span><strong>{{organizations.length}}</strong></article><article><span>Active tenants</span><strong class="green">{{activeCount}}</strong></article><article><span>Inactive</span><strong>{{organizations.length-activeCount}}</strong></article></div>
-  <section class="panel"><div class="toolbar"><div><h2>Organization Directory</h2><small>Centralized multi-tenant administration</small></div><input [(ngModel)]="search" (input)="applyFilter()" placeholder="Search name or code"></div>
-    <div *ngIf="loading" class="state">Loading organizations…</div><div *ngIf="errorMessage&&!loading" class="error">{{errorMessage}}</div>
-    <div class="table-wrap" *ngIf="!loading"><table><thead><tr><th>Organization</th><th>Code</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead><tbody><tr *ngFor="let org of filtered"><td><strong>{{org.name}}</strong><small>{{org.id}}</small></td><td><code>{{org.code}}</code></td><td>{{org.description||'—'}}</td><td><span class="badge" [class.off]="!org.active">{{org.active?'ACTIVE':'INACTIVE'}}</span></td><td><button class="danger" *ngIf="org.active" (click)="deactivate(org)">Deactivate</button></td></tr><tr *ngIf="!filtered.length"><td colspan="5" class="empty">No organizations found.</td></tr></tbody></table></div>
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">PLATFORM GOVERNANCE · MULTI-TENANT CONTROL</p>
+      <h1>Organizations</h1>
+      <p>Provision, govern and monitor every institution connected to the learning platform.</p>
+    </div>
+    <div class="head-actions">
+      <button class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button>
+      <button class="primary" (click)="showCreate=true">＋ New Organization</button>
+    </div>
+  </header>
+
+  <section class="stats">
+    <article><span>🏢 Total organizations</span><strong>{{ organizations.length }}</strong><small>All registered tenants</small></article>
+    <article><span>● Active tenants</span><strong class="green">{{ activeCount }}</strong><small>Operational and available</small></article>
+    <article><span>◌ Inactive</span><strong>{{ inactiveCount }}</strong><small>Suspended or archived</small></article>
   </section>
-  <div class="modal-backdrop" *ngIf="showCreate"><form class="modal" (ngSubmit)="create()"><div class="modal-head"><div><h2>Create Organization</h2><p>Provision a new tenant on the platform.</p></div><button type="button" (click)="showCreate=false">×</button></div><label>Organization name<input [(ngModel)]="form.name" name="name" required placeholder="Example Institute"></label><label>Unique code<input [(ngModel)]="form.code" name="code" required placeholder="EXAMPLE_INST"></label><label>Description<textarea [(ngModel)]="form.description" name="description" placeholder="Optional description"></textarea></label><div class="modal-actions"><button type="button" class="secondary" (click)="showCreate=false">Cancel</button><button class="primary" [disabled]="saving">{{saving?'Creating…':'Create Organization'}}</button></div></form></div>
+
+  <section class="panel">
+    <div class="toolbar">
+      <div><h2>Organization Directory</h2><small>Centralized administration across every tenant</small></div>
+      <label class="search-box">⌕<input [(ngModel)]="search" (input)="applyFilter()" placeholder="Search organization, code or description"></label>
+    </div>
+
+    <div *ngIf="loading" class="state"><i></i> Synchronizing organization data…</div>
+    <div *ngIf="errorMessage&&!loading" class="error"><strong>Unable to load data</strong><span>{{ errorMessage }}</span><button (click)="load()">Try again</button></div>
+
+    <div class="table-wrap" *ngIf="!loading&&!errorMessage">
+      <table>
+        <thead><tr><th>Organization</th><th>Code</th><th>Description</th><th>Status</th><th class="right">Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let org of filtered; trackBy: trackById">
+            <td><div class="org-cell"><span>{{ org.name.charAt(0) }}</span><div><strong>{{ org.name }}</strong><small>{{ org.id }}</small></div></div></td>
+            <td><code>{{ org.code }}</code></td>
+            <td class="description">{{ org.description || 'No description provided' }}</td>
+            <td><span class="badge" [class.off]="!org.active"><i></i>{{ org.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
+            <td class="right actions"><button class="edit" (click)="openEdit(org)">Edit</button><button class="danger" *ngIf="org.active" (click)="deactivate(org)">Deactivate</button></td>
+          </tr>
+          <tr *ngIf="!filtered.length"><td colspan="5" class="empty">No organizations match your search.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" *ngIf="showCreate">
+    <form class="modal" (ngSubmit)="create()">
+      <div class="modal-head"><div><span class="modal-icon">＋</span><h2>Create Organization</h2><p>Provision a new tenant on the platform.</p></div><button type="button" (click)="showCreate=false">×</button></div>
+      <label>Organization name<input [(ngModel)]="form.name" name="name" required placeholder="Example Institute"></label>
+      <label>Unique tenant code<input [(ngModel)]="form.code" name="code" required placeholder="EXAMPLE_INST"></label>
+      <label>Description<textarea [(ngModel)]="form.description" name="description" placeholder="Describe this organization (optional)"></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary" (click)="showCreate=false">Cancel</button><button class="primary" [disabled]="saving">{{ saving ? 'Creating…' : 'Create Organization' }}</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="showEdit">
+    <form class="modal" (ngSubmit)="update()">
+      <div class="modal-head"><div><span class="modal-icon edit-icon">✎</span><h2>Edit Organization</h2><p>Update tenant identity and configuration.</p></div><button type="button" (click)="showEdit=false">×</button></div>
+      <label>Organization name<input [(ngModel)]="editForm.name" name="editName" required></label>
+      <label>Unique tenant code<input [(ngModel)]="editForm.code" name="editCode" required></label>
+      <label>Description<textarea [(ngModel)]="editForm.description" name="editDescription"></textarea></label>
+      <div class="modal-actions"><button type="button" class="secondary" (click)="showEdit=false">Cancel</button><button class="primary" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Changes' }}</button></div>
+    </form>
+  </div>
 </section>
