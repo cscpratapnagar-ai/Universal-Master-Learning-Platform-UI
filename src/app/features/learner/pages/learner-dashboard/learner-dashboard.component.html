@@ -54,6 +54,14 @@
           <input type="text" placeholder="Search courses, topics, AI help">
           <kbd>⌘ K</kbd>
         </div>
+        <button
+          type="button"
+          class="icon-button theme-toggle"
+          (click)="toggleTheme()"
+          [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+          [title]="theme === 'dark' ? 'Light mode' : 'Dark mode'">
+          <span>{{ theme === 'dark' ? '☀' : '☾' }}</span>
+        </button>
         <button type="button" class="icon-button notification" (click)="notificationsOpen = !notificationsOpen" aria-label="Notifications">
           ♧
           <span class="notification-dot"></span>
