@@ -1,0 +1,63 @@
+<main class="dashboard-shell">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <section class="dashboard-card">
+    <div class="topbar">
+      <a class="brand" routerLink="/">
+        <span class="brand-mark">✦</span>
+        <span>Master Learning</span>
+      </a>
+
+      <button class="logout" type="button" (click)="logout()" [disabled]="isLoggingOut">
+        {{ isLoggingOut ? 'Signing out…' : 'Sign out' }}
+      </button>
+    </div>
+
+    <div class="hero">
+      <div class="eyebrow"><span></span> LEARNING COMMAND CENTER</div>
+      <h1>Welcome{{ user?.firstName ? ', ' + user?.firstName : '' }}.</h1>
+      <p>
+        Your account is connected successfully. Authentication, JWT session storage,
+        refresh token support and protected API communication are ready.
+      </p>
+    </div>
+
+    <div class="status-grid">
+      <article class="status-item">
+        <span class="status-icon">✓</span>
+        <div>
+          <strong>Authenticated</strong>
+          <small>Secure session active</small>
+        </div>
+      </article>
+
+      <article class="status-item">
+        <span class="status-icon">⚡</span>
+        <div>
+          <strong>Frontend Connected</strong>
+          <small>Angular → Spring Boot</small>
+        </div>
+      </article>
+
+      <article class="status-item">
+        <span class="status-icon">◈</span>
+        <div>
+          <strong>Ready for Learning</strong>
+          <small>Dashboard modules come next</small>
+        </div>
+      </article>
+    </div>
+
+    <div class="account-panel">
+      <div>
+        <span class="label">SIGNED IN AS</span>
+        <strong>{{ user?.email || 'Learner account' }}</strong>
+      </div>
+      <div>
+        <span class="label">ROLE</span>
+        <strong>{{ user?.roles?.join(', ') || 'STUDENT' }}</strong>
+      </div>
+    </div>
+  </section>
+</main>
