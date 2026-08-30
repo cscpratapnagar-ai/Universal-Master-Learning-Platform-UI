@@ -2,150 +2,68 @@
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-mark">M</div>
-      <div>
-        <strong>MASTER</strong>
-        <span>CONTROL CENTER</span>
-      </div>
+      <div><strong>MASTER</strong><span>CONTROL CENTER</span></div>
     </div>
-
     <nav>
-      <button *ngFor="let section of sections"
-              type="button"
-              [class.active]="activeSection === section"
-              (click)="selectSection(section)">
+      <button *ngFor="let section of sections" type="button"
+              [class.active]="activeSection === section" (click)="selectSection(section)">
         <span>{{ section === 'Overview' ? '◈' : section === 'Users' ? '◎' : section === 'Organizations' ? '▦' : section === 'Learning' ? '◇' : section === 'Security' ? '◉' : '⚙' }}</span>
         {{ section }}
       </button>
     </nav>
-
-    <div class="sidebar-footer">
-      <span class="live-dot"></span>
-      <div>
-        <strong>System monitored</strong>
-        <small>Internal access only</small>
-      </div>
-    </div>
+    <div class="sidebar-footer"><span class="live-dot"></span><div><strong>System monitored</strong><small>Internal access only</small></div></div>
   </aside>
 
   <section class="workspace">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">INTERNAL PLATFORM</p>
-        <h1>{{ activeSection }}</h1>
-        <p class="subtitle">Real-time operational visibility for the Master Learning Platform.</p>
-      </div>
+      <div><p class="eyebrow">INTERNAL PLATFORM</p><h1>{{ activeSection }}</h1><p class="subtitle">Live operational visibility for the Master Learning Platform.</p></div>
       <div class="top-actions">
-        <div class="refresh-info">
-          <span>LAST REFRESH</span>
-          <strong>{{ lastRefresh | date:'mediumTime' }}</strong>
-        </div>
+        <div class="refresh-info"><span>LAST REFRESH</span><strong>{{ lastRefresh | date:'mediumTime' }}</strong></div>
         <button type="button" class="refresh-btn" (click)="loadOverview()" [disabled]="loading">↻ Refresh</button>
         <button type="button" class="logout-btn" (click)="logout()">Logout</button>
       </div>
     </header>
 
-    <section *ngIf="loading" class="state-card loading">
-      <span class="spinner"></span>
-      Loading live platform data…
-    </section>
-
+    <section *ngIf="loading" class="state-card loading"><span class="spinner"></span> Loading live platform data…</section>
     <section *ngIf="!loading && errorMessage" class="state-card error">
-      <div>
-        <strong>Connection check failed</strong>
-        <p>{{ errorMessage }}</p>
-      </div>
+      <div><strong>Connection check failed</strong><p>{{ errorMessage }}</p></div>
       <button type="button" (click)="loadOverview()">Try again</button>
     </section>
 
     <ng-container *ngIf="!loading && overview">
       <section class="hero-panel">
-        <div>
-          <span class="status-pill"><i></i> LIVE CONTROL PLANE</span>
-          <h2>Platform is <span>{{ overview.status }}</span></h2>
-          <p>Backend, database and internal portal are communicating through the live API.</p>
-        </div>
-        <div class="hero-meta">
-          <span>Service</span>
-          <strong>{{ overview.service }}</strong>
-          <small>{{ overview.timestamp | date:'medium' }}</small>
-        </div>
+        <div><span class="status-pill"><i></i> LIVE CONTROL PLANE</span><h2>Platform is <span>{{ overview.status }}</span></h2><p>Authenticated internal portal connected to backend and PostgreSQL.</p></div>
+        <div class="hero-meta"><span>Service</span><strong>{{ overview.service }}</strong><small>{{ overview.timestamp | date:'medium' }}</small></div>
       </section>
 
       <section class="metric-grid">
-        <article class="metric-card">
-          <div class="metric-icon">◉</div>
-          <div>
-            <span>PLATFORM STATUS</span>
-            <strong>{{ overview.status }}</strong>
-            <small>Live backend health</small>
-          </div>
-        </article>
-
-        <article class="metric-card">
-          <div class="metric-icon">◎</div>
-          <div>
-            <span>TOTAL USERS</span>
-            <strong>{{ overview.totalUsers }}</strong>
-            <small>From PostgreSQL</small>
-          </div>
-        </article>
-
-        <article class="metric-card">
-          <div class="metric-icon">▦</div>
-          <div>
-            <span>ORGANIZATIONS</span>
-            <strong>{{ overview.totalOrganizations }}</strong>
-            <small>Live database count</small>
-          </div>
-        </article>
-
-        <article class="metric-card">
-          <div class="metric-icon">↻</div>
-          <div>
-            <span>API RESPONSE</span>
-            <strong>Connected</strong>
-            <small>Internal portal endpoint</small>
-          </div>
-        </article>
+        <article class="metric-card"><div class="metric-icon">◉</div><div><span>PLATFORM STATUS</span><strong>{{ overview.status }}</strong><small>Live backend health</small></div></article>
+        <article class="metric-card"><div class="metric-icon">◎</div><div><span>TOTAL USERS</span><strong>{{ overview.totalUsers }}</strong><small>From PostgreSQL</small></div></article>
+        <article class="metric-card"><div class="metric-icon">▦</div><div><span>ORGANIZATIONS</span><strong>{{ overview.totalOrganizations }}</strong><small>Live database count</small></div></article>
+        <article class="metric-card"><div class="metric-icon">↻</div><div><span>API RESPONSE</span><strong>Connected</strong><small>Protected internal endpoint</small></div></article>
       </section>
 
       <section class="content-grid">
         <article class="panel verification-panel">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">END-TO-END CHECK</p>
-              <h3>Data verification</h3>
-            </div>
-            <span class="verified">✓ VERIFIED</span>
-          </div>
+          <div class="panel-head"><div><p class="eyebrow">END-TO-END CHECK</p><h3>Data verification</h3></div><span class="verified">✓ VERIFIED</span></div>
           <div class="verification-list">
             <div><span class="check">✓</span><div><strong>Frontend authenticated</strong><small>SUPER_ADMIN role gate is active.</small></div></div>
-            <div><span class="check">✓</span><div><strong>Backend responding</strong><small>{{ overview.service }} returned a live response.</small></div></div>
+            <div><span class="check">✓</span><div><strong>Backend responding</strong><small>{{ overview.service }} returned a protected live response.</small></div></div>
             <div><span class="check">✓</span><div><strong>Database connected</strong><small>User and organization counts are read from persistent data.</small></div></div>
           </div>
         </article>
-
         <article class="panel system-panel">
-          <p class="eyebrow">SYSTEM SNAPSHOT</p>
-          <h3>Control plane</h3>
+          <p class="eyebrow">SYSTEM SNAPSHOT</p><h3>Control plane</h3>
           <div class="system-row"><span>Authentication</span><b>Operational</b></div>
-          <div class="system-row"><span>Internal API</span><b>Connected</b></div>
+          <div class="system-row"><span>Internal API</span><b>Protected</b></div>
           <div class="system-row"><span>Database sync</span><b>Live</b></div>
           <div class="system-row"><span>Environment</span><b>Local</b></div>
         </article>
       </section>
 
       <section class="panel roadmap-panel">
-        <div>
-          <p class="eyebrow">NEXT BUILD PHASE</p>
-          <h3>Expand this control center with real management modules</h3>
-        </div>
-        <div class="roadmap-items">
-          <span>Users & roles</span>
-          <span>Organizations</span>
-          <span>Learning analytics</span>
-          <span>Security audit</span>
-        </div>
+        <div><p class="eyebrow">NEXT BUILD PHASE</p><h3>Management modules ready to expand from this control center</h3></div>
+        <div class="roadmap-items"><span>Users & roles</span><span>Organizations</span><span>Learning analytics</span><span>Security audit</span></div>
       </section>
     </ng-container>
   </section>
