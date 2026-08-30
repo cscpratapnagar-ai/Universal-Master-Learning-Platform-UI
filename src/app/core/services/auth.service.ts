@@ -24,44 +24,38 @@ export class AuthService {
   ) {}
 
   login(request: LoginRequest, persistent = true): Observable<ApiResponse<AuthResponse>> {
-    return this.http
-      .post<ApiResponse<AuthResponse>>(`${this.authUrl}/login`, request)
-      .pipe(tap((response) => this.storeSession(response, persistent)));
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.authUrl}/login`, request)
+      .pipe(tap(response => this.storeSession(response, persistent)));
   }
 
   register(request: RegisterRequest, persistent = true): Observable<ApiResponse<AuthResponse>> {
-    return this.http
-      .post<ApiResponse<AuthResponse>>(`${this.authUrl}/register`, request)
-      .pipe(tap((response) => this.storeSession(response, persistent)));
+    return this.http.post<ApiResponse<AuthResponse>>(`${this.authUrl}/register`, request)
+      .pipe(tap(response => this.storeSession(response, persistent)));
   }
 
   refreshToken(): Observable<ApiResponse<AuthResponse>> {
     const refreshToken = this.tokenService.getRefreshToken();
-
     if (!refreshToken) {
       throw new Error('No refresh token is available.');
     }
 
-    const request: RefreshTokenRequest = { refreshToken };
-
-    return this.http
-      .post<ApiResponse<AuthResponse>>(`${this.authUrl}/refresh`, request)
-      .pipe(tap((response) => this.storeSession(response, true)));
+    return this.http.post<ApiResponse<AuthResponse>>(
+      `${this.authUrl}/refresh`,
+      { refreshToken } as RefreshTokenRequest
+    ).pipe(tap(response => this.storeSession(response, true)));
   }
 
   logout(): Observable<ApiResponse<void>> | null {
     const refreshToken = this.tokenService.getRefreshToken();
-
     if (!refreshToken) {
       this.tokenService.clearSession();
       return null;
     }
 
-    const request: LogoutRequest = { refreshToken };
-
-    return this.http
-      .post<ApiResponse<void>>(`${this.authUrl}/logout`, request)
-      .pipe(finalize(() => this.tokenService.clearSession()));
+    return this.http.post<ApiResponse<void>>(
+      `${this.authUrl}/logout`,
+      { refreshToken } as LogoutRequest
+    ).pipe(finalize(() => this.tokenService.clearSession()));
   }
 
   isAuthenticated(): boolean {
@@ -72,12 +66,18 @@ export class AuthService {
     return this.tokenService.getCurrentUser();
   }
 
-  private storeSession(
-    response: ApiResponse<AuthResponse>,
-    persistent: boolean
-  ): void {
-    if (response.success && response.data) {
-      this.tokenService.saveSession(response.data, persistent);
+  resolveDashboard(roles: string[] | undefined | null): string {
+    const roleSet = new Set(roles ?? []);
+    if (roleSet.has('SUPER_ADMIN')) return '/super-admin';
+    if (roleSet.has('ORG_ADMIN')) return '/organization';
+    if (roleSet.has('INSTRUCTOR')) return '/instructor';
+    return '/learner';
+  }
+
+  private storeSession(response: ApiResponse<AuthResponse>, persistent: boolean): void {
+    if (!response.success || !response.data?.accessToken || !response.data?.refreshToken || !response.data?.user) {
+      throw new Error(response.message || 'Authentication response is incomplete.');
     }
+    this.tokenService.saveSession(response.data, persistent);
   }
 }
