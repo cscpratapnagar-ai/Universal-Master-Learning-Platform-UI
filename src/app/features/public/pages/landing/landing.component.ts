@@ -28,21 +28,70 @@ export class LandingComponent implements OnInit, OnDestroy {
   platformOnline = false;
 
   readonly features: FeatureCard[] = [
-    { icon: '◆', title: 'Expert Courses', description: 'Learn from industry experts & educators' },
-    { icon: '▣', title: 'Live Classes', description: 'Interactive live sessions with real-time Q&A' },
-    { icon: '◉', title: 'AI Tutor', description: 'Get instant help anytime, anywhere', badge: 'New' },
-    { icon: '▤', title: 'Smart Assessments', description: 'AI-powered tests to track your progress' },
-    { icon: '⬡', title: 'Certificates', description: 'Earn recognized certificates' },
-    { icon: '♧', title: 'Community', description: 'Connect, collaborate & grow together' }
+    {
+      icon: '◆',
+      title: 'Expert Courses',
+      description: 'Learn from industry experts & educators'
+    },
+    {
+      icon: '▣',
+      title: 'Live Classes',
+      description: 'Interactive live sessions with real-time Q&A'
+    },
+    {
+      icon: '◉',
+      title: 'AI Tutor',
+      description: 'Get instant help anytime, anywhere',
+      badge: 'New'
+    },
+    {
+      icon: '▤',
+      title: 'Smart Assessments',
+      description: 'AI-powered tests to track your progress'
+    },
+    {
+      icon: '⬡',
+      title: 'Certificates',
+      description: 'Earn recognized certificates'
+    },
+    {
+      icon: '♧',
+      title: 'Community',
+      description: 'Connect, collaborate & grow together'
+    }
   ];
 
   readonly statistics: StatCard[] = [
-    { icon: '♙', value: '10K+', label: 'Active Learners' },
-    { icon: '♙', value: '500+', label: 'Expert Instructors' },
-    { icon: '▤', value: '1,200+', label: 'Courses Available' },
-    { icon: '◷', value: '25K+', label: 'Hours of Content' },
-    { icon: '⌁', value: '95%', label: 'Satisfaction Rate' },
-    { icon: '◉', value: '50+', label: 'Countries' }
+    {
+      icon: '♛',
+      value: '10K+',
+      label: 'Active Learners'
+    },
+    {
+      icon: '♛',
+      value: '500+',
+      label: 'Expert Instructors'
+    },
+    {
+      icon: '▤',
+      value: '1,200+',
+      label: 'Courses Available'
+    },
+    {
+      icon: '◷',
+      value: '25K+',
+      label: 'Hours of Content'
+    },
+    {
+      icon: '◉',
+      value: '95%',
+      label: 'Satisfaction Rate'
+    },
+    {
+      icon: '◎',
+      value: '50+',
+      label: 'Countries'
+    }
   ];
 
   private readonly subscriptions = new Subscription();
@@ -60,7 +109,7 @@ export class LandingComponent implements OnInit, OnDestroy {
     );
 
     this.subscriptions.add(
-      this.platformStatusService.check().subscribe((online) => {
+      this.platformStatusService.check().subscribe((online: boolean) => {
         this.platformOnline = online;
       })
     );
