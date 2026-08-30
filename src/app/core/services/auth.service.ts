@@ -61,6 +61,10 @@ export class AuthService {
     ).pipe(finalize(() => this.tokenService.clearSession()));
   }
 
+  hasStoredSession(): boolean {
+    return !!this.tokenService.getAccessToken() || !!this.tokenService.getRefreshToken();
+  }
+
   restoreSession(): Observable<boolean> {
     if (this.tokenService.getAccessToken()) {
       this.sessionReadySubject.next(true);
