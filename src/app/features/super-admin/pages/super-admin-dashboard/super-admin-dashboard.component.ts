@@ -89,6 +89,16 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
 
   selectSection(section: string): void {
     this.activeSection = section;
+
+    const routes: Record<string, string> = {
+      Overview: '/super-admin',
+      Organizations: '/super-admin/organizations'
+    };
+
+    const route = routes[section];
+    if (route) {
+      this.router.navigateByUrl(route);
+    }
   }
 
   trendHeight(value: number): number {
