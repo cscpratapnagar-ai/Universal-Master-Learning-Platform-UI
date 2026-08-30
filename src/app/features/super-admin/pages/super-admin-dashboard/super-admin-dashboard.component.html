@@ -1,26 +1,4 @@
-<main class="control-shell" [attr.data-theme]="theme">
-  <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">M</div><div><strong>MASTER</strong><span>CONTROL CENTER</span></div></div>
-    <nav>
-      <button *ngFor="let section of sections" type="button" [class.active]="activeSection === section" (click)="selectSection(section)">
-        <span>{{ section === 'Overview' ? '◈' : section === 'Users' ? '◎' : section === 'Organizations' ? '▦' : section === 'Learning' ? '◇' : section === 'Security' ? '◉' : '⚙' }}</span>{{ section }}
-      </button>
-    </nav>
-    <div class="sidebar-footer"><span class="live-dot"></span><div><strong>{{ user?.firstName || 'Super Admin' }}</strong><small>Internal access only</small></div></div>
-  </aside>
-
-  <section class="workspace">
-    <header class="topbar">
-      <div><p class="eyebrow">COMMAND CENTER · SUPER ADMIN</p><h1>{{ activeSection }} <span class="live-label">LIVE</span></h1><p class="subtitle">A real-time intelligence layer for your learning ecosystem.</p></div>
-      <div class="top-actions">
-        <div class="refresh-info"><span>LAST SYNCHRONIZED</span><strong>{{ lastRefresh | date:'mediumTime' }}</strong></div>
-        <button class="icon-btn" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">{{ theme === 'dark' ? '☀' : '☾' }}</button>
-        <button type="button" class="refresh-btn" (click)="loadOverview()" [disabled]="loading">↻ <span>Refresh</span></button>
-        <button type="button" class="logout-btn" (click)="logout()" [disabled]="isLoggingOut">{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</button>
-      </div>
-    </header>
-
-    <section *ngIf="loading" class="state-card loading"><span class="spinner"></span> Synchronizing platform intelligence…</section>
+<section *ngIf="loading" class="state-card loading"><span class="spinner"></span> Synchronizing platform intelligence…</section>
     <section *ngIf="!loading && errorMessage" class="state-card error"><div><strong>Connection check failed</strong><p>{{ errorMessage }}</p></div><button type="button" (click)="loadOverview()">Try again</button></section>
 
     <ng-container *ngIf="!loading && overview">
@@ -86,5 +64,3 @@
         <div class="roadmap-items"><span>Users & roles</span><span>Organizations</span><span>Learning analytics</span><span>Security audit</span><span>AI insights</span></div>
       </section>
     </ng-container>
-  </section>
-</main>
