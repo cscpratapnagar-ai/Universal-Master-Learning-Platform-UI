@@ -14,10 +14,7 @@ import { TokenService } from '../services/token.service';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private readonly tokenService: TokenService) {}
 
-  intercept(
-    request: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const accessToken = this.tokenService.getAccessToken();
 
     if (
@@ -28,16 +25,12 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    return next.handle(
-      request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-    );
+    return next.handle(request.clone({
+      setHeaders: { Authorization: `Bearer ${accessToken}` }
+    }));
   }
 
   private isPublicRequest(url: string): boolean {
-    return /\/api\/v1\/(auth\/(login|register|refresh|logout)|public\/)/.test(url);
+    return /\/api\/v1\/(auth\/(login|register|refresh|logout)|public\/|health)/.test(url);
   }
 }
