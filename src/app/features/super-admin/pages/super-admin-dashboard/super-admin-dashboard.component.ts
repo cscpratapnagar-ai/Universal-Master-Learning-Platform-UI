@@ -5,13 +5,6 @@ import { InternalPortalOverview } from '../../../../core/models/internal-portal.
 import { AuthService } from '../../../../core/services/auth.service';
 import { InternalPortalService } from '../../../../core/services/internal-portal.service';
 
-interface ControlMetric {
-  label: string;
-  value: string | number;
-  detail: string;
-  icon: string;
-}
-
 @Component({
   selector: 'app-super-admin-dashboard',
   templateUrl: './super-admin-dashboard.component.html',
@@ -41,19 +34,6 @@ export class SuperAdminDashboardComponent implements OnInit {
     }
 
     this.loadOverview();
-  }
-
-  get metrics(): ControlMetric[] {
-    if (!this.overview) {
-      return [];
-    }
-
-    return [
-      { label: 'Platform Status', value: this.overview.status, detail: this.overview.service, icon: '◉' },
-      { label: 'Total Users', value: this.overview.totalUsers, detail: 'Live database count', icon: '◈' },
-      { label: 'Organizations', value: this.overview.totalOrganizations, detail: 'Live database count', icon: '▦' },
-      { label: 'Last Response', value: this.overview.timestamp | 0, detail: 'Backend response timestamp', icon: '↻' }
-    ];
   }
 
   loadOverview(): void {
