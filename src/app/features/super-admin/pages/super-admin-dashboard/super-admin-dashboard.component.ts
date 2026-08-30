@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { User } from '../../../../core/models/auth.model';
 import { InternalPortalOverview } from '../../../../core/models/internal-portal.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { InternalPortalService } from '../../../../core/services/internal-portal.service';
@@ -11,11 +12,13 @@ import { InternalPortalService } from '../../../../core/services/internal-portal
   styleUrls: ['./super-admin-dashboard.component.scss']
 })
 export class SuperAdminDashboardComponent implements OnInit {
+  user: User | null = null;
   overview: InternalPortalOverview | null = null;
   loading = true;
   errorMessage = '';
   activeSection = 'Overview';
   lastRefresh = new Date();
+  isLoggingOut = false;
 
   readonly sections = ['Overview', 'Users', 'Organizations', 'Learning', 'Security', 'System'];
 
@@ -26,9 +29,9 @@ export class SuperAdminDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = this.authService.currentUser();
+    this.user = this.authService.currentUser();
 
-    if (!this.authService.isAuthenticated() || !user?.roles.includes('SUPER_ADMIN')) {
+    if (!this.authService.isAuthenticated() || !this.user?.roles.includes('SUPER_ADMIN')) {
       this.router.navigateByUrl('/auth/login');
       return;
     }
@@ -58,6 +61,9 @@ export class SuperAdminDashboardComponent implements OnInit {
   }
 
   logout(): void {
+    if (this.isLoggingOut) return;
+    this.isLoggingOut = true;
+
     const request = this.authService.logout();
 
     if (!request) {
