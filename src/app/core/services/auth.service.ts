@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, finalize, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, finalize, map, of, shareReplay, tap } from 'rxjs';
 
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
@@ -17,6 +17,9 @@ import { TokenService } from './token.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly authUrl = `${API_CONFIG.baseUrl}/auth`;
+  private refreshInFlight$: Observable<boolean> | null = null;
+  private readonly sessionReadySubject = new BehaviorSubject<boolean>(false);
+  readonly sessionReady$ = this.sessionReadySubject.asObservable();
 
   constructor(
     private readonly http: HttpClient,
@@ -56,6 +59,46 @@ export class AuthService {
       `${this.authUrl}/logout`,
       { refreshToken } as LogoutRequest
     ).pipe(finalize(() => this.tokenService.clearSession()));
+  }
+
+  restoreSession(): Observable<boolean> {
+    if (this.tokenService.getAccessToken()) {
+      this.sessionReadySubject.next(true);
+      return of(true);
+    }
+
+    if (!this.tokenService.getRefreshToken()) {
+      this.sessionReadySubject.next(true);
+      return of(false);
+    }
+
+    return this.refreshSession();
+  }
+
+  refreshSession(): Observable<boolean> {
+    if (this.refreshInFlight$) return this.refreshInFlight$;
+
+    const refreshToken = this.tokenService.getRefreshToken();
+    if (!refreshToken) return of(false);
+
+    this.refreshInFlight$ = this.http.post<ApiResponse<AuthResponse>>(
+      `${this.authUrl}/refresh`,
+      { refreshToken } as RefreshTokenRequest
+    ).pipe(
+      tap(response => this.storeSession(response, true)),
+      map(() => true),
+      catchError(() => {
+        this.tokenService.clearSession();
+        return of(false);
+      }),
+      finalize(() => {
+        this.refreshInFlight$ = null;
+        this.sessionReadySubject.next(true);
+      }),
+      shareReplay(1)
+    );
+
+    return this.refreshInFlight$;
   }
 
   isAuthenticated(): boolean {
