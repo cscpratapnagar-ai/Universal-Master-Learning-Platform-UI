@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { User } from '../../../../core/models/auth.model';
 import { InternalPortalOverview } from '../../../../core/models/internal-portal.model';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -24,36 +24,9 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
 
   readonly activityTrend: TrendPoint[] = [
-    { label: 'May 20', value: 42, color: 'violet' },
-    { label: 'May 27', value: 58, color: 'blue' },
-    { label: 'Jun 03', value: 46, color: 'cyan' },
-    { label: 'Jun 10', value: 74, color: 'green' },
-    { label: 'Jun 17', value: 67, color: 'orange' },
-    { label: 'Today', value: 92, color: 'pink' }
-  ];
-
-  readonly courses = [
-    { title: 'Complete Java Development', students: '4,702', progress: 85, tone: 'violet', icon: '☕' },
-    { title: 'Data Structures & Algorithms', students: '3,921', progress: 78, tone: 'blue', icon: '⌘' },
-    { title: 'Full Stack Development', students: '3,156', progress: 72, tone: 'green', icon: '◫' },
-    { title: 'Python for Beginners', students: '2,945', progress: 65, tone: 'orange', icon: '⌁' },
-    { title: 'UI/UX Design Masterclass', students: '2,156', progress: 60, tone: 'pink', icon: '✦' }
-  ];
-
-  readonly activities = [
-    { icon: '▦', title: 'New organization registered', detail: 'ABC Institute joined the platform', time: '2 min ago', tone: 'violet' },
-    { icon: '◎', title: 'New user onboarded', detail: 'Platform identity provisioned', time: '5 min ago', tone: 'blue' },
-    { icon: '▣', title: 'Course catalog updated', detail: 'Learning content is live', time: '15 min ago', tone: 'pink' },
-    { icon: '₹', title: 'Payment received', detail: 'Revenue pipeline synchronized', time: '20 min ago', tone: 'green' },
-    { icon: '♙', title: 'Teacher joined', detail: 'Instructor profile verified', time: '30 min ago', tone: 'orange' }
-  ];
-
-  readonly quickActions = [
-    { icon: '▦', label: 'Add Organization', route: '/super-admin/organizations', tone: 'violet' },
-    { icon: '◎', label: 'Manage Users', route: '/super-admin/users', tone: 'blue' },
-    { icon: '◇', label: 'Learning Center', route: '/super-admin/learning', tone: 'orange' },
-    { icon: '◉', label: 'Security', route: '/super-admin/security', tone: 'pink' },
-    { icon: '⚙', label: 'System', route: '/super-admin/system', tone: 'cyan' }
+    { label: 'May 20', value: 42, color: 'violet' }, { label: 'May 27', value: 58, color: 'blue' },
+    { label: 'Jun 03', value: 46, color: 'cyan' }, { label: 'Jun 10', value: 74, color: 'green' },
+    { label: 'Jun 17', value: 67, color: 'orange' }, { label: 'Today', value: 92, color: 'pink' }
   ];
 
   constructor(
@@ -71,12 +44,13 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
       return;
     }
     this.loadOverview();
+    this.subscriptions.add(interval(30000).subscribe(() => this.loadOverview(false)));
   }
 
   ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
 
-  loadOverview(): void {
-    this.loading = true;
+  loadOverview(showLoader = true): void {
+    if (showLoader) this.loading = true;
     this.errorMessage = '';
     this.internalPortalService.overview().subscribe({
       next: response => {
@@ -93,13 +67,20 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
 
   toggleTheme(): void { this.themeService.toggle(); }
   navigate(route: string): void { this.router.navigateByUrl(route); }
-
-  trendHeight(value: number): number {
-    return Math.max(14, Math.round((value / 100) * 100));
-  }
+  trendHeight(value: number): number { return Math.max(14, value); }
 
   get greeting(): string {
     const hour = new Date().getHours();
     return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+  }
+
+  get activeUserRate(): number {
+    if (!this.overview?.totalUsers) return 0;
+    return Math.round((this.overview.activeUsers / this.overview.totalUsers) * 100);
+  }
+
+  get activeOrganizationRate(): number {
+    if (!this.overview?.totalOrganizations) return 0;
+    return Math.round((this.overview.activeOrganizations / this.overview.totalOrganizations) * 100);
   }
 }
