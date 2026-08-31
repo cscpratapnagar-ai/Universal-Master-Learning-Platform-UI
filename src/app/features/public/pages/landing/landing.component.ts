@@ -66,4 +66,20 @@ export class LandingComponent implements OnInit, OnDestroy {
   toggleTheme(): void { this.themeService.toggle(); }
   toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
   closeMobileMenu(): void { this.mobileMenuOpen = false; }
+
+  scrollToSection(event: Event, sectionId: string): void {
+    event.preventDefault();
+    this.closeMobileMenu();
+
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+
+    const headerOffset = 96;
+    const targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: 'smooth'
+    });
+  }
 }
