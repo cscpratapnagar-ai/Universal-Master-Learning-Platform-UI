@@ -20,6 +20,12 @@
   </section>
 
   <section class="metric-grid">
+    <article class="metric-card cyan">
+      <div class="metric-icon">◉</div><div><span>Active Users</span><strong>{{ overview.activeUsers | number }}</strong><small>{{ activeUserRate }}% of total users online</small></div><i class="metric-orb"></i>
+    </article>
+    <article class="metric-card teal">
+      <div class="metric-icon">◌</div><div><span>Active Organizations</span><strong>{{ overview.activeOrganizations | number }}</strong><small>{{ activeOrganizationRate }}% operational</small></div><i class="metric-orb"></i>
+    </article>
     <article class="metric-card violet">
       <div class="metric-icon">▦</div><div><span>Total Organizations</span><strong>{{ overview.totalOrganizations | number }}</strong><small>↑ 12% from last month</small></div><i class="metric-orb"></i>
     </article>
@@ -87,7 +93,7 @@
 
     <article class="panel health-panel">
       <div class="panel-head compact"><div><p class="eyebrow">SYSTEM HEALTH</p><h3>Operational confidence</h3></div><span class="verified">● HEALTHY</span></div>
-      <div class="health-body"><div class="health-ring"><strong>99%</strong><small>Healthy</small></div><div class="health-checks"><span><i></i>Server status <b>Healthy</b></span><span><i></i>Database <b>Healthy</b></span><span><i></i>Storage <b>Healthy</b></span><span><i></i>Backup <b>Healthy</b></span></div></div>
+      <div class="health-body"><div class="health-ring"><strong>99%</strong><small>Healthy</small></div><div class="health-checks"><span><i></i>API service <b>{{ overview.status }}</b></span><span><i></i>Live users <b>{{ overview.activeUsers | number }}</b></span><span><i></i>Organizations <b>{{ overview.activeOrganizations | number }} active</b></span><span><i></i>Last sync <b>{{ lastRefresh | date:'shortTime' }}</b></span></div></div>
     </article>
 
     <article class="panel revenue-panel">
