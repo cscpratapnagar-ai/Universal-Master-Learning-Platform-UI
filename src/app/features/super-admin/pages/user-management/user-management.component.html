@@ -29,10 +29,13 @@
         <thead><tr><th>User</th><th>Roles</th><th>Status</th><th class="right">Actions</th></tr></thead>
         <tbody>
           <tr *ngFor="let user of filtered; trackBy: trackById">
-            <td><div class="user-cell"><span>{{ user.firstName.charAt(0) }}{{ user.lastName ? user.lastName.charAt(0) : '' }}</span><div><strong>{{ user.firstName }} {{ user.lastName || '' }}</strong><small>{{ user.email }}</small></div></div></td>
+            <td><div class="user-cell"><span>{{ user.firstName.charAt(0) }}{{ user.lastName ? user.lastName.charAt(0) : '' }}</span><div><strong>{{ user.firstName }} {{ user.lastName || '' }}</strong><small>{{ user.email }} <em *ngIf="isCurrentUser(user)">· Current session</em></small></div></div></td>
             <td><div class="roles"><span *ngFor="let role of user.roles">{{ role }}</span></div></td>
             <td><span class="badge" [class.off]="!user.enabled"><i></i>{{ user.enabled ? 'ACTIVE' : 'DISABLED' }}</span></td>
-            <td class="right actions"><button class="edit" (click)="openRoles(user)">Roles</button><button [class]="user.enabled ? 'danger' : 'activate'" (click)="toggleStatus(user)">{{ user.enabled ? 'Disable' : 'Activate' }}</button></td>
+            <td class="right actions">
+              <button class="edit" (click)="openRoles(user)" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'You cannot modify your own roles' : 'Manage roles'">Roles</button>
+              <button [class]="user.enabled ? 'danger' : 'activate'" (click)="toggleStatus(user)" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'You cannot change your own account status' : ''">{{ user.enabled ? 'Disable' : 'Activate' }}</button>
+            </td>
           </tr>
           <tr *ngIf="!filtered.length"><td colspan="4" class="empty">No users match the current filters.</td></tr>
         </tbody>
