@@ -70,10 +70,10 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
     { label: 'Refresh Intelligence', icon: '↻', tone: 'green', route: '/super-admin/dashboard' }
   ];
 
-  readonly activityTrend: TrendPoint[] = [
-    { label: 'May 20', value: 42, color: 'violet' }, { label: 'May 27', value: 58, color: 'blue' },
-    { label: 'Jun 03', value: 46, color: 'cyan' }, { label: 'Jun 10', value: 74, color: 'green' },
-    { label: 'Jun 17', value: 67, color: 'orange' }, { label: 'Today', value: 92, color: 'pink' }
+  activityTrend: TrendPoint[] = [
+    { label: 'May 20', value: 0, color: 'violet' }, { label: 'May 27', value: 0, color: 'blue' },
+    { label: 'Jun 03', value: 0, color: 'cyan' }, { label: 'Jun 10', value: 0, color: 'green' },
+    { label: 'Jun 17', value: 0, color: 'orange' }, { label: 'Today', value: 0, color: 'pink' }
   ];
 
   constructor(
@@ -105,6 +105,7 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
     this.internalPortalService.overview().subscribe({
       next: response => {
         this.overview = response.data;
+        this.syncLiveAnalytics();
         this.loading = false;
         this.lastRefresh = new Date();
       },
@@ -143,6 +144,36 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   get activeUserRate(): number {
     if (!this.overview?.totalUsers) return 0;
     return Math.round((this.overview.activeUsers / this.overview.totalUsers) * 100);
+  }
+
+  private syncLiveAnalytics(): void {
+    if (!this.overview) return;
+
+    const total = Math.max(1, this.overview.totalUsers);
+    const roleEntries = Object.entries(this.overview.usersByRole || {})
+      .sort(([, a], [, b]) => b - a);
+
+    this.activityTrend = [
+      { label: 'Users', value: Math.min(100, Math.round((this.overview.activeUsers / total) * 100)), color: 'violet' },
+      { label: '30d New', value: Math.min(100, Math.round((this.overview.newUsersLast30Days / total) * 100)), color: 'blue' },
+      { label: 'Orgs', value: Math.min(100, Math.round((this.overview.activeOrganizations / Math.max(1, this.overview.totalOrganizations)) * 100)), color: 'cyan' },
+      { label: '30d Orgs', value: Math.min(100, Math.round((this.overview.newOrganizationsLast30Days / Math.max(1, this.overview.totalOrganizations)) * 100)), color: 'green' },
+      { label: roleEntries[0]?.[0] || 'Roles', value: Math.min(100, Math.round(((roleEntries[0]?.[1] || 0) / total) * 100)), color: 'orange' },
+      { label: roleEntries[1]?.[0] || 'Mix', value: Math.min(100, Math.round(((roleEntries[1]?.[1] || 0) / total) * 100)), color: 'pink' }
+    ];
+  }
+
+  get roleDistribution(): Array<{ role: string; count: number; percent: number }> {
+    if (!this.overview?.usersByRole) return [];
+    const total = Math.max(1, this.overview.totalUsers);
+    return Object.entries(this.overview.usersByRole)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 4)
+      .map(([role, count]) => ({
+        role: role.replaceAll('_', ' '),
+        count,
+        percent: Math.round((count / total) * 100)
+      }));
   }
 
   get activeOrganizationRate(): number {
