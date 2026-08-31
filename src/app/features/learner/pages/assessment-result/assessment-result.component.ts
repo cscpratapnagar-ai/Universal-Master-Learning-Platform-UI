@@ -1,0 +1,3 @@
+import { Component } from '@angular/core'; import { ActivatedRoute,Router } from '@angular/router';
+@Component({selector:'app-assessment-result',templateUrl:'./assessment-result.component.html',styleUrls:['./assessment-result.component.scss']})
+export class AssessmentResultComponent{result:any;constructor(private route:ActivatedRoute,private router:Router){this.result=history.state.result;} back(){this.router.navigateByUrl('/learner');}}
