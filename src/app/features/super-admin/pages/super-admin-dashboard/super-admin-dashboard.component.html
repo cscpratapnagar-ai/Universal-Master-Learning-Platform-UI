@@ -103,6 +103,32 @@
     </article>
   </section>
 
+  <section class="dashboard-grid secondary-grid live-intelligence">
+    <article class="panel activity-panel">
+      <div class="panel-head compact"><div><p class="eyebrow">RECENT USERS</p><h3>Live identity activity</h3></div><button class="text-btn" type="button" (click)="navigate('/super-admin/users')">Manage users</button></div>
+      <div class="activity-list" *ngIf="recentUsers.length; else noUsers">
+        <div class="activity" *ngFor="let item of recentUsers">
+          <div class="activity-icon cyan">{{ userInitials(item) }}</div>
+          <div><strong>{{ item.firstName }} {{ item.lastName || '' }}</strong><small>{{ item.email }} · {{ item.roles.join(', ') }} · {{ item.enabled ? 'Active' : 'Disabled' }}</small></div>
+        </div>
+      </div>
+      <ng-template #noUsers><div class="state-card">No user intelligence available yet.</div></ng-template>
+    </article>
+
+    <article class="panel activity-panel">
+      <div class="panel-head compact"><div><p class="eyebrow">RECENT ORGANIZATIONS</p><h3>Tenant intelligence</h3></div><button class="text-btn" type="button" (click)="navigate('/super-admin/organizations')">Manage organizations</button></div>
+      <div class="activity-list" *ngIf="recentOrganizations.length; else noOrganizations">
+        <div class="activity" *ngFor="let org of recentOrganizations">
+          <div class="activity-icon violet">{{ org.name.charAt(0) }}</div>
+          <div><strong>{{ org.name }}</strong><small>{{ org.code }} · {{ org.active ? 'Active tenant' : 'Inactive tenant' }} · {{ org.description || 'No description' }}</small></div>
+        </div>
+      </div>
+      <ng-template #noOrganizations><div class="state-card">No organization intelligence available yet.</div></ng-template>
+    </article>
+  </section>
+
+  <p class="intelligence-warning" *ngIf="intelligenceWarning">{{ intelligenceWarning }}</p>
+
   <section class="bottom-grid">
     <article class="panel quick-panel">
       <div class="panel-head compact"><div><p class="eyebrow">QUICK ACTIONS</p><h3>Operate faster</h3></div></div>
