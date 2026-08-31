@@ -6,6 +6,7 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule) },
   { path: 'learner', loadChildren: () => import('./features/learner/learner.module').then(m => m.LearnerModule) },
   { path: 'super-admin', loadChildren: () => import('./features/super-admin/super-admin.module').then(m => m.SuperAdminModule) },
+  { path: 'organization', loadChildren: () => import('./features/organization/organization.module').then(m => m.OrganizationModule) },
   { path: '**', redirectTo: '' }
 ];
 
