@@ -27,13 +27,13 @@
       <div class="metric-icon">◌</div><div><span>Active Organizations</span><strong>{{ overview.activeOrganizations | number }}</strong><small>{{ activeOrganizationRate }}% operational</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card violet">
-      <div class="metric-icon">▦</div><div><span>Total Organizations</span><strong>{{ overview.totalOrganizations | number }}</strong><small>↑ 12% from last month</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">▦</div><div><span>Total Organizations</span><strong>{{ overview.totalOrganizations | number }}</strong><small>+{{ overview.newOrganizationsLast30Days | number }} new in last 30 days</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card blue">
-      <div class="metric-icon">◎</div><div><span>Total Users</span><strong>{{ overview.totalUsers | number }}</strong><small>↑ 18.5% from last month</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">◎</div><div><span>Total Users</span><strong>{{ overview.totalUsers | number }}</strong><small>+{{ overview.newUsersLast30Days | number }} new in last 30 days</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card green">
-      <div class="metric-icon">◇</div><div><span>Total Students</span><strong>{{ overview.totalUsers | number }}</strong><small>↑ 20.3% learning growth</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">◇</div><div><span>Total Students</span><strong>{{ overview.totalUsers | number }}</strong><small>{{ overview.usersByRole ? (overview.usersByRole['LEARNER'] || 0) : 0 | number }} learners identified</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card orange">
       <div class="metric-icon">▣</div><div><span>Learning Modules</span><strong>512</strong><small>↑ 15.7% from last month</small></div><i class="metric-orb"></i>
@@ -88,7 +88,10 @@
     <article class="panel donut-panel">
       <div class="panel-head compact"><div><p class="eyebrow">USER GROWTH</p><h3>Community mix</h3></div></div>
       <div class="donut-wrap"><div class="donut"><div><strong>{{ overview.totalUsers | number }}</strong><small>Total users</small></div></div>
-      <div class="donut-legend"><span><i></i>Students <b>84.7%</b></span><span><i></i>Teachers <b>9.4%</b></span><span><i></i>Admins <b>4.1%</b></span><span><i></i>Others <b>1.8%</b></span></div></div>
+      <div class="donut-legend">
+        <span *ngFor="let role of roleDistribution; let i = index"><i [class]="'role-dot role-' + i"></i>{{ role.role }} <b>{{ role.count | number }} · {{ role.percent }}%</b></span>
+        <span *ngIf="!roleDistribution.length"><i></i>Role intelligence <b>Waiting for data</b></span>
+      </div></div>
     </article>
 
     <article class="panel health-panel">
