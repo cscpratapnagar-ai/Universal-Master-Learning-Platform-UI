@@ -67,19 +67,30 @@ export class LandingComponent implements OnInit, OnDestroy {
   toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
   closeMobileMenu(): void { this.mobileMenuOpen = false; }
 
-  scrollToSection(event: Event, sectionId: string): void {
-    event.preventDefault();
+  scrollToSection(sectionId: string): void {
     this.closeMobileMenu();
 
-    const target = document.getElementById(sectionId);
-    if (!target) return;
+    // Wait one frame so a closing mobile menu cannot change layout during measurement.
+    requestAnimationFrame(() => {
+      const target = document.getElementById(sectionId);
+      if (!target) return;
 
-    const headerOffset = 96;
-    const targetTop = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+      const headerOffset = 96;
+      const rect = target.getBoundingClientRect();
+      const absoluteTop = rect.top + window.scrollY;
+      const viewport = window.innerHeight;
+      const targetHeight = Math.min(target.offsetHeight, Math.max(0, viewport - headerOffset));
 
-    window.scrollTo({
-      top: Math.max(0, targetTop),
-      behavior: 'smooth'
+      // Short sections are centered in the viewport; large sections start cleanly below the nav.
+      const centeredTop = absoluteTop - Math.max(
+        headerOffset,
+        (viewport - targetHeight) / 2
+      );
+
+      window.scrollTo({
+        top: Math.max(0, centeredTop),
+        behavior: 'smooth'
+      });
     });
   }
 }
