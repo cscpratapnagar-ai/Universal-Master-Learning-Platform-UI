@@ -8,11 +8,11 @@
     </a>
 
     <nav class="desktop-nav" [class.open]="mobileMenuOpen">
-      <a href="#home" (click)="closeMobileMenu()">Home</a>
-      <a href="#ecosystem" (click)="closeMobileMenu()">Ecosystem</a>
-      <a href="#journeys" (click)="closeMobileMenu()">Journeys</a>
-      <a href="#intelligence" (click)="closeMobileMenu()">Intelligence</a>
-      <a href="#features" (click)="closeMobileMenu()">Explore</a>
+      <a href="#home" (click)="scrollToSection($event, 'home')">Home</a>
+      <a href="#ecosystem" (click)="scrollToSection($event, 'ecosystem')">Ecosystem</a>
+      <a href="#journeys" (click)="scrollToSection($event, 'journeys')">Journeys</a>
+      <a href="#intelligence" (click)="scrollToSection($event, 'intelligence')">Intelligence</a>
+      <a href="#features" (click)="scrollToSection($event, 'features')">Explore</a>
     </nav>
 
     <div class="nav-actions">
@@ -31,7 +31,7 @@
       <p>Master Learning brings learners, educators and institutions into one connected experience for courses, practice, assessment, collaboration and meaningful progress.</p>
       <div class="hero-actions">
         <a routerLink="/auth/register" class="primary-action">Start your journey <span>→</span></a>
-        <a href="#ecosystem" class="secondary-action">Explore the platform <span>↓</span></a>
+        <a href="#ecosystem" (click)="scrollToSection($event, 'ecosystem')" class="secondary-action">Explore the platform <span>↓</span></a>
       </div>
       <div class="proof"><div class="avatar-stack"><b>V</b><b>A</b><b>S</b><em>10K+</em></div><span>Designed for ambitious learners,<br>educators and institutions.</span></div>
     </div>
@@ -87,7 +87,7 @@
         <h3>{{ journey.title }}</h3>
         <p>{{ journey.description }}</p>
         <ul><li *ngFor="let point of journey.points">{{ point }}</li></ul>
-        <a href="#features">{{ journey.action }} <span>→</span></a>
+        <a href="#features" (click)="scrollToSection($event, 'features')">{{ journey.action }} <span>→</span></a>
       </article>
     </div>
   </section>
