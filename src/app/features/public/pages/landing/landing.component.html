@@ -4,44 +4,45 @@
   <header class="navbar app-container">
     <a routerLink="/" class="brand" aria-label="Master Learning home">
       <span class="brand-mark"><i></i><i></i><i></i></span>
-      <span><strong>Master Learning</strong><small>INTELLIGENCE PLATFORM</small></span>
+      <span><strong>Master Learning</strong><small>ONE PLATFORM · EVERY JOURNEY</small></span>
     </a>
 
     <nav class="desktop-nav" [class.open]="mobileMenuOpen">
       <a href="#home" (click)="closeMobileMenu()">Home</a>
       <a href="#ecosystem" (click)="closeMobileMenu()">Ecosystem</a>
-      <a href="#intelligence" (click)="closeMobileMenu()">AI Intelligence</a>
-      <a href="#features" (click)="closeMobileMenu()">Features</a>
+      <a href="#journeys" (click)="closeMobileMenu()">Journeys</a>
+      <a href="#intelligence" (click)="closeMobileMenu()">Intelligence</a>
+      <a href="#features" (click)="closeMobileMenu()">Explore</a>
     </nav>
 
     <div class="nav-actions">
-      <button class="theme-toggle" type="button" (click)="toggleTheme()" aria-label="Toggle theme">{{ theme === 'dark' ? '☼' : '☾' }}</button>
+      <button class="theme-toggle" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">{{ theme === 'dark' ? '☼' : '☾' }}</button>
       <span class="status" [class.online]="platformOnline"><i></i>{{ platformOnline ? 'Platform online' : 'Connecting' }}</span>
       <a routerLink="/auth/login" class="login-link">Log in</a>
-      <a routerLink="/auth/register" class="nav-cta">Get started <span>→</span></a>
-      <button class="menu-button" type="button" (click)="toggleMobileMenu()">☰</button>
+      <a routerLink="/auth/register" class="nav-cta">Start learning <span>→</span></a>
+      <button class="menu-button" type="button" (click)="toggleMobileMenu()" aria-label="Open navigation">☰</button>
     </div>
   </header>
 
   <section id="home" class="hero app-container">
     <div class="hero-copy">
-      <div class="eyebrow"><span>✦</span> THE INTELLIGENT WAY TO LEARN</div>
-      <h1>Learning that <span class="gradient-text">understands</span> where you want to go.</h1>
-      <p>One premium ecosystem for learning, teaching, practice, assessment and AI-powered progress—designed to make every next step clearer.</p>
+      <div class="eyebrow"><span>✦</span> A MODERN EDUCATION ECOSYSTEM</div>
+      <h1>One place to <span class="gradient-text">learn deeply.</span><br>Grow confidently.</h1>
+      <p>Master Learning brings learners, educators and institutions into one connected experience for courses, practice, assessment, collaboration and meaningful progress.</p>
       <div class="hero-actions">
-        <a routerLink="/auth/register" class="primary-action">Start learning free <span>→</span></a>
+        <a routerLink="/auth/register" class="primary-action">Start your journey <span>→</span></a>
         <a href="#ecosystem" class="secondary-action">Explore the platform <span>↓</span></a>
       </div>
-      <div class="proof"><div class="avatar-stack"><b>V</b><b>A</b><b>S</b><em>10K+</em></div><span>Built for ambitious learners,<br>educators and institutions.</span></div>
+      <div class="proof"><div class="avatar-stack"><b>V</b><b>A</b><b>S</b><em>10K+</em></div><span>Designed for ambitious learners,<br>educators and institutions.</span></div>
     </div>
 
-    <div class="hero-visual" aria-label="Learning intelligence dashboard preview">
+    <div class="hero-visual" aria-label="Learning dashboard preview">
       <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
       <div class="floating-card card-progress"><small>LEARNING MOMENTUM</small><strong>+24%</strong><span>This week <b>↗</b></span></div>
       <div class="floating-card card-streak"><span>🔥</span><div><small>YOUR STREAK</small><strong>12 days</strong></div></div>
       <div class="dashboard">
         <div class="dash-head"><div class="dash-brand"><i></i><b>Learning Space</b></div><div class="dash-tools"><span></span><span></span><b>V</b></div></div>
-        <div class="dash-title"><div><small>GOOD MORNING, VISHAL</small><h2>Your next breakthrough starts here.</h2></div><button>View journey →</button></div>
+        <div class="dash-title"><div><small>WELCOME BACK</small><h2>Your next breakthrough starts here.</h2></div><button>View journey →</button></div>
         <div class="focus-panel"><div><span class="chip">CONTINUE LEARNING</span><h3>Advanced Mathematics</h3><p>Chapter 5 · Integration techniques</p><div class="bar"><i></i></div><small>75% complete</small></div><button class="play">▶</button></div>
         <div class="dash-grid">
           <article><span>◷</span><small>Learning time</small><strong>48.5h</strong><em>+15% this week</em></article>
@@ -53,12 +54,29 @@
           <article class="ai-mini"><span>✦</span><div><small>AI LEARNING GUIDE</small><strong>What would you like to understand?</strong></div></article>
         </div>
       </div>
-      <div class="ai-orb"><div class="orb-core">✦</div><span>AI adapts with you</span></div>
+      <div class="ai-orb"><div class="orb-core">✦</div><span>Guidance that adapts with you</span></div>
     </div>
   </section>
 
   <section class="metrics app-container">
     <article *ngFor="let metric of metrics"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></article>
+  </section>
+
+  <section id="journeys" class="journeys app-container">
+    <div class="section-intro journey-intro">
+      <span class="eyebrow">BUILT AROUND REAL PEOPLE</span>
+      <h2>A different starting point.<br><span class="gradient-text">One connected destination.</span></h2>
+      <p>Every role gets a focused experience while staying connected to the same learning ecosystem.</p>
+    </div>
+    <div class="journey-grid">
+      <article *ngFor="let journey of journeys" class="journey-card">
+        <div class="journey-top"><span class="journey-icon">{{ journey.icon }}</span><span class="journey-number">{{ journey.number }}</span></div>
+        <h3>{{ journey.title }}</h3>
+        <p>{{ journey.description }}</p>
+        <ul><li *ngFor="let point of journey.points">{{ point }}</li></ul>
+        <a href="#features">{{ journey.action }} <span>→</span></a>
+      </article>
+    </div>
   </section>
 
   <section id="ecosystem" class="ecosystem app-container">
@@ -82,7 +100,7 @@
 
   <section id="features" class="features app-container">
     <div class="section-intro centered"><span class="eyebrow">PLATFORM CAPABILITIES</span><h2>Designed for how people<br><span class="gradient-text">actually learn.</span></h2></div>
-    <div class="feature-grid"><article *ngFor="let feature of features"><span>{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><i>Learn more →</i></article></div>
+    <div class="feature-grid"><article *ngFor="let feature of features"><span>{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><i>Explore capability →</i></article></div>
   </section>
 
   <section class="final-cta app-container"><div><span class="eyebrow">YOUR NEXT CHAPTER</span><h2>Build momentum.<br><span class="gradient-text">Make it count.</span></h2><p>Start with a free account and grow into a learning system that grows with you.</p></div><a routerLink="/auth/register" class="primary-action">Create free account <span>→</span></a></section>
