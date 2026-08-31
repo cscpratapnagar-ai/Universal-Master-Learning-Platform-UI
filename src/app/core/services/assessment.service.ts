@@ -1,0 +1,2 @@
+import { Injectable } from '@angular/core'; import { HttpClient } from '@angular/common/http'; import { Observable } from 'rxjs'; import { AssessmentResult } from '../models/assessment.model';
+@Injectable({providedIn:'root'}) export class AssessmentService{private base='http://localhost:8080/api/v1';constructor(private http:HttpClient){} submit(assessmentId:string,userId:string,answers:Record<string,string>):Observable<any>{return this.http.post(`${this.base}/student/assessments/${assessmentId}/submit`,{userId,answers});}}
