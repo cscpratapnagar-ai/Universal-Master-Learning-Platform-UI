@@ -1,18 +1,29 @@
 <main class="control-shell" [attr.data-theme]="theme">
   <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">M</div><div><strong>MASTER</strong><span>CONTROL CENTER</span></div></div>
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div><strong>MASTER</strong><span>LEARNING PLATFORM</span></div>
+    </div>
+    <div class="admin-chip">
+      <div class="avatar">{{ (user?.firstName || 'S').charAt(0) }}</div>
+      <div><strong>{{ user?.firstName || 'Super Admin' }}</strong><small>{{ user?.email || 'Platform authority' }}</small><span><i></i> Online · SUPER ADMIN</span></div>
+    </div>
     <nav>
       <a *ngFor="let section of sections" [routerLink]="section.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: section.route === '/super-admin' }">
-        <span>{{ section.icon }}</span>{{ section.label }}
+        <span>{{ section.icon }}</span>{{ section.label }}<b>›</b>
       </a>
     </nav>
-    <div class="sidebar-footer"><span class="live-dot"></span><div><strong>{{ user?.firstName || 'Super Admin' }}</strong><small>Internal access only</small></div></div>
+    <div class="growth-card"><div>🏆</div><strong>Your platform is growing!</strong><small>Advanced learning ecosystem</small><i><em></em></i></div>
+    <div class="sidebar-footer"><span class="live-dot"></span><div><strong>Platform Core</strong><small>All systems operational</small></div></div>
   </aside>
+
   <section class="workspace">
     <header class="topbar">
-      <div><p class="eyebrow">COMMAND CENTER · SUPER ADMIN</p><h1>Master Control Center <span class="live-label">LIVE</span></h1></div>
+      <button class="collapse-btn" type="button">‹</button>
+      <label class="global-search"><span>⌕</span><input type="text" placeholder="Search anything..." /><kbd>Ctrl + K</kbd></label>
       <div class="top-actions">
         <button class="icon-btn" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch theme'">{{ theme === 'dark' ? '☀' : '☾' }}</button>
+        <button class="icon-btn notification-btn" type="button">♧<i>3</i></button>
         <button type="button" class="logout-btn" (click)="logout()" [disabled]="isLoggingOut">{{ isLoggingOut ? 'Logging out…' : 'Logout' }}</button>
       </div>
     </header>
