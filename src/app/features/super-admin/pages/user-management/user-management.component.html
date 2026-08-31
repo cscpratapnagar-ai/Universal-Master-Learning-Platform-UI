@@ -1,0 +1,50 @@
+<section class="page content-page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">IDENTITY GOVERNANCE · PLATFORM ACCESS</p>
+      <h1>Users</h1>
+      <p>Manage platform identities, account access and role assignments from one control plane.</p>
+    </div>
+    <div class="head-actions"><button class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button></div>
+  </header>
+
+  <section class="stats">
+    <article><span>◎ Total users</span><strong>{{ users.length }}</strong><small>Registered platform identities</small></article>
+    <article><span>● Active accounts</span><strong class="green">{{ activeCount }}</strong><small>Can authenticate and access services</small></article>
+    <article><span>◌ Disabled accounts</span><strong>{{ inactiveCount }}</strong><small>Access currently suspended</small></article>
+  </section>
+
+  <section class="panel">
+    <div class="toolbar">
+      <div><h2>User Directory</h2><small>Search, govern and control every platform identity</small></div>
+      <div class="toolbar-controls">
+        <label class="search-box">⌕<input [(ngModel)]="search" (keyup.enter)="load()" placeholder="Search name or email"></label>
+        <select [(ngModel)]="statusFilter" (change)="load()"><option value="ALL">All statuses</option><option value="ACTIVE">Active</option><option value="INACTIVE">Disabled</option></select>
+      </div>
+    </div>
+    <div *ngIf="loading" class="state">Synchronizing user directory…</div>
+    <div *ngIf="errorMessage&&!loading" class="error"><strong>Unable to load users</strong><span>{{ errorMessage }}</span><button (click)="load()">Try again</button></div>
+    <div class="table-wrap" *ngIf="!loading&&!errorMessage">
+      <table>
+        <thead><tr><th>User</th><th>Roles</th><th>Status</th><th class="right">Actions</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let user of filtered; trackBy: trackById">
+            <td><div class="user-cell"><span>{{ user.firstName.charAt(0) }}{{ user.lastName ? user.lastName.charAt(0) : '' }}</span><div><strong>{{ user.firstName }} {{ user.lastName || '' }}</strong><small>{{ user.email }}</small></div></div></td>
+            <td><div class="roles"><span *ngFor="let role of user.roles">{{ role }}</span></div></td>
+            <td><span class="badge" [class.off]="!user.enabled"><i></i>{{ user.enabled ? 'ACTIVE' : 'DISABLED' }}</span></td>
+            <td class="right actions"><button class="edit" (click)="openRoles(user)">Roles</button><button [class]="user.enabled ? 'danger' : 'activate'" (click)="toggleStatus(user)">{{ user.enabled ? 'Disable' : 'Activate' }}</button></td>
+          </tr>
+          <tr *ngIf="!filtered.length"><td colspan="4" class="empty">No users match the current filters.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="modal-backdrop" *ngIf="showRoles">
+    <div class="modal">
+      <div class="modal-head"><div><span class="modal-icon">◎</span><h2>Manage Roles</h2><p>{{ selected?.email }}</p></div><button type="button" (click)="showRoles=false">×</button></div>
+      <div class="role-list"><label *ngFor="let role of availableRoles" [class.selected]="editableRoles.includes(role)"><input type="checkbox" [checked]="editableRoles.includes(role)" (change)="toggleRole(role)"><span><strong>{{ role }}</strong><small>Platform permission profile</small></span></label></div>
+      <div class="modal-actions"><button type="button" class="secondary" (click)="showRoles=false">Cancel</button><button class="primary" (click)="saveRoles()" [disabled]="saving || !editableRoles.length">{{ saving ? 'Saving…' : 'Save Roles' }}</button></div>
+    </div>
+  </div>
+</section>
