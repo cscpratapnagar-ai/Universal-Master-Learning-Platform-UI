@@ -6,4 +6,7 @@ export interface InternalPortalOverview {
   activeUsers: number;
   totalOrganizations: number;
   activeOrganizations: number;
+  usersByRole: Record<string, number>;
+  newUsersLast30Days: number;
+  newOrganizationsLast30Days: number;
 }
