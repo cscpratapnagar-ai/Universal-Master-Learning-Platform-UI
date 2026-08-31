@@ -12,6 +12,26 @@ import { Organization } from '../../../../core/models/organization.model';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 interface TrendPoint { label: string; value: number; color: string; }
+interface DashboardCourse {
+  title: string;
+  students: number;
+  progress: number;
+  icon: string;
+  tone: string;
+}
+interface DashboardActivity {
+  title: string;
+  detail: string;
+  time: string;
+  icon: string;
+  tone: string;
+}
+interface QuickAction {
+  label: string;
+  icon: string;
+  tone: string;
+  route: string;
+}
 
 @Component({
   selector: 'app-super-admin-dashboard',
@@ -29,6 +49,26 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   recentOrganizations: Organization[] = [];
   intelligenceWarning = '';
   private readonly subscriptions = new Subscription();
+
+  // Temporary presentation signals until the dedicated analytics module is connected.
+  // Core user and organization metrics below are loaded from live backend APIs.
+  readonly courses: DashboardCourse[] = [
+    { title: 'Course analytics', students: 0, progress: 0, icon: '◫', tone: 'violet' },
+    { title: 'Learning catalog', students: 0, progress: 0, icon: '◈', tone: 'cyan' },
+    { title: 'Engagement engine', students: 0, progress: 0, icon: '◎', tone: 'green' }
+  ];
+
+  readonly activities: DashboardActivity[] = [
+    { title: 'Platform intelligence connected', detail: 'Live user and organization APIs', time: 'Now', icon: '◉', tone: 'cyan' },
+    { title: 'Role-based security active', detail: 'Super Admin command access protected', time: 'Live', icon: '◇', tone: 'violet' },
+    { title: 'Auto refresh enabled', detail: 'Dashboard sync interval: 30 seconds', time: '30s', icon: '↻', tone: 'green' }
+  ];
+
+  readonly quickActions: QuickAction[] = [
+    { label: 'Manage Users', icon: '◉', tone: 'cyan', route: '/super-admin/users' },
+    { label: 'Organizations', icon: '▦', tone: 'violet', route: '/super-admin/organizations' },
+    { label: 'Refresh Intelligence', icon: '↻', tone: 'green', route: '/super-admin/dashboard' }
+  ];
 
   readonly activityTrend: TrendPoint[] = [
     { label: 'May 20', value: 42, color: 'violet' }, { label: 'May 27', value: 58, color: 'blue' },
