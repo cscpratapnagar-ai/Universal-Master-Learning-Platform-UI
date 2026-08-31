@@ -1,3 +1,33 @@
-import { Component } from '@angular/core'; import { HttpClient } from '@angular/common/http';
-@Component({selector:'app-certificate',templateUrl:'./certificate.component.html',styleUrls:['./certificate.component.scss']})
-export class CertificateComponent{number='';result:any;loading=false;constructor(private http:HttpClient){} verify(){if(!this.number)return;this.loading=true;this.result=null;this.http.get<any>('http://localhost:8080/api/v1/certificates/verify/'+encodeURIComponent(this.number)).subscribe({next:r=>{this.result=r.data||r;this.loading=false;},error:()=>{this.result={valid:false};this.loading=false;}})}
+import { Component } from '@angular/core';
+import { CertificateService } from '../../../../core/services/certificate.service';
+
+@Component({
+  selector: 'app-certificate',
+  templateUrl: './certificate.component.html',
+  styleUrls: ['./certificate.component.scss']
+})
+export class CertificateComponent {
+  number = '';
+  result: any;
+  loading = false;
+
+  constructor(private readonly certificates: CertificateService) {}
+
+  verify(): void {
+    if (!this.number.trim()) return;
+
+    this.loading = true;
+    this.result = null;
+
+    this.certificates.verify(this.number.trim()).subscribe({
+      next: (response: any) => {
+        this.result = response?.data ?? response;
+        this.loading = false;
+      },
+      error: () => {
+        this.result = { valid: false };
+        this.loading = false;
+      }
+    });
+  }
+}
