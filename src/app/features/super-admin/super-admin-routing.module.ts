@@ -6,6 +6,7 @@ import { RoleGuard } from '../../core/guards/role.guard';
 import { SuperAdminShellComponent } from './layout/super-admin-shell.component';
 import { SuperAdminDashboardComponent } from './pages/super-admin-dashboard/super-admin-dashboard.component';
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
+import { UserManagementComponent } from './pages/user-management/user-management.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
     data: { roles: ['SUPER_ADMIN'] },
     children: [
       { path: '', component: SuperAdminDashboardComponent },
+      { path: 'users', component: UserManagementComponent },
       { path: 'organizations', component: OrganizationManagementComponent }
     ]
   }
