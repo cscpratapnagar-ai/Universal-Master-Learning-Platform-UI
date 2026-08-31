@@ -13,31 +13,54 @@
 
   <section class="stats">
     <article><span>🏢 Total organizations</span><strong>{{ organizations.length }}</strong><small>All registered tenants</small></article>
-    <article><span>● Active tenants</span><strong class="green">{{ activeCount }}</strong><small>Operational and available</small></article>
-    <article><span>◌ Inactive</span><strong>{{ inactiveCount }}</strong><small>Suspended or archived</small></article>
+    <article><span>✦ Active tenants</span><strong class="green">{{ activeCount }}</strong><small>Operational and available</small></article>
+    <article><span>◌ Suspended</span><strong class="amber">{{ suspendedCount }}</strong><small>Access temporarily restricted</small></article>
+    <article><span>⌁ Archived</span><strong class="pink">{{ archivedCount }}</strong><small>Retained safely, not deleted</small></article>
   </section>
 
   <section class="panel">
     <div class="toolbar">
       <div><h2>Organization Directory</h2><small>Centralized administration across every tenant</small></div>
-      <label class="search-box">⌕<input [(ngModel)]="search" (input)="applyFilter()" placeholder="Search organization, code or description"></label>
+      <div class="filters">
+        <label class="search-box">⌕<input [(ngModel)]="search" (input)="applyFilter()" placeholder="Search organization, code or description"></label>
+        <select [(ngModel)]="statusFilter" (change)="applyFilter()" aria-label="Filter by status">
+          <option value="ALL">All statuses</option>
+          <option *ngFor="let status of statusOptions" [value]="status">{{ status }}</option>
+        </select>
+      </div>
     </div>
 
-    <div *ngIf="loading" class="state"><i></i> Synchronizing organization data…</div>
+    <div *ngIf="loading" class="state"><i></i> Synchronizing organization intelligence…</div>
     <div *ngIf="errorMessage&&!loading" class="error"><strong>Unable to load data</strong><span>{{ errorMessage }}</span><button (click)="load()">Try again</button></div>
 
     <div class="table-wrap" *ngIf="!loading&&!errorMessage">
       <table>
-        <thead><tr><th>Organization</th><th>Code</th><th>Description</th><th>Status</th><th class="right">Actions</th></tr></thead>
+        <thead><tr><th>Organization</th><th>Code</th><th>Type / Location</th><th>Status</th><th class="right">Actions</th></tr></thead>
         <tbody>
           <tr *ngFor="let org of filtered; trackBy: trackById">
-            <td><div class="org-cell"><span>{{ org.name.charAt(0) }}</span><div><strong>{{ org.name }}</strong><small>{{ org.id }}</small></div></div></td>
+            <td>
+              <div class="org-cell">
+                <span>{{ org.name.charAt(0) }}</span>
+                <div><strong>{{ org.name }}</strong><small>{{ org.description || 'No description provided' }}</small></div>
+              </div>
+            </td>
             <td><code>{{ org.code }}</code></td>
-            <td class="description">{{ org.description || 'No description provided' }}</td>
-            <td><span class="badge" [class.off]="!org.active"><i></i>{{ org.active ? 'ACTIVE' : 'INACTIVE' }}</span></td>
-            <td class="right actions"><button class="edit" (click)="openEdit(org)">Edit</button><button class="danger" *ngIf="org.active" (click)="deactivate(org)">Deactivate</button></td>
+            <td class="description">
+              <ng-container *ngIf="profiles.get(org.id) as profile; else noProfile">
+                {{ profile.organizationType || 'Institution' }}<small *ngIf="profile.city || profile.country"> · {{ profile.city || profile.country }}</small>
+              </ng-container>
+              <ng-template #noProfile>Institution</ng-template>
+            </td>
+            <td><span class="badge" [class.suspended]="statusOf(org)==='SUSPENDED'" [class.archived]="statusOf(org)==='ARCHIVED'" [class.off]="statusOf(org)==='INACTIVE' || statusOf(org)==='DRAFT'"><i></i>{{ statusOf(org) }}</span></td>
+            <td class="right actions">
+              <button class="view" (click)="openDetails(org)">View</button>
+              <button class="edit" (click)="openEdit(org)">Edit</button>
+              <button class="status-action" *ngIf="statusOf(org)!=='ACTIVE'" (click)="changeStatus(org,'ACTIVE')">Activate</button>
+              <button class="warning" *ngIf="statusOf(org)==='ACTIVE'" (click)="changeStatus(org,'SUSPENDED')">Suspend</button>
+              <button class="danger" *ngIf="statusOf(org)!=='ARCHIVED'" (click)="changeStatus(org,'ARCHIVED')">Archive</button>
+            </td>
           </tr>
-          <tr *ngIf="!filtered.length"><td colspan="5" class="empty">No organizations match your search.</td></tr>
+          <tr *ngIf="!filtered.length"><td colspan="5" class="empty">No organizations match your current filters.</td></tr>
         </tbody>
       </table>
     </div>
@@ -48,6 +71,7 @@
       <div class="modal-head"><div><span class="modal-icon">＋</span><h2>Create Organization</h2><p>Provision a new tenant on the platform.</p></div><button type="button" (click)="showCreate=false">×</button></div>
       <label>Organization name<input [(ngModel)]="form.name" name="name" required placeholder="Example Institute"></label>
       <label>Unique tenant code<input [(ngModel)]="form.code" name="code" required placeholder="EXAMPLE_INST"></label>
+      <small class="field-help">Uppercase letters, numbers and underscores are recommended.</small>
       <label>Description<textarea [(ngModel)]="form.description" name="description" placeholder="Describe this organization (optional)"></textarea></label>
       <div class="modal-actions"><button type="button" class="secondary" (click)="showCreate=false">Cancel</button><button class="primary" [disabled]="saving">{{ saving ? 'Creating…' : 'Create Organization' }}</button></div>
     </form>
@@ -55,11 +79,47 @@
 
   <div class="modal-backdrop" *ngIf="showEdit">
     <form class="modal" (ngSubmit)="update()">
-      <div class="modal-head"><div><span class="modal-icon edit-icon">✎</span><h2>Edit Organization</h2><p>Update tenant identity and configuration.</p></div><button type="button" (click)="showEdit=false">×</button></div>
+      <div class="modal-head"><div><span class="modal-icon edit-icon">✎</span><h2>Edit Organization</h2><p>Update tenant identity without changing its permanent code.</p></div><button type="button" (click)="closeEdit()">×</button></div>
       <label>Organization name<input [(ngModel)]="editForm.name" name="editName" required></label>
-      <label>Unique tenant code<input [(ngModel)]="editForm.code" name="editCode" required></label>
       <label>Description<textarea [(ngModel)]="editForm.description" name="editDescription"></textarea></label>
-      <div class="modal-actions"><button type="button" class="secondary" (click)="showEdit=false">Cancel</button><button class="primary" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Changes' }}</button></div>
+      <div class="modal-actions"><button type="button" class="secondary" (click)="closeEdit()">Cancel</button><button class="primary" [disabled]="saving">{{ saving ? 'Saving…' : 'Save Changes' }}</button></div>
     </form>
+  </div>
+
+  <div class="modal-backdrop details-backdrop" *ngIf="showDetails">
+    <section class="modal details-modal">
+      <div class="modal-head">
+        <div><span class="modal-icon">◈</span><h2>{{ selected?.displayName || selected?.name || 'Organization Intelligence' }}</h2><p>Tenant identity, contact and operational state.</p></div>
+        <button type="button" (click)="closeDetails()">×</button>
+      </div>
+
+      <div *ngIf="!selected" class="state compact"><i></i> Loading organization profile…</div>
+
+      <ng-container *ngIf="selected as profile">
+        <div class="profile-hero">
+          <div class="profile-mark">{{ profile.name.charAt(0) }}</div>
+          <div><h3>{{ profile.name }}</h3><code>{{ profile.code }}</code></div>
+          <span class="badge" [class.suspended]="profile.status==='SUSPENDED'" [class.archived]="profile.status==='ARCHIVED'" [class.off]="profile.status==='INACTIVE' || profile.status==='DRAFT'"><i></i>{{ profile.status }}</span>
+        </div>
+
+        <div class="detail-grid">
+          <div><span>Legal name</span><strong>{{ profile.legalName || 'Not configured' }}</strong></div>
+          <div><span>Organization type</span><strong>{{ profile.organizationType || 'Not configured' }}</strong></div>
+          <div><span>Primary email</span><strong>{{ profile.primaryEmail || 'Not configured' }}</strong></div>
+          <div><span>Primary phone</span><strong>{{ profile.primaryPhone || 'Not configured' }}</strong></div>
+          <div><span>Location</span><strong>{{ profile.city || profile.state || profile.country || 'Not configured' }}</strong></div>
+          <div><span>Website</span><strong>{{ profile.website || 'Not configured' }}</strong></div>
+        </div>
+
+        <div class="lifecycle">
+          <span>Lifecycle controls</span>
+          <div>
+            <button class="status-action" *ngIf="profile.status!=='ACTIVE'" (click)="changeStatus(profile,'ACTIVE')">Activate</button>
+            <button class="warning" *ngIf="profile.status==='ACTIVE'" (click)="changeStatus(profile,'SUSPENDED')">Suspend</button>
+            <button class="danger" *ngIf="profile.status!=='ARCHIVED'" (click)="changeStatus(profile,'ARCHIVED')">Archive</button>
+          </div>
+        </div>
+      </ng-container>
+    </section>
   </div>
 </section>
