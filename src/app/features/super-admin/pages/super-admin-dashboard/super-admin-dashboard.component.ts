@@ -1,14 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-
 import { User } from '../../../../core/models/auth.model';
 import { InternalPortalOverview } from '../../../../core/models/internal-portal.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { InternalPortalService } from '../../../../core/services/internal-portal.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
-interface TrendPoint { label: string; value: number; }
+interface TrendPoint { label: string; value: number; color: string; }
 
 @Component({
   selector: 'app-super-admin-dashboard',
@@ -20,29 +19,42 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   overview: InternalPortalOverview | null = null;
   loading = true;
   errorMessage = '';
-  activeSection = 'Overview';
-  lastRefresh = new Date();
-  isLoggingOut = false;
   theme: ThemeMode = 'dark';
-
-  readonly sections = ['Overview', 'Users', 'Organizations', 'Learning', 'Security', 'System'];
-  readonly activityTrend: TrendPoint[] = [
-    { label: 'Mon', value: 42 }, { label: 'Tue', value: 58 }, { label: 'Wed', value: 46 },
-    { label: 'Thu', value: 74 }, { label: 'Fri', value: 67 }, { label: 'Sat', value: 88 },
-    { label: 'Sun', value: 96 }
-  ];
-  readonly healthMetrics = [
-    { label: 'API', value: 99.98, suffix: '%', detail: 'Response reliability' },
-    { label: 'Database', value: 99.99, suffix: '%', detail: 'Connection health' },
-    { label: 'Security', value: 100, suffix: '%', detail: 'Protected routes' }
-  ];
-  readonly pulseItems = [
-    { icon: '↗', title: 'Protected API active', text: 'JWT authorization is enforcing internal access.', tone: 'positive' },
-    { icon: '◉', title: 'Live data sync', text: 'Overview metrics are read from the backend.', tone: 'primary' },
-    { icon: '✦', title: 'Control center ready', text: 'Management modules can expand from this foundation.', tone: 'neutral' }
-  ];
-
+  lastRefresh = new Date();
   private readonly subscriptions = new Subscription();
+
+  readonly activityTrend: TrendPoint[] = [
+    { label: 'May 20', value: 42, color: 'violet' },
+    { label: 'May 27', value: 58, color: 'blue' },
+    { label: 'Jun 03', value: 46, color: 'cyan' },
+    { label: 'Jun 10', value: 74, color: 'green' },
+    { label: 'Jun 17', value: 67, color: 'orange' },
+    { label: 'Today', value: 92, color: 'pink' }
+  ];
+
+  readonly courses = [
+    { title: 'Complete Java Development', students: '4,702', progress: 85, tone: 'violet', icon: '☕' },
+    { title: 'Data Structures & Algorithms', students: '3,921', progress: 78, tone: 'blue', icon: '⌘' },
+    { title: 'Full Stack Development', students: '3,156', progress: 72, tone: 'green', icon: '◫' },
+    { title: 'Python for Beginners', students: '2,945', progress: 65, tone: 'orange', icon: '⌁' },
+    { title: 'UI/UX Design Masterclass', students: '2,156', progress: 60, tone: 'pink', icon: '✦' }
+  ];
+
+  readonly activities = [
+    { icon: '▦', title: 'New organization registered', detail: 'ABC Institute joined the platform', time: '2 min ago', tone: 'violet' },
+    { icon: '◎', title: 'New user onboarded', detail: 'Platform identity provisioned', time: '5 min ago', tone: 'blue' },
+    { icon: '▣', title: 'Course catalog updated', detail: 'Learning content is live', time: '15 min ago', tone: 'pink' },
+    { icon: '₹', title: 'Payment received', detail: 'Revenue pipeline synchronized', time: '20 min ago', tone: 'green' },
+    { icon: '♙', title: 'Teacher joined', detail: 'Instructor profile verified', time: '30 min ago', tone: 'orange' }
+  ];
+
+  readonly quickActions = [
+    { icon: '▦', label: 'Add Organization', route: '/super-admin/organizations', tone: 'violet' },
+    { icon: '◎', label: 'Manage Users', route: '/super-admin/users', tone: 'blue' },
+    { icon: '◇', label: 'Learning Center', route: '/super-admin/learning', tone: 'orange' },
+    { icon: '◉', label: 'Security', route: '/super-admin/security', tone: 'pink' },
+    { icon: '⚙', label: 'System', route: '/super-admin/system', tone: 'cyan' }
+  ];
 
   constructor(
     private readonly authService: AuthService,
@@ -54,26 +66,22 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.user = this.authService.currentUser();
     this.subscriptions.add(this.themeService.theme$.subscribe(theme => this.theme = theme));
-
     if (!this.authService.isAuthenticated() || !this.user?.roles.includes('SUPER_ADMIN')) {
       this.router.navigateByUrl('/auth/login');
       return;
     }
-
     this.loadOverview();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
+  ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
 
   loadOverview(): void {
     this.loading = true;
     this.errorMessage = '';
     this.internalPortalService.overview().subscribe({
       next: response => {
-        this.loading = false;
         this.overview = response.data;
+        this.loading = false;
         this.lastRefresh = new Date();
       },
       error: (error: Error) => {
@@ -83,39 +91,15 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleTheme(): void {
-    this.themeService.toggle();
-  }
-
-  selectSection(section: string): void {
-    this.activeSection = section;
-
-    const routes: Record<string, string> = {
-      Overview: '/super-admin',
-      Organizations: '/super-admin/organizations'
-    };
-
-    const route = routes[section];
-    if (route) {
-      this.router.navigateByUrl(route);
-    }
-  }
+  toggleTheme(): void { this.themeService.toggle(); }
+  navigate(route: string): void { this.router.navigateByUrl(route); }
 
   trendHeight(value: number): number {
-    return Math.max(12, Math.round((value / 100) * 100));
+    return Math.max(14, Math.round((value / 100) * 100));
   }
 
-  logout(): void {
-    if (this.isLoggingOut) return;
-    this.isLoggingOut = true;
-    const request = this.authService.logout();
-    if (!request) {
-      this.router.navigateByUrl('/auth/login');
-      return;
-    }
-    request.subscribe({
-      next: () => this.router.navigateByUrl('/auth/login'),
-      error: () => this.router.navigateByUrl('/auth/login')
-    });
+  get greeting(): string {
+    const hour = new Date().getHours();
+    return hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
   }
 }
