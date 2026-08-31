@@ -5,6 +5,10 @@ import { User } from '../../../../core/models/auth.model';
 import { InternalPortalOverview } from '../../../../core/models/internal-portal.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { InternalPortalService } from '../../../../core/services/internal-portal.service';
+import { UserManagementService } from '../../../../core/services/user-management.service';
+import { OrganizationService } from '../../../../core/services/organization.service';
+import { ManagedUser } from '../../../../core/models/user-management.model';
+import { Organization } from '../../../../core/models/organization.model';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 interface TrendPoint { label: string; value: number; color: string; }
@@ -21,6 +25,9 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   errorMessage = '';
   theme: ThemeMode = 'dark';
   lastRefresh = new Date();
+  recentUsers: ManagedUser[] = [];
+  recentOrganizations: Organization[] = [];
+  intelligenceWarning = '';
   private readonly subscriptions = new Subscription();
 
   readonly activityTrend: TrendPoint[] = [
@@ -32,6 +39,8 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   constructor(
     private readonly authService: AuthService,
     private readonly internalPortalService: InternalPortalService,
+    private readonly userManagementService: UserManagementService,
+    private readonly organizationService: OrganizationService,
     private readonly themeService: ThemeService,
     private readonly router: Router
   ) {}
@@ -44,7 +53,8 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
       return;
     }
     this.loadOverview();
-    this.subscriptions.add(interval(30000).subscribe(() => this.loadOverview(false)));
+    this.loadIntelligence();
+    this.subscriptions.add(interval(30000).subscribe(() => { this.loadOverview(false); this.loadIntelligence(); }));
   }
 
   ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
@@ -63,6 +73,22 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
         this.errorMessage = error.message || 'Unable to load internal portal data.';
       }
     });
+  }
+
+  loadIntelligence(): void {
+    this.userManagementService.getAll().subscribe({
+      next: response => this.recentUsers = (response.data || []).slice(0, 5),
+      error: () => this.intelligenceWarning = 'Some live intelligence data is temporarily unavailable.'
+    });
+    this.organizationService.getAll().subscribe({
+      next: response => this.recentOrganizations = (response.data || []).slice(0, 5),
+      error: () => this.intelligenceWarning = 'Some live intelligence data is temporarily unavailable.'
+    });
+  }
+
+  userInitials(user: ManagedUser): string {
+    const initials = (user.firstName?.charAt(0) || '') + (user.lastName?.charAt(0) || '');
+    return initials || 'U';
   }
 
   toggleTheme(): void { this.themeService.toggle(); }
