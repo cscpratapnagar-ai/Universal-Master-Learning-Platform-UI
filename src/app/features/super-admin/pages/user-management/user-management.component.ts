@@ -18,7 +18,7 @@ export class UserManagementComponent implements OnInit {
   selected: ManagedUser | null = null;
   showRoles = false;
   editableRoles: string[] = [];
-  readonly availableRoles = ['SUPER_ADMIN', 'ORG_ADMIN', 'INSTRUCTOR', 'LEARNER'];
+  readonly availableRoles = ['SUPER_ADMIN', 'ADMIN', 'TEACHER', 'STUDENT'];
 
   constructor(private readonly usersService: UserManagementService) {}
 
