@@ -3,5 +3,7 @@ export interface InternalPortalOverview {
   service: string;
   timestamp: string;
   totalUsers: number;
+  activeUsers: number;
   totalOrganizations: number;
+  activeOrganizations: number;
 }
