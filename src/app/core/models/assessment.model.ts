@@ -1,0 +1,2 @@
+export interface AssessmentQuestion{id:string;questionText:string;questionType:string;points:number;options:{id:string;optionText:string}[];}
+export interface AssessmentResult{attemptId:string;score:number;passed:boolean;correctAnswers:number;totalQuestions:number;}
