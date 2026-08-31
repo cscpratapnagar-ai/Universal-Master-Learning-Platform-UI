@@ -81,7 +81,7 @@
         <span class="banner-label">TODAY'S FOCUS</span>
         <h2>Continue building your momentum.</h2>
         <p>You are in the top <strong>8%</strong> of active learners this week. Your next best step is ready.</p>
-        <button type="button" (click)="continueCourse(courses[0])">Continue learning <span>→</span></button>
+        <button type="button" (click)="courses.length && continueCourse(courses[0])" [disabled]="!courses.length">Continue learning <span>→</span></button>
       </div>
       <div class="focus-visual" aria-hidden="true">
         <div class="orbit orbit-one"></div>
@@ -114,14 +114,14 @@
 
         <div class="course-list">
           <article *ngFor="let course of courses" class="course-row">
-            <div class="course-art" [ngClass]="course.accent">
+            <div class="course-art" [ngClass]="course.status === 'ACTIVE' ? 'active-course' : 'completed-course'">
               <span>{{ course.title.charAt(0) }}</span>
             </div>
             <div class="course-main">
-              <small>{{ course.category }}</small>
+              <small>{{ course.status || 'ENROLLED' }}</small>
               <h3>{{ course.title }}</h3>
-              <div class="progress-line"><span [style.width.%]="course.progress"></span></div>
-              <p>{{ course.lessons }} · <strong>{{ course.progress }}%</strong></p>
+              <div class="progress-line"><span [style.width.%]="course.progressPercent"></span></div>
+              <p>{{ course.description || 'Learning in progress' }} · <strong>{{ course.progressPercent }}%</strong></p>
             </div>
             <button type="button" class="round-action" (click)="continueCourse(course)" aria-label="Continue course">→</button>
           </article>
