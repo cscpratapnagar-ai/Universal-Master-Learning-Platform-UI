@@ -1,1 +1,110 @@
-<section class="player" *ngIf="data"><header><button (click)="back()">← Back</button><div><span>LEARNING PLAYER</span><h1>{{data.title}}</h1></div><strong>{{data.progressPercent}}% Complete</strong></header><div class="layout"><aside><div class="module" *ngFor="let m of data.modules"><h3>{{m.title}}</h3><button *ngFor="let l of m.lessons" [class.active]="selected?.id===l.id" (click)="select(l)"><span>{{l.completed?'✓':'○'}}</span>{{l.title}}</button></div></aside><main *ngIf="selected"><div class="type">{{selected.contentType}}</div><h2>{{selected.title}}</h2><div class="content">{{selected.content || 'Lesson content will appear here.'}}</div><button class="complete" [disabled]="selected.completed" (click)="complete()">{{selected.completed?'Completed ✓':'Mark lesson complete'}}</button></main></div></section><p *ngIf="loading" class="loading">Loading course...</p>
+<section class="player-shell" *ngIf="data; else loadingState">
+  <header class="player-header">
+    <button type="button" class="back-button" (click)="back()">← <span>Back to course</span></button>
+
+    <div class="course-heading">
+      <span>LEARNING PLAYER</span>
+      <h1>{{ data.title }}</h1>
+    </div>
+
+    <div class="course-progress">
+      <strong>{{ data.progressPercent }}%</strong>
+      <span>Course complete</span>
+    </div>
+  </header>
+
+  <div class="player-layout">
+    <aside class="lesson-sidebar">
+      <div class="sidebar-top">
+        <div>
+          <span class="kicker">COURSE CONTENT</span>
+          <h2>Lessons</h2>
+        </div>
+        <span class="lesson-count">{{ data.modules.length }}</span>
+      </div>
+
+      <div class="lesson-modules">
+        <section class="module" *ngFor="let m of data.modules; let moduleIndex = index">
+          <div class="module-heading">
+            <span>MODULE {{ moduleIndex + 1 }}</span>
+            <small>{{ m.lessons.length }} lessons</small>
+          </div>
+          <h3>{{ m.title }}</h3>
+
+          <button
+            *ngFor="let l of m.lessons"
+            type="button"
+            class="lesson-item"
+            [class.active]="selected?.id === l.id"
+            [class.completed]="l.completed"
+            (click)="select(l)">
+            <span class="lesson-status">{{ l.completed ? '✓' : '○' }}</span>
+            <span class="lesson-copy">
+              <strong>{{ l.title }}</strong>
+              <small>{{ l.contentType || 'Lesson' }}</small>
+            </span>
+            <span class="lesson-arrow" *ngIf="selected?.id === l.id">▶</span>
+          </button>
+        </section>
+      </div>
+    </aside>
+
+    <main class="lesson-stage" *ngIf="selected">
+      <div class="stage-glow glow-one"></div>
+      <div class="stage-glow glow-two"></div>
+
+      <div class="stage-topline">
+        <span class="content-type">{{ selected.contentType || 'LESSON' }}</span>
+        <span>{{ selected.completed ? 'Completed' : 'In progress' }}</span>
+      </div>
+
+      <div class="lesson-hero">
+        <div class="hero-copy">
+          <span class="lesson-badge">✦ MASTER LEARNING</span>
+          <h2>{{ selected.title }}</h2>
+          <p>Build understanding step by step, then demonstrate what you have learned.</p>
+        </div>
+        <div class="hero-orbit" aria-hidden="true">
+          <div class="orbit orbit-a"></div>
+          <div class="orbit orbit-b"></div>
+          <div class="orbit-core">{{ data.progressPercent }}<small>%</small></div>
+        </div>
+      </div>
+
+      <article class="content-card">
+        <div class="content-card-header">
+          <span>LESSON CONTENT</span>
+          <button type="button" aria-label="Lesson options">•••</button>
+        </div>
+        <div class="content-body">{{ selected.content || 'Lesson content will appear here.' }}</div>
+      </article>
+
+      <div class="stage-footer">
+        <div class="learning-tip">
+          <span>✦</span>
+          <div>
+            <strong>Learning tip</strong>
+            <small>Take a moment to connect this lesson with what you already know.</small>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="complete-button"
+          [disabled]="selected.completed"
+          (click)="complete()">
+          <span>{{ selected.completed ? 'Lesson completed' : 'Mark lesson complete' }}</span>
+          <b>{{ selected.completed ? '✓' : '→' }}</b>
+        </button>
+      </div>
+    </main>
+  </div>
+</section>
+
+<ng-template #loadingState>
+  <section class="loading-state">
+    <div class="loading-orb">✦</div>
+    <span>MASTER LEARNING</span>
+    <h2>{{ loading ? 'Preparing your learning space…' : 'Course unavailable' }}</h2>
+    <p>{{ loading ? 'Loading your course, lessons and progress.' : 'We could not load this course right now.' }}</p>
+  </section>
+</ng-template>
