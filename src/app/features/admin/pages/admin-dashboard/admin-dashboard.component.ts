@@ -38,4 +38,5 @@ export class AdminDashboardComponent implements OnInit {
   toggleTheme(): void { this.themeService.toggle(); }
   toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
   openAssessments(): void { this.router.navigateByUrl('/admin/assessments/new'); }
+  openLearningPath(): void { this.router.navigateByUrl('/admin/learning-path'); }
 }
