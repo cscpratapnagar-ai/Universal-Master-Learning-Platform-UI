@@ -1,0 +1,37 @@
+<main class="builder">
+  <header class="topbar">
+    <button type="button" class="back" (click)="back()">← Control Center</button>
+    <div><span>ASSESSMENT STUDIO</span><h1>Build a learning assessment</h1><p>Create a scored knowledge check that learners can take directly from their course.</p></div>
+    <button type="button" class="theme" (click)="toggleTheme()">{{ theme === 'dark' ? '☀' : '☾' }}</button>
+  </header>
+
+  <section class="workspace">
+    <div class="intro-card">
+      <div><span class="eyebrow">STEP 01 · CONFIGURE</span><h2>Assessment setup</h2><p>Choose exactly where this assessment belongs and define its mastery threshold.</p></div>
+      <div class="pulse">● READY</div>
+    </div>
+
+    <section class="card form-card">
+      <div class="grid three">
+        <label>Assessment level<select [(ngModel)]="targetType"><option value="LESSON">Lesson</option><option value="MODULE">Module</option><option value="COURSE">Course</option></select></label>
+        <label>Course<select [(ngModel)]="courseId" (ngModelChange)="courseChanged()"><option value="" disabled>Select course</option><option *ngFor="let c of catalog" [value]="c.id">{{ c.title }} · {{ c.status }}</option></select></label>
+        <label *ngIf="targetType !== 'COURSE'">Module<select [(ngModel)]="moduleId" (ngModelChange)="moduleChanged()"><option value="" disabled>Select module</option><option *ngFor="let m of selectedCourse?.modules" [value]="m.id">{{ m.title }}</option></select></label>
+        <label *ngIf="targetType === 'LESSON'">Lesson<select [(ngModel)]="lessonId"><option value="" disabled>Select lesson</option><option *ngFor="let l of selectedModule?.lessons" [value]="l.id">{{ l.title }} · {{ l.completionMode }}</option></select></label>
+        <label>Passing score<input type="number" min="1" max="100" [(ngModel)]="passingScore"></label>
+        <label>Maximum attempts<input type="number" min="1" max="100" [(ngModel)]="maxAttempts"></label>
+      </div>
+      <label>Assessment title<input [(ngModel)]="title" placeholder="e.g. Master Learning Fundamentals Check"></label>
+    </section>
+
+    <div class="section-heading"><div><span class="eyebrow">STEP 02 · QUESTIONS</span><h2>Question bank</h2></div><button class="add" type="button" (click)="addQuestion()">＋ Add question</button></div>
+
+    <section class="card question-card" *ngFor="let q of questions; let i = index">
+      <div class="question-head"><div><span class="question-number">Q{{ i + 1 }}</span><h3>Knowledge check</h3></div><button *ngIf="questions.length > 1" type="button" class="remove" (click)="removeQuestion(i)">Remove</button></div>
+      <div class="question-grid"><label>Question<textarea [(ngModel)]="q.questionText" rows="3" placeholder="Write a clear learning question..."></textarea></label><label>Points<input type="number" min="1" [(ngModel)]="q.points"></label></div>
+      <div class="options"><div class="option" *ngFor="let o of q.options; let oi=index"><button type="button" class="correct" [class.on]="o.correct" (click)="setCorrect(q, oi)">{{ o.correct ? '✓' : '○' }}</button><input [(ngModel)]="o.text" [placeholder]="'Option ' + (oi + 1)"><button *ngIf="q.options.length > 2" type="button" class="x" (click)="removeOption(q, oi)">×</button></div></div>
+      <button type="button" class="add-option" (click)="addOption(q)">＋ Add option</button>
+    </section>
+
+    <div class="actions"><div><span *ngIf="message" class="success">✓ {{ message }}</span><span *ngIf="error" class="error">{{ error }}</span></div><button type="button" class="publish" [disabled]="creating" (click)="create()">{{ creating ? 'Publishing assessment…' : 'Create assessment →' }}</button></div>
+  </section>
+</main>
