@@ -1,0 +1,83 @@
+<section class="path-shell" [attr.data-theme-mode]="theme">
+  <header class="path-header">
+    <div>
+      <span class="eyebrow">LEARNING ARCHITECTURE</span>
+      <h1>Learning Path Studio</h1>
+      <p>Design prerequisite-aware journeys so every learner knows what comes next.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" (click)="toggleTheme()">{{ theme === 'dark' ? 'Light mode' : 'Dark mode' }}</button>
+      <button type="button" (click)="back()">Back to Admin</button>
+    </div>
+  </header>
+
+  <section class="selector-card" *ngIf="!loading">
+    <div class="selector-grid">
+      <label>Course
+        <select [(ngModel)]="courseId" (ngModelChange)="courseChanged()">
+          <option *ngFor="let course of catalog" [value]="course.id">{{ course.title }}</option>
+        </select>
+      </label>
+      <label>Module
+        <select [(ngModel)]="moduleId" (ngModelChange)="moduleChanged()">
+          <option *ngFor="let module of selectedCourse?.modules" [value]="module.id">{{ module.title }}</option>
+        </select>
+      </label>
+      <label>Lesson to configure
+        <select [(ngModel)]="lessonId" (ngModelChange)="lessonChanged()">
+          <option *ngFor="let lesson of selectedModule?.lessons" [value]="lesson.id">{{ lesson.title }}</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <div class="notice success" *ngIf="message">{{ message }}</div>
+  <div class="notice error" *ngIf="error">{{ error }}</div>
+
+  <section class="workspace" *ngIf="selectedLesson">
+    <article class="journey-card">
+      <div class="card-head">
+        <div>
+          <span class="eyebrow">SELECTED NODE</span>
+          <h2>{{ selectedLesson.title }}</h2>
+        </div>
+        <span class="mode">{{ selectedLesson.completionMode }}</span>
+      </div>
+
+      <div class="flow-node current">
+        <span class="node-index">TARGET</span>
+        <strong>{{ selectedLesson.title }}</strong>
+        <small>{{ prerequisites.length }} prerequisite{{ prerequisites.length === 1 ? '' : 's' }}</small>
+      </div>
+
+      <div class="connector" *ngIf="prerequisites.length"></div>
+
+      <div class="prereq-list" *ngIf="prerequisites.length; else noPrerequisites">
+        <div class="flow-node" *ngFor="let prerequisite of prerequisites; let i = index">
+          <span class="node-index">STEP {{ i + 1 }}</span>
+          <strong>{{ prerequisite.title }}</strong>
+          <small>Must be completed first</small>
+          <button type="button" [disabled]="saving" (click)="removePrerequisite(prerequisite)">Remove</button>
+        </div>
+      </div>
+      <ng-template #noPrerequisites>
+        <div class="empty-state">No prerequisites configured. This lesson is immediately available.</div>
+      </ng-template>
+    </article>
+
+    <aside class="add-card">
+      <span class="eyebrow">PATH BUILDER</span>
+      <h2>Add prerequisite</h2>
+      <p>Choose an earlier lesson from the same course. Cycles are blocked automatically.</p>
+      <div class="candidate-list" *ngIf="availablePrerequisites.length; else noCandidates">
+        <button type="button" class="candidate" *ngFor="let lesson of availablePrerequisites" [disabled]="saving" (click)="addPrerequisite(lesson)">
+          <span><strong>{{ lesson.title }}</strong><small>Module {{ lesson.moduleId === selectedModule?.id ? 'current' : 'other' }} · Order {{ lesson.sortOrder + 1 }}</small></span>
+          <b>+</b>
+        </button>
+      </div>
+      <ng-template #noCandidates><div class="empty-state">No eligible lessons available.</div></ng-template>
+    </aside>
+  </section>
+
+  <section class="loading" *ngIf="loading">Loading learning architecture…</section>
+</section>
