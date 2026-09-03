@@ -71,7 +71,7 @@
       <p>Choose an earlier lesson from the same course. Cycles are blocked automatically.</p>
       <div class="candidate-list" *ngIf="availablePrerequisites.length; else noCandidates">
         <button type="button" class="candidate" *ngFor="let lesson of availablePrerequisites" [disabled]="saving" (click)="addPrerequisite(lesson)">
-          <span><strong>{{ lesson.title }}</strong><small>Module {{ lesson.moduleId === selectedModule?.id ? 'current' : 'other' }} · Order {{ lesson.sortOrder + 1 }}</small></span>
+          <span><strong>{{ lesson.title }}</strong><small>Module {{ getLessonModuleTitle(lesson) }} · Order {{ lesson.sortOrder + 1 }}</small></span>
           <b>+</b>
         </button>
       </div>
