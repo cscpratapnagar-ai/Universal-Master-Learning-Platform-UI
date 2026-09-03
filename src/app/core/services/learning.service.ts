@@ -10,9 +10,9 @@ export class LearningService {
 
   constructor(private readonly http: HttpClient) {}
 
-  myCourses(userId: string): Observable<ApiResponse<StudentCourse[]>> {
+  myCourses(): Observable<ApiResponse<StudentCourse[]>> {
     return this.http.get<ApiResponse<StudentCourse[]>>(
-      `${this.base}/student/courses/users/${encodeURIComponent(userId)}`
+      `${this.base}/student/courses/me`
     );
   }
 
