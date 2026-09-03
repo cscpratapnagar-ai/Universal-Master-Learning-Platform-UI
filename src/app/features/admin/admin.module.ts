@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { AssessmentBuilderComponent } from './pages/assessment-builder/assessment-builder.component';
 
 @NgModule({
-  declarations: [AdminDashboardComponent],
-  imports: [CommonModule, AdminRoutingModule]
+  declarations: [AdminDashboardComponent, AssessmentBuilderComponent],
+  imports: [SharedModule, AdminRoutingModule]
 })
 export class AdminModule {}
