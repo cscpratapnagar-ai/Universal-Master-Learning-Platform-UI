@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 
 interface Metric { label: string; value: string; icon: string; trend: string; }
@@ -27,7 +28,7 @@ export class AdminDashboardComponent implements OnInit {
     { title: 'Platform backup completed', detail: 'Database backup finished successfully', time: '2 hours ago', type: 'system' }
   ];
 
-  constructor(private readonly themeService: ThemeService) {}
+  constructor(private readonly themeService: ThemeService, private readonly router: Router) {}
 
   ngOnInit(): void {
     this.theme = this.themeService.theme;
@@ -36,4 +37,5 @@ export class AdminDashboardComponent implements OnInit {
 
   toggleTheme(): void { this.themeService.toggle(); }
   toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
+  openAssessments(): void { this.router.navigateByUrl('/admin/assessments/new'); }
 }
