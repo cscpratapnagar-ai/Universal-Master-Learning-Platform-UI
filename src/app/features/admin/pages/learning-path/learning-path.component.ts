@@ -52,6 +52,10 @@ export class LearningPathComponent implements OnInit {
       .filter(l => l.id !== this.lessonId && !existing.has(l.id));
   }
 
+  getLessonModuleTitle(lesson: LearningPathLesson): string {
+    return this.selectedCourse?.modules.find(module => module.lessons.some(item => item.id === lesson.id))?.title || 'module';
+  }
+
   private loadCatalog(): void {
     this.learning.adminLearningCatalog().subscribe({
       next: response => {
