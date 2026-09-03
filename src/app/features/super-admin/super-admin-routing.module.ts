@@ -17,7 +17,8 @@ const routes: Routes = [
     children: [
       { path: '', component: SuperAdminDashboardComponent },
       { path: 'users', component: UserManagementComponent },
-      { path: 'organizations', component: OrganizationManagementComponent }
+      { path: 'organizations', component: OrganizationManagementComponent },
+      { path: 'learning', redirectTo: '/admin', pathMatch: 'full' }
     ]
   }
 ];
