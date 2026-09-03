@@ -18,7 +18,7 @@ export class SuperAdminShellComponent implements OnInit, OnDestroy {
     { label: 'Overview', route: '/super-admin', icon: '◈' },
     { label: 'Users', route: '/super-admin/users', icon: '◎' },
     { label: 'Organizations', route: '/super-admin/organizations', icon: '▦' },
-    { label: 'Learning', route: '/super-admin/learning', icon: '◇' },
+    { label: 'Learning', route: '/admin', icon: '◇' },
     { label: 'Security', route: '/super-admin/security', icon: '◉' },
     { label: 'System', route: '/super-admin/system', icon: '⚙' }
   ];
