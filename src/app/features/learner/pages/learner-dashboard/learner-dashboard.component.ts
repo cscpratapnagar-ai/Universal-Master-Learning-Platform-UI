@@ -31,12 +31,14 @@ export class LearnerDashboardComponent implements OnInit {
     { label: 'Certificates', icon: '◇' }
   ];
 
-  readonly stats: DashboardStat[] = [
-    { label: 'Learning streak', value: '12 days', change: '+3 this week', icon: '↗' },
-    { label: 'Hours learned', value: '48.5', change: '+6.2 hrs', icon: '◷' },
-    { label: 'Courses active', value: '00', change: 'Live data', icon: '▣' },
-    { label: 'Average score', value: '92%', change: '+4.8%', icon: '◎' }
-  ];
+  get stats(): DashboardStat[] {
+    return [
+      { label: 'Learning streak', value: '12 days', change: '+3 this week', icon: '↗' },
+      { label: 'Hours learned', value: '48.5', change: '+6.2 hrs', icon: '◷' },
+      { label: 'Courses active', value: String(this.courses.length).padStart(2, '0'), change: 'Live data', icon: '▣' },
+      { label: 'Average score', value: '92%', change: '+4.8%', icon: '◎' }
+    ];
+  }
 
   readonly activity: ActivityItem[] = [];
 
@@ -57,12 +59,14 @@ export class LearnerDashboardComponent implements OnInit {
     }
 
     this.user = this.authService.currentUser();
-    if (this.user) {
-      this.learning.myCourses(this.user.id).subscribe({
-        next: response => this.courses = response.data || [],
-        error: () => this.courses = []
-      });
-    }
+    this.loadCourses();
+  }
+
+  private loadCourses(): void {
+    this.learning.myCourses().subscribe({
+      next: response => this.courses = response.data || [],
+      error: () => this.courses = []
+    });
   }
 
   toggleTheme(): void {
