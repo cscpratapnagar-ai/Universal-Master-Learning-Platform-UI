@@ -6,7 +6,7 @@ import { ApiResponse } from '../models/api-response.model';
 
 export interface AssessmentOption { id: string; optionText: string; }
 export interface AssessmentQuestion { id: string; questionText: string; questionType: string; points: number; options: AssessmentOption[]; }
-export interface AssessmentView { id: string; title: string; level: string; passingScore: number; maxAttempts: number; questions: AssessmentQuestion[]; }
+export interface AssessmentView { id: string; title: string; level: string; passingScore: number; maxAttempts: number; attemptsUsed: number; passed: boolean; questions: AssessmentQuestion[]; }
 
 @Injectable({ providedIn: 'root' })
 export class AssessmentService {
