@@ -1,0 +1,93 @@
+<div class="curriculum" [class.light="theme === 'light'"]>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">CURRICULUM ARCHITECTURE</p>
+      <h1>Curriculum Studio <span>✦</span></h1>
+      <p>Build structured courses, modules and lessons from one focused workspace.</p>
+    </div>
+    <div class="hero-actions">
+      <button type="button" (click)="toggleTheme()">{{ theme === 'dark' ? 'Light mode' : 'Dark mode' }}</button>
+      <button type="button" routerLink="/admin">Back to Admin</button>
+    </div>
+  </header>
+
+  <div *ngIf="error" class="notice error">{{ error }}</div>
+  <div *ngIf="success" class="notice success">{{ success }}</div>
+
+  <section *ngIf="!loading && selectedCourse" class="workspace">
+    <aside class="sidebar-card">
+      <div class="section-heading">
+        <div><p class="eyebrow">COURSE LIBRARY</p><h2>Courses</h2></div>
+        <span>{{ courses.length }}</span>
+      </div>
+      <button type="button" class="course-card" *ngFor="let course of courses" [class.selected]="course.id === selectedCourse?.id" (click)="selectCourse(course)">
+        <strong>{{ course.title }}</strong>
+        <small>{{ lessonCount(course) }} lessons · {{ course.status }}</small>
+      </button>
+    </aside>
+
+    <main class="editor">
+      <section class="course-header">
+        <div>
+          <p class="eyebrow">SELECTED COURSE</p>
+          <h2>{{ selectedCourse.title }}</h2>
+          <p>Design the learning sequence before configuring assessments and prerequisites.</p>
+        </div>
+        <div class="course-stats"><strong>{{ lessonCount(selectedCourse) }}</strong><small>Lessons</small></div>
+      </section>
+
+      <section class="grid">
+        <article class="panel modules-panel">
+          <div class="panel-heading"><div><p class="eyebrow">01 · STRUCTURE</p><h3>Modules</h3></div></div>
+          <div *ngIf="!selectedCourse.modules.length" class="empty">No modules yet. Create the first module to start your curriculum.</div>
+          <button type="button" class="module-row" *ngFor="let module of selectedCourse.modules" [class.selected]="module.id === selectedModule?.id" (click)="selectModule(module)">
+            <span class="number">{{ module.sortOrder + 1 | number:'2.0-0' }}</span>
+            <span><strong>{{ module.title }}</strong><small>{{ module.lessons.length }} lessons</small></span>
+            <i>→</i>
+          </button>
+          <div class="create-box">
+            <label>New module</label>
+            <div class="input-row"><input [(ngModel)]="newModuleTitle" placeholder="e.g. Foundations" (keyup.enter)="createModule()"><button type="button" (click)="createModule()" [disabled]="saving || !newModuleTitle.trim()">Add</button></div>
+          </div>
+        </article>
+
+        <article class="panel lessons-panel" *ngIf="selectedModule">
+          <div class="panel-heading"><div><p class="eyebrow">02 · CONTENT</p><h3>{{ selectedModule.title }}</h3></div><span>{{ selectedModule.lessons.length }} lessons</span></div>
+          <div class="lesson-list">
+            <button type="button" class="lesson-row" *ngFor="let lesson of selectedModule.lessons" [class.selected]="lesson.id === selectedLesson?.id" (click)="selectLesson(lesson)">
+              <span class="lesson-index">{{ lesson.sortOrder + 1 }}</span>
+              <span class="lesson-copy"><strong>{{ lesson.title }}</strong><small>{{ lesson.completionMode }} · {{ lesson.prerequisiteLessonIds.length }} prerequisite{{ lesson.prerequisiteLessonIds.length === 1 ? '' : 's' }}</small></span>
+              <span class="arrow">→</span>
+            </button>
+            <div *ngIf="!selectedModule.lessons.length" class="empty">This module is ready for its first lesson.</div>
+          </div>
+
+          <div class="create-box lesson-create">
+            <label>New lesson</label>
+            <input [(ngModel)]="newLessonTitle" placeholder="Lesson title">
+            <div class="form-grid">
+              <select [(ngModel)]="newLessonType"><option value="TEXT">TEXT</option><option value="VIDEO">VIDEO</option><option value="DOCUMENT">DOCUMENT</option><option value="LINK">LINK</option></select>
+              <select [(ngModel)]="newLessonCompletionMode"><option value="MANUAL_COMPLETE">Manual completion</option><option value="AUTO_COMPLETE">Auto complete</option><option value="ASSESSMENT_REQUIRED">Assessment required</option></select>
+            </div>
+            <textarea [(ngModel)]="newLessonContent" rows="3" placeholder="Optional lesson content or resource reference"></textarea>
+            <button type="button" class="primary" (click)="createLesson()" [disabled]="saving || !newLessonTitle.trim()">{{ saving ? 'Saving…' : 'Create lesson' }}</button>
+          </div>
+        </article>
+
+        <article class="panel detail-panel" *ngIf="selectedLesson">
+          <div class="panel-heading"><div><p class="eyebrow">03 · LEARNING RULES</p><h3>{{ selectedLesson.title }}</h3></div><span class="pill">{{ selectedLesson.completionMode }}</span></div>
+          <div class="rule-grid">
+            <div><strong>{{ selectedLesson.prerequisiteLessonIds.length }}</strong><small>Prerequisites</small></div>
+            <div><strong>{{ selectedLesson.sortOrder + 1 }}</strong><small>Lesson order</small></div>
+            <div><strong>{{ selectedModule?.title }}</strong><small>Module</small></div>
+          </div>
+          <p class="hint">Use <strong>Learning Path Studio</strong> to connect prerequisites and build dependency-aware journeys. Assessment requirements can be configured from Assessment Studio.</p>
+          <div class="detail-actions"><button type="button" routerLink="/admin/learning-path">Configure prerequisites →</button><button type="button" routerLink="/admin/assessments/new">Build assessment →</button></div>
+        </article>
+      </section>
+    </main>
+  </section>
+
+  <section *ngIf="loading" class="loading-card">Loading curriculum architecture…</section>
+  <section *ngIf="!loading && !selectedCourse" class="empty-state"><h2>No published courses found</h2><p>Create and publish a course first, then return here to build its curriculum.</p></section>
+</div>
