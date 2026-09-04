@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AssessmentBuilderComponent } from './pages/assessment-builder/assessment-builder.component';
+import { CurriculumComponent } from './pages/curriculum/curriculum.component';
 import { LearningPathComponent } from './pages/learning-path/learning-path.component';
 
 const routes: Routes = [
   { path: '', component: AdminDashboardComponent },
+  { path: 'curriculum', component: CurriculumComponent },
   { path: 'assessments/new', component: AssessmentBuilderComponent },
   { path: 'learning-path', component: LearningPathComponent }
 ];
