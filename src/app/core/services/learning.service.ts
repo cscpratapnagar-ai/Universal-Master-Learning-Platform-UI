@@ -40,6 +40,9 @@ export interface LearningPathCourse {
   modules: LearningPathModule[];
 }
 
+export interface CreateModuleRequest { title: string; sortOrder: number; }
+export interface CreateLessonRequest { title: string; contentType?: string; content?: string; sortOrder: number; }
+
 @Injectable({ providedIn: 'root' })
 export class LearningService {
   private readonly base = API_CONFIG.baseUrl;
@@ -47,52 +50,46 @@ export class LearningService {
   constructor(private readonly http: HttpClient) {}
 
   myCourses(): Observable<ApiResponse<StudentCourse[]>> {
-    return this.http.get<ApiResponse<StudentCourse[]>>(
-      `${this.base}/student/courses/me`
-    );
+    return this.http.get<ApiResponse<StudentCourse[]>>(`${this.base}/student/courses/me`);
   }
 
   courseLearning(enrollmentId: string): Observable<ApiResponse<CourseLearning>> {
-    return this.http.get<ApiResponse<CourseLearning>>(
-      `${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`
-    );
+    return this.http.get<ApiResponse<CourseLearning>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`);
   }
 
   getLearningPath(enrollmentId: string): Observable<ApiResponse<LearningPathStatus>> {
-    return this.http.get<ApiResponse<LearningPathStatus>>(
-      `${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`
-    );
+    return this.http.get<ApiResponse<LearningPathStatus>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`);
   }
 
   completeLesson(enrollmentId: string, lessonId: string): Observable<unknown> {
-    return this.http.post(
-      `${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`,
-      {}
-    );
+    return this.http.post(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`, {});
   }
 
   adminLearningCatalog(): Observable<ApiResponse<LearningPathCourse[]>> {
-    return this.http.get<ApiResponse<LearningPathCourse[]>>(
-      `${this.base}/admin/learning/catalog`
-    );
+    return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog`);
+  }
+
+  createModule(courseId: string, request: CreateModuleRequest): Observable<ApiResponse<{ id: string; title: string }>> {
+    return this.http.post<ApiResponse<{ id: string; title: string }>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/modules`, request);
+  }
+
+  createLesson(moduleId: string, request: CreateLessonRequest): Observable<ApiResponse<{ id: string; title: string }>> {
+    return this.http.post<ApiResponse<{ id: string; title: string }>>(`${this.base}/learning/modules/${encodeURIComponent(moduleId)}/lessons`, request);
+  }
+
+  updateLessonCompletionMode(lessonId: string, completionMode: string): Observable<ApiResponse<{ id: string; completionMode: string }>> {
+    return this.http.patch<ApiResponse<{ id: string; completionMode: string }>>(`${this.base}/learning/lessons/${encodeURIComponent(lessonId)}/completion-mode`, { completionMode });
   }
 
   getPrerequisites(lessonId: string): Observable<ApiResponse<LearningPathLesson[]>> {
-    return this.http.get<ApiResponse<LearningPathLesson[]>>(
-      `${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites`
-    );
+    return this.http.get<ApiResponse<LearningPathLesson[]>>(`${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites`);
   }
 
   addPrerequisite(lessonId: string, prerequisiteLessonId: string): Observable<ApiResponse<LearningPathLesson>> {
-    return this.http.post<ApiResponse<LearningPathLesson>>(
-      `${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites/${encodeURIComponent(prerequisiteLessonId)}`,
-      {}
-    );
+    return this.http.post<ApiResponse<LearningPathLesson>>(`${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites/${encodeURIComponent(prerequisiteLessonId)}`, {});
   }
 
   removePrerequisite(lessonId: string, prerequisiteLessonId: string): Observable<ApiResponse<unknown>> {
-    return this.http.delete<ApiResponse<unknown>>(
-      `${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites/${encodeURIComponent(prerequisiteLessonId)}`
-    );
+    return this.http.delete<ApiResponse<unknown>>(`${this.base}/admin/learning-path/lessons/${encodeURIComponent(lessonId)}/prerequisites/${encodeURIComponent(prerequisiteLessonId)}`);
   }
 }
