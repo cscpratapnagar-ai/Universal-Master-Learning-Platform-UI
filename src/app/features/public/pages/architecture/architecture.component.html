@@ -1,71 +1,135 @@
-<main class="architecture">
+<main class="architecture" [class.light-mode]="lightMode">
   <div class="ambient ambient-a"></div>
   <div class="ambient ambient-b"></div>
-  <div class="grid-noise"></div>
+  <div class="ambient ambient-c"></div>
+  <div class="particle-field" aria-hidden="true">
+    <i *ngFor="let p of [1,2,3,4,5,6,7,8,9,10,11,12]" [class]="'particle p-' + p"></i>
+  </div>
+  <div class="grid-noise" aria-hidden="true"></div>
 
   <header class="topbar">
-    <a routerLink="/" class="brand">
-      <span class="brand-mark">M</span>
-      <span><strong>MASTER LEARNING</strong><small>LEARN · CREATE · CONTRIBUTE</small></span>
+    <a routerLink="/" class="brand" aria-label="Master Learning home">
+      <span class="brand-mark"><span>ML</span></span>
+      <span class="brand-copy"><strong>UNIVERSAL MASTER LEARNING</strong><small>LEARN · CREATE · MASTER</small></span>
     </a>
-    <a routerLink="/" class="back">← Back to platform</a>
+    <div class="top-actions">
+      <span class="status-dot"><i></i> INTELLIGENT ECOSYSTEM</span>
+      <button type="button" class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="lightMode ? 'Switch to dark mode' : 'Switch to light mode'">
+        <span>{{ lightMode ? '☾' : '☼' }}</span>
+      </button>
+      <a routerLink="/" class="back">Back to platform <span>↗</span></a>
+    </div>
   </header>
 
-  <section class="hero">
+  <section class="hero" aria-labelledby="architecture-title">
     <div class="hero-copy">
-      <span class="eyebrow">MASTER LEARNING SYSTEM · ARCHITECTURE</span>
-      <h1>One ecosystem.<br><span>Many layers.<br>One learning journey.</span></h1>
-      <p>A cinematic blueprint of the platform we are building — from the learner experience and learning engine to assessment, administration, security and future intelligence.</p>
-      <div class="hero-flow">
-        <span>Student</span><b>→</b><span>Course</span><b>→</b><span>Module</span><b>→</b><span>Lesson</span><b>→</b><span>Assessment</span><b>→</b><span>Mastery</span>
+      <div class="eyebrow"><span></span> MASTER LEARNING ECOSYSTEM · 2026</div>
+      <h1 id="architecture-title">Learning is no longer a journey.<br><em>It becomes an intelligent system.</em></h1>
+      <p class="hero-lead">A premium learning ecosystem that connects <b>progress, mastery, paths, assessments, curriculum and intelligence</b> into one measurable experience.</p>
+
+      <div class="hero-actions">
+        <a routerLink="/auth/register" class="primary-cta">Enter the ecosystem <span>→</span></a>
+        <a href="#platform-layers" class="secondary-cta">Explore architecture <span>↓</span></a>
+      </div>
+
+      <div class="hero-metrics" aria-label="Platform capabilities">
+        <div class="metric"><strong>12</strong><span>CORE LAYERS</span></div>
+        <div class="metric"><strong>360°</strong><span>LEARNING VIEW</span></div>
+        <div class="metric"><strong>∞</strong><span>ADAPTIVE POTENTIAL</span></div>
       </div>
     </div>
 
-    <div class="core-visual">
-      <div class="ring ring-1"></div><div class="ring ring-2"></div><div class="ring ring-3"></div>
-      <div class="core"><span>✦</span><strong>MASTER<br>LEARNING</strong><small>INTELLIGENCE CORE</small></div>
-      <div class="sat sat-a">Progress</div><div class="sat sat-b">Mastery</div><div class="sat sat-c">Learning Path</div><div class="sat sat-d">Assessment</div>
-      <i class="orb orb-a"></i><i class="orb orb-b"></i><i class="orb orb-c"></i>
+    <div class="hero-core" aria-label="Master Learning intelligence core">
+      <div class="halo halo-outer"></div><div class="halo halo-mid"></div><div class="halo halo-inner"></div>
+      <div class="orbit orbit-one"><span>PROGRESS</span></div>
+      <div class="orbit orbit-two"><span>MASTERY</span></div>
+      <div class="orbit orbit-three"><span>PATH</span></div>
+      <div class="core-shell">
+        <div class="core-glow"></div>
+        <div class="core-symbol">✦</div>
+        <strong>MASTER<br>LEARNING</strong>
+        <small>INTELLIGENCE CORE</small>
+        <div class="core-scan"></div>
+      </div>
+      <span class="node node-a"></span><span class="node node-b"></span><span class="node node-c"></span><span class="node node-d"></span>
+      <div class="core-chip chip-a">Adaptive learning</div><div class="core-chip chip-b">Competency graph</div><div class="core-chip chip-c">Mastery signal</div>
     </div>
   </section>
 
-  <section class="layers">
-    <div class="section-head"><span class="eyebrow">PLATFORM LAYERS</span><h2>The architecture behind<br><span>the experience.</span></h2></div>
+  <section class="flow-section" aria-labelledby="learning-flow-title">
+    <div class="section-kicker">THE LEARNING LOOP</div>
+    <div class="section-title-row"><h2 id="learning-flow-title">From <span>activity</span> to achievement.</h2><p>Every learning signal becomes context for the next decision.</p></div>
+    <div class="flow-track learner-flow">
+      <ng-container *ngFor="let step of learnerFlow; let i = index">
+        <div class="flow-step" [class.active]="i === 0 || i === learnerFlow.length - 1">
+          <span>0{{ i + 1 }}</span><strong>{{ step }}</strong>
+        </div>
+        <i *ngIf="i < learnerFlow.length - 1" class="flow-arrow">→</i>
+      </ng-container>
+    </div>
+  </section>
+
+  <section id="platform-layers" class="layers-section">
+    <div class="section-head">
+      <div><div class="section-kicker">PLATFORM LAYERS</div><h2>The architecture behind<br><span>the experience.</span></h2></div>
+      <p>Not a collection of screens. A connected operating model for measurable learning.</p>
+    </div>
     <div class="layer-grid">
       <article *ngFor="let layer of layers" class="layer-card" [class]="layer.tone">
-        <div class="card-icon">{{ layer.icon }}</div>
-        <div class="card-index">{{ ('0' + (layers.indexOf(layer) + 1)).slice(-2) }}</div>
-        <h3>{{ layer.title }}</h3><p>{{ layer.text }}</p><span class="card-line"></span>
+        <div class="card-top"><span class="card-icon">{{ layer.icon }}</span><span class="card-number">{{ layer.metric }}</span></div>
+        <div class="card-orb"></div>
+        <h3>{{ layer.title }}</h3>
+        <p>{{ layer.text }}</p>
+        <div class="card-footer"><span>CONNECTED LAYER</span><b>↗</b></div>
       </article>
     </div>
   </section>
 
-  <section class="intelligence">
-    <div class="intel-copy"><span class="eyebrow">LEARNING INTELLIGENCE</span><h2>Observe.<br>Understand.<br><span>Adapt.</span></h2><p>Learning signals flow through a continuous intelligence layer so the platform can understand progress, identify mastery and shape what should happen next.</p></div>
-    <div class="intel-map">
-      <div class="intel-center"><span>✦</span><strong>LEARNING<br>INTELLIGENCE</strong></div>
-      <div *ngFor="let item of intelligence; let i = index" class="intel-node" [class]="'node-' + i"><b>0{{ i + 1 }}</b>{{ item }}</div>
-      <div class="connection connection-a"></div><div class="connection connection-b"></div><div class="connection connection-c"></div><div class="connection connection-d"></div>
+  <section class="intelligence-section" aria-labelledby="intelligence-title">
+    <div class="intelligence-copy">
+      <div class="section-kicker">MASTER LEARNING ENGINE</div>
+      <h2 id="intelligence-title">Observe.<br>Understand.<br><span>Adapt.</span></h2>
+      <p>The intelligence layer turns learning events into a continuous feedback loop. Progress informs mastery. Mastery informs the path. The path informs adaptation.</p>
+      <div class="signal-row"><span class="signal-pulse"></span><strong>LIVE LEARNING SIGNAL</strong><small>CONTINUOUSLY ADAPTING</small></div>
+    </div>
+    <div class="neural-map">
+      <div class="neural-grid"></div>
+      <div class="neural-center"><span>✦</span><strong>LEARNING<br>INTELLIGENCE</strong><small>DECISION CORE</small></div>
+      <div *ngFor="let item of intelligence; let i = index" class="neural-node" [class]="'neural-' + i">
+        <b>0{{ i + 1 }}</b><strong>{{ item.title }}</strong><small>{{ item.text }}</small>
+      </div>
+      <div class="neural-line line-0"></div><div class="neural-line line-1"></div><div class="neural-line line-2"></div><div class="neural-line line-3"></div>
+      <i class="data-dot dot-0"></i><i class="data-dot dot-1"></i><i class="data-dot dot-2"></i><i class="data-dot dot-3"></i>
     </div>
   </section>
 
-  <section class="creation">
-    <div class="section-head"><span class="eyebrow">CONTENT CREATION FLOW</span><h2>From an idea<br><span>to measurable learning.</span></h2></div>
+  <section class="signal-section">
+    <div class="section-head compact"><div><div class="section-kicker">THE ADAPTIVE SIGNAL</div><h2>Progress <span>→</span> Mastery <span>→</span> Path <span>→</span> Adaptation</h2></div></div>
+    <div class="signal-cards">
+      <div class="signal-card"><div class="ring-progress ring-78"><span>78<small>%</small></span></div><div><b>Progress</b><small>Completion & activity</small></div></div>
+      <div class="signal-card"><div class="ring-progress ring-86"><span>86<small>%</small></span></div><div><b>Mastery</b><small>Demonstrated understanding</small></div></div>
+      <div class="signal-card"><div class="ring-progress ring-64"><span>64<small>%</small></span></div><div><b>Path fit</b><small>Sequence relevance</small></div></div>
+      <div class="signal-card"><div class="ring-progress ring-92"><span>92<small>%</small></span></div><div><b>Adaptation</b><small>Next-step confidence</small></div></div>
+    </div>
+  </section>
+
+  <section class="creation-section" aria-labelledby="creation-title">
+    <div class="section-head"><div><div class="section-kicker">CONTENT CREATION FLOW</div><h2 id="creation-title">From an idea<br><span>to measurable learning.</span></h2></div><p>Build the learning experience once. Let the ecosystem orchestrate what learners see next.</p></div>
     <div class="creation-flow">
-      <div><b>01</b><strong>Organization</strong><small>Define the learning space</small></div><i>→</i>
-      <div><b>02</b><strong>Course</strong><small>Set the learning goal</small></div><i>→</i>
-      <div><b>03</b><strong>Modules</strong><small>Structure the journey</small></div><i>→</i>
-      <div><b>04</b><strong>Lessons</strong><small>Deliver concepts</small></div><i>→</i>
-      <div><b>05</b><strong>Learning Path</strong><small>Connect prerequisites</small></div><i>→</i>
-      <div><b>06</b><strong>Assessment</strong><small>Measure understanding</small></div><i>→</i>
-      <div><b>07</b><strong>Publish</strong><small>Release the experience</small></div>
+      <ng-container *ngFor="let step of creationFlow; let i = index">
+        <div class="creation-step"><span>0{{ i + 1 }}</span><strong>{{ step }}</strong><small>{{ i === 0 ? 'Define the learning space' : i === 1 ? 'Set the learning goal' : i === 2 ? 'Structure the journey' : i === 3 ? 'Deliver concepts' : i === 4 ? 'Connect prerequisites' : i === 5 ? 'Measure understanding' : i === 6 ? 'Release the experience' : 'Deliver to the learner' }}</small></div>
+        <i *ngIf="i < creationFlow.length - 1">→</i>
+      </ng-container>
     </div>
   </section>
 
-  <section class="future">
-    <div><span class="eyebrow">THE ROAD AHEAD</span><h2>Built for today.<br><span>Designed for what comes next.</span></h2><p>AI-assisted learning, deeper analytics, projects, research, certificates and adaptive experiences can grow on top of this foundation.</p></div>
-    <a routerLink="/auth/register" class="cta">Enter the learning ecosystem <span>→</span></a>
+  <section class="future-section">
+    <div class="future-copy"><div class="section-kicker">FUTURE INTELLIGENCE</div><h2>Built for today.<br><span>Ready for what comes next.</span></h2><p>AI learning assistants, knowledge graphs, skill mapping, adaptive learning, predictive intervention and AI-generated learning insights can grow on top of the same foundation.</p></div>
+    <div class="future-stack">
+      <div class="future-chip"><span>✦</span> AI LEARNING ASSISTANT</div><div class="future-chip"><span>◇</span> KNOWLEDGE GRAPH</div><div class="future-chip"><span>◎</span> SKILL MAPPING</div><div class="future-chip"><span>⌁</span> PERSONALIZED INTERVENTION</div>
+    </div>
+    <a routerLink="/auth/register" class="future-cta">Enter the learning ecosystem <span>↗</span></a>
   </section>
 
-  <footer><span>MASTER LEARNING</span><small>Architecture · 2026</small></footer>
+  <footer><div><strong>UNIVERSAL MASTER LEARNING</strong><span>Intelligent educational infrastructure</span></div><small>Architecture · 2026</small></footer>
 </main>
