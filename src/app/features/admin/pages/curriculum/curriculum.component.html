@@ -1,4 +1,4 @@
-<div class="curriculum" [class.light="theme === 'light'"]>
+<div class="curriculum" [class.light]="theme === 'light'">
   <header class="hero">
     <div>
       <p class="eyebrow">CURRICULUM ARCHITECTURE</p>
@@ -20,7 +20,7 @@
         <div><p class="eyebrow">COURSE LIBRARY</p><h2>Courses</h2></div>
         <span>{{ courses.length }}</span>
       </div>
-      <button type="button" class="course-card" *ngFor="let course of courses" [class.selected]="course.id === selectedCourse?.id" (click)="selectCourse(course)">
+      <button type="button" class="course-card" *ngFor="let course of courses" [class.selected]="course.id === selectedCourse.id" (click)="selectCourse(course)">
         <strong>{{ course.title }}</strong>
         <small>{{ lessonCount(course) }} lessons · {{ course.status }}</small>
       </button>
