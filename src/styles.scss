@@ -37,16 +37,9 @@ button,input,textarea,select{font:inherit}
 button{border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 input,textarea,select{caret-color:var(--cyan)}
 input::placeholder,textarea::placeholder{color:var(--muted);opacity:.72}
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus{
-  -webkit-text-fill-color:var(--text)!important;
-  caret-color:var(--text)!important;
-  -webkit-box-shadow:0 0 0 1000px var(--surface2) inset!important;
-  box-shadow:0 0 0 1000px var(--surface2) inset!important;
+input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,textarea:-webkit-autofill,textarea:-webkit-autofill:hover,textarea:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--text)!important;caret-color:var(--text)!important;
+  -webkit-box-shadow:0 0 0 1000px var(--surface2) inset!important;box-shadow:0 0 0 1000px var(--surface2) inset!important;
   transition:background-color 9999s ease-out 0s;
 }
 a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
@@ -54,4 +47,23 @@ a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
 .app-container{width:min(calc(100% - (var(--pad) * 2)),var(--container));margin-inline:auto}
 .gradient-text{background:linear-gradient(135deg,var(--brand),var(--brand2) 55%,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* MLP MOTION EXTENSION — shared cinematic layer for landing + internal workspaces */
+@keyframes mlpPageIn{from{opacity:0;transform:translateY(14px) scale(.995)}to{opacity:1;transform:none}}
+@keyframes mlpGlow{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.78;transform:scale(1.08)}}
+@keyframes mlpSheen{from{transform:translateX(-130%)}to{transform:translateX(130%)}}
+@keyframes mlpFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-6px,0)}}
+@keyframes mlpPulse{0%,100%{box-shadow:0 0 0 0 rgba(99,91,255,0)}50%{box-shadow:0 0 0 9px rgba(99,91,255,.06)}}
+body app-root{display:block;min-height:100vh;animation:mlpPageIn .55s var(--ease) both}
+.admin-app,.learner-app,.course-player,.assessment-studio,.learning-path-studio,.curriculum-studio{position:relative;isolation:isolate}
+.admin-app:before,.learner-app:before,.course-player:before,.assessment-studio:before,.learning-path-studio:before,.curriculum-studio:before{content:"";position:fixed;z-index:-1;width:42vw;height:42vw;top:-18vw;right:-12vw;border-radius:50%;background:radial-gradient(circle,rgba(99,91,255,.13),transparent 68%);filter:blur(30px);pointer-events:none;animation:mlpGlow 10s ease-in-out infinite}
+.admin-app .metric-card,.admin-app .panel,.learner-app .card,.course-player .card,.assessment-studio .card,.learning-path-studio .card,.curriculum-studio .card{transition:transform .32s var(--ease),box-shadow .32s var(--ease),border-color .32s ease;position:relative;overflow:hidden}
+.admin-app .metric-card:hover,.admin-app .panel:hover,.learner-app .card:hover,.course-player .card:hover,.assessment-studio .card:hover,.learning-path-studio .card:hover,.curriculum-studio .card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.admin-app .metric-card:after,.admin-app .panel:after,.learner-app .card:after,.course-player .card:after,.assessment-studio .card:after,.learning-path-studio .card:after,.curriculum-studio .card:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.055) 48%,transparent 70%);transform:translateX(-130%);transition:transform .75s var(--ease)}
+.admin-app .metric-card:hover:after,.admin-app .panel:hover:after,.learner-app .card:hover:after,.course-player .card:hover:after,.assessment-studio .card:hover:after,.learning-path-studio .card:hover:after,.curriculum-studio .card:hover:after{transform:translateX(130%)}
+.admin-app .sidebar,.learner-app .sidebar{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.admin-app .nav-item,.learner-app .nav-item{transition:transform .2s var(--ease),background .2s ease,color .2s ease}.admin-app .nav-item:hover,.learner-app .nav-item:hover{transform:translateX(3px)}
+.admin-app .metric-icon,.admin-app .brand-mark{animation:mlpPulse 4s ease-in-out infinite}
+.admin-app button,.learner-app button,.course-player button,.assessment-studio button,.learning-path-studio button,.curriculum-studio button{transition:transform .2s var(--ease),filter .2s ease,box-shadow .2s ease}
+.admin-app button:hover,.learner-app button:hover,.course-player button:hover,.assessment-studio button:hover,.learning-path-studio button:hover,.curriculum-studio button:hover{filter:brightness(1.06)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
