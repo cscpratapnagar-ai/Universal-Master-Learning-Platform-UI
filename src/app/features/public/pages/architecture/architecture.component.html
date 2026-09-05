@@ -1,0 +1,71 @@
+<main class="architecture">
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <div class="grid-noise"></div>
+
+  <header class="topbar">
+    <a routerLink="/" class="brand">
+      <span class="brand-mark">M</span>
+      <span><strong>MASTER LEARNING</strong><small>LEARN · CREATE · CONTRIBUTE</small></span>
+    </a>
+    <a routerLink="/" class="back">← Back to platform</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">MASTER LEARNING SYSTEM · ARCHITECTURE</span>
+      <h1>One ecosystem.<br><span>Many layers.<br>One learning journey.</span></h1>
+      <p>A cinematic blueprint of the platform we are building — from the learner experience and learning engine to assessment, administration, security and future intelligence.</p>
+      <div class="hero-flow">
+        <span>Student</span><b>→</b><span>Course</span><b>→</b><span>Module</span><b>→</b><span>Lesson</span><b>→</b><span>Assessment</span><b>→</b><span>Mastery</span>
+      </div>
+    </div>
+
+    <div class="core-visual">
+      <div class="ring ring-1"></div><div class="ring ring-2"></div><div class="ring ring-3"></div>
+      <div class="core"><span>✦</span><strong>MASTER<br>LEARNING</strong><small>INTELLIGENCE CORE</small></div>
+      <div class="sat sat-a">Progress</div><div class="sat sat-b">Mastery</div><div class="sat sat-c">Learning Path</div><div class="sat sat-d">Assessment</div>
+      <i class="orb orb-a"></i><i class="orb orb-b"></i><i class="orb orb-c"></i>
+    </div>
+  </section>
+
+  <section class="layers">
+    <div class="section-head"><span class="eyebrow">PLATFORM LAYERS</span><h2>The architecture behind<br><span>the experience.</span></h2></div>
+    <div class="layer-grid">
+      <article *ngFor="let layer of layers" class="layer-card" [class]="layer.tone">
+        <div class="card-icon">{{ layer.icon }}</div>
+        <div class="card-index">{{ ('0' + (layers.indexOf(layer) + 1)).slice(-2) }}</div>
+        <h3>{{ layer.title }}</h3><p>{{ layer.text }}</p><span class="card-line"></span>
+      </article>
+    </div>
+  </section>
+
+  <section class="intelligence">
+    <div class="intel-copy"><span class="eyebrow">LEARNING INTELLIGENCE</span><h2>Observe.<br>Understand.<br><span>Adapt.</span></h2><p>Learning signals flow through a continuous intelligence layer so the platform can understand progress, identify mastery and shape what should happen next.</p></div>
+    <div class="intel-map">
+      <div class="intel-center"><span>✦</span><strong>LEARNING<br>INTELLIGENCE</strong></div>
+      <div *ngFor="let item of intelligence; let i = index" class="intel-node" [class]="'node-' + i"><b>0{{ i + 1 }}</b>{{ item }}</div>
+      <div class="connection connection-a"></div><div class="connection connection-b"></div><div class="connection connection-c"></div><div class="connection connection-d"></div>
+    </div>
+  </section>
+
+  <section class="creation">
+    <div class="section-head"><span class="eyebrow">CONTENT CREATION FLOW</span><h2>From an idea<br><span>to measurable learning.</span></h2></div>
+    <div class="creation-flow">
+      <div><b>01</b><strong>Organization</strong><small>Define the learning space</small></div><i>→</i>
+      <div><b>02</b><strong>Course</strong><small>Set the learning goal</small></div><i>→</i>
+      <div><b>03</b><strong>Modules</strong><small>Structure the journey</small></div><i>→</i>
+      <div><b>04</b><strong>Lessons</strong><small>Deliver concepts</small></div><i>→</i>
+      <div><b>05</b><strong>Learning Path</strong><small>Connect prerequisites</small></div><i>→</i>
+      <div><b>06</b><strong>Assessment</strong><small>Measure understanding</small></div><i>→</i>
+      <div><b>07</b><strong>Publish</strong><small>Release the experience</small></div>
+    </div>
+  </section>
+
+  <section class="future">
+    <div><span class="eyebrow">THE ROAD AHEAD</span><h2>Built for today.<br><span>Designed for what comes next.</span></h2><p>AI-assisted learning, deeper analytics, projects, research, certificates and adaptive experiences can grow on top of this foundation.</p></div>
+    <a routerLink="/auth/register" class="cta">Enter the learning ecosystem <span>→</span></a>
+  </section>
+
+  <footer><span>MASTER LEARNING</span><small>Architecture · 2026</small></footer>
+</main>
