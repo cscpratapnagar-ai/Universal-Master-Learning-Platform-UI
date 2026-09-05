@@ -1,60 +1,54 @@
-<main class="landing">
-  <div class="mesh mesh-a"></div><div class="mesh mesh-b"></div><div class="grid-noise"></div>
+<main class="landing" [class.light]="theme === 'light'">
+  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="starfield"></div>
 
   <header class="navbar app-container">
     <a routerLink="/" class="brand" aria-label="Master Learning home">
-      <span class="brand-mark"><i></i><i></i><i></i></span>
-      <span><strong>Master Learning</strong><small>ONE PLATFORM · EVERY JOURNEY</small></span>
+      <span class="brand-mark"><span>M</span></span>
+      <span><strong>MASTER LEARNING</strong><small>LEARN · CREATE · CONTRIBUTE</small></span>
     </a>
 
     <nav class="desktop-nav" [class.open]="mobileMenuOpen">
       <button type="button" (click)="scrollToSection('home')">Home</button>
-      <button type="button" (click)="scrollToSection('ecosystem')">Ecosystem</button>
-      <button type="button" (click)="scrollToSection('journeys')">Journeys</button>
-      <button type="button" (click)="scrollToSection('intelligence')">Intelligence</button>
-      <button type="button" (click)="scrollToSection('features')">Explore</button>
+      <button type="button" (click)="scrollToSection('ecosystem')">Courses</button>
+      <button type="button" (click)="scrollToSection('journeys')">Exams</button>
+      <button type="button" (click)="scrollToSection('intelligence')">Projects</button>
+      <button type="button" (click)="scrollToSection('features')">For Schools</button>
+      <button type="button" (click)="scrollToSection('features')">Research</button>
     </nav>
 
     <div class="nav-actions">
       <button class="theme-toggle" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">{{ theme === 'dark' ? '☼' : '☾' }}</button>
-      <span class="status" [class.online]="platformOnline"><i></i>{{ platformOnline ? 'Platform online' : 'Connecting' }}</span>
       <a routerLink="/auth/login" class="login-link">Log in</a>
-      <a routerLink="/auth/register" class="nav-cta">Start learning <span>→</span></a>
+      <a routerLink="/auth/register" class="nav-cta">Get started <span>→</span></a>
       <button class="menu-button" type="button" (click)="toggleMobileMenu()" aria-label="Open navigation">☰</button>
     </div>
   </header>
 
   <section id="home" class="hero app-container">
     <div class="hero-copy">
-      <div class="eyebrow"><span>✦</span> A MODERN EDUCATION ECOSYSTEM</div>
-      <h1>One place to <span class="gradient-text">learn deeply.</span><br>Grow confidently.</h1>
-      <p>Master Learning brings learners, educators and institutions into one connected experience for courses, practice, assessment, collaboration and meaningful progress.</p>
+      <div class="eyebrow"><span>✦</span> INDIA'S NEXT-GENERATION LEARNING ECOSYSTEM</div>
+      <h1>Knowledge today.<br><span class="gradient-text">A brighter tomorrow.</span></h1>
+      <p>One connected platform for school learning, science, mathematics, computer education, competitive exams, projects and research.</p>
       <div class="hero-actions">
-        <a routerLink="/auth/register" class="primary-action">Start your journey <span>→</span></a>
-        <a href="#ecosystem" (click)="$event.preventDefault(); scrollToSection('ecosystem')" class="secondary-action">Explore the platform <span>↓</span></a>
+        <a routerLink="/auth/register" class="primary-action">Start learning <span>→</span></a>
+        <a href="#ecosystem" (click)="$event.preventDefault(); scrollToSection('ecosystem')" class="secondary-action">Explore the ecosystem <span>↓</span></a>
       </div>
-      <div class="proof"><div class="avatar-stack"><b>V</b><b>A</b><b>S</b><em>10K+</em></div><span>Designed for ambitious learners,<br>educators and institutions.</span></div>
+      <div class="hero-search"><span>⌕</span><input aria-label="Search learning" placeholder="Search courses, topics, skills, exams..." /><button>⌕</button></div>
+      <div class="topic-pills"><span>Physics</span><span>Computer Science</span><span>Mathematics</span><span>Space & Aerospace</span><span>Life Sciences</span><span>AI & Robotics</span></div>
+      <div class="proof-line"><span>LEARN</span><i></i><span>BUILD</span><i></i><span>INNOVATE</span><i></i><span>CONTRIBUTE</span></div>
     </div>
 
-    <div class="hero-visual" aria-label="Learning dashboard preview">
-      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-      <div class="floating-card card-progress"><small>LEARNING MOMENTUM</small><strong>+24%</strong><span>This week <b>↗</b></span></div>
-      <div class="floating-card card-streak"><span>🔥</span><div><small>YOUR STREAK</small><strong>12 days</strong></div></div>
-      <div class="dashboard">
-        <div class="dash-head"><div class="dash-brand"><i></i><b>Learning Space</b></div><div class="dash-tools"><span></span><span></span><b>V</b></div></div>
-        <div class="dash-title"><div><small>WELCOME BACK</small><h2>Your next breakthrough starts here.</h2></div><button>View journey →</button></div>
-        <div class="focus-panel"><div><span class="chip">CONTINUE LEARNING</span><h3>Advanced Mathematics</h3><p>Chapter 5 · Integration techniques</p><div class="bar"><i></i></div><small>75% complete</small></div><button class="play">▶</button></div>
-        <div class="dash-grid">
-          <article><span>◷</span><small>Learning time</small><strong>48.5h</strong><em>+15% this week</em></article>
-          <article><span>✦</span><small>AI insights</small><strong>126</strong><em>Personalized for you</em></article>
-          <article><span>✓</span><small>Mastery score</small><strong>84%</strong><em>↑ Strong progress</em></article>
-        </div>
-        <div class="bottom-row">
-          <article class="upcoming"><div><small>UP NEXT</small><strong>Physics live session</strong><span>Tomorrow · 10:00 AM</span></div><button>Join</button></article>
-          <article class="ai-mini"><span>✦</span><div><small>AI LEARNING GUIDE</small><strong>What would you like to understand?</strong></div></article>
-        </div>
+    <div class="hero-visual" aria-label="Indian education and science visual">
+      <div class="sky-glow"></div>
+      <div class="moon"></div>
+      <div class="cityline">
+        <span class="dome"></span><span class="tower tower-a"></span><span class="tower tower-b"></span><span class="campus"></span><span class="lab"></span><span class="dish dish-a"></span><span class="dish dish-b"></span>
       </div>
-      <div class="ai-orb"><div class="orb-core">✦</div><span>Guidance that adapts with you</span></div>
+      <div class="rocket"><div class="nose"></div><div class="body"></div><div class="window"></div><div class="fin fin-a"></div><div class="fin fin-b"></div><div class="flame"></div></div>
+      <div class="trajectory trajectory-a"></div><div class="trajectory trajectory-b"></div>
+      <div class="visual-label label-top"><small>SCIENCE · SPACE · RESEARCH</small><strong>Curiosity creates a brighter tomorrow.</strong></div>
+      <div class="visual-label label-bottom"><small>INDIAN LEARNING COSMOS</small><strong>Explore · Learn · Innovate</strong></div>
+      <div class="orbit-dot dot-a"></div><div class="orbit-dot dot-b"></div><div class="orbit-dot dot-c"></div>
     </div>
   </section>
 
@@ -64,28 +58,21 @@
 
   <section class="experience-strip" aria-label="Learning ecosystem highlights">
     <div class="experience-track">
-      <span><i>✦</i> Personalized learning</span>
-      <span><i>◉</i> Live classrooms</span>
-      <span><i>↗</i> Real progress signals</span>
-      <span><i>◆</i> Expert-led content</span>
-      <span><i>✦</i> Adaptive intelligence</span>
-      <span><i>◉</i> Personalized learning</span>
-      <span><i>↗</i> Live classrooms</span>
-      <span><i>◆</i> Real progress signals</span>
+      <span><i>⚛</i> Physics & science</span><span><i>⌘</i> Computer education</span><span><i>π</i> Mathematics</span><span><i>◈</i> Space & aerospace</span><span><i>✦</i> AI & robotics</span><span><i>⌬</i> Research & projects</span>
+      <span><i>⚛</i> Physics & science</span><span><i>⌘</i> Computer education</span><span><i>π</i> Mathematics</span><span><i>◈</i> Space & aerospace</span>
     </div>
   </section>
 
   <section id="journeys" class="journeys app-container">
     <div class="section-intro journey-intro">
-      <span class="eyebrow">BUILT AROUND REAL PEOPLE</span>
-      <h2>A different starting point.<br><span class="gradient-text">One connected destination.</span></h2>
-      <p>Every role gets a focused experience while staying connected to the same learning ecosystem.</p>
+      <span class="eyebrow">LEARNING FOR EVERY STAGE</span>
+      <h2>From classroom concepts<br><span class="gradient-text">to real-world creation.</span></h2>
+      <p>Built for learners, educators and institutions across India's education journey.</p>
     </div>
     <div class="journey-grid">
       <article *ngFor="let journey of journeys" class="journey-card">
         <div class="journey-top"><span class="journey-icon">{{ journey.icon }}</span><span class="journey-number">{{ journey.number }}</span></div>
-        <h3>{{ journey.title }}</h3>
-        <p>{{ journey.description }}</p>
+        <h3>{{ journey.title }}</h3><p>{{ journey.description }}</p>
         <ul><li *ngFor="let point of journey.points">{{ point }}</li></ul>
         <a href="#features" (click)="$event.preventDefault(); scrollToSection('features')">{{ journey.action }} <span>→</span></a>
       </article>
@@ -93,30 +80,35 @@
   </section>
 
   <section id="ecosystem" class="ecosystem app-container">
-    <div class="section-intro"><span class="eyebrow">ONE CONNECTED ECOSYSTEM</span><h2>Everything learning needs.<br><span class="gradient-text">Finally working together.</span></h2></div>
-    <div class="ecosystem-grid">
-      <article class="ecosystem-card large"><div class="card-icon">◉</div><h3>Personal learning space</h3><p>Courses, goals, notes, practice and progress organized around the learner—not around disconnected software.</p><div class="mini-ui"><span></span><span></span><span></span><i></i></div></article>
-      <article class="ecosystem-card ai-card"><div class="card-icon">✦</div><h3>Intelligence at every step</h3><p>AI helps explain concepts, surface patterns and recommend the right next move.</p><div class="signal"><i></i><i></i><i></i><i></i><i></i></div></article>
-      <article class="ecosystem-card"><div class="card-icon">▦</div><h3>Live & collaborative</h3><p>Bring classes, discussions and shared learning experiences into the same flow.</p></article>
-      <article class="ecosystem-card"><div class="card-icon">↗</div><h3>Visible progress</h3><p>Turn activity into meaningful signals for learners and educators.</p></article>
+    <div class="section-intro"><span class="eyebrow">EXPLORE YOUR INTERESTS</span><h2>Science. Skills. Exams.<br><span class="gradient-text">Ideas that become impact.</span></h2></div>
+    <div class="interest-grid">
+      <article class="interest-card physics"><span class="interest-icon">⚛</span><div><h3>Physics</h3><p>Understand how the universe works.</p></div><b>→</b></article>
+      <article class="interest-card computer"><span class="interest-icon">⌘</span><div><h3>Computer Science</h3><p>Code. Create. Innovate.</p></div><b>→</b></article>
+      <article class="interest-card math"><span class="interest-icon">π</span><div><h3>Mathematics</h3><p>Think. Solve. Apply.</p></div><b>→</b></article>
+      <article class="interest-card space"><span class="interest-icon">◈</span><div><h3>Space & Aerospace</h3><p>Explore beyond boundaries.</p></div><b>→</b></article>
+      <article class="interest-card life"><span class="interest-icon">⌬</span><div><h3>Life Sciences</h3><p>Discover life, for life.</p></div><b>→</b></article>
+      <article class="interest-card robotics"><span class="interest-icon">✦</span><div><h3>AI & Robotics</h3><p>Build intelligent solutions.</p></div><b>→</b></article>
+      <article class="interest-card schools"><span class="interest-icon">▣</span><div><h3>School Learning</h3><p>Strong foundations, deeper understanding.</p></div><b>→</b></article>
+      <article class="interest-card exams"><span class="interest-icon">◆</span><div><h3>Competitive Exams</h3><p>Prepare with confidence.</p></div><b>→</b></article>
+      <article class="interest-card projects"><span class="interest-icon">⌁</span><div><h3>Projects & Research</h3><p>Turn ideas into reality.</p></div><b>→</b></article>
     </div>
   </section>
 
   <section id="intelligence" class="intelligence">
     <div class="app-container intelligence-inner">
-      <div class="intel-copy"><span class="eyebrow">ADAPTIVE INTELLIGENCE</span><h2>Not another chatbot.<br>A <span class="gradient-text">learning intelligence layer.</span></h2><p>It connects what you learn, where you struggle and what you want to achieve—then helps shape a smarter path forward.</p>
+      <div class="intel-copy"><span class="eyebrow">LEARNING INTELLIGENCE</span><h2>A smarter layer<br>for <span class="gradient-text">deeper learning.</span></h2><p>Connect concepts, practice, progress and goals into a learning journey that continuously adapts to what you need next.</p>
         <ul><li><b>01</b> Understand your learning context</li><li><b>02</b> Identify gaps and momentum</li><li><b>03</b> Recommend meaningful next actions</li></ul>
       </div>
-      <div class="intel-visual"><div class="intel-ring ring-1"></div><div class="intel-ring ring-2"></div><div class="intel-core">AI<span>Learning<br>Intelligence</span></div><div class="node node-a">Goals</div><div class="node node-b">Progress</div><div class="node node-c">Practice</div><div class="node node-d">Understanding</div></div>
+      <div class="intel-visual"><div class="intel-ring ring-1"></div><div class="intel-ring ring-2"></div><div class="intel-core">✦<span>LEARNING<br>INTELLIGENCE</span></div><div class="node node-a">Concepts</div><div class="node node-b">Practice</div><div class="node node-c">Progress</div><div class="node node-d">Goals</div></div>
     </div>
   </section>
 
   <section id="features" class="features app-container">
-    <div class="section-intro centered"><span class="eyebrow">PLATFORM CAPABILITIES</span><h2>Designed for how people<br><span class="gradient-text">actually learn.</span></h2></div>
+    <div class="section-intro centered"><span class="eyebrow">PLATFORM CAPABILITIES</span><h2>One ecosystem.<br><span class="gradient-text">Every learning need.</span></h2></div>
     <div class="feature-grid"><article *ngFor="let feature of features"><span>{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><i>Explore capability →</i></article></div>
   </section>
 
-  <section class="final-cta app-container"><div><span class="eyebrow">YOUR NEXT CHAPTER</span><h2>Build momentum.<br><span class="gradient-text">Make it count.</span></h2><p>Start with a free account and grow into a learning system that grows with you.</p></div><a routerLink="/auth/register" class="primary-action">Create free account <span>→</span></a></section>
+  <section class="final-cta app-container"><div><span class="eyebrow">YOUR NEXT CHAPTER</span><h2>Learn deeper.<br><span class="gradient-text">Build bigger.</span></h2><p>Start your journey through a learning ecosystem designed for curiosity, discipline, creativity and real-world progress.</p></div><a routerLink="/auth/register" class="primary-action">Start learning <span>→</span></a></section>
 
-  <footer class="footer app-container"><div class="brand"><span class="brand-mark"><i></i><i></i><i></i></span><strong>Master Learning</strong></div><span>© 2026 Master Learning System</span><span>Learn · Understand · Build · Achieve</span></footer>
+  <footer class="footer app-container"><div class="brand"><span class="brand-mark"><span>M</span></span><strong>MASTER LEARNING</strong></div><span>© 2026 Master Learning System</span><span>Learn · Create · Contribute</span></footer>
 </main>
