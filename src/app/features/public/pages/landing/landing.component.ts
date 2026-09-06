@@ -12,7 +12,7 @@ interface JourneyCard { icon: string; number: string; title: string; description
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss']
+  styleUrls: ['./landing.component.scss', './landing-premium.scss']
 })
 export class LandingComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
@@ -69,28 +69,16 @@ export class LandingComponent implements OnInit, OnDestroy {
 
   scrollToSection(sectionId: string): void {
     this.closeMobileMenu();
-
-    // Wait one frame so a closing mobile menu cannot change layout during measurement.
     requestAnimationFrame(() => {
       const target = document.getElementById(sectionId);
       if (!target) return;
-
       const headerOffset = 96;
       const rect = target.getBoundingClientRect();
       const absoluteTop = rect.top + window.scrollY;
       const viewport = window.innerHeight;
       const targetHeight = Math.min(target.offsetHeight, Math.max(0, viewport - headerOffset));
-
-      // Short sections are centered in the viewport; large sections start cleanly below the nav.
-      const centeredTop = absoluteTop - Math.max(
-        headerOffset,
-        (viewport - targetHeight) / 2
-      );
-
-      window.scrollTo({
-        top: Math.max(0, centeredTop),
-        behavior: 'smooth'
-      });
+      const centeredTop = absoluteTop - Math.max(headerOffset, (viewport - targetHeight) / 2);
+      window.scrollTo({ top: Math.max(0, centeredTop), behavior: 'smooth' });
     });
   }
 }
