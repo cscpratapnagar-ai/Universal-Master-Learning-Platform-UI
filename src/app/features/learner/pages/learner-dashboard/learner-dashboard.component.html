@@ -21,7 +21,7 @@
       <div><p class="eyebrow"><span></span> LEARNING COMMAND CENTER</p><h1>Good to see you, {{ user?.firstName || 'Learner' }}.</h1></div>
       <div class="top-actions">
         <div class="search-box"><span>⌕</span><input type="text" placeholder="Search courses, topics, AI help"><kbd>⌘ K</kbd></div>
-        <button type="button" class="icon-button theme-toggle" (click)="toggleTheme" [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"><span>{{ theme === 'dark' ? '☀' : '☾' }}</span></button>
+        <button type="button" class="icon-button theme-toggle" (click)="toggleTheme()" [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"><span>{{ theme === 'dark' ? '☀' : '☾' }}</span></button>
         <button type="button" class="icon-button notification" (click)="notificationsOpen = !notificationsOpen" aria-label="Notifications">♧<span class="notification-dot"></span></button>
         <div class="avatar top-avatar">{{ user?.firstName?.charAt(0) || 'L' }}</div>
       </div>
@@ -30,7 +30,7 @@
 
     <div class="command-banner">
       <div class="banner-copy"><span class="banner-label">AI NEXT-BEST ACTION</span><h2>{{ nextLessonTitle }}</h2><p>{{ personalization?.rationale || 'Your learning intelligence is selecting the most useful next step for you.' }}</p><button type="button" (click)="courses.length && continueCourse(courses[0])" [disabled]="!courses.length">{{ nextAction.replace('_', ' ') | titlecase }} <span>→</span></button></div>
-      <div class="focus-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="core-glow">{{ courses[0]?.progressPercent || 0 }}<small>%</small></div><span class="visual-caption">LEARNING<br>IN MOTION</span></div>
+      <div class="focus-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="core-glow">{{ courses[0].progressPercent || 0 }}<small>%</small></div><span class="visual-caption">LEARNING<br>IN MOTION</span></div>
     </div>
 
     <section class="stats-grid"><article *ngFor="let stat of stats" class="stat-card"><div class="stat-top"><span class="stat-icon">{{ stat.icon }}</span><span class="stat-change">{{ stat.change }}</span></div><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></article></section>
@@ -45,7 +45,7 @@
       </aside>
     </section>
 
-    <section class="bottom-grid"><article class="panel activity-panel"><div class="panel-heading"><div><span class="section-kicker">INTELLIGENCE</span><h2>Why this recommendation?</h2></div></div><div class="activity-list"><div class="activity-item"><span class="activity-icon">✦</span><div><strong>{{ nextAction.replace('_', ' ') | titlecase }}</strong><small>{{ personalization?.rationale || 'Personalization engine is preparing your next step.' }}</small></div></div><div class="activity-item"><span class="activity-icon">◎</span><div><strong>{{ ai?.learnerState || 'LEARNING' }}</strong><small>{{ ai?.teachingStrategy || 'Adaptive teaching strategy selected.' }}</small></div></div></div></article><article class="panel progress-panel"><span class="section-kicker">COURSE PROGRESS</span><div class="progress-summary"><div><h2>{{ courses[0]?.progressPercent || 0 }}<small>%</small></h2><p>{{ courses[0]?.title || 'Your active course' }}</p></div><span class="trend">AI</span></div><div class="chart"><span style="height:42%"></span><span style="height:65%"></span><span style="height:50%"></span><span style="height:82%"></span><span style="height:74%"></span><span style="height:94%"></span><span style="height:58%"></span></div><div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></article></section>
+    <section class="bottom-grid"><article class="panel activity-panel"><div class="panel-heading"><div><span class="section-kicker">INTELLIGENCE</span><h2>Why this recommendation?</h2></div></div><div class="activity-list"><div class="activity-item"><span class="activity-icon">✦</span><div><strong>{{ nextAction.replace('_', ' ') | titlecase }}</strong><small>{{ personalization?.rationale || 'Personalization engine is preparing your next step.' }}</small></div></div><div class="activity-item"><span class="activity-icon">◎</span><div><strong>{{ ai?.learnerState || 'LEARNING' }}</strong><small>{{ ai?.teachingStrategy || 'Adaptive teaching strategy selected.' }}</small></div></div></div></article><article class="panel progress-panel"><span class="section-kicker">COURSE PROGRESS</span><div class="progress-summary"><div><h2>{{ courses[0].progressPercent || 0 }}<small>%</small></h2><p>{{ courses[0].title || 'Your active course' }}</p></div><span class="trend">AI</span></div><div class="chart"><span style="height:42%"></span><span style="height:65%"></span><span style="height:50%"></span><span style="height:82%"></span><span style="height:74%"></span><span style="height:94%"></span><span style="height:58%"></span></div><div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></article></section>
     <footer class="data-note"><span></span> AI personalization connected · Recommendations are generated from your authenticated learning context.</footer>
   </section>
 </main>
