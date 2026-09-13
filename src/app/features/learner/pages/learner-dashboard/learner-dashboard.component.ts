@@ -5,6 +5,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 import { LearningService } from '../../../../core/services/learning.service';
 import { StudentCourse } from '../../../../core/models/learning.model';
+import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
 
 interface DashboardStat { label: string; value: string; change: string; icon: string; }
 interface ActivityItem { title: string; meta: string; icon: string; }
@@ -21,6 +22,9 @@ export class LearnerDashboardComponent implements OnInit {
   notificationsOpen = false;
   theme: ThemeMode = 'dark';
   courses: StudentCourse[] = [];
+  ai: AiLearningOrchestration | null = null;
+  personalization: PersonalizationOrchestration | null = null;
+  intelligenceLoading = false;
 
   readonly navigation = [
     { label: 'Overview', icon: '⌂' },
@@ -33,10 +37,10 @@ export class LearnerDashboardComponent implements OnInit {
 
   get stats(): DashboardStat[] {
     return [
-      { label: 'Learning streak', value: '12 days', change: '+3 this week', icon: '↗' },
-      { label: 'Hours learned', value: '48.5', change: '+6.2 hrs', icon: '◷' },
+      { label: 'Learning streak', value: '—', change: 'Personalized', icon: '↗' },
+      { label: 'Learning pace', value: this.personalization?.pace || '—', change: 'AI guided', icon: '◷' },
       { label: 'Courses active', value: String(this.courses.length).padStart(2, '0'), change: 'Live data', icon: '▣' },
-      { label: 'Average score', value: '92%', change: '+4.8%', icon: '◎' }
+      { label: 'Next priority', value: this.personalization?.priority || '—', change: this.ai?.learnerState || 'AI guided', icon: '◎' }
     ];
   }
 
@@ -64,9 +68,36 @@ export class LearnerDashboardComponent implements OnInit {
 
   private loadCourses(): void {
     this.learning.myCourses().subscribe({
-      next: response => this.courses = response.data || [],
+      next: response => {
+        this.courses = response.data || [];
+        this.loadIntelligence();
+      },
       error: () => this.courses = []
     });
+  }
+
+  private loadIntelligence(): void {
+    const enrollmentId = this.courses[0]?.enrollmentId;
+    if (!enrollmentId) return;
+
+    this.intelligenceLoading = true;
+    this.learning.getAiOrchestration(enrollmentId).subscribe({
+      next: response => this.ai = response.data,
+      error: () => this.ai = null
+    });
+    this.learning.getPersonalizationOrchestration(enrollmentId).subscribe({
+      next: response => this.personalization = response.data,
+      error: () => this.personalization = null,
+      complete: () => this.intelligenceLoading = false
+    });
+  }
+
+  get nextLessonTitle(): string {
+    return this.personalization?.targetLessonTitle || 'Your next learning step';
+  }
+
+  get nextAction(): string {
+    return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING';
   }
 
   toggleTheme(): void {
@@ -81,7 +112,6 @@ export class LearnerDashboardComponent implements OnInit {
       Assessments: '/learner/quiz',
       Certificates: '/learner/certificates'
     };
-
     const route = routes[label];
     if (route) this.router.navigateByUrl(route);
   }
@@ -92,15 +122,12 @@ export class LearnerDashboardComponent implements OnInit {
 
   logout(): void {
     if (this.isLoggingOut) return;
-
     this.isLoggingOut = true;
     const request = this.authService.logout();
-
     if (!request) {
       this.router.navigateByUrl('/auth/login');
       return;
     }
-
     request.subscribe({
       next: () => this.router.navigateByUrl('/auth/login'),
       error: () => this.router.navigateByUrl('/auth/login')
