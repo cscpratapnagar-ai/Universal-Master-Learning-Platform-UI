@@ -2,197 +2,50 @@
   <aside class="sidebar">
     <a class="brand" routerLink="/">
       <span class="brand-mark">✦</span>
-      <span class="brand-copy">
-        <strong>Master Learning</strong>
-        <small>LEARNER PORTAL</small>
-      </span>
+      <span class="brand-copy"><strong>Master Learning</strong><small>LEARNER PORTAL</small></span>
     </a>
-
     <nav class="navigation" aria-label="Learner navigation">
       <span class="nav-caption">WORKSPACE</span>
-      <button
-        *ngFor="let item of navigation"
-        type="button"
-        class="nav-item"
-        [class.active]="activeNav === item.label"
-        (click)="selectNav(item.label)">
-        <span class="nav-icon">{{ item.icon }}</span>
-        <span>{{ item.label }}</span>
-        <span *ngIf="item.label === 'AI Tutor'" class="new-badge">AI</span>
+      <button *ngFor="let item of navigation" type="button" class="nav-item" [class.active]="activeNav === item.label" (click)="selectNav(item.label)">
+        <span class="nav-icon">{{ item.icon }}</span><span>{{ item.label }}</span><span *ngIf="item.label === 'AI Tutor'" class="new-badge">AI</span>
       </button>
     </nav>
-
     <div class="sidebar-bottom">
-      <div class="focus-card">
-        <span class="focus-orb">✦</span>
-        <strong>Keep your streak alive</strong>
-        <small>Learn for 18 more minutes today.</small>
-        <div class="mini-progress"><span></span></div>
-      </div>
-
-      <div class="profile-mini">
-        <div class="avatar">{{ user?.firstName?.charAt(0) || 'L' }}</div>
-        <div>
-          <strong>{{ user?.firstName || 'Learner' }}</strong>
-          <small>{{ user?.roles?.join(', ') || 'STUDENT' }}</small>
-        </div>
-        <button type="button" class="mini-signout" (click)="logout()" [disabled]="isLoggingOut" title="Sign out">↪</button>
-      </div>
+      <div class="focus-card"><span class="focus-orb">✦</span><strong>AI-guided learning</strong><small>{{ nextAction.replace('_', ' ') | titlecase }}</small><div class="mini-progress"><span></span></div></div>
+      <div class="profile-mini"><div class="avatar">{{ user?.firstName?.charAt(0) || 'L' }}</div><div><strong>{{ user?.firstName || 'Learner' }}</strong><small>{{ user?.roles?.join(', ') || 'STUDENT' }}</small></div><button type="button" class="mini-signout" (click)="logout()" [disabled]="isLoggingOut" title="Sign out">↪</button></div>
     </div>
   </aside>
 
   <section class="workspace">
     <header class="topbar">
-      <div>
-        <p class="eyebrow"><span></span> LEARNING COMMAND CENTER</p>
-        <h1>Good to see you, {{ user?.firstName || 'Learner' }}.</h1>
-      </div>
-
+      <div><p class="eyebrow"><span></span> LEARNING COMMAND CENTER</p><h1>Good to see you, {{ user?.firstName || 'Learner' }}.</h1></div>
       <div class="top-actions">
-        <div class="search-box">
-          <span>⌕</span>
-          <input type="text" placeholder="Search courses, topics, AI help">
-          <kbd>⌘ K</kbd>
-        </div>
-        <button
-          type="button"
-          class="icon-button theme-toggle"
-          (click)="toggleTheme()"
-          [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-          [title]="theme === 'dark' ? 'Light mode' : 'Dark mode'">
-          <span>{{ theme === 'dark' ? '☀' : '☾' }}</span>
-        </button>
-        <button type="button" class="icon-button notification" (click)="notificationsOpen = !notificationsOpen" aria-label="Notifications">
-          ♧
-          <span class="notification-dot"></span>
-        </button>
+        <div class="search-box"><span>⌕</span><input type="text" placeholder="Search courses, topics, AI help"><kbd>⌘ K</kbd></div>
+        <button type="button" class="icon-button theme-toggle" (click)="toggleTheme" [attr.aria-label]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"><span>{{ theme === 'dark' ? '☀' : '☾' }}</span></button>
+        <button type="button" class="icon-button notification" (click)="notificationsOpen = !notificationsOpen" aria-label="Notifications">♧<span class="notification-dot"></span></button>
         <div class="avatar top-avatar">{{ user?.firstName?.charAt(0) || 'L' }}</div>
       </div>
-
-      <div *ngIf="notificationsOpen" class="notification-panel">
-        <strong>Notifications</strong>
-        <p>Your learner portal is connected successfully.</p>
-        <p>New course and assessment alerts will appear here.</p>
-      </div>
+      <div *ngIf="notificationsOpen" class="notification-panel"><strong>Notifications</strong><p>Your learner portal is connected successfully.</p><p>AI recommendations are now available on the dashboard.</p></div>
     </header>
 
     <div class="command-banner">
-      <div class="banner-copy">
-        <span class="banner-label">TODAY'S FOCUS</span>
-        <h2>Continue building your momentum.</h2>
-        <p>You are in the top <strong>8%</strong> of active learners this week. Your next best step is ready.</p>
-        <button type="button" (click)="courses.length && continueCourse(courses[0])" [disabled]="!courses.length">Continue learning <span>→</span></button>
-      </div>
-      <div class="focus-visual" aria-hidden="true">
-        <div class="orbit orbit-one"></div>
-        <div class="orbit orbit-two"></div>
-        <div class="core-glow">75<small>%</small></div>
-        <span class="visual-caption">LEARNING<br>IN MOTION</span>
-      </div>
+      <div class="banner-copy"><span class="banner-label">AI NEXT-BEST ACTION</span><h2>{{ nextLessonTitle }}</h2><p>{{ personalization?.rationale || 'Your learning intelligence is selecting the most useful next step for you.' }}</p><button type="button" (click)="courses.length && continueCourse(courses[0])" [disabled]="!courses.length">{{ nextAction.replace('_', ' ') | titlecase }} <span>→</span></button></div>
+      <div class="focus-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="core-glow">{{ courses[0]?.progressPercent || 0 }}<small>%</small></div><span class="visual-caption">LEARNING<br>IN MOTION</span></div>
     </div>
 
-    <section class="stats-grid">
-      <article *ngFor="let stat of stats" class="stat-card">
-        <div class="stat-top">
-          <span class="stat-icon">{{ stat.icon }}</span>
-          <span class="stat-change">{{ stat.change }}</span>
-        </div>
-        <strong>{{ stat.value }}</strong>
-        <span>{{ stat.label }}</span>
-      </article>
-    </section>
+    <section class="stats-grid"><article *ngFor="let stat of stats" class="stat-card"><div class="stat-top"><span class="stat-icon">{{ stat.icon }}</span><span class="stat-change">{{ stat.change }}</span></div><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></article></section>
 
     <section class="content-grid">
-      <article class="panel continue-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="section-kicker">CONTINUE</span>
-            <h2>Keep learning</h2>
-          </div>
-          <button type="button" class="text-action" (click)="selectNav('My Learning')">View all →</button>
-        </div>
-
-        <div class="course-list">
-          <article *ngFor="let course of courses" class="course-row">
-            <div class="course-art" [ngClass]="course.status === 'ACTIVE' ? 'active-course' : 'completed-course'">
-              <span>{{ course.title.charAt(0) }}</span>
-            </div>
-            <div class="course-main">
-              <small>{{ course.status || 'ENROLLED' }}</small>
-              <h3>{{ course.title }}</h3>
-              <div class="progress-line"><span [style.width.%]="course.progressPercent"></span></div>
-              <p>{{ course.description || 'Learning in progress' }} · <strong>{{ course.progressPercent }}%</strong></p>
-            </div>
-            <button type="button" class="round-action" (click)="continueCourse(course)" aria-label="Continue course">→</button>
-          </article>
-        </div>
+      <article class="panel continue-panel"><div class="panel-heading"><div><span class="section-kicker">CONTINUE</span><h2>Keep learning</h2></div><button type="button" class="text-action" (click)="selectNav('My Learning')">View all →</button></div>
+        <div class="course-list"><article *ngFor="let course of courses" class="course-row"><div class="course-art active-course"><span>{{ course.title.charAt(0) }}</span></div><div class="course-main"><small>{{ course.status || 'ENROLLED' }}</small><h3>{{ course.title }}</h3><div class="progress-line"><span [style.width.%]="course.progressPercent"></span></div><p>{{ course.description || 'Learning in progress' }} · <strong>{{ course.progressPercent }}%</strong></p></div><button type="button" class="round-action" (click)="continueCourse(course)" aria-label="Continue course">→</button></article></div>
       </article>
-
       <aside class="right-stack">
-        <article class="panel ai-panel">
-          <div class="ai-head">
-            <span class="ai-icon">✦</span>
-            <span class="ai-live">AI ONLINE</span>
-          </div>
-          <h2>Your AI learning companion</h2>
-          <p>Ask questions, review concepts and get personalized next-step guidance.</p>
-          <button type="button" (click)="selectNav('AI Tutor')">Open AI Tutor <span>↗</span></button>
-        </article>
-
-        <article class="panel schedule-panel">
-          <div class="panel-heading compact">
-            <div>
-              <span class="section-kicker">UP NEXT</span>
-              <h2>Today's schedule</h2>
-            </div>
-            <span class="calendar-icon">◫</span>
-          </div>
-          <div class="schedule-item">
-            <span class="time">04:30</span>
-            <div><strong>Physics live class</strong><small>Quantum Mechanics · 60 min</small></div>
-          </div>
-          <div class="schedule-item muted">
-            <span class="time">07:00</span>
-            <div><strong>Weekly review</strong><small>Personal learning checkpoint</small></div>
-          </div>
-        </article>
+        <article class="panel ai-panel"><div class="ai-head"><span class="ai-icon">✦</span><span class="ai-live">AI ONLINE</span></div><h2>Personal learning intelligence</h2><p>{{ ai?.teachingStrategy || 'Adaptive teaching' }} · {{ ai?.recommendedAction || 'Learning plan ready' }}</p><div class="signal-list"><span *ngFor="let reason of (ai?.reasons || []).slice(0,3)">• {{ reason }}</span></div><button type="button" (click)="selectNav('AI Tutor')">Open AI Tutor <span>↗</span></button></article>
+        <article class="panel schedule-panel"><div class="panel-heading compact"><div><span class="section-kicker">PERSONALIZATION</span><h2>Your learning profile</h2></div><span class="calendar-icon">✦</span></div><div class="schedule-item"><span class="time">PACE</span><div><strong>{{ personalization?.pace || '—' }}</strong><small>Recommended learning pace</small></div></div><div class="schedule-item muted"><span class="time">GOAL</span><div><strong>{{ personalization?.primaryGoal || '—' }}</strong><small>Current learning goal</small></div></div></article>
       </aside>
     </section>
 
-    <section class="bottom-grid">
-      <article class="panel activity-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="section-kicker">TIMELINE</span>
-            <h2>Recent activity</h2>
-          </div>
-          <button type="button" class="text-action">See history →</button>
-        </div>
-
-        <div class="activity-list">
-          <div *ngFor="let item of activity" class="activity-item">
-            <span class="activity-icon">{{ item.icon }}</span>
-            <div><strong>{{ item.title }}</strong><small>{{ item.meta }}</small></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="panel progress-panel">
-        <span class="section-kicker">WEEKLY PROGRESS</span>
-        <div class="progress-summary">
-          <div><h2>18.4 <small>hrs</small></h2><p>Focused learning time</p></div>
-          <span class="trend">↗ 24%</span>
-        </div>
-        <div class="chart" aria-label="Weekly learning activity chart">
-          <span style="height:42%"></span><span style="height:65%"></span><span style="height:50%"></span><span style="height:82%"></span><span style="height:74%"></span><span style="height:94%"></span><span style="height:58%"></span>
-        </div>
-        <div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
-      </article>
-    </section>
-
-    <footer class="data-note">
-      <span></span>
-      Authenticated session active · Dashboard data widgets will connect to dedicated learning APIs in the next backend phase.
-    </footer>
+    <section class="bottom-grid"><article class="panel activity-panel"><div class="panel-heading"><div><span class="section-kicker">INTELLIGENCE</span><h2>Why this recommendation?</h2></div></div><div class="activity-list"><div class="activity-item"><span class="activity-icon">✦</span><div><strong>{{ nextAction.replace('_', ' ') | titlecase }}</strong><small>{{ personalization?.rationale || 'Personalization engine is preparing your next step.' }}</small></div></div><div class="activity-item"><span class="activity-icon">◎</span><div><strong>{{ ai?.learnerState || 'LEARNING' }}</strong><small>{{ ai?.teachingStrategy || 'Adaptive teaching strategy selected.' }}</small></div></div></div></article><article class="panel progress-panel"><span class="section-kicker">COURSE PROGRESS</span><div class="progress-summary"><div><h2>{{ courses[0]?.progressPercent || 0 }}<small>%</small></h2><p>{{ courses[0]?.title || 'Your active course' }}</p></div><span class="trend">AI</span></div><div class="chart"><span style="height:42%"></span><span style="height:65%"></span><span style="height:50%"></span><span style="height:82%"></span><span style="height:74%"></span><span style="height:94%"></span><span style="height:58%"></span></div><div class="days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></article></section>
+    <footer class="data-note"><span></span> AI personalization connected · Recommendations are generated from your authenticated learning context.</footer>
   </section>
 </main>
