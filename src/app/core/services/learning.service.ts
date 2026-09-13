@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse, StudentCourse, CourseLearning } from '../models/learning.model';
+import { AiLearningOrchestration, PersonalizationOrchestration } from '../models/ai-learning.model';
 
 export interface LearningPathStatus {
   enrollmentId: string;
@@ -59,6 +60,14 @@ export class LearningService {
 
   getLearningPath(enrollmentId: string): Observable<ApiResponse<LearningPathStatus>> {
     return this.http.get<ApiResponse<LearningPathStatus>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`);
+  }
+
+  getAiOrchestration(enrollmentId: string): Observable<ApiResponse<AiLearningOrchestration>> {
+    return this.http.get<ApiResponse<AiLearningOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai/orchestration`);
+  }
+
+  getPersonalizationOrchestration(enrollmentId: string): Observable<ApiResponse<PersonalizationOrchestration>> {
+    return this.http.get<ApiResponse<PersonalizationOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/personalization/orchestration`);
   }
 
   completeLesson(enrollmentId: string, lessonId: string): Observable<unknown> {
