@@ -5,12 +5,9 @@ import { LearnerDashboardComponent } from './pages/learner-dashboard/learner-das
 import { MyCoursesComponent } from './pages/my-courses/my-courses.component';
 import { CourseDetailsComponent } from './pages/course-details/course-details.component';
 import { CoursePlayerComponent } from './pages/course-player/course-player.component';
+import { ProgressAnalyticsComponent } from './pages/progress-analytics/progress-analytics.component';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { AssessmentResultComponent } from './pages/assessment-result/assessment-result.component';
 import { CertificateComponent } from './pages/certificate/certificate.component';
-
-@NgModule({
-  declarations: [LearnerDashboardComponent, MyCoursesComponent, CourseDetailsComponent, CoursePlayerComponent, QuizComponent, AssessmentResultComponent, CertificateComponent],
-  imports: [SharedModule, LearnerRoutingModule]
-})
-export class LearnerModule {}
+@NgModule({declarations:[LearnerDashboardComponent,MyCoursesComponent,CourseDetailsComponent,CoursePlayerComponent,ProgressAnalyticsComponent,QuizComponent,AssessmentResultComponent,CertificateComponent],imports:[SharedModule,LearnerRoutingModule]})
+export class LearnerModule{}
