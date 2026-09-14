@@ -1,15 +1,1 @@
-<main class="quiz" *ngIf="assessment; else state">
-  <header class="quiz-header">
-    <div><span>KNOWLEDGE CHECK · {{ assessment.level }}</span><h1>{{ assessment.title }}</h1><p>Show what you know. You need {{ assessment.passingScore }}% to pass.</p></div>
-    <div class="attempts">{{ assessment.attemptsUsed }}/{{ assessment.maxAttempts }}<small> attempts</small></div>
-  </header>
-  <section class="question" *ngFor="let q of assessment.questions; let i=index">
-    <div class="num">{{i+1}} / {{assessment.questions.length}}</div>
-    <span class="points">{{q.points}} pts</span>
-    <h2>{{q.questionText}}</h2>
-    <button *ngFor="let o of q.options" type="button" [class.selected]="answers[q.id]===o.id" (click)="select(q.id,o.id)">{{ answers[q.id]===o.id ? '✓' : '○' }} <span>{{o.optionText}}</span></button>
-  </section>
-  <p class="error" *ngIf="error">{{error}}</p>
-  <div class="submit-row"><span>{{ unansweredCount ? unansweredCount + ' question(s) remaining' : 'All questions answered' }}</span><button class="submit" (click)="submit()" [disabled]="submitting || unansweredCount > 0">{{submitting?'Submitting…':'Submit Assessment →'}}</button></div>
-</main>
-<ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your assessment…':'Assessment unavailable'}}</h2><p>{{error || 'Loading questions and learning context.'}}</p></section></ng-template>
+<main class="quiz" *ngIf="assessment;else state"><header class="quiz-header"><div><span>ADAPTIVE ASSESSMENT · {{assessment.level}}</span><h1>{{assessment.title}}</h1><p>Personalized knowledge check · {{assessment.passingScore}}% required to pass.</p></div><div class="attempts"><strong>{{assessment.attemptsUsed}}/{{assessment.maxAttempts}}</strong><small> attempts</small></div></header><section class="progress-card"><div><span>ASSESSMENT PROGRESS</span><strong>{{assessment.questions.length-unansweredCount}} / {{assessment.questions.length}}</strong></div><div class="progress-track"><i [style.width.%]="assessment.questions.length ? ((assessment.questions.length-unansweredCount)/assessment.questions.length)*100 : 0"></i></div><small>{{unansweredCount ? unansweredCount+' question(s) remaining' : 'Ready to submit · all questions answered'}}</small></section><section class="question" *ngFor="let q of assessment.questions;let i=index"><div class="num">{{i+1}} / {{assessment.questions.length}}</div><span class="points">{{q.points}} PTS</span><h2>{{q.questionText}}</h2><button *ngFor="let o of q.options;let oi=index" type="button" [class.selected]="answers[q.id]===o.id" (click)="select(q.id,o.id)"><b>{{answers[q.id]===o.id?'✓':('ABCDEFG'[oi] || '•')}}</b><span>{{o.optionText}}</span></button></section><p class="error" *ngIf="error">{{error}}</p><div class="submit-row"><div><strong>{{unansweredCount?'Keep going — you are almost there.':'Excellent — assessment complete.'}}</strong><small> Your answers are securely submitted for scoring.</small></div><button class="submit" (click)="submit()" [disabled]="submitting||unansweredCount>0">{{submitting?'Scoring your mastery…':'Submit Assessment →'}}</button></div></main><ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p></section></ng-template>
