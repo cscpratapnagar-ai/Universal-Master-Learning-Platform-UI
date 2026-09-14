@@ -12,7 +12,7 @@ interface JourneyCard { icon: string; number: string; title: string; description
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.scss', './landing-premium.scss']
+  styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
