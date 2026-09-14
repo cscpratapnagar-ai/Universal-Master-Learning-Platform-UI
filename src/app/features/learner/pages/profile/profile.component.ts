@@ -1,0 +1,5 @@
+import { Component,OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { LearningService } from '../../../../core/services/learning.service';
+@Component({selector:'app-learner-profile',templateUrl:'./profile.component.html',styleUrls:['./profile.component.scss']})
+export class ProfileComponent implements OnInit{enrollmentId='';data:any;loading=true;goal='Master the course with strong understanding';outcome='Build practical, transferable knowledge';explanationStyle='Adaptive';pace='Balanced';constructor(private route:ActivatedRoute,private learning:LearningService){}ngOnInit(){this.enrollmentId=this.route.snapshot.paramMap.get('enrollmentId')||'';this.learning.getPersonalizationOrchestration(this.enrollmentId).subscribe({next:r=>{this.data=r.data;this.goal=this.data?.primaryGoal||this.goal;this.pace=this.data?.pace||this.pace;this.loading=false},error:()=>this.loading=false})}}
