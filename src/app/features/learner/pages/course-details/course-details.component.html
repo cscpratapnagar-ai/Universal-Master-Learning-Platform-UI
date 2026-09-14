@@ -1,0 +1,38 @@
+<main class="details" [class.light]="theme === 'light'">
+  <header class="topbar">
+    <button type="button" class="back" (click)="back()">← <span>My Learning</span></button>
+    <div class="actions"><button type="button" class="theme" (click)="toggleTheme()">{{ theme === 'dark' ? '☀' : '☾' }}</button><a routerLink="/learner/certificates">Certificates</a></div>
+  </header>
+
+  <p class="state" *ngIf="loading">Preparing your course overview...</p>
+  <p class="state error" *ngIf="!loading && error">{{ error }}</p>
+
+  <ng-container *ngIf="data && !loading && !error">
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">COURSE EXPERIENCE · PERSONALIZED FOR YOU</span>
+        <h1>{{ data.title }}</h1>
+        <p>{{ data.description || 'A structured learning experience designed to move you from understanding to mastery.' }}</p>
+        <div class="hero-actions"><button type="button" class="primary" (click)="startLearning()">{{ data.progressPercent > 0 ? 'Continue learning' : 'Start learning' }} <span>→</span></button><span class="progress-label">{{ data.progressPercent }}% complete</span></div>
+      </div>
+      <div class="hero-visual" aria-hidden="true"><div class="orb-ring ring-one"></div><div class="orb-ring ring-two"></div><div class="orb-core"><strong>{{ data.progressPercent }}%</strong><small>PROGRESS</small></div><span class="spark spark-a">✦</span><span class="spark spark-b">✧</span></div>
+    </section>
+
+    <section class="metrics"><article><strong>{{ moduleCount }}</strong><span>Modules</span></article><article><strong>{{ totalLessons }}</strong><span>Total lessons</span></article><article><strong>{{ completedLessons }}</strong><span>Lessons completed</span></article><article><strong>{{ data.progressPercent }}%</strong><span>Course progress</span></article></section>
+
+    <section class="content-layout">
+      <div class="modules">
+        <div class="section-head"><div><span>CURRICULUM</span><h2>What you'll learn</h2></div><span>{{ completedLessons }}/{{ totalLessons }} lessons complete</span></div>
+        <article class="module" *ngFor="let m of data.modules; let i = index">
+          <div class="module-number">{{ (i + 1).toString().padStart(2, '0') }}</div>
+          <div class="module-info"><span>MODULE {{ i + 1 }}</span><h3>{{ m.title }}</h3><div class="lesson-list"><div class="lesson" *ngFor="let l of m.lessons"><span class="status" [class.done]="l.completed">{{ l.completed ? '✓' : (l.locked ? '🔒' : '○') }}</span><span>{{ l.title }}</span><small>{{ l.contentType || 'Lesson' }}</small></div></div></div>
+        </article>
+      </div>
+      <aside class="side-card">
+        <span class="side-kicker">YOUR NEXT STEP</span><h2>{{ nextLesson?.title || 'Course complete' }}</h2><p>{{ nextLesson ? 'Pick up from your next available lesson and keep your momentum going.' : 'You have completed every available lesson in this course.' }}</p><button type="button" (click)="startLearning()">{{ nextLesson ? 'Open learning player' : 'Review course' }} →</button>
+        <div class="side-progress"><div><span>Overall progress</span><strong>{{ data.progressPercent }}%</strong></div><div class="progress"><span [style.width.%]="data.progressPercent"></span></div></div>
+        <div class="trust"><span>✦</span><div><strong>Adaptive learning enabled</strong><small>Your next step can adapt to your progress.</small></div></div>
+      </aside>
+    </section>
+  </ng-container>
+</main>
