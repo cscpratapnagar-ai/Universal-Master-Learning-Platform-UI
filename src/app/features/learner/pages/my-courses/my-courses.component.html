@@ -1,1 +1,41 @@
-<section class="page"><div class="hero"><span>MY LEARNING</span><h1>Your learning journey</h1><p>Continue exactly where you left off.</p></div><p *ngIf="loading">Loading your courses...</p><p class="error" *ngIf="error">{{error}}</p><div class="grid" *ngIf="!loading"><article class="course" *ngFor="let c of courses"><div class="top"><span class="badge">{{c.status}}</span><span>{{c.progressPercent}}%</span></div><h2>{{c.title}}</h2><p>{{c.description}}</p><div class="progress"><span [style.width.%]="c.progressPercent"></span></div><button (click)="open(c)">{{c.progressPercent>0?'Continue Learning':'Start Learning'}} →</button></article><div class="empty" *ngIf="courses.length===0">No enrolled courses yet.</div></div></section>
+<main class="learning-page" [class.light]="theme === 'light'">
+  <header class="topbar">
+    <button class="back" type="button" (click)="back()">← <span>Dashboard</span></button>
+    <div class="top-actions"><button type="button" class="theme" (click)="toggleTheme()" [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">{{theme === 'dark' ? '☀' : '☾'}}</button><a routerLink="/learner/certificates">Certificates</a></div>
+  </header>
+
+  <section class="intro">
+    <div><span class="eyebrow">MY LEARNING · PERSONALIZED SPACE</span><h1>Turn your goals into <span>real progress.</span></h1><p>Every course, milestone and next step — organized around the way you learn.</p></div>
+    <div class="progress-orb"><div><strong>{{averageProgress}}%</strong><small>average progress</small></div></div>
+  </section>
+
+  <section class="insights" aria-label="Learning overview">
+    <article><span class="icon purple">◈</span><div><strong>{{courses.length}}</strong><small>Enrolled courses</small></div></article>
+    <article><span class="icon cyan">↗</span><div><strong>{{activeCount}}</strong><small>In progress</small></div></article>
+    <article><span class="icon green">✓</span><div><strong>{{completedCount}}</strong><small>Completed</small></div></article>
+    <article><span class="icon orange">◷</span><div><strong>{{notStartedCount}}</strong><small>Ready to start</small></div></article>
+  </section>
+
+  <section class="toolbar">
+    <div class="filters" role="tablist" aria-label="Course filters">
+      <button type="button" [class.active]="filter==='all'" (click)="setFilter('all')">All <b>{{courses.length}}</b></button>
+      <button type="button" [class.active]="filter==='active'" (click)="setFilter('active')">In Progress <b>{{activeCount}}</b></button>
+      <button type="button" [class.active]="filter==='completed'" (click)="setFilter('completed')">Completed <b>{{completedCount}}</b></button>
+      <button type="button" [class.active]="filter==='not-started'" (click)="setFilter('not-started')">Not Started <b>{{notStartedCount}}</b></button>
+    </div>
+    <label class="search"><span>⌕</span><input [(ngModel)]="search" aria-label="Search your courses" placeholder="Search your learning..." /></label>
+  </section>
+
+  <p class="state" *ngIf="loading">Preparing your personalized learning space...</p>
+  <p class="state error" *ngIf="!loading && error">{{error}}</p>
+
+  <section class="course-grid" *ngIf="!loading && !error">
+    <article class="course-card" *ngFor="let c of filteredCourses; let i = index" (click)="open(c)">
+      <div class="course-cover" [class.cover-two]="i % 3 === 1" [class.cover-three]="i % 3 === 2">
+        <span class="cover-symbol">{{i % 3 === 0 ? '✦' : i % 3 === 1 ? '⌘' : '◫'}}</span><span class="status">{{Number(c.progressPercent || 0) >= 100 ? 'COMPLETED' : Number(c.progressPercent || 0) > 0 ? 'IN PROGRESS' : 'READY TO START'}}</span><div class="cover-grid"></div>
+      </div>
+      <div class="course-body"><div class="course-head"><span>LEARNING EXPERIENCE</span><strong>{{c.progressPercent || 0}}%</strong></div><h2>{{c.title}}</h2><p>{{c.description || 'Build knowledge through structured lessons, practice and mastery.'}}</p><div class="bar"><span [style.width.%]="c.progressPercent || 0"></span></div><div class="course-foot"><small>{{c.progressPercent || 0}}% complete</small><button type="button" (click)="$event.stopPropagation(); open(c)">{{Number(c.progressPercent || 0) > 0 ? 'Continue' : 'Start learning'}} <span>→</span></button></div></div>
+    </article>
+    <div class="empty" *ngIf="filteredCourses.length === 0"><span>◌</span><h2>No courses here yet</h2><p>Try another filter or search term.</p><button type="button" (click)="setFilter('all'); search=''">Show all courses</button></div>
+  </section>
+</main>
