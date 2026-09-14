@@ -1,6 +1,4 @@
 <main class="landing" [class.light]="theme === 'light'">
-  <div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="starfield"></div>
-
   <header class="navbar app-container">
     <a routerLink="/" class="brand" aria-label="Master Learning home">
       <span class="brand-mark">🎓</span>
@@ -9,9 +7,9 @@
     <nav class="desktop-nav" [class.open]="mobileMenuOpen" aria-label="Primary navigation">
       <button type="button" (click)="scrollToSection('home')">Home</button>
       <button type="button" (click)="scrollToSection('courses')">Courses</button>
+      <button type="button" (click)="scrollToSection('live')">Live Classes</button>
       <button type="button" (click)="scrollToSection('scholarships')">Scholarships</button>
       <button type="button" (click)="scrollToSection('ai-tutor')">AI Tutor</button>
-      <button type="button" (click)="scrollToSection('features')">Features</button>
       <button type="button" (click)="scrollToSection('about')">About</button>
     </nav>
     <div class="nav-actions">
@@ -24,51 +22,59 @@
 
   <section id="home" class="hero app-container">
     <div class="hero-copy">
-      <div class="hero-kicker"><b>✦</b> Learn Today. <span>Lead Tomorrow.</span></div>
-      <h1>Your Future<br><span>Starts Here!</span></h1>
-      <p>Learn new skills, explore opportunities, get scholarships and build the career you deserve with one intelligent learning ecosystem.</p>
-      <div class="hero-actions">
-        <a routerLink="/auth/register" class="primary-action">Start Learning Free <span>→</span></a>
-        <a href="#courses" class="secondary-action" (click)="$event.preventDefault(); scrollToSection('courses')">▶ Watch Demo</a>
+      <div class="hero-kicker">🇮🇳 India's Trusted Learning Platform</div>
+      <h1>Learn Today.<br><span>Build a Better Tomorrow.</span></h1>
+      <p>Access high-quality courses, expert mentors, live classes, scholarships and career guidance — all in one intelligent learning ecosystem.</p>
+      <div class="hero-search" role="search">
+        <span>⌕</span><input aria-label="Search courses" placeholder="What do you want to learn today?" /><button type="button" (click)="scrollToSection('courses')">⌕</button>
       </div>
-      <div class="hero-stats"><div><strong>10K+</strong><span>Happy Students</span></div><div><strong>500+</strong><span>Expert Educators</span></div><div><strong>100+</strong><span>Scholarships</span></div><div><strong>95%</strong><span>Success Rate</span></div></div>
+      <div class="popular"><b>Popular:</b><span>Class 10</span><span>Class 12</span><span>JEE</span><span>NEET</span><span>CUET</span><span>Skill Courses</span></div>
     </div>
-
-    <div class="hero-art" aria-label="Master Learning student illustration">
-      <div class="bubble bubble-light">💡</div><div class="bubble bubble-cap">🎓</div><div class="bubble bubble-star">✦</div>
-      <div class="speech speech-one">Small Steps<br><b>Big Results</b></div><div class="speech speech-two">Learn<br>Practice<br><b>Achieve</b><br>Success</div>
-      <div class="future-copy">Your <strong>Future</strong><br>Starts Here!</div>
-      <div class="student-shadow"></div>
-      <svg class="student-art" viewBox="0 0 440 590" role="img" aria-label="Young student with books" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="hoodLanding" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3020a3"/><stop offset=".55" stop-color="#6e38e6"/><stop offset="1" stop-color="#aa4ce7"/></linearGradient><linearGradient id="skinLanding" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd9bd"/><stop offset="1" stop-color="#c98265"/></linearGradient></defs>
-        <ellipse cx="250" cy="315" rx="175" ry="185" fill="#8b72ff" opacity=".12"/>
-        <path d="M130 590c7-120 18-215 72-245 27-15 78-15 106 0 57 31 72 126 80 245H130Z" fill="url(#hoodLanding)"/>
-        <path d="M170 370c21 25 48 38 84 38 39 0 69-14 94-44-6-30-27-49-59-57l-81 5c-25 9-38 26-38 58Z" fill="#21155f" opacity=".65"/>
-        <path d="M160 205c4-67 47-116 111-116 70 0 110 51 98 126-7 48-31 91-78 110-46 18-102-5-122-52-10-24-13-47-9-68Z" fill="url(#skinLanding)"/>
-        <path d="M159 208c-9-62 13-114 63-141 41-22 96-14 125 18 21 24 28 55 21 91-13-25-33-39-59-44-27-5-45 0-66-8-28-10-50-28-65-55 3 44-5 89-19 139Z" fill="#151522"/>
-        <ellipse cx="220" cy="220" rx="6" ry="7" fill="#25213c"/><ellipse cx="302" cy="220" rx="6" ry="7" fill="#25213c"/>
-        <path d="M216 202q9-8 19 0M294 202q10-8 20 0" fill="none" stroke="#5c3b35" stroke-width="5" stroke-linecap="round"/><path d="M250 226q-4 20 4 26" fill="none" stroke="#b36f5f" stroke-width="4" stroke-linecap="round"/><path d="M234 266q24 15 51-1" fill="none" stroke="#a64e51" stroke-width="5" stroke-linecap="round"/>
-        <path d="M123 470c21-39 46-57 71-49 18 6 19 23 4 38-20 21-38 45-52 67-12 19-39 9-40-11-1-14 7-30 17-45Z" fill="url(#skinLanding)"/><path d="M320 471c-12-35-29-55-50-50-16 4-22 20-13 35 12 18 24 42 31 67 6 20 34 18 42 1 6-13 1-32-10-53Z" fill="url(#skinLanding)"/>
-        <g transform="translate(122 410) rotate(-8)"><rect width="128" height="94" rx="8" fill="#ef7b4d"/><rect x="7" y="-7" width="128" height="94" rx="8" fill="#35a8db"/><rect x="14" y="-14" width="128" height="94" rx="8" fill="#f5c94a"/><path d="M30 5h88M30 25h76M30 45h91" stroke="#fff" stroke-width="5" opacity=".8"/></g>
-      </svg>
+    <div class="hero-photo" aria-label="Indian students learning">
+      <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1100&q=88" alt="Indian students learning together" />
+      <div class="hero-overlay"></div>
+      <div class="hero-message"><strong>Education<br>Empowers India</strong><span>Learn with confidence.</span></div>
+      <div class="learner-pill"><span class="avatars">👩🏻 👨🏽 👩🏾</span><span><b>Join 1M+ Learners</b><small>Across India</small></span></div>
     </div>
   </section>
 
-  <section class="feature-strip app-container"><article><span>👥</span><div><strong>Expert Instructors</strong><small>Learn from industry experts</small></div></article><article><span>◷</span><div><strong>Flexible Learning</strong><small>Study at your own pace</small></div></article><article><span>🏆</span><div><strong>Recognized Certificates</strong><small>Boost your career</small></div></article><article><span>🎁</span><div><strong>Scholarship Support</strong><small>Up to 100% funding</small></div></article></section>
+  <section id="live" class="feature-strip app-container">
+    <article><span>◉</span><div><strong>Live Classes</strong><small>Learn from expert teachers</small></div></article>
+    <article><span>♟</span><div><strong>Experienced Faculty</strong><small>India's best educators</small></div></article>
+    <article><span>▤</span><div><strong>Study Material</strong><small>Notes, PDFs, practice tests</small></div></article>
+    <article><span>🏆</span><div><strong>Scholarships</strong><small>Up to 100% support</small></div></article>
+    <article><span>↗</span><div><strong>Career Guidance</strong><small>Plan your future</small></div></article>
+  </section>
 
-  <section id="scholarships" class="scholarship-banner app-container"><div><span class="eyebrow">SCHOLARSHIP SUPPORT</span><h2>Get Scholarships <span>Up to 100%</span></h2><p>Because talent deserves opportunity. Discover support designed to help ambitious learners move forward.</p><a routerLink="/auth/register" class="primary-action">Apply for Scholarship <span>→</span></a></div><div class="scholarship-art"><span>🎓</span><span>🏆</span><span>📚</span></div></section>
+  <section id="courses" class="courses app-container">
+    <div class="section-head"><div><span class="eyebrow">EXPLORE OUR COURSES</span><h2>Learn skills that <span>move you forward.</span></h2><p>Choose from learning experiences designed for Indian students, professionals and lifelong learners.</p></div><button type="button" (click)="scrollToSection('features')">View All Courses →</button></div>
+    <div class="course-grid">
+      <article *ngFor="let journey of journeys; let i = index" class="course-card">
+        <div class="course-image"><img [src]="i === 0 ? 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=82' : i === 1 ? 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=82' : 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=700&q=82'" [alt]="journey.title" /><b>{{ i === 0 ? 'SCHOOL & EXAMS' : i === 1 ? 'AI & TECHNOLOGY' : 'CAREER SKILLS' }}</b></div>
+        <div class="course-body"><span class="course-level">{{ i === 0 ? 'Class 6 – 12' : i === 1 ? 'Advanced' : 'Intermediate' }}</span><h3>{{ journey.title }}</h3><p>{{ journey.description }}</p><div class="course-meta"><span>⭐ {{ 4.6 + i / 10 | number:'1.1-1' }}</span><span>◷ {{ 8 + i * 5 }}h learning</span></div></div>
+      </article>
+    </div>
+  </section>
 
-  <section id="courses" class="courses app-container"><div class="section-head"><div><span class="eyebrow">POPULAR COURSES</span><h2>Learn skills that <span>move you forward.</span></h2><p>Explore curated learning experiences and start building real capability today.</p></div><button type="button" (click)="scrollToSection('features')">View All →</button></div><div class="course-grid"><article *ngFor="let journey of journeys; let i = index" class="course-card"><div class="course-image" [class.alt]="i % 2 === 1"><span>{{ journey.icon }}</span><b>{{ i === 0 ? 'WEB' : i === 1 ? 'AI' : 'SKILLS' }}</b></div><div class="course-body"><span class="course-level">{{ i === 0 ? 'Beginner' : i === 1 ? 'Advanced' : 'Intermediate' }}</span><h3>{{ journey.title }}</h3><p>{{ journey.description }}</p><div class="course-meta"><span>⭐ {{ 4.6 + i / 10 | number:'1.1-1' }}</span><span>◷ {{ 8 + i * 5 }}h</span></div></div></article></div></section>
+  <section id="scholarships" class="scholarship-banner app-container">
+    <div><span class="eyebrow">SCHOLARSHIP SUPPORT</span><h2>Talent deserves <span>opportunity.</span></h2><p>Discover scholarship guidance and funding opportunities that help ambitious learners continue their education.</p><a routerLink="/auth/register" class="primary-action">Explore Scholarships <span>→</span></a></div>
+    <div class="scholarship-photo"><img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=85" alt="Students celebrating graduation" /></div>
+  </section>
 
-  <section id="ai-tutor" class="ai-section app-container"><div class="ai-copy"><span class="eyebrow">YOUR AI LEARNING COMPANION</span><h2>Meet your <span>AI Tutor.</span></h2><p>Get instant help with concepts, practice questions, assignments and the next best step in your learning journey.</p><div class="ai-points"><span>✓ Course-aware guidance</span><span>✓ Personalized explanations</span><span>✓ Practice & mastery support</span></div><a routerLink="/auth/login" class="primary-action">Ask AI Tutor <span>→</span></a></div><div class="ai-card"><div class="ai-avatar">🤖</div><div><span class="online">● Online</span><h3>Hi! How can I help you learn today?</h3><p>Explain this concept · Give me practice questions · Help with my assignment</p></div></div></section>
+  <section id="ai-tutor" class="ai-section app-container">
+    <div class="ai-photo"><img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=85" alt="Students collaborating with technology" /><div class="ai-badge">✦ AI POWERED LEARNING</div></div>
+    <div class="ai-copy"><span class="eyebrow">YOUR AI LEARNING COMPANION</span><h2>Meet your <span>AI Tutor.</span></h2><p>Get course-aware help, personalized explanations, practice support and the next best learning step whenever you need it.</p><div class="ai-points"><span>✓ Course-aware guidance</span><span>✓ Personalized explanations</span><span>✓ Practice & mastery support</span></div><a routerLink="/auth/login" class="primary-action">Ask AI Tutor <span>→</span></a></div>
+  </section>
 
   <section id="features" class="features app-container"><div class="section-intro"><span class="eyebrow">ONE INTELLIGENT ECOSYSTEM</span><h2>Everything you need to <span>learn, practice and grow.</span></h2></div><div class="feature-grid"><article *ngFor="let feature of features"><span class="feature-icon">{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><b>Explore →</b></article></div></section>
 
-  <section id="about" class="journeys app-container"><div class="section-intro"><span class="eyebrow">BUILT FOR EVERY LEARNING JOURNEY</span><h2>From classroom concepts<br><span>to real-world creation.</span></h2><p>A connected platform for learners, educators and institutions.</p></div><div class="journey-grid"><article *ngFor="let journey of journeys" class="journey-card"><div class="journey-top"><span>{{ journey.icon }}</span><b>{{ journey.number }}</b></div><h3>{{ journey.title }}</h3><p>{{ journey.description }}</p><ul><li *ngFor="let point of journey.points">{{ point }}</li></ul><a href="#home" (click)="$event.preventDefault(); scrollToSection('home')">{{ journey.action }} <span>→</span></a></article></div></section>
+  <section id="about" class="journeys app-container"><div class="section-intro"><span class="eyebrow">MADE FOR INDIA</span><h2>One platform for <span>every learning journey.</span></h2><p>From school and competitive exams to professional growth, Master Learning connects learners, educators and institutions.</p></div><div class="journey-grid"><article *ngFor="let journey of journeys" class="journey-card"><div class="journey-top"><span>{{ journey.icon }}</span><b>{{ journey.number }}</b></div><h3>{{ journey.title }}</h3><p>{{ journey.description }}</p><ul><li *ngFor="let point of journey.points">{{ point }}</li></ul><a href="#home" (click)="$event.preventDefault(); scrollToSection('home')">{{ journey.action }} <span>→</span></a></article></div></section>
 
   <section class="stats-band app-container"><article *ngFor="let stat of statistics"><span>{{ stat.icon }}</span><strong>{{ stat.value }}</strong><small>{{ stat.label }}</small></article></section>
 
-  <section class="final-cta app-container"><div><span class="eyebrow">READY TO START?</span><h2>Build your <span>brighter future.</span></h2><p>Join learners who are already learning, growing and turning their goals into progress.</p></div><a routerLink="/auth/register" class="primary-action">Create Your Free Account <span>→</span></a></section>
+  <section class="testimonial app-container"><div><span class="eyebrow">LEARNER STORIES</span><h2>Learning that feels <span>personal.</span></h2><p>“The platform makes it easy to see what I should learn next, practice weak areas and stay focused on my goal.”</p><strong>— Student community, India</strong></div><div class="testimonial-photo"><img src="https://images.unsplash.com/photo-1535982330050-f1c2fbf2d34d?auto=format&fit=crop&w=700&q=85" alt="Happy student using a laptop" /></div></section>
+
+  <section class="final-cta app-container"><div><span class="eyebrow">START YOUR JOURNEY</span><h2>Build your <span>brighter future.</span></h2><p>Join learners who are already learning, growing and turning goals into progress.</p></div><a routerLink="/auth/register" class="primary-action">Create Your Free Account <span>→</span></a></section>
 
   <footer class="footer app-container"><div class="footer-brand"><span class="brand-mark">🎓</span><div><strong>Master Learning</strong><small>Learn · Grow · Succeed</small></div></div><div class="footer-links"><button type="button" (click)="scrollToSection('courses')">Courses</button><button type="button" (click)="scrollToSection('features')">Features</button><a routerLink="/auth/login">Login</a><a routerLink="/auth/register">Register</a></div><small>© 2026 Master Learning. All rights reserved.</small></footer>
 </main>
