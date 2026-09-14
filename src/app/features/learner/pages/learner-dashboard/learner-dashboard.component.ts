@@ -9,7 +9,7 @@ import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../
 
 interface DashboardStat { label: string; value: string; change: string; icon: string; }
 
-@Component({ selector: 'app-learner-dashboard', templateUrl: './learner-dashboard.component.html', styleUrls: ['./learner-dashboard.component.scss'] })
+@Component({ selector: 'app-learner-dashboard', templateUrl: './learner-dashboard.component.html', styleUrls: ['./learner-dashboard.component.scss', './learner-dashboard-premium.scss'] })
 export class LearnerDashboardComponent implements OnInit {
   user: User | null = null;
   isLoggingOut = false;
