@@ -1,1 +1,55 @@
-<main class="quiz" *ngIf="assessment;else state"><header class="quiz-header"><div><span>ADAPTIVE ASSESSMENT · {{assessment.level}}</span><h1>{{assessment.title}}</h1><p>Personalized knowledge check · {{assessment.passingScore}}% required to pass.</p></div><div class="attempts"><strong>{{assessment.attemptsUsed}}/{{assessment.maxAttempts}}</strong><small> attempts</small></div></header><section class="progress-card"><div><span>ASSESSMENT PROGRESS</span><strong>{{assessment.questions.length-unansweredCount}} / {{assessment.questions.length}}</strong></div><div class="progress-track"><i [style.width.%]="assessment.questions.length ? ((assessment.questions.length-unansweredCount)/assessment.questions.length)*100 : 0"></i></div><small>{{unansweredCount ? unansweredCount+' question(s) remaining' : 'Ready to submit · all questions answered'}}</small></section><section class="question" *ngFor="let q of assessment.questions;let i=index"><div class="num">{{i+1}} / {{assessment.questions.length}}</div><span class="points">{{q.points}} PTS</span><h2>{{q.questionText}}</h2><button *ngFor="let o of q.options;let oi=index" type="button" [class.selected]="answers[q.id]===o.id" (click)="select(q.id,o.id)"><b>{{answers[q.id]===o.id?'✓':('ABCDEFG'[oi] || '•')}}</b><span>{{o.optionText}}</span></button></section><p class="error" *ngIf="error">{{error}}</p><div class="submit-row"><div><strong>{{unansweredCount?'Keep going — you are almost there.':'Excellent — assessment complete.'}}</strong><small> Your answers are securely submitted for scoring.</small></div><button class="submit" (click)="submit()" [disabled]="submitting||unansweredCount>0">{{submitting?'Scoring your mastery…':'Submit Assessment →'}}</button></div></main><ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p></section></ng-template>
+<main class="quiz" *ngIf="assessment;else state">
+  <header class="quiz-header">
+    <button class="back" type="button" (click)="back()">← Learning</button>
+    <div class="heading">
+      <span>ADAPTIVE ASSESSMENT · {{assessment.level}}</span>
+      <h1>{{assessment.title}}</h1>
+      <p>Personalized knowledge checkpoint · {{assessment.passingScore}}% required to pass.</p>
+    </div>
+    <div class="attempts"><strong>{{assessment.attemptsUsed}}/{{assessment.maxAttempts}}</strong><small> attempts used</small></div>
+  </header>
+
+  <section class="progress-card">
+    <div class="progress-copy"><span>YOUR PROGRESS</span><strong>{{answeredCount}} / {{questions.length}}</strong></div>
+    <div class="progress-track"><i [style.width.%]="progressPercent"></i></div>
+    <div class="progress-meta"><small>{{progressPercent}}% complete</small><small>{{unansweredCount ? unansweredCount+' remaining' : 'All questions answered'}}</small></div>
+  </section>
+
+  <div class="workspace">
+    <aside class="navigator">
+      <div class="nav-title"><span>QUESTIONS</span><small>{{answeredCount}} answered</small></div>
+      <div class="question-map">
+        <button *ngFor="let q of questions;let i=index" type="button" [class.active]="i===currentIndex" [class.done]="answers[q.id]" (click)="goTo(i)">{{i+1}}</button>
+      </div>
+      <div class="legend"><span><i class="current"></i>Current</span><span><i class="answered"></i>Answered</span></div>
+      <div class="assessment-note"><b>✦ Adaptive</b><p>Your answers help shape what you should learn next.</p></div>
+    </aside>
+
+    <section class="question-stage" *ngIf="currentQuestion">
+      <article class="question">
+        <div class="question-top"><span class="num">QUESTION {{currentIndex+1}} OF {{questions.length}}</span><span class="points">{{currentQuestion.points}} PTS</span></div>
+        <h2>{{currentQuestion.questionText}}</h2>
+        <p class="hint">Choose the answer that best demonstrates your understanding.</p>
+        <div class="options">
+          <button *ngFor="let o of currentQuestion.options;let oi=index" type="button" [class.selected]="answers[currentQuestion.id]===o.id" (click)="select(currentQuestion.id,o.id)">
+            <b>{{answers[currentQuestion.id]===o.id?'✓':('ABCDEFG'[oi] || '•')}}</b><span>{{o.optionText}}</span><em *ngIf="answers[currentQuestion.id]===o.id">Selected</em>
+          </button>
+        </div>
+      </article>
+
+      <div class="question-actions">
+        <button type="button" class="secondary" (click)="previous()" [disabled]="isFirst">← Previous</button>
+        <span>{{currentIndex+1}} / {{questions.length}}</span>
+        <button type="button" class="primary" (click)="next()" [disabled]="isLast">Next question →</button>
+      </div>
+
+      <p class="error" *ngIf="error">{{error}}</p>
+      <div class="submit-row" *ngIf="isLast">
+        <div><strong>{{unansweredCount ? 'Complete every question before submitting.' : 'Excellent — you are ready to submit.'}}</strong><small>Your answers are securely submitted for scoring.</small></div>
+        <button class="submit" (click)="submit()" [disabled]="submitting||unansweredCount>0">{{submitting?'Scoring your mastery…':'Submit Assessment →'}}</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p></section></ng-template>
