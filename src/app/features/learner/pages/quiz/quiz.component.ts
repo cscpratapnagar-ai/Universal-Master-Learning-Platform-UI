@@ -34,8 +34,11 @@ export class QuizComponent implements OnInit {
   get currentQuestion() { return this.questions[this.currentIndex]; }
   get isFirst(): boolean { return this.currentIndex === 0; }
   get isLast(): boolean { return this.currentIndex === this.questions.length - 1; }
+  get attemptsExhausted(): boolean { return !!this.assessment && this.assessment.attemptsUsed >= this.assessment.maxAttempts; }
+  get assessmentLocked(): boolean { return this.attemptsExhausted || !!this.assessment?.passed; }
 
   select(questionId:string, optionId:string): void {
+    if (this.assessmentLocked) return;
     this.answers[questionId] = optionId;
   }
 
@@ -49,7 +52,7 @@ export class QuizComponent implements OnInit {
   next(): void { this.goTo(this.currentIndex + 1); }
 
   submit(): void {
-    if (!this.assessment || this.unansweredCount > 0 || this.submitting) return;
+    if (!this.assessment || this.assessmentLocked || this.unansweredCount > 0 || this.submitting) return;
     this.submitting = true;
     this.api.submit(this.assessment.id, this.answers).subscribe({
       next:r=>{ this.submitting=false; this.router.navigateByUrl('/learner/assessment-result',{state:{result:r.data||r}}); },
