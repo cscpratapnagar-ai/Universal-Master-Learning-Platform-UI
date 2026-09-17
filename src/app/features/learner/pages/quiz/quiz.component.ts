@@ -14,6 +14,7 @@ export class QuizComponent implements OnInit {
   submitting = false;
   loading = true;
   error = '';
+  currentIndex = 0;
 
   constructor(private api: AssessmentService, private route: ActivatedRoute, private router: Router) {}
 
@@ -26,11 +27,26 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  select(questionId:string, optionId:string): void { this.answers[questionId] = optionId; }
+  get questions() { return this.assessment?.questions || []; }
+  get unansweredCount(): number { return this.questions.filter(q => !this.answers[q.id]).length; }
+  get answeredCount(): number { return this.questions.length - this.unansweredCount; }
+  get progressPercent(): number { return this.questions.length ? Math.round(this.answeredCount / this.questions.length * 100) : 0; }
+  get currentQuestion() { return this.questions[this.currentIndex]; }
+  get isFirst(): boolean { return this.currentIndex === 0; }
+  get isLast(): boolean { return this.currentIndex === this.questions.length - 1; }
 
-  get unansweredCount(): number {
-    return (this.assessment?.questions || []).filter(q => !this.answers[q.id]).length;
+  select(questionId:string, optionId:string): void {
+    this.answers[questionId] = optionId;
   }
+
+  goTo(index:number): void {
+    if (index < 0 || index >= this.questions.length) return;
+    this.currentIndex = index;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  previous(): void { this.goTo(this.currentIndex - 1); }
+  next(): void { this.goTo(this.currentIndex + 1); }
 
   submit(): void {
     if (!this.assessment || this.unansweredCount > 0 || this.submitting) return;
@@ -40,4 +56,6 @@ export class QuizComponent implements OnInit {
       error:e=>{ this.submitting=false; this.error=e?.error?.message || 'Unable to submit assessment.'; }
     });
   }
+
+  back(): void { this.router.navigateByUrl('/learner'); }
 }
