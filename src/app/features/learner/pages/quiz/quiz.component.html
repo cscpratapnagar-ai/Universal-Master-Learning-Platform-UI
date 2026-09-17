@@ -9,6 +9,11 @@
     <div class="attempts"><strong>{{assessment.attemptsUsed}}/{{assessment.maxAttempts}}</strong><small> attempts used</small></div>
   </header>
 
+  <section class="lock-banner" *ngIf="attemptsExhausted || assessment.passed">
+    <div><b>{{assessment.passed ? 'Assessment already passed' : 'Attempt limit reached'}}</b><small>{{assessment.passed ? 'Your mastery checkpoint is already complete.' : 'All available attempts have been used. Review your learning and continue from the next recommended step.'}}</small></div>
+    <button type="button" (click)="back()">Back to Learning →</button>
+  </section>
+
   <section class="progress-card">
     <div class="progress-copy"><span>YOUR PROGRESS</span><strong>{{answeredCount}} / {{questions.length}}</strong></div>
     <div class="progress-track"><i [style.width.%]="progressPercent"></i></div>
@@ -26,12 +31,12 @@
     </aside>
 
     <section class="question-stage" *ngIf="currentQuestion">
-      <article class="question">
+      <article class="question" [class.locked]="assessmentLocked">
         <div class="question-top"><span class="num">QUESTION {{currentIndex+1}} OF {{questions.length}}</span><span class="points">{{currentQuestion.points}} PTS</span></div>
         <h2>{{currentQuestion.questionText}}</h2>
-        <p class="hint">Choose the answer that best demonstrates your understanding.</p>
+        <p class="hint">{{assessmentLocked ? 'This assessment is locked because the available attempt limit has been reached.' : 'Choose the answer that best demonstrates your understanding.'}}</p>
         <div class="options">
-          <button *ngFor="let o of currentQuestion.options;let oi=index" type="button" [class.selected]="answers[currentQuestion.id]===o.id" (click)="select(currentQuestion.id,o.id)">
+          <button *ngFor="let o of currentQuestion.options;let oi=index" type="button" [class.selected]="answers[currentQuestion.id]===o.id" [disabled]="assessmentLocked" (click)="select(currentQuestion.id,o.id)">
             <b>{{answers[currentQuestion.id]===o.id?'✓':('ABCDEFG'[oi] || '•')}}</b><span>{{o.optionText}}</span><em *ngIf="answers[currentQuestion.id]===o.id">Selected</em>
           </button>
         </div>
@@ -44,7 +49,7 @@
       </div>
 
       <p class="error" *ngIf="error">{{error}}</p>
-      <div class="submit-row" *ngIf="isLast">
+      <div class="submit-row" *ngIf="isLast && !assessmentLocked">
         <div><strong>{{unansweredCount ? 'Complete every question before submitting.' : 'Excellent — you are ready to submit.'}}</strong><small>Your answers are securely submitted for scoring.</small></div>
         <button class="submit" (click)="submit()" [disabled]="submitting||unansweredCount>0">{{submitting?'Scoring your mastery…':'Submit Assessment →'}}</button>
       </div>
