@@ -55,7 +55,7 @@ export class QuizComponent implements OnInit {
     if (!this.assessment || this.assessmentLocked || this.unansweredCount > 0 || this.submitting) return;
     this.submitting = true;
     this.api.submit(this.assessment.id, this.answers).subscribe({
-      next:r=>{ this.submitting=false; this.router.navigateByUrl('/learner/assessment-result',{state:{result:r.data||r}}); },
+      next:r=>{ this.submitting=false; this.router.navigateByUrl('/learner/assessment-result',{state:{result:r.data||r,assessmentId:this.assessment.id}}); },
       error:e=>{ this.submitting=false; this.error=e?.error?.message || 'Unable to submit assessment.'; }
     });
   }
