@@ -1,0 +1,66 @@
+<section class="teacher-shell">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">M</span>
+      <div><strong>Master Learning</strong><small>TEACHER STUDIO</small></div>
+    </div>
+    <div class="topbar-actions">
+      <span class="role-pill">Teacher</span>
+      <div class="avatar">T</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">TEACHER OVERVIEW</p>
+        <h1>Build learning that moves students forward. <span>✦</span></h1>
+        <p>Manage courses, assessments and learner progress from one workspace.</p>
+      </div>
+      <button type="button" class="primary" (click)="open(quickActions[0])">＋ Create course</button>
+    </section>
+
+    <section class="metrics">
+      <article class="metric" *ngFor="let item of metrics">
+        <div class="metric-icon">{{ item.icon }}</div>
+        <div><span>{{ item.label }}</span><strong>{{ item.value }}</strong><small>{{ item.detail }}</small></div>
+      </article>
+    </section>
+
+    <section class="workspace-grid">
+      <article class="panel focus-panel">
+        <div class="panel-heading">
+          <div><p class="eyebrow">TEACHING WORKSPACE</p><h2>Start building</h2></div>
+          <span class="status">READY</span>
+        </div>
+        <div class="action-grid">
+          <button type="button" *ngFor="let action of quickActions" (click)="open(action)">
+            <span class="action-icon">{{ action.icon }}</span>
+            <span><strong>{{ action.title }}</strong><small>{{ action.description }}</small></span>
+            <b>→</b>
+          </button>
+        </div>
+      </article>
+
+      <article class="panel journey-panel">
+        <p class="eyebrow">TEACHING FLOW</p>
+        <h2>From idea to measurable learning</h2>
+        <div class="flow">
+          <div><span>01</span><strong>Course</strong><small>Structure your curriculum</small></div>
+          <i>→</i>
+          <div><span>02</span><strong>Lessons</strong><small>Add content and activities</small></div>
+          <i>→</i>
+          <div><span>03</span><strong>Assessment</strong><small>Measure understanding</small></div>
+          <i>→</i>
+          <div><span>04</span><strong>Analytics</strong><small>Improve instruction</small></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel empty-state">
+      <div class="empty-icon">✦</div>
+      <div><p class="eyebrow">MY TEACHING SPACE</p><h2>No courses yet</h2><p>Create your first course to start adding modules, lessons, assessments and learners.</p></div>
+      <button type="button" class="secondary" (click)="open(quickActions[0])">Create your first course →</button>
+    </section>
+  </main>
+</section>
