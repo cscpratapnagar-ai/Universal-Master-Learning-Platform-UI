@@ -1,0 +1,24 @@
+<main class="tutor">
+  <header class="topbar"><a class="back" [routerLink]="['/learner/course',enrollmentId,'progress']">← Progress</a><span class="brand">AI LEARNING TUTOR</span><a class="course" [routerLink]="['/learner/course',enrollmentId]">Course overview</a></header>
+  <section class="hero"><div><span class="eyebrow">PERSONALIZED LEARNING · AI GUIDANCE</span><h1>Turn your next weak concept into your next breakthrough.</h1><p>Ask questions, request examples, or practise a concept using the learning context already available in your course.</p></div><div class="orb">✦<small>AI</small></div></section>
+  <p class="state" *ngIf="loading">Preparing your personalized guidance...</p><p class="state error" *ngIf="error">{{error}}</p>
+  <ng-container *ngIf="!loading">
+    <section class="grid">
+      <aside class="insight">
+        <span class="kicker">LEARNING SIGNAL</span><h2>{{orchestration?.recommendedAction || 'Continue guided practice'}}</h2>
+        <div class="signal"><span>STATE</span><strong>{{orchestration?.learnerState || 'LEARNING'}}</strong></div>
+        <div class="signal"><span>STRATEGY</span><strong>{{orchestration?.teachingStrategy || 'ADAPTIVE EXPLANATION'}}</strong></div>
+        <div class="signal"><span>ASSESSMENT</span><strong>{{orchestration?.assessmentAction || 'PRACTICE'}}</strong></div>
+        <p>{{orchestration?.reasons?.[0] || 'Your learning activity is used to shape the next recommendation.'}}</p>
+        <div class="reasons"><span *ngFor="let reason of orchestration?.reasons">{{reason}}</span></div>
+      </aside>
+      <section class="chat">
+        <div class="chat-head"><div><span class="kicker">YOUR TUTOR</span><h2>Ask anything about this course</h2></div><span class="status">● Context aware</span></div>
+        <div class="welcome"><div class="avatar">✦</div><div><strong>How can I help you learn?</strong><p>I can explain a topic step-by-step, create examples, or help you practise.</p></div></div>
+        <div class="answer" *ngIf="response"><div class="avatar">✦</div><div><span class="kicker">TUTOR RESPONSE</span><p>{{response.response}}</p><div class="sources" *ngIf="response.sources?.length"><span *ngFor="let source of response.sources">{{source.title || 'Course source'}}</span></div></div></div>
+        <div class="prompts"><button *ngFor="let p of prompts" type="button" (click)="usePrompt(p)">{{p}} ↗</button></div>
+        <form (ngSubmit)="ask()" class="composer"><textarea [(ngModel)]="question" name="question" rows="3" placeholder="Ask a question about your lesson or concept..."></textarea><button type="submit" [disabled]="sending || !question.trim()">{{sending?'Thinking...':'Ask tutor →'}}</button></form>
+      </section>
+    </section>
+  </ng-container>
+</main>
