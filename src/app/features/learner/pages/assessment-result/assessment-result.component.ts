@@ -33,6 +33,16 @@ export class AssessmentResultComponent {
   get total(): number { return Number(this.result?.totalQuestions ?? 0); }
   get accuracy(): number { return this.total ? Math.round(this.correct / this.total * 100) : 0; }
   get passed(): boolean { return !!this.result?.passed; }
+  get masteryLevel(): string { return String(this.result?.masteryLevel || (this.score >= 90 ? 'MASTERED' : this.score >= 70 ? 'PROFICIENT' : this.score >= 50 ? 'DEVELOPING' : 'NEEDS_REVIEW')); }
+  get masteryLabel(): string {
+    return this.masteryLevel === 'MASTERED' ? 'Mastered' : this.masteryLevel === 'PROFICIENT' ? 'Proficient' : this.masteryLevel === 'DEVELOPING' ? 'Developing' : 'Needs review';
+  }
+  get masteryMessage(): string {
+    return this.masteryLevel === 'MASTERED' ? 'You demonstrated a strong command of this learning objective.'
+      : this.masteryLevel === 'PROFICIENT' ? 'Your understanding is solid. Keep applying the concept in new situations.'
+      : this.masteryLevel === 'DEVELOPING' ? 'The foundation is forming. Focused practice will strengthen this concept.'
+      : 'Review the key concepts and use targeted practice before trying again.';
+  }
   get performanceLabel(): string {
     if (this.score >= 90) return 'Strong mastery signal';
     if (this.score >= 70) return 'Passing performance';
