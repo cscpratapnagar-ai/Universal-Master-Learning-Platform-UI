@@ -56,7 +56,7 @@ export class AiTutorComponent implements OnInit {
 
   startPractice(assessment:AssessmentView):void{
     if(assessment.passed||assessment.attemptsUsed>=assessment.maxAttempts)return;
-    this.router.navigate(['/learner/quiz'],{queryParams:{assessmentId:assessment.id}});
+    this.router.navigate(['/learner/quiz'],{queryParams:{assessmentId:assessment.id,enrollmentId:this.enrollmentId,mode:'adaptive'}});
   }
 
   get practiceReady():boolean{return this.practiceAssessments.some(a=>!a.passed&&a.attemptsUsed<a.maxAttempts);}
