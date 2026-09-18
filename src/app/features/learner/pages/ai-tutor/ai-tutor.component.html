@@ -3,6 +3,19 @@
   <section class="hero"><div><span class="eyebrow">PERSONALIZED LEARNING · AI GUIDANCE</span><h1>Turn your next weak concept into your next breakthrough.</h1><p>Ask questions, request examples, or practise a concept using the learning context already available in your course.</p></div><div class="orb">✦<small>AI</small></div></section>
   <p class="state" *ngIf="loading">Preparing your personalized guidance...</p><p class="state error" *ngIf="error">{{error}}</p>
   <ng-container *ngIf="!loading">
+    <section class="loop">
+      <div class="loop-head"><div><span class="kicker">ADAPTIVE LEARNING LOOP</span><h2>Understand → Practise → Re-assess → Master</h2></div><span class="status">● Live learning signal</span></div>
+      <div class="loop-grid">
+        <div class="loop-step"><span>01</span><strong>Weak concept</strong><p>{{personalization?.targetLessonTitle || orchestration?.reasons?.[0] || 'Your next learning target is selected from your current signals.'}}</p></div>
+        <div class="loop-step"><span>02</span><strong>AI explanation</strong><p>Ask the tutor for a simple explanation, worked example, or help with your weak area.</p></div>
+        <div class="loop-step"><span>03</span><strong>Practice</strong><p>{{practiceLoading ? 'Finding practice...' : (practiceReady ? 'A practice assessment is ready.' : 'No available practice assessment yet.')}}</p></div>
+        <div class="loop-step"><span>04</span><strong>Re-assessment</strong><p>Complete the assessment again when another attempt is available. Your mastery is recalculated from the result.</p></div>
+      </div>
+      <div class="practice" *ngIf="practiceAssessments.length">
+        <div><span class="kicker">RECOMMENDED PRACTICE</span><h3>{{practiceLessonTitle}}</h3><p>Use the assessment below to turn the tutor guidance into measurable progress.</p></div>
+        <div class="practice-actions"><button *ngFor="let assessment of practiceAssessments" type="button" [disabled]="assessment.passed || assessment.attemptsUsed >= assessment.maxAttempts" (click)="startPractice(assessment)">{{assessment.passed ? 'Mastery reached' : (assessment.attemptsUsed ? 'Re-assess' : 'Start practice')}} · {{assessment.title}} →</button></div>
+      </div>
+    </section>
     <section class="grid">
       <aside class="insight">
         <span class="kicker">LEARNING SIGNAL</span><h2>{{orchestration?.recommendedAction || 'Continue guided practice'}}</h2>
