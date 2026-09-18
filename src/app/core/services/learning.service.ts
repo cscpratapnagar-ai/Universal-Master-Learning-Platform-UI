@@ -6,6 +6,7 @@ import { ApiResponse, StudentCourse, CourseLearning } from '../models/learning.m
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../models/ai-learning.model';
 import { AiTutorRequest, AiTutorResponse } from '../models/ai-tutor.model';
 
+export interface LearningProgressAnalytics { enrollmentId:string; courseId:string; courseTitle:string; completionPercent:number; completedLessons:number; totalLessons:number; remainingLessons:number; activeLessons:number; learningSeconds:number; learningMinutes:number; masteryScore:number; masteryLevel:'MASTERED'|'PROFICIENT'|'DEVELOPING'|'EMERGING'|'NOT_ASSESSED'; momentum:'EXCELLENT'|'ON_TRACK'|'BUILDING'|'STARTING'; assessmentCount:number; assessments:{assessmentId:string;lessonId?:string|null;title:string;score:number;masteryLevel:string;passed:boolean;submittedAt:string}[]; }
 export interface LearningPathStatus { enrollmentId:string; courseId:string; progressPercent:number; completedLessonsCount:number; availableLessonsCount:number; lockedLessonsCount:number; totalLessonsCount:number; isCourseCompleted:boolean; courseCompletedAt?:string|null; nextRecommendedLesson:{lessonId?:string;title?:string;sortOrder?:number;completed?:boolean;locked?:boolean}; lessons:{lessonId:string;title:string;sortOrder:number;completed:boolean;locked:boolean;status:'COMPLETED'|'AVAILABLE'|'LOCKED';pendingPrerequisiteCount:number}[]; }
 export interface LearningPathLesson { id:string; title:string; sortOrder:number; completionMode:string; prerequisiteLessonIds:string[]; }
 export interface LearningPathModule { id:string; title:string; sortOrder:number; lessons:LearningPathLesson[]; }
@@ -19,6 +20,7 @@ export class LearningService {
   constructor(private readonly http:HttpClient){}
   myCourses():Observable<ApiResponse<StudentCourse[]>>{return this.http.get<ApiResponse<StudentCourse[]>>(`${this.base}/student/courses/me`);}
   courseLearning(enrollmentId:string):Observable<ApiResponse<CourseLearning>>{return this.http.get<ApiResponse<CourseLearning>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`);}
+  getProgressAnalytics(enrollmentId:string):Observable<ApiResponse<LearningProgressAnalytics>>{return this.http.get<ApiResponse<LearningProgressAnalytics>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/progress`);}
   getLearningPath(enrollmentId:string):Observable<ApiResponse<LearningPathStatus>>{return this.http.get<ApiResponse<LearningPathStatus>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`);}
   getAiOrchestration(enrollmentId:string):Observable<ApiResponse<AiLearningOrchestration>>{return this.http.get<ApiResponse<AiLearningOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai/orchestration`);}
   getPersonalizationOrchestration(enrollmentId:string):Observable<ApiResponse<PersonalizationOrchestration>>{return this.http.get<ApiResponse<PersonalizationOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/personalization/orchestration`);}
