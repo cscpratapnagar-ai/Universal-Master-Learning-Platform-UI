@@ -1,1 +1,43 @@
-<main class="result"><section class="result-card" *ngIf="result;else empty"><div class="ambient"></div><div class="result-icon">{{result.passed?'✦':'◌'}}</div><span class="eyebrow">ASSESSMENT INTELLIGENCE</span><h1>{{result.passed?'Mastery checkpoint cleared':'Your learning continues'}}</h1><p class="subtitle">{{result.passed?'Excellent work. Your performance shows strong progress on this learning checkpoint.':'Use this result as guidance. Review the gaps and strengthen your understanding before trying again.'}}</p><div class="score-ring"><div><strong>{{result.score}}%</strong><small> SCORE</small></div></div><div class="result-grid"><div><strong>{{result.correctAnswers}}</strong><small>Correct</small></div><div><strong>{{result.totalQuestions}}</strong><small>Questions</small></div><div><strong>{{result.totalQuestions ? ((result.correctAnswers/result.totalQuestions)*100 | number:'1.0-0') : 0}}%</strong><small>Accuracy</small></div></div><div class="status" [class.pass]="result.passed"><i>{{result.passed?'✓':'→'}}</i>{{result.passed?'PASSED':'KEEP PRACTICING'}}</div><div class="feedback"><span>✦</span><div><strong>{{result.passed?'Next best step':'Recommended next step'}}</strong><p>{{result.passed?'Continue to the next lesson and build on this mastery.':'Review the lesson, use AI Tutor for clarification, then retake when ready.'}}</p></div></div><button type="button" (click)="back()">Return to Learning <b>→</b></button></section></main><ng-template #empty><section class="empty"><div>✦</div><h2>No assessment result found</h2><p>Return to your learning dashboard to continue.</p><button type="button" (click)="back()">Back to Learning</button></section></ng-template>
+<main class="result">
+  <section class="result-card" *ngIf="result;else empty">
+    <div class="ambient"></div>
+    <div class="result-icon">{{passed?'✦':'◌'}}</div>
+    <span class="eyebrow">ASSESSMENT INTELLIGENCE</span>
+    <h1>{{passed?'Mastery checkpoint cleared':'Your learning continues'}}</h1>
+    <p class="subtitle">{{passed?'Your result has been recorded. Use this checkpoint to continue building on what you know.':'This checkpoint highlights where more practice can strengthen your understanding.'}}</p>
+
+    <div class="score-ring" [class.pass]="passed">
+      <div><strong>{{score}}%</strong><small>SCORE</small></div>
+    </div>
+    <div class="performance"><span>✦</span><div><strong>{{performanceLabel}}</strong><small>Based on this assessment result</small></div></div>
+
+    <div class="result-grid">
+      <div><strong>{{correct}}</strong><small>Correct</small></div>
+      <div><strong>{{total}}</strong><small>Questions</small></div>
+      <div><strong>{{accuracy}}%</strong><small>Accuracy</small></div>
+    </div>
+
+    <div class="status" [class.pass]="passed"><i>{{passed?'✓':'→'}}</i>{{passed?'PASSED':'KEEP PRACTICING'}}</div>
+
+    <div class="feedback">
+      <span>✦</span>
+      <div>
+        <strong>{{passed?'Next best step':'Recommended next step'}}</strong>
+        <p>{{passed?'Continue to the next lesson and apply this knowledge.':'Review the lesson, ask AI Tutor about difficult concepts, then retake when ready.'}}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="primary" (click)="back()">Return to Learning <b>→</b></button>
+      <button type="button" class="secondary" *ngIf="!passed && assessmentId" (click)="retry()">Retake Assessment</button>
+    </div>
+  </section>
+
+  <ng-template #empty>
+    <section class="empty">
+      <div>✦</div><h2>No assessment result found</h2>
+      <p>Return to your learning dashboard to continue.</p>
+      <button type="button" (click)="back()">Back to Learning</button>
+    </section>
+  </ng-template>
+</main>
