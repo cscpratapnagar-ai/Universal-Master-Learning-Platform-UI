@@ -34,6 +34,7 @@
     <div class="actions">
       <button type="button" class="primary" (click)="back()">Return to Learning <b>→</b></button>
       <button type="button" class="secondary" *ngIf="!passed && assessmentId" (click)="retry()">Retake Assessment</button>
+      <button type="button" class="secondary" *ngIf="enrollmentId" (click)="tutor()">Back to AI Tutor</button>
     </div>
   </section>
 
