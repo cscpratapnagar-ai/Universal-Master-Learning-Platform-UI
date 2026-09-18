@@ -10,6 +10,10 @@
       <div><strong>{{score}}%</strong><small>SCORE</small></div>
     </div>
     <div class="performance"><span>✦</span><div><strong>{{performanceLabel}}</strong><small>Based on this assessment result</small></div></div>
+    <div class="mastery" [class.mastered]="masteryLevel === 'MASTERED'" [class.proficient]="masteryLevel === 'PROFICIENT'">
+      <div class="mastery-mark">✦</div>
+      <div><span>MASTERY SIGNAL</span><strong>{{masteryLabel}}</strong><p>{{masteryMessage}}</p></div>
+    </div>
 
     <div class="result-grid">
       <div><strong>{{correct}}</strong><small>Correct</small></div>
