@@ -56,7 +56,13 @@ export class AssessmentResultComponent {
 
   retry(): void {
     if (!this.assessmentId) return this.back();
-    this.router.navigate(['/learner/quiz'], { queryParams: { assessmentId: this.assessmentId, mode: 'adaptive' } });
+    this.router.navigate(['/learner/quiz'], {
+      queryParams: {
+        assessmentId: this.assessmentId,
+        mode: this.adaptiveMode ? 'adaptive' : undefined,
+        enrollmentId: this.enrollmentId || undefined
+      }
+    });
   }
 
   back(): void { this.router.navigateByUrl(this.enrollmentId ? `/learner/course/${this.enrollmentId}/progress` : '/learner'); }
