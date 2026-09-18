@@ -21,11 +21,15 @@ interface AssessmentResult {
 export class AssessmentResultComponent {
   result: AssessmentResult | null = null;
   assessmentId = '';
+  enrollmentId = '';
+  adaptiveMode = false;
 
   constructor(private router: Router) {
     const state = history.state?.result as AssessmentResult | undefined;
     this.result = state || null;
     this.assessmentId = history.state?.assessmentId || state?.assessmentId || '';
+    this.enrollmentId = history.state?.enrollmentId || '';
+    this.adaptiveMode = !!history.state?.adaptiveMode;
   }
 
   get score(): number { return Math.round(Number(this.result?.score ?? 0)); }
@@ -55,5 +59,6 @@ export class AssessmentResultComponent {
     this.router.navigate(['/learner/quiz'], { queryParams: { assessmentId: this.assessmentId, mode: 'adaptive' } });
   }
 
-  back(): void { this.router.navigateByUrl('/learner'); }
+  back(): void { this.router.navigateByUrl(this.enrollmentId ? `/learner/course/${this.enrollmentId}/progress` : '/learner'); }
+  tutor(): void { this.router.navigateByUrl(this.enrollmentId ? `/learner/course/${this.enrollmentId}/ai-tutor` : '/learner'); }
 }
