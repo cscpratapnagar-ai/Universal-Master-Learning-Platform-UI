@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LearningPathCourse, LearningService } from '../../../../core/services/learning.service';
 
 interface DraftOption { text:string; correct:boolean; }
-interface DraftQuestion { questionText:string; questionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'; points:number; options:DraftOption[]; }
+interface DraftQuestion { questionText:string; questionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'; points:number; difficultyLevel:'EASY'|'MEDIUM'|'HARD'; options:DraftOption[]; }
 
 @Component({
   selector:'app-teacher-assessments',
@@ -12,7 +12,7 @@ interface DraftQuestion { questionText:string; questionType:'SINGLE_CHOICE'|'MUL
 export class TeacherAssessmentsComponent implements OnInit {
   courses:LearningPathCourse[]=[];
   selectedCourseId=''; title=''; passingScore=70;
-  draft:DraftQuestion={questionText:'',questionType:'SINGLE_CHOICE',points:1,options:[{text:'',correct:false},{text:'',correct:false}]};
+  draft:DraftQuestion={questionText:'',questionType:'SINGLE_CHOICE',points:1,difficultyLevel:'MEDIUM',options:[{text:'',correct:false},{text:'',correct:false}]};
   questions:DraftQuestion[]=[]; createdAssessmentId=''; busy=false; message=''; error='';
 
   constructor(private readonly learning:LearningService){}
@@ -28,7 +28,7 @@ export class TeacherAssessmentsComponent implements OnInit {
     const valid=!!this.draft.questionText.trim()&&this.draft.options.every(o=>o.text.trim())&&this.draft.options.some(o=>o.correct);
     if(!valid){this.error='Add a question, complete every option, and mark at least one correct answer.';return;}
     this.questions.push(JSON.parse(JSON.stringify(this.draft)));
-    this.draft={questionText:'',questionType:this.draft.questionType,points:1,options:this.draft.questionType==='TRUE_FALSE'?[{text:'True',correct:false},{text:'False',correct:false}]:[{text:'',correct:false},{text:'',correct:false}]};
+    this.draft={questionText:'',questionType:this.draft.questionType,points:1,difficultyLevel:'MEDIUM',options:this.draft.questionType==='TRUE_FALSE'?[{text:'True',correct:false},{text:'False',correct:false}]:[{text:'',correct:false},{text:'',correct:false}]};
   }
   removeQuestion(index:number):void{this.questions.splice(index,1);}
   publishAssessment():void{
@@ -44,7 +44,7 @@ export class TeacherAssessmentsComponent implements OnInit {
   private createQuestionsSequentially(index:number):void{
     if(index>=this.questions.length){this.busy=false;this.message='Assessment published to the selected course.';return;}
     const q=this.questions[index];
-    this.learning.createAssessmentQuestion(this.createdAssessmentId,{questionText:q.questionText.trim(),questionType:q.questionType,points:q.points,options:q.options.map(o=>({text:o.text.trim(),correct:o.correct}))}).subscribe({
+    this.learning.createAssessmentQuestion(this.createdAssessmentId,{questionText:q.questionText.trim(),questionType:q.questionType,points:q.points,difficultyLevel:q.difficultyLevel,options:q.options.map(o=>({text:o.text.trim(),correct:o.correct}))}).subscribe({
       next:()=>this.createQuestionsSequentially(index+1),
       error:e=>{this.busy=false;this.error=e?.error?.message||'Question could not be created.';}
     });
