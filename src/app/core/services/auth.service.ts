@@ -125,7 +125,7 @@ export class AuthService {
     const roleSet = new Set(roles ?? []);
     if (roleSet.has('SUPER_ADMIN')) return '/super-admin';
     if (roleSet.has('ORG_ADMIN')) return '/organization';
-    if (roleSet.has('INSTRUCTOR')) return '/instructor';
+    if (roleSet.has('INSTRUCTOR') || roleSet.has('TEACHER')) return '/teacher';
     return '/learner';
   }
 
