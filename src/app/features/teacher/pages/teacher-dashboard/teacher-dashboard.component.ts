@@ -22,9 +22,9 @@ export class TeacherDashboardComponent {
   ];
 
   readonly quickActions = [
-    { title: 'Create Course', description: 'Start a new learning experience', icon: '＋', route: '' },
+    { title: 'Create Course', description: 'Start a new learning experience', icon: '＋', route: '/teacher/courses' },
     { title: 'Build Assessment', description: 'Create questions and knowledge checks', icon: '✓', route: '/admin/assessments/new' },
-    { title: 'Question Bank', description: 'Organize reusable assessment questions', icon: '▤', route: '' },
+    { title: 'Question Bank', description: 'Organize reusable assessment questions', icon: '▤', route: '/admin/assessments/new' },
     { title: 'Learner Progress', description: 'Review learner activity and mastery', icon: '◉', route: '' }
   ];
 
