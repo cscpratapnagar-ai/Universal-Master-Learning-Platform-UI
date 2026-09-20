@@ -1,0 +1,59 @@
+<section class="courses-shell">
+  <header class="topbar">
+    <button class="back" type="button" (click)="back()">← Teacher Studio</button>
+    <div><strong>Course Studio</strong><small>BUILD • STRUCTURE • PUBLISH</small></div>
+  </header>
+
+  <main class="content">
+    <section class="hero">
+      <div><p class="eyebrow">TEACHER COURSE MANAGEMENT</p><h1>Turn your curriculum into a learning experience.</h1><p>Create courses, structure modules and lessons, then publish when the experience is ready.</p></div>
+      <span class="live">INSTRUCTOR WORKSPACE</span>
+    </section>
+
+    <div class="notice" *ngIf="notice">{{notice}}</div>
+    <div class="error" *ngIf="error">{{error}}</div>
+
+    <section class="builder-grid">
+      <article class="panel create-panel">
+        <p class="eyebrow">NEW COURSE</p><h2>Create a course</h2>
+        <label>Title<input [(ngModel)]="title" placeholder="e.g. Advanced Mathematics"/></label>
+        <label>Slug<input [(ngModel)]="slug" placeholder="advanced-mathematics"/></label>
+        <label>Description<textarea [(ngModel)]="description" rows="4" placeholder="What will learners achieve?"></textarea></label>
+        <button class="primary" type="button" (click)="createCourse()" [disabled]="saving">{{saving?'Creating…':'＋ Create course'}}</button>
+      </article>
+
+      <article class="panel roadmap">
+        <p class="eyebrow">COURSE PIPELINE</p><h2>Build once, improve continuously</h2>
+        <div class="steps"><div><b>01</b><strong>Course</strong><small>Identity & purpose</small></div><i>→</i><div><b>02</b><strong>Modules</strong><small>Learning structure</small></div><i>→</i><div><b>03</b><strong>Lessons</strong><small>Teaching content</small></div><i>→</i><div><b>04</b><strong>Publish</strong><small>Ready for learners</small></div></div>
+      </article>
+    </section>
+
+    <section class="catalog">
+      <div class="section-head"><div><p class="eyebrow">COURSE CATALOG</p><h2>Your teaching workspace</h2></div><span>{{courses.length}} courses</span></div>
+      <div class="loading" *ngIf="loading">Loading course workspace…</div>
+      <article class="course" *ngFor="let course of courses">
+        <div class="course-head" (click)="toggleCourse(course.id)">
+          <div><span class="status" [class.published]="course.status==='PUBLISHED'">{{course.status}}</span><h3>{{course.title}}</h3><p>{{course.modules.length}} modules · {{course.modules.length ? (course.modules[0].lessons.length) : 0}}+ lessons</p></div>
+          <div class="course-actions"><button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED'" (click)="$event.stopPropagation();publish(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button><b>{{expandedCourse===course.id?'−':'+'}}</b></div>
+        </div>
+
+        <div class="course-body" *ngIf="expandedCourse===course.id">
+          <div class="module" *ngFor="let module of course.modules">
+            <button type="button" class="module-head" (click)="toggleModule(module.id)"><span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b></button>
+            <div class="lessons" *ngIf="expandedModule===module.id">
+              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div></div>
+              <div class="inline-form">
+                <input [(ngModel)]="lessonTitle" placeholder="Lesson title"/>
+                <select [(ngModel)]="lessonType"><option value="TEXT">Text</option><option value="VIDEO">Video</option><option value="PDF">PDF</option></select>
+                <input [(ngModel)]="lessonContent" placeholder="Content / resource URL"/>
+                <button type="button" (click)="addLesson(module)">＋ Lesson</button>
+              </div>
+            </div>
+          </div>
+          <div class="inline-form module-form"><input [(ngModel)]="moduleTitle" placeholder="New module title"/><button type="button" (click)="addModule(course)">＋ Module</button></div>
+        </div>
+      </article>
+      <div class="empty" *ngIf="!loading && !courses.length">No courses yet. Create your first course above.</div>
+    </section>
+  </main>
+</section>
