@@ -1,0 +1,22 @@
+<section class="studio">
+  <header class="studio-header"><div><p class="eyebrow">TEACHER STUDIO / ASSESSMENTS</p><h1>Build an assessment</h1><p>Create a course-level knowledge check with structured questions and scoring.</p></div><div class="header-badge">AUTHORING</div></header>
+  <div class="layout">
+    <main class="panel"><div class="section-title"><span>01</span><div><strong>Assessment setup</strong><small>Define the assessment rules</small></div></div>
+      <div class="grid"><label>Course<select [(ngModel)]="selectedCourseId"><option value="">Choose a course</option><option *ngFor="let course of courses" [value]="course.id">{{course.title}}</option></select></label><label>Passing score<input type="number" min="1" max="100" [(ngModel)]="passingScore"></label></div>
+      <label>Assessment title<input type="text" maxlength="180" [(ngModel)]="title" placeholder="e.g. Module 1 Knowledge Check"></label>
+    </main>
+    <aside class="panel summary"><p class="eyebrow">LIVE SUMMARY</p><strong>{{questions.length}} questions</strong><span>{{passingScore}}% passing score</span><span>{{title || 'Untitled assessment'}}</span></aside>
+  </div>
+  <section class="panel question-editor"><div class="section-title"><span>02</span><div><strong>Question builder</strong><small>Compose questions and answer keys</small></div></div>
+    <label>Question<textarea rows="3" [(ngModel)]="draft.questionText" placeholder="Write a clear question..."></textarea></label>
+    <div class="grid"><label>Question type<select [(ngModel)]="draft.questionType" (change)="toggleType()"><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label><label>Points<input type="number" min="1" max="100" [(ngModel)]="draft.points"></label></div>
+    <div class="options"><div class="option-row" *ngFor="let option of draft.options; let i=index"><input type="checkbox" [(ngModel)]="option.correct"><input type="text" [(ngModel)]="option.text" [disabled]="draft.questionType === 'TRUE_FALSE'" placeholder="Answer option"><button type="button" class="icon" *ngIf="draft.questionType !== 'TRUE_FALSE'" (click)="removeOption(i)">×</button></div></div>
+    <div class="editor-actions"><button type="button" class="secondary" *ngIf="draft.questionType !== 'TRUE_FALSE'" (click)="addOption()">＋ Add option</button><button type="button" class="primary" (click)="addQuestion()">Add question →</button></div>
+  </section>
+  <section class="panel queue"><div class="section-title"><span>03</span><div><strong>Assessment blueprint</strong><small>Review before publishing</small></div></div>
+    <article class="question-card" *ngFor="let q of questions; let i=index"><div class="q-number">{{i+1}}</div><div class="q-body"><strong>{{q.questionText}}</strong><small>{{q.questionType}} · {{q.points}} point(s) · {{q.options.length}} options</small></div><button type="button" class="icon" (click)="removeQuestion(i)">×</button></article>
+    <div class="empty" *ngIf="!questions.length">Your question blueprint is empty. Add the first question above.</div>
+    <div class="publish-row"><span class="hint">The assessment and all queued questions are created together.</span><button type="button" class="primary" [disabled]="busy" (click)="publishAssessment()">{{busy ? 'Publishing…' : 'Publish assessment →'}}</button></div>
+    <div class="message success" *ngIf="message">{{message}}</div><div class="message error" *ngIf="error">{{error}}</div>
+  </section>
+</section>
