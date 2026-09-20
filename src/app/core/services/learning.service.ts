@@ -11,6 +11,10 @@ export interface LearningPathStatus { enrollmentId:string; courseId:string; prog
 export interface LearningPathLesson { id:string; title:string; sortOrder:number; completionMode:string; prerequisiteLessonIds:string[]; }
 export interface LearningPathModule { id:string; title:string; sortOrder:number; lessons:LearningPathLesson[]; }
 export interface LearningPathCourse { id:string; title:string; status:string; modules:LearningPathModule[]; }
+
+export interface CreateCourseRequest { title:string; slug:string; description?:string; organizationId?:string|null; }
+export interface CourseResponse { id:string; title:string; slug:string; description?:string|null; status:string; organizationId?:string|null; }
+
 export interface CreateModuleRequest { title:string; sortOrder:number; }
 export interface CreateLessonRequest { title:string; contentType?:string; content?:string; sortOrder:number; }
 
@@ -27,6 +31,8 @@ export class LearningService {
   respondToAiTutor(enrollmentId:string,question:string):Observable<ApiResponse<AiTutorResponse>>{return this.http.post<ApiResponse<AiTutorResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-tutor/respond`,{question} satisfies AiTutorRequest);}
   completeLesson(enrollmentId:string,lessonId:string):Observable<unknown>{return this.http.post(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`,{});}
   adminLearningCatalog():Observable<ApiResponse<LearningPathCourse[]>>{return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog`);}
+  createCourse(request:CreateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.post<ApiResponse<CourseResponse>>(`${this.base}/courses`,request);}
+  publishCourse(courseId:string):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}/publish`,{});}
   createModule(courseId:string,request:CreateModuleRequest):Observable<ApiResponse<{id:string;title:string}>>{return this.http.post<ApiResponse<{id:string;title:string}>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/modules`,request);}
   createLesson(moduleId:string,request:CreateLessonRequest):Observable<ApiResponse<{id:string;title:string}>>{return this.http.post<ApiResponse<{id:string;title:string}>>(`${this.base}/learning/modules/${encodeURIComponent(moduleId)}/lessons`,request);}
   updateLessonCompletionMode(lessonId:string,completionMode:string):Observable<ApiResponse<{id:string;completionMode:string}>>{return this.http.patch<ApiResponse<{id:string;completionMode:string}>>(`${this.base}/learning/lessons/${encodeURIComponent(lessonId)}/completion-mode`,{completionMode});}
