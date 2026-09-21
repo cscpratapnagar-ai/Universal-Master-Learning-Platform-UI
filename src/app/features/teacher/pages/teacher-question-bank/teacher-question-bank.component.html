@@ -1,0 +1,18 @@
+<section class="bank">
+<header class="header"><div><p class="eyebrow">TEACHER STUDIO / QUESTION BANK</p><h1>Reusable Question Bank</h1><p>Find existing questions, inspect difficulty and reuse them across assessments.</p></div><span class="badge">KNOWLEDGE LIBRARY</span></header>
+<section class="panel controls">
+<label>Course<select [(ngModel)]="courseId" (change)="load()"><option value="">Choose course</option><option *ngFor="let c of courses" [value]="c.id">{{c.title}}</option></select></label>
+<label>Target assessment<select [(ngModel)]="assessmentId"><option value="">Choose assessment</option><option *ngFor="let a of assessments" [value]="a.id">{{a.title}} · {{a.level}}</option></select></label>
+<label>Difficulty<select [(ngModel)]="difficulty" (change)="load()"><option value="">All levels</option><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label>
+<label>Type<select [(ngModel)]="type" (change)="load()"><option value="">All types</option><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label>
+<label class="search">Search<input [(ngModel)]="search" placeholder="Search question text..."></label>
+</section>
+<div class="notice success" *ngIf="message">{{message}}</div><div class="notice error" *ngIf="error">{{error}}</div>
+<section class="stats"><div><strong>{{filtered().length}}</strong><span>Questions available</span></div><div><strong>{{assessments.length}}</strong><span>Course assessments</span></div><div><strong>{{assessmentId ? 'READY' : '—'}}</strong><span>Reuse target</span></div></section>
+<section class="grid"><article class="question panel" *ngFor="let q of filtered()">
+<div class="q-head"><span class="difficulty" [class.easy]="q.difficultyLevel==='EASY'" [class.hard]="q.difficultyLevel==='HARD'">{{q.difficultyLevel}}</span><span>{{q.questionType}} · {{q.points}} pt</span></div>
+<h2>{{q.questionText}}</h2><div class="options"><div *ngFor="let o of q.options" [class.correct]="o.correct"><span>{{o.correct ? '✓' : '○'}}</span>{{o.optionText}}</div></div>
+<div class="source">Source: {{q.sourceAssessmentTitle}}</div><button type="button" class="reuse" (click)="reuse(q)" [disabled]="!assessmentId">＋ Reuse in target assessment</button>
+</article></section>
+<div class="empty panel" *ngIf="!loading && courseId && !filtered().length">No reusable questions match the current filters.</div><div class="empty panel" *ngIf="!courseId">Choose a course to load its reusable questions.</div>
+</section>
