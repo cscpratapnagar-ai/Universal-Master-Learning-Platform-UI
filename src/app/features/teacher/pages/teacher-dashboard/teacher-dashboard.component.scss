@@ -11,3 +11,17 @@
 @media(max-width:900px){.metrics{grid-template-columns:1fr 1fr}.workspace-grid{grid-template-columns:1fr}.hero{align-items:flex-start;flex-direction:column}.flow{flex-wrap:wrap}.flow i{display:none}}
 @media(max-width:560px){.topbar{padding:0 18px}.role-pill{display:none}.logout-button{padding:9px 10px;font-size:0}.logout-button span{font-size:15px}.content{padding:28px 18px 50px}.metrics,.action-grid{grid-template-columns:1fr}.empty-state{align-items:flex-start;flex-direction:column}.empty-state .secondary{width:100%}}
 @media(prefers-reduced-motion:reduce){.teacher-shell:after,.brand-mark,.empty-icon{animation:none!important}}
+
+/* CINEMATIC TEACHER STUDIO */
+.teacher-shell{background:radial-gradient(circle at 18% 12%,rgba(32,217,255,.16),transparent 26%),radial-gradient(circle at 82% 18%,rgba(217,77,255,.16),transparent 28%),radial-gradient(circle at 58% 88%,rgba(54,224,176,.09),transparent 26%),#050c18}
+.teacher-shell .content{max-width:1500px}
+.teacher-shell .hero{position:relative;min-height:260px;padding:38px 34px;border:1px solid rgba(161,181,220,.12);border-radius:28px;overflow:hidden;background:radial-gradient(circle at 80% 45%,rgba(132,92,255,.2),transparent 24%),linear-gradient(120deg,rgba(15,34,62,.9),rgba(17,20,49,.72) 55%,rgba(42,18,55,.7));box-shadow:0 30px 80px rgba(0,0,0,.22)}
+.teacher-shell .hero:before{content:"";position:absolute;width:360px;height:360px;right:6%;top:-100px;border-radius:50%;border:1px solid rgba(132,92,255,.2);box-shadow:0 0 0 45px rgba(79,124,255,.035),0 0 0 90px rgba(217,77,255,.025);animation:teacherHeroOrbit 18s linear infinite}
+.teacher-shell .hero:after{z-index:1}
+.teacher-shell .hero>div,.teacher-shell .hero>.primary{position:relative;z-index:3}
+.teacher-shell .hero h1{max-width:760px;font-size:clamp(36px,4.7vw,62px)}
+.teacher-shell .hero .primary{position:relative;overflow:hidden}
+.teacher-shell .hero .primary:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-130%);animation:teacherButtonSweep 4s ease-in-out infinite}
+.teacher-shell .metric,.teacher-shell .panel{box-shadow:0 18px 55px rgba(0,0,0,.18)}
+.teacher-shell .metric:nth-child(1) .metric-icon{color:#20d9ff}.teacher-shell .metric:nth-child(2) .metric-icon{color:#d94dff}.teacher-shell .metric:nth-child(3) .metric-icon{color:#36e0b0}.teacher-shell .metric:nth-child(4) .metric-icon{color:#ffbf55}
+@keyframes teacherHeroOrbit{to{transform:rotate(360deg)}}@keyframes teacherButtonSweep{0%,45%{transform:translateX(-130%)}75%,100%{transform:translateX(130%)}}
