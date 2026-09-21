@@ -7,6 +7,9 @@
     <div class="topbar-actions">
       <span class="role-pill">Teacher</span>
       <div class="avatar">T</div>
+      <button type="button" class="logout-button" (click)="logout()" [disabled]="isLoggingOut">
+        <span>{{ isLoggingOut ? '…' : '↪' }}</span>{{ isLoggingOut ? 'Signing out' : 'Logout' }}
+      </button>
     </div>
   </header>
 
