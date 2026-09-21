@@ -4,9 +4,10 @@ import { TeacherRoutingModule } from './teacher-routing.module';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard.component';
 import { TeacherCoursesComponent } from './pages/teacher-courses/teacher-courses.component';
 import { TeacherAssessmentsComponent } from './pages/teacher-assessments/teacher-assessments.component';
+import { TeacherQuestionBankComponent } from './pages/teacher-question-bank/teacher-question-bank.component';
 
 @NgModule({
-  declarations: [TeacherDashboardComponent, TeacherCoursesComponent, TeacherAssessmentsComponent],
+  declarations: [TeacherDashboardComponent, TeacherCoursesComponent, TeacherAssessmentsComponent, TeacherQuestionBankComponent],
   imports: [SharedModule, TeacherRoutingModule]
 })
 export class TeacherModule {}
