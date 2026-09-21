@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services/auth.service';
 
 interface Metric {
   label: string;
@@ -28,11 +29,32 @@ export class TeacherDashboardComponent {
     { title: 'Learner Progress', description: 'Review learner activity and mastery', icon: '◉', route: '' }
   ];
 
-  constructor(private readonly router: Router) {}
+  isLoggingOut = false;
+
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   open(action: { route: string }): void {
     if (action.route) {
       this.router.navigateByUrl(action.route);
     }
+  }
+
+  logout(): void {
+    if (this.isLoggingOut) return;
+    this.isLoggingOut = true;
+
+    const request = this.authService.logout();
+    if (!request) {
+      this.router.navigateByUrl('/auth/login');
+      return;
+    }
+
+    request.subscribe({
+      next: () => this.router.navigateByUrl('/auth/login'),
+      error: () => this.router.navigateByUrl('/auth/login')
+    });
   }
 }
