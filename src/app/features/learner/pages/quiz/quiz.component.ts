@@ -10,6 +10,7 @@ import { AssessmentService, AssessmentView } from '../../../../core/services/ass
 export class QuizComponent implements OnInit {
   assessmentId = '';
   enrollmentId = '';
+  lessonId = '';
   adaptiveMode = false;
   assessment?: AssessmentView;
   answers: Record<string,string> = {};
@@ -23,6 +24,7 @@ export class QuizComponent implements OnInit {
   ngOnInit(): void {
     this.assessmentId = this.route.snapshot.queryParamMap.get('assessmentId') || this.route.snapshot.paramMap.get('assessmentId') || '';
     this.enrollmentId = this.route.snapshot.queryParamMap.get('enrollmentId') || '';
+    this.lessonId = this.route.snapshot.queryParamMap.get('lessonId') || '';
     this.adaptiveMode = this.route.snapshot.queryParamMap.get('mode') === 'adaptive';
     if (!this.assessmentId) { this.loading = false; this.error = 'No assessment was selected.'; return; }
     this.api.get(this.assessmentId).subscribe({
@@ -60,7 +62,7 @@ export class QuizComponent implements OnInit {
     const assessmentId = this.assessment.id;
     this.submitting = true;
     this.api.submit(assessmentId, this.answers).subscribe({
-      next:r=>{ this.submitting=false; this.router.navigateByUrl('/learner/assessment-result',{state:{result:r.data||r,assessmentId,enrollmentId:this.enrollmentId,adaptiveMode:this.adaptiveMode}}); },
+      next:r=>{ this.submitting=false; this.router.navigateByUrl('/learner/assessment-result',{state:{result:r.data||r,assessmentId,enrollmentId:this.enrollmentId,lessonId:this.lessonId,adaptiveMode:this.adaptiveMode}}); },
       error:e=>{ this.submitting=false; this.error=e?.error?.message || 'Unable to submit assessment.'; }
     });
   }
