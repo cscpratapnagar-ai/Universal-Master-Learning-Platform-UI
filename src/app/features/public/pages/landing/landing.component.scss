@@ -457,3 +457,35 @@
 @media(prefers-reduced-motion:reduce){
   .hero-feature{animation:none!important}
 }
+
+/* Header responsive correction — prevent clipping on medium desktop/tablet */
+@media (max-width:1180px) and (min-width:921px){
+  .header-inner{gap:12px}
+  .brand{flex:0 1 185px;min-width:170px}
+  .brand-copy strong{font-size:24px}
+  .brand-copy small{font-size:10px}
+  .main-nav{gap:10px;flex:1 1 auto}
+  .main-nav button{font-size:10px}
+  .header-actions{gap:6px;flex:0 0 auto}
+  .search-pill{width:132px;min-width:132px;font-size:10px}
+  .mode-pill{width:54px;min-width:54px}
+  .get-started{padding:0 12px;font-size:11px}
+}
+@media (max-width:920px) and (min-width:681px){
+  .header-inner{gap:10px}
+  .brand{flex:1 1 auto;min-width:0}
+  .brand-copy strong{font-size:23px}
+  .brand-copy small{font-size:9px}
+  .main-nav{display:none}
+  .search-pill{width:145px;min-width:145px;font-size:10px}
+  .menu-button{display:block}
+  .header-actions{gap:7px}
+}
+@media (max-width:680px){
+  .header-inner{gap:8px}
+  .brand{flex:1;min-width:0}
+  .brand-copy strong{font-size:22px}
+  .brand-copy small{font-size:9px}
+  .header-actions{flex:0 0 auto}
+  .search-pill{display:none}
+}
