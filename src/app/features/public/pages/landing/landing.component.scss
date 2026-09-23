@@ -292,3 +292,31 @@
 .ai-mentor .ai-orbit{opacity:.72!important;animation-duration:24s!important}
 .ai-mentor .robot-glow{opacity:.7!important;animation-duration:8s!important}
 .ai-mentor:after{opacity:.45!important}
+
+/* Header polish — keep every control on one clean line */
+.site-header{height:76px}
+.header-inner{gap:18px;min-width:0}
+.brand{flex:0 0 215px;margin-right:0;min-width:215px}
+.brand-copy strong{font-size:27px}
+.brand-copy small{font-size:12px;white-space:nowrap}
+.main-nav{gap:18px;flex:0 1 auto;min-width:0}
+.main-nav button{font-size:12px;white-space:nowrap;padding:29px 0 25px}
+.header-actions{gap:9px;flex:0 0 auto}
+.search-pill{width:174px;min-width:174px;height:36px;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.search-pill span{flex:0 0 auto}
+.mode-pill{width:58px;min-width:58px;height:36px;flex-shrink:0}
+.login-link{font-size:12px;white-space:nowrap}
+.get-started{height:36px;padding:0 16px;white-space:nowrap}
+@media(max-width:1180px) and (min-width:821px){
+ .container{width:calc(100% - 36px)}
+ .brand{flex-basis:195px;min-width:195px}
+ .main-nav{gap:13px}
+ .main-nav button{font-size:11px}
+ .search-pill{width:150px;min-width:150px}
+ .header-actions{gap:7px}
+}
+@media(max-width:920px) and (min-width:821px){
+ .main-nav{gap:9px}
+ .main-nav button{font-size:10px}
+ .search-pill{display:none}
+}
