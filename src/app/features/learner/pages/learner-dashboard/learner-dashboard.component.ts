@@ -42,6 +42,8 @@ export class LearnerDashboardComponent implements OnInit {
   get nextLessonTitle(): string { return this.learningPath?.nextRecommendedLesson?.title || this.personalization?.targetLessonTitle || 'Your next learning step'; }
   get nextAction(): string { return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING'; }
   get masteryLabel(): string { return this.progress ? `${Math.round(this.progress.masteryScore)}%` : '—'; }
+  get masteryScore(): number { return this.progress ? Math.round(this.progress.masteryScore) : 0; }
+  get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
   get todayLabel(): string { return new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()); }
 
   constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService) {}
@@ -94,7 +96,17 @@ export class LearnerDashboardComponent implements OnInit {
     const routes: Record<string, string> = { Overview: '/learner', 'My Learning': '/learner/courses', Assessments: '/learner/quiz', Certificates: '/learner/certificates' };
     const route = routes[label]; if (route) this.router.navigateByUrl(route);
   }
-  continueCourse(course: StudentCourse): void { this.router.navigate(['/learner/course', course.enrollmentId]); }
+  continueCourse(course: StudentCourse): void {
+    const queryParams = course.enrollmentId === this.primaryEnrollmentId && this.learningPath?.nextRecommendedLesson?.lessonId
+      ? { lessonId: this.learningPath.nextRecommendedLesson.lessonId }
+      : undefined;
+    this.router.navigate(['/learner/course', course.enrollmentId, 'learn'], queryParams ? { queryParams } : undefined);
+  }
+  continueNextStep(): void {
+    if (!this.primaryEnrollmentId) { this.selectNav('My Learning'); return; }
+    const lessonId = this.learningPath?.nextRecommendedLesson?.lessonId;
+    this.router.navigate(['/learner/course', this.primaryEnrollmentId, 'learn'], lessonId ? { queryParams: { lessonId } } : undefined);
+  }
   logout(): void {
     if (this.isLoggingOut) return; this.isLoggingOut = true; const request = this.authService.logout();
     if (!request) { this.router.navigateByUrl('/auth/login'); return; }
