@@ -59,6 +59,12 @@
           <div *ngFor="let item of heroFeatures" class="hero-feature"><span [ngClass]="item.tone">{{ item.icon }}</span><strong>{{ item.label }}</strong></div>
         </div>
         <div class="future-note">Your<br>Future<br><strong>Mission</strong></div>
+        <div class="hero-ai-card">
+          <div class="hero-ai-head"><span class="ai-pulse">AI</span><div><strong>Hi! I'm your AI Learning Mentor.</strong><small>Personalized guidance, whenever you need it.</small></div></div>
+          <div class="hero-ai-actions"><button type="button">Ask anything <span>↗</span></button><button type="button">Create a study plan <span>↗</span></button><button type="button">Practice questions <span>↗</span></button></div>
+          <div class="hero-ai-input"><span>What would you like to learn today?</span><b>→</b></div>
+        </div>
+
         <div class="hero-learning-card">
           <div class="learning-card-top"><span>MY LEARNING PATH</span><b>82%</b></div>
           <strong>Web Development</strong>
@@ -72,6 +78,15 @@
 
   <section class="stats container">
     <article *ngFor="let stat of stats"><span class="stat-icon" [ngClass]="stat.tone">{{ stat.icon }}</span><div><strong>{{ stat.value }}</strong><small>{{ stat.label }}</small></div></article>
+  </section>
+
+  <section class="trust-strip container" aria-label="Trusted learning ecosystem">
+    <span>BUILT FOR MODERN LEARNING</span>
+    <div><b>100K+</b><small>learners</small></div>
+    <div><b>500+</b><small>expert instructors</small></div>
+    <div><b>1,000+</b><small>courses</small></div>
+    <div><b>50+</b><small>countries</small></div>
+    <div><b>24/7</b><small>AI guidance</small></div>
   </section>
 
   <section id="learners" class="section container">
