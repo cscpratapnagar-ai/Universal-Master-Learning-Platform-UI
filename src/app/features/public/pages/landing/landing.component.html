@@ -142,6 +142,86 @@
     </div>
   </section>
 
+  <section class="smart-learning-section section">
+    <div class="container smart-learning">
+      <div class="smart-learning-copy">
+        <span class="section-kicker">YOUR PERSONAL LEARNING SPACE</span>
+        <h2>A dashboard that <span>knows what comes next.</span></h2>
+        <p>Goals, skills, practice and recommendations come together in one focused learning workspace.</p>
+        <div class="smart-checks">
+          <span>✓ Personalized recommendations</span>
+          <span>✓ Skill momentum tracking</span>
+          <span>✓ Clear next-step guidance</span>
+        </div>
+        <a routerLink="/auth/register" class="orange-button">Build My Learning Path <span>→</span></a>
+      </div>
+      <div class="learning-dashboard-preview">
+        <div class="dashboard-top"><div><small>MY LEARNING DASHBOARD</small><strong>Good morning, learner.</strong></div><span>•••</span></div>
+        <div class="dashboard-grid">
+          <div class="goal-panel"><small>CURRENT GOAL</small><strong>Become a Full-Stack Developer</strong><div class="dashboard-progress"><i></i></div><span>68% complete</span></div>
+          <div class="skill-panel"><small>SKILL MOMENTUM</small><div *ngFor="let skill of skillProgress" class="skill-row"><span>{{ skill.name }}</span><div><i [style.width.%]="skill.value"></i></div><b>{{ skill.value }}%</b></div></div>
+        </div>
+        <div class="recommendation-row"><span>→</span><div><small>RECOMMENDED NEXT</small><strong>Practice Angular component architecture</strong></div><b>12 min</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="assessment-section section container">
+    <div class="assessment-layout">
+      <div>
+        <span class="section-kicker">ASSESS • UNDERSTAND • IMPROVE</span>
+        <h2>Turn progress into <span>proof.</span></h2>
+        <p>Smart assessments show what you know, where the gaps are and what to practice next.</p>
+        <div class="assessment-steps">
+          <article *ngFor="let item of assessmentSteps"><span>{{ item.number }}</span><div><strong>{{ item.title }}</strong><small>{{ item.text }}</small></div></article>
+        </div>
+      </div>
+      <div class="assessment-preview">
+        <div class="score-ring"><strong>78</strong><span>/100</span></div>
+        <small>SKILL ASSESSMENT</small>
+        <h3>Frontend Architecture</h3>
+        <div class="assessment-bars"><div><span>Concepts</span><i style="width:86%"></i></div><div><span>Application</span><i style="width:74%"></i></div><div><span>Problem Solving</span><i style="width:68%"></i></div></div>
+        <button type="button" (click)="scrollTo('courses')">Practice recommended skills →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="educator-preview-section section">
+    <div class="container educator-layout">
+      <div class="educator-copy">
+        <span class="section-kicker">FOR EDUCATORS</span>
+        <h2>Teach with structure. <span>Understand learning.</span></h2>
+        <p>Create courses, lessons and assessments while seeing the signals that matter to your learners.</p>
+        <a routerLink="/auth/register" class="orange-button">Explore Educator Tools <span>→</span></a>
+      </div>
+      <div class="educator-dashboard">
+        <div class="window-dots"><i></i><i></i><i></i><span>Course analytics</span></div>
+        <div class="educator-stat-grid"><article *ngFor="let stat of educatorStats"><small>{{ stat.label }}</small><strong>{{ stat.value }}</strong></article></div>
+        <div class="analytics-chart"><i style="height:42%"></i><i style="height:56%"></i><i style="height:49%"></i><i style="height:68%"></i><i style="height:77%"></i><i style="height:71%"></i><i style="height:91%"></i><i style="height:82%"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="certificate-section section container">
+    <div class="certificate-layout">
+      <div class="certificate-copy">
+        <span class="section-kicker">SHOW WHAT YOU CAN DO</span>
+        <h2>Learning becomes <span>something you can prove.</span></h2>
+        <p>Build projects, complete assessments and showcase credentials that reflect your growing capabilities.</p>
+        <a routerLink="/auth/register" class="blue-link">Explore certificates <span>→</span></a>
+      </div>
+      <div class="certificate-card">
+        <div class="certificate-mark">MLS</div>
+        <small>MASTER LEARNING SYSTEM</small>
+        <span>CERTIFICATE OF COMPLETION</span>
+        <strong>Web Development</strong>
+        <p>Presented to <b>Alex Johnson</b></p>
+        <div class="certificate-line"></div>
+        <div class="certificate-footer"><span>Verified Credential</span><b>MLS • 2026</b></div>
+      </div>
+    </div>
+  </section>
+
   <section class="ai-mentor container">
     <div class="ai-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="robot" aria-hidden="true">
