@@ -22,6 +22,7 @@ export class AssessmentResultComponent {
   result: AssessmentResult | null = null;
   assessmentId = '';
   enrollmentId = '';
+  lessonId = '';
   adaptiveMode = false;
 
   constructor(private router: Router) {
@@ -29,6 +30,7 @@ export class AssessmentResultComponent {
     this.result = state || null;
     this.assessmentId = history.state?.assessmentId || state?.assessmentId || '';
     this.enrollmentId = history.state?.enrollmentId || '';
+    this.lessonId = history.state?.lessonId || '';
     this.adaptiveMode = !!history.state?.adaptiveMode;
   }
 
@@ -65,6 +67,13 @@ export class AssessmentResultComponent {
     });
   }
 
-  back(): void { this.router.navigateByUrl(this.enrollmentId ? `/learner/course/${this.enrollmentId}/progress` : '/learner'); }
+  back(): void {
+    if (this.enrollmentId) {
+      const queryParams = this.passed && this.lessonId ? { lessonId: this.lessonId } : undefined;
+      this.router.navigate(['/learner/course', this.enrollmentId, 'learn'], queryParams ? { queryParams } : undefined);
+      return;
+    }
+    this.router.navigateByUrl('/learner');
+  }
   tutor(): void { this.router.navigateByUrl(this.enrollmentId ? `/learner/course/${this.enrollmentId}/ai-tutor` : '/learner'); }
 }
