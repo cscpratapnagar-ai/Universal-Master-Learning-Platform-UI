@@ -1,112 +1,60 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-interface FeatureCard {
-  icon: string;
-  title: string;
-  description: string;
-  tone: string;
-}
-
-interface CourseCard {
-  category: string;
-  title: string;
-  description: string;
-  instructor: string;
-  rating: string;
-  students: string;
-  level: string;
-  color: string;
-}
-
-interface Testimonial {
-  name: string;
-  role: string;
-  text: string;
-  initials: string;
-}
+interface FeatureCard { icon: string; title: string; description: string; tone: string; }
+interface CourseCard { category: string; title: string; description: string; instructor: string; rating: string; students: string; level: string; tone: string; }
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit {
+  isDark = false;
   mobileMenuOpen = false;
 
   readonly features: FeatureCard[] = [
-    { icon: 'AI', title: 'AI-Powered Learning', description: 'Personalized guidance that helps every learner understand what to learn next.', tone: 'red' },
+    { icon: 'AI', title: 'AI-Powered Learning', description: 'Personalized guidance that helps you understand what to learn and practice next.', tone: 'blue' },
     { icon: '★', title: 'Learn from Experts', description: 'Structured lessons and practical knowledge from experienced educators.', tone: 'orange' },
-    { icon: '↗', title: 'Hands-on Projects', description: 'Build real projects, practice your skills and learn by doing.', tone: 'yellow' },
-    { icon: '✓', title: 'Recognized Certificates', description: 'Showcase meaningful achievements with professional certificates.', tone: 'green' }
+    { icon: '↗', title: 'Hands-on Projects', description: 'Build real projects, strengthen skills and learn by doing.', tone: 'green' },
+    { icon: '✓', title: 'Recognized Certificates', description: 'Showcase meaningful achievements with professional certificates.', tone: 'gold' }
   ];
 
   readonly categories = [
-    { icon: '</>', name: 'Development', tone: 'red' },
+    { icon: '</>', name: 'Development', tone: 'blue' },
     { icon: '◫', name: 'Data Science', tone: 'orange' },
-    { icon: '●', name: 'Design', tone: 'yellow' },
+    { icon: '●', name: 'Design', tone: 'gold' },
     { icon: '▣', name: 'Business', tone: 'green' },
-    { icon: 'AI', name: 'AI & ML', tone: 'blue' },
-    { icon: '↗', name: 'Marketing', tone: 'indigo' },
-    { icon: '✦', name: 'Personal Growth', tone: 'violet' },
-    { icon: '+', name: 'More', tone: 'rainbow' }
+    { icon: 'AI', name: 'AI & ML', tone: 'navy' },
+    { icon: '↗', name: 'Marketing', tone: 'blue' },
+    { icon: '✦', name: 'Personal Growth', tone: 'orange' },
+    { icon: '+', name: 'More', tone: 'green' }
   ];
 
   readonly courses: CourseCard[] = [
-    {
-      category: 'Development',
-      title: 'Complete Web Development Bootcamp',
-      description: 'HTML, CSS, JavaScript, Angular, React & more',
-      instructor: 'John Carter',
-      rating: '4.8',
-      students: '12.5K',
-      level: 'Beginner',
-      color: 'blue'
-    },
-    {
-      category: 'AI & Machine Learning',
-      title: 'AI & Machine Learning Mastery',
-      description: 'From fundamentals to real-world intelligent systems',
-      instructor: 'Dr. Sarah Khan',
-      rating: '4.7',
-      students: '9.8K',
-      level: 'Intermediate',
-      color: 'violet'
-    },
-    {
-      category: 'Design',
-      title: 'UI/UX Design — From Zero to Pro',
-      description: 'Design modern digital experiences users love',
-      instructor: 'Alex Morgan',
-      rating: '4.8',
-      students: '7.1K',
-      level: 'Beginner',
-      color: 'orange'
-    },
-    {
-      category: 'Data Science',
-      title: 'Data Science with Python',
-      description: 'Analyze data, build models and solve real problems',
-      instructor: 'Emily Chen',
-      rating: '4.9',
-      students: '5.4K',
-      level: 'Intermediate',
-      color: 'green'
-    }
+    { category: 'Development', title: 'Complete Web Development Bootcamp', description: 'HTML, CSS, JavaScript, Angular, React & more', instructor: 'Expert Instructor', rating: '4.8', students: '12.5K', level: 'Beginner', tone: 'blue' },
+    { category: 'AI & Machine Learning', title: 'AI & Machine Learning Mastery', description: 'From fundamentals to real-world intelligent systems', instructor: 'Dr. Sarah Khan', rating: '4.7', students: '9.8K', level: 'Intermediate', tone: 'navy' },
+    { category: 'Design', title: 'UI/UX Design — From Zero to Pro', description: 'Design modern digital experiences users love', instructor: 'Alex Morgan', rating: '4.8', students: '7.1K', level: 'Beginner', tone: 'orange' },
+    { category: 'Data Science', title: 'Data Science with Python', description: 'Analyze data, build models and solve real problems', instructor: 'Emily Chen', rating: '4.9', students: '5.4K', level: 'Intermediate', tone: 'green' }
   ];
 
-  readonly testimonials: Testimonial[] = [
-    { name: 'Rahul Mehta', role: 'Software Developer', initials: 'RM', text: 'MLS helped me build the skills and confidence I needed for my next career step.', },
-    { name: 'Priya Shah', role: 'Data Analyst', initials: 'PS', text: 'The courses are clear, practical and easy to follow. I can learn at my own pace.', },
-    { name: 'Daniel Kim', role: 'Product Designer', initials: 'DK', text: 'A clean learning experience with useful projects and a strong community.', }
+  readonly studentPhotos = [
+    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85',
+    'https://images.unsplash.com/photo-1677594332295-affd04f83115?auto=format&fit=crop&w=900&q=85'
   ];
 
-  toggleMobileMenu(): void {
-    this.mobileMenuOpen = !this.mobileMenuOpen;
+  ngOnInit(): void {
+    try {
+      this.isDark = localStorage.getItem('mls-theme') === 'dark';
+    } catch {}
   }
 
-  closeMobileMenu(): void {
-    this.mobileMenuOpen = false;
+  toggleTheme(): void {
+    this.isDark = !this.isDark;
+    try { localStorage.setItem('mls-theme', this.isDark ? 'dark' : 'light'); } catch {}
   }
+
+  toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
+  closeMobileMenu(): void { this.mobileMenuOpen = false; }
 
   scrollTo(id: string): void {
     this.closeMobileMenu();
