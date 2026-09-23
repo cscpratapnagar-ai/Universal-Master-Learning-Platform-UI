@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { User } from '../../../../core/models/auth.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
-import { LearningService } from '../../../../core/services/learning.service';
+import { LearningProgressAnalytics, LearningPathStatus, LearningService } from '../../../../core/services/learning.service';
 import { StudentCourse } from '../../../../core/models/learning.model';
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
 
@@ -20,6 +20,9 @@ export class LearnerDashboardComponent implements OnInit {
   ai: AiLearningOrchestration | null = null;
   personalization: PersonalizationOrchestration | null = null;
   intelligenceLoading = false;
+  progress: LearningProgressAnalytics | null = null;
+  learningPath: LearningPathStatus | null = null;
+  progressLoading = false;
 
   readonly navigation = [
     { label: 'Overview', icon: '⌂' }, { label: 'My Learning', icon: '▣' }, { label: 'Live Classes', icon: '◉' },
@@ -33,6 +36,12 @@ export class LearnerDashboardComponent implements OnInit {
     { label: 'Next priority', value: this.personalization?.priority || '—', change: this.ai?.learnerState || 'AI guided', icon: '◎' }
   ]; }
 
+  get activeCoursesCount(): number { return this.courses.filter(course => Number(course.progressPercent || 0) > 0 && Number(course.progressPercent || 0) < 100).length; }
+  get overallProgress(): number { return this.courses.length ? Math.round(this.courses.reduce((sum, course) => sum + Number(course.progressPercent || 0), 0) / this.courses.length) : 0; }
+  get completedCoursesCount(): number { return this.courses.filter(course => Number(course.progressPercent || 0) >= 100).length; }
+  get nextLessonTitle(): string { return this.learningPath?.nextRecommendedLesson?.title || this.personalization?.targetLessonTitle || 'Your next learning step'; }
+  get nextAction(): string { return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING'; }
+  get masteryLabel(): string { return this.progress ? `${Math.round(this.progress.masteryScore)}%` : '—'; }
   get todayLabel(): string { return new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()); }
 
   constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService) {}
@@ -44,14 +53,41 @@ export class LearnerDashboardComponent implements OnInit {
     this.user = this.authService.currentUser(); this.loadCourses();
   }
 
-  private loadCourses(): void { this.learning.myCourses().subscribe({ next: response => { this.courses = response.data || []; this.loadIntelligence(); }, error: () => this.courses = [] }); }
-  private loadIntelligence(): void {
-    const enrollmentId = this.courses[0]?.enrollmentId; if (!enrollmentId) return; this.intelligenceLoading = true;
-    this.learning.getAiOrchestration(enrollmentId).subscribe({ next: response => this.ai = response.data, error: () => this.ai = null });
-    this.learning.getPersonalizationOrchestration(enrollmentId).subscribe({ next: response => this.personalization = response.data, error: () => this.personalization = null, complete: () => this.intelligenceLoading = false });
+  private loadCourses(): void {
+    this.learning.myCourses().subscribe({
+      next: response => {
+        this.courses = response.data || [];
+        this.loadIntelligence();
+      },
+      error: () => { this.courses = []; this.progress = null; this.learningPath = null; }
+    });
   }
-  get nextLessonTitle(): string { return this.personalization?.targetLessonTitle || 'Your next learning step'; }
-  get nextAction(): string { return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING'; }
+  private loadIntelligence(): void {
+    const enrollmentId = this.courses.find(course => Number(course.progressPercent || 0) < 100)?.enrollmentId || this.courses[0]?.enrollmentId;
+    if (!enrollmentId) { this.ai = null; this.personalization = null; this.progress = null; this.learningPath = null; return; }
+
+    this.intelligenceLoading = true;
+    this.progressLoading = true;
+
+    this.learning.getProgressAnalytics(enrollmentId).subscribe({
+      next: response => this.progress = response.data,
+      error: () => this.progress = null,
+      complete: () => this.progressLoading = false
+    });
+    this.learning.getLearningPath(enrollmentId).subscribe({
+      next: response => this.learningPath = response.data,
+      error: () => this.learningPath = null
+    });
+    this.learning.getAiOrchestration(enrollmentId).subscribe({
+      next: response => this.ai = response.data,
+      error: () => this.ai = null
+    });
+    this.learning.getPersonalizationOrchestration(enrollmentId).subscribe({
+      next: response => this.personalization = response.data,
+      error: () => this.personalization = null,
+      complete: () => this.intelligenceLoading = false
+    });
+  }
   toggleTheme(): void { this.themeService.toggle(); }
   selectNav(label: string): void {
     this.activeNav = label;
