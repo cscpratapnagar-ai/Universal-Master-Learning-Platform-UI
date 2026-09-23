@@ -13,6 +13,7 @@ export class LandingComponent implements OnInit {
   isDark = false;
   mobileMenuOpen = false;
   themeTransitioning = false;
+  searchOpen = false;
 
   readonly heroFeatures = [
     { icon: 'AI', label: 'AI Learning', tone: 'blue' },
@@ -60,6 +61,22 @@ export class LandingComponent implements OnInit {
     'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=90'
   ];
 
+  readonly journey = [
+    { step: '01', title: 'Discover', text: 'Tell MLS your goals and explore the right learning path.', tone: 'blue' },
+    { step: '02', title: 'Learn', text: 'Follow structured lessons with expert content and AI guidance.', tone: 'orange' },
+    { step: '03', title: 'Practice', text: 'Strengthen your skills with quizzes, challenges and projects.', tone: 'green' },
+    { step: '04', title: 'Build', text: 'Turn knowledge into real-world work you can showcase.', tone: 'purple' },
+    { step: '05', title: 'Grow', text: 'Track progress and get your next personalized recommendation.', tone: 'pink' }
+  ];
+
+  readonly searchItems = [
+    { type: 'Course', title: 'Web Development Bootcamp' },
+    { type: 'Course', title: 'AI & Machine Learning Mastery' },
+    { type: 'Skill', title: 'Angular' },
+    { type: 'Skill', title: 'Python' },
+    { type: 'Topic', title: 'UI/UX Design' }
+  ];
+
   readonly stories: Story[] = [
     { name: 'Rahul Mehta', role: 'Software Developer', quote: 'MLS gave me the skills and confidence to switch to a tech career. The learning experience is simply amazing!', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=180&q=80' },
     { name: 'Priya Shah', role: 'Data Analyst', quote: 'The instructors are top-notch and the hands-on projects helped me build a strong portfolio.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80' },
@@ -78,6 +95,8 @@ export class LandingComponent implements OnInit {
   }
 
   toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
+  toggleSearch(): void { this.searchOpen = !this.searchOpen; }
+  closeSearch(): void { this.searchOpen = false; }
   scrollTo(id: string): void {
     this.mobileMenuOpen = false;
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
