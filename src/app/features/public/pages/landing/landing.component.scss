@@ -428,3 +428,32 @@
 @media(prefers-reduced-motion:reduce){
   .landing-page .theme-transition{transition:none!important}
 }
+
+/* Hero feature stack — calm, coordinated motion */
+@keyframes mlsFeatureSoftIn{
+  0%{opacity:0;transform:translate3d(12px,8px,0);filter:blur(3px)}
+  100%{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}
+}
+.hero-feature{
+  animation:mlsFeatureSoftIn .9s cubic-bezier(.22,1,.36,1) both!important;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),background-color .45s ease,border-color .45s ease,box-shadow .45s ease!important;
+  will-change:transform;
+}
+.hero-feature:nth-child(1){animation-delay:.18s!important}
+.hero-feature:nth-child(2){animation-delay:.30s!important}
+.hero-feature:nth-child(3){animation-delay:.42s!important}
+.hero-feature:nth-child(4){animation-delay:.54s!important}
+.hero-feature:nth-child(5){animation-delay:.66s!important}
+.hero-feature:hover{
+  transform:translate3d(-3px,-1px,0)!important;
+  background:rgba(6,22,48,.76);
+  border-color:rgba(255,255,255,.28);
+  box-shadow:0 8px 22px rgba(0,0,0,.16);
+}
+.hero-feature span{
+  transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease!important;
+}
+.hero-feature:hover span{transform:scale(1.04)}
+@media(prefers-reduced-motion:reduce){
+  .hero-feature{animation:none!important}
+}
