@@ -77,6 +77,26 @@ export class LandingComponent implements OnInit {
     { type: 'Topic', title: 'UI/UX Design' }
   ];
 
+  readonly skillProgress = [
+    { name: 'Angular', value: 86, tone: 'blue' },
+    { name: 'TypeScript', value: 78, tone: 'orange' },
+    { name: 'UI Architecture', value: 64, tone: 'green' },
+    { name: 'Testing', value: 48, tone: 'purple' }
+  ];
+
+  readonly assessmentSteps = [
+    { number: '01', title: 'Assess', text: 'Measure what you know.' },
+    { number: '02', title: 'Analyze', text: 'See your strengths and gaps.' },
+    { number: '03', title: 'Recommend', text: 'Get the right next action.' },
+    { number: '04', title: 'Improve', text: 'Practice, reassess and grow.' }
+  ];
+
+  readonly educatorStats = [
+    { value: '84%', label: 'Course completion' },
+    { value: '2.4K', label: 'Active learners' },
+    { value: '+18%', label: 'Monthly growth' }
+  ];
+
   readonly stories: Story[] = [
     { name: 'Rahul Mehta', role: 'Software Developer', quote: 'MLS gave me the skills and confidence to switch to a tech career. The learning experience is simply amazing!', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=180&q=80' },
     { name: 'Priya Shah', role: 'Data Analyst', quote: 'The instructors are top-notch and the hands-on projects helped me build a strong portfolio.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80' },
