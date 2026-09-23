@@ -124,7 +124,7 @@
       <article class="course-card" *ngFor="let course of courses">
         <div class="course-cover" [ngClass]="course.tone">
           <span class="course-badge">{{ course.category }}</span>
-          <div class="course-orbit"></div><div class="course-symbol">{{ course.tone === 'blue' ? '</>' : course.tone === 'orange' ? '✦' : course.tone === 'green' ? '◫' : 'AI' }}</div>
+          <div class="course-orbit"></div><div class="course-symbol">{{ course.tone === 'blue' ? '〈/〉' : course.tone === 'orange' ? '✦' : course.tone === 'green' ? '◫' : 'AI' }}</div>
           <span class="cover-label">MASTER LEARNING</span>
         </div>
         <div class="course-content">
