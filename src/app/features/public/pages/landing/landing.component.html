@@ -1,179 +1,140 @@
 <main class="landing-page" [class.dark]="isDark">
   <header class="site-header">
     <div class="container header-inner">
-      <a routerLink="/" class="brand" aria-label="Master Learning System home">
-        <span class="brand-mark">✦</span>
-        <span class="brand-copy"><strong>Master Learning</strong><small>Learn • Grow • Succeed</small></span>
+      <a routerLink="/" class="brand">
+        <span class="logo-mark"><span></span><i></i></span>
+        <span class="brand-copy"><strong>MLS</strong><small>Master Learning System</small></span>
       </a>
 
-      <nav class="main-nav" [class.open]="mobileMenuOpen" aria-label="Primary navigation">
-        <button type="button" class="active" (click)="scrollTo('home')">Home</button>
-        <button type="button" (click)="scrollTo('courses')">Courses</button>
-        <button type="button" (click)="scrollTo('learning')">Learning Paths</button>
-        <button type="button" (click)="scrollTo('educators')">For Educators</button>
-        <button type="button" (click)="scrollTo('about')">About</button>
+      <nav class="main-nav" [class.open]="mobileMenuOpen">
+        <button class="active" (click)="scrollTo('home')">Home</button>
+        <button (click)="scrollTo('courses')">Courses</button>
+        <button (click)="scrollTo('learners')">For Learners</button>
+        <button (click)="scrollTo('educators')">For Educators</button>
+        <button (click)="scrollTo('pricing')">Pricing</button>
+        <button (click)="scrollTo('about')">About</button>
       </nav>
 
       <div class="header-actions">
-        <button type="button" class="theme-toggle" (click)="toggleTheme()" [attr.aria-label]="isDark ? 'Switch to day mode' : 'Switch to night mode'">
-          <span>{{ isDark ? '☀' : '☾' }}</span>
-        </button>
-        <button type="button" class="search-button" (click)="scrollTo('courses')">⌕ <span>Search courses...</span></button>
+        <button class="search-pill" type="button" (click)="scrollTo('courses')"><span>⌕</span> Search courses, skills, topics...</button>
+        <button class="mode-pill" type="button" (click)="toggleTheme()" [attr.aria-label]="isDark ? 'Switch to day mode' : 'Switch to night mode'"><span>☼</span><b></b><span>☾</span></button>
         <a routerLink="/auth/login" class="login-link">Login</a>
-        <a routerLink="/auth/register" class="primary-button small">Get Started</a>
-        <button type="button" class="menu-button" (click)="toggleMobileMenu()" aria-label="Toggle navigation">☰</button>
+        <a routerLink="/auth/register" class="get-started">Get Started</a>
+        <button class="menu-button" type="button" (click)="toggleMobileMenu()">☰</button>
       </div>
     </div>
   </header>
 
   <section id="home" class="hero">
-    <div class="hero-glow glow-one"></div><div class="hero-glow glow-two"></div>
-    <div class="container hero-grid">
-      <div class="hero-copy reveal">
-        <span class="eyebrow">INTELLIGENT EDUCATION • BUILT FOR EVERY LEARNER</span>
-        <h1>Learn today.<br><span>Lead tomorrow.</span></h1>
-        <p class="hero-text">A modern learning ecosystem where expert courses, smart assessments, AI guidance and real projects come together in one focused experience.</p>
-
+    <div class="hero-backdrop"></div>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">LEARN • GROW • SUCCEED</span>
+        <h1>A Brighter Future<br>Through Better<br><span>Learning</span><em></em></h1>
+        <p>Unlock your potential with world-class courses, expert mentors, AI-powered learning paths, and real-world projects.</p>
         <div class="hero-actions">
-          <a routerLink="/auth/register" class="primary-button">Start Learning Free <span>→</span></a>
-          <a href="#courses" class="outline-button" (click)="$event.preventDefault(); scrollTo('courses')">Explore Courses <span>↗</span></a>
+          <a routerLink="/auth/register" class="orange-button">Start Learning Free <span>→</span></a>
+          <button class="video-button" type="button" (click)="scrollTo('courses')"><span>▶</span> Watch Video</button>
         </div>
-
-        <div class="hero-trust">
-          <div class="trust-avatars"><span>R</span><span>P</span><span>D</span><span>+</span></div>
-          <div><strong>100,000+ learners</strong><small>learning, practicing and growing with MLS</small></div>
-        </div>
-
-        <div class="hero-points">
-          <span><i class="blue">✓</i> AI-powered guidance</span>
-          <span><i class="orange">✓</i> Expert-led courses</span>
-          <span><i class="green">✓</i> Project-based learning</span>
+        <div class="hero-learners">
+          <div class="mini-avatars"><i>R</i><i>P</i><i>D</i><i>A</i><i>+</i></div>
+          <div><strong>Join 100K+ learners</strong><small>already building their future</small></div>
         </div>
       </div>
 
-      <div class="hero-visual reveal-delay">
-        <div class="visual-grid"></div>
-        <div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div>
-        <div class="photo-main">
-          <img [src]="studentPhotos[0]" alt="Students collaborating while learning on a laptop">
-          <div class="photo-shade"></div>
+      <div class="hero-photo">
+        <img [src]="studentPhotos[0]" alt="Students learning together">
+        <div class="photo-overlay"></div>
+        <div class="hand-note note-left">Education<br>Changes<br>Everything <b></b></div>
+        <div class="hand-note note-top">Skills for Today<br><strong>Success for Tomorrow</strong> <b></b></div>
+        <div class="hero-feature-stack">
+          <div *ngFor="let item of heroFeatures" class="hero-feature"><span [ngClass]="item.tone">{{ item.icon }}</span><strong>{{ item.label }}</strong></div>
         </div>
-        <div class="photo-small">
-          <img [src]="studentPhotos[1]" alt="Student learning with a laptop">
-        </div>
-
-        <div class="floating-card progress-card">
-          <span class="mini-icon blue">↗</span>
-          <div><small>YOUR PROGRESS</small><strong>+28% this month</strong></div>
-          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        </div>
-
-        <div class="floating-card ai-card">
-          <span class="mini-icon orange">AI</span>
-          <div><small>AI LEARNING GUIDE</small><strong>Next step ready</strong></div>
-          <b>●</b>
-        </div>
-
-        <div class="learning-badge">
-          <span>✓</span><div><strong>Learning in motion</strong><small>Course • Practice • Project</small></div>
-        </div>
+        <div class="future-note">Your<br>Future<br><strong>Mission</strong></div>
       </div>
     </div>
   </section>
 
   <section class="stats container">
-    <article><span class="stat-icon blue">♟</span><div><strong>100K+</strong><small>Active Learners</small></div></article>
-    <article><span class="stat-icon orange">◆</span><div><strong>500+</strong><small>Expert Educators</small></div></article>
-    <article><span class="stat-icon gold">▤</span><div><strong>1,000+</strong><small>Courses</small></div></article>
-    <article><span class="stat-icon green">↗</span><div><strong>95%</strong><small>Learner Satisfaction</small></div></article>
-    <article><span class="stat-icon navy">◎</span><div><strong>50+</strong><small>Countries</small></div></article>
+    <article *ngFor="let stat of stats"><span class="stat-icon" [ngClass]="stat.tone">{{ stat.icon }}</span><div><strong>{{ stat.value }}</strong><small>{{ stat.label }}</small></div></article>
   </section>
 
-  <section id="learning" class="section container">
-    <div class="section-heading">
-      <div><span class="eyebrow">WHY MASTER LEARNING?</span><h2>Everything you need to <span>move forward.</span></h2></div>
-      <p>Simple on the surface. Powerful underneath. Every part of the learning journey is connected.</p>
+  <section id="learners" class="section container">
+    <div class="section-title-row">
+      <div><h2>Why Choose MLS?</h2><p>More than just a learning platform — it's your growth partner.</p></div>
+      <button type="button" class="blue-link" (click)="scrollTo('about')">Discover More <span>→</span></button>
     </div>
-    <div class="feature-grid">
-      <article *ngFor="let feature of features">
-        <span class="feature-icon" [ngClass]="feature.tone">{{ feature.icon }}</span>
-        <h3>{{ feature.title }}</h3><p>{{ feature.description }}</p>
-        <span class="feature-line"></span>
+    <div class="benefit-grid">
+      <article *ngFor="let feature of features" [ngClass]="feature.tone">
+        <span class="benefit-icon">{{ feature.icon }}</span>
+        <div><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p></div>
       </article>
     </div>
   </section>
 
   <section id="about" class="section container">
-    <div class="section-heading compact">
-      <div><span class="eyebrow">EXPLORE YOUR INTERESTS</span><h2>Popular <span>Learning Areas</span></h2></div>
-      <button type="button" class="text-button" (click)="scrollTo('courses')">View all →</button>
+    <div class="section-title-row">
+      <div><h2>Popular Categories</h2></div>
+      <button type="button" class="blue-link" (click)="scrollTo('courses')">View All Categories <span>→</span></button>
     </div>
     <div class="category-grid">
-      <button type="button" *ngFor="let category of categories" class="category-card">
-        <span [ngClass]="category.tone">{{ category.icon }}</span><strong>{{ category.name }}</strong><small>Explore</small>
+      <button type="button" *ngFor="let category of categories" class="category-card" [ngClass]="category.tone">
+        <span>{{ category.icon }}</span><strong>{{ category.name }}</strong>
       </button>
     </div>
   </section>
 
   <section id="courses" class="section container">
-    <div class="section-heading compact">
-      <div><span class="eyebrow">LEARN • PRACTICE • BUILD</span><h2>Featured <span>Courses</span></h2></div>
-      <a routerLink="/auth/register" class="text-button">View all courses →</a>
+    <div class="section-title-row">
+      <div><h2>Featured Courses</h2></div>
+      <a routerLink="/auth/register" class="blue-link">View All Courses <span>→</span></a>
     </div>
     <div class="course-grid">
       <article class="course-card" *ngFor="let course of courses">
-        <div class="course-cover" [ngClass]="course.tone">
-          <span class="course-badge">{{ course.category }}</span>
-          <div class="course-orbit"></div><div class="course-symbol">{{ course.tone === 'blue' ? '〈/〉' : course.tone === 'orange' ? '✦' : course.tone === 'green' ? '◫' : 'AI' }}</div>
-          <span class="cover-label">MASTER LEARNING</span>
+        <div class="course-image">
+          <img [src]="course.image" [alt]="course.title">
+          <span class="course-tag" [ngClass]="course.tagTone">{{ course.tag }}</span>
+          <span class="duration">◷ {{ course.duration }}</span>
         </div>
-        <div class="course-content">
-          <small>{{ course.category }}</small><h3>{{ course.title }}</h3><p>{{ course.description }}</p>
-          <div class="course-meta"><span>★ {{ course.rating }}</span><span>♟ {{ course.students }}</span><span>{{ course.level }}</span></div>
-          <div class="course-footer"><span>By {{ course.instructor }}</span><button type="button">→</button></div>
+        <div class="course-body">
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.description }}</p>
+          <div class="course-instructor"><span class="avatar">{{ course.instructor.charAt(0) }}</span><strong>{{ course.instructor }}</strong><span class="rating">★ {{ course.rating }}</span><small>({{ course.students }})</small></div>
+          <div class="course-bottom"><span>♟ {{ course.students }} students</span><span>{{ course.level }}</span><button type="button">♡</button></div>
         </div>
       </article>
     </div>
   </section>
 
-  <section id="educators" class="journey container">
-    <div class="journey-photo">
-      <img [src]="studentPhotos[1]" alt="Student learning online">
-      <div class="journey-overlay"></div>
-      <div class="journey-stat"><strong>01</strong><span>Discover the right path</span></div>
-    </div>
-    <div class="journey-copy">
-      <span class="eyebrow">A CLEAR LEARNING JOURNEY</span>
-      <h2>Discover. Learn. Practice. <span>Build.</span></h2>
-      <p>MLS connects goals, content, practice and progress so learners can spend less time searching and more time learning.</p>
-      <div class="steps">
-        <div><b class="blue">01</b><span><strong>Discover</strong><small>Find the right learning path</small></span></div>
-        <div><b class="orange">02</b><span><strong>Learn</strong><small>Understand with expert content</small></span></div>
-        <div><b class="green">03</b><span><strong>Practice & Build</strong><small>Turn knowledge into real skills</small></span></div>
-        <div><b class="gold">04</b><span><strong>Grow</strong><small>Track progress and achieve more</small></span></div>
-      </div>
-      <a routerLink="/auth/register" class="primary-button">Start Your Journey <span>→</span></a>
+  <section id="educators" class="section container stories">
+    <div class="section-title-row"><div><h2>Real People. Real Progress.</h2></div><button type="button" class="blue-link">View More Stories <span>→</span></button></div>
+    <div class="story-grid">
+      <article *ngFor="let story of stories"><div class="story-head"><img [src]="story.photo" [alt]="story.name"><p>“{{ story.quote }}”</p></div><strong>{{ story.name }}</strong><small>{{ story.role }}</small><div class="stars">★★★★★</div></article>
     </div>
   </section>
 
-  <section class="section container">
-    <div class="testimonial-panel">
-      <div class="testimonial-copy"><span class="eyebrow">LEARNING THAT FEELS HUMAN</span><h2>Built for <span>real progress.</span></h2><p>From your first lesson to your next achievement, the experience stays focused, clear and motivating.</p></div>
-      <div class="testimonial-photo"><img [src]="studentPhotos[0]" alt="Students learning together"><div><strong>Learn together.</strong><small>Grow together.</small></div></div>
-      <div class="testimonial-metrics"><span><strong>24/7</strong><small>Access</small></span><span><strong>AI</strong><small>Guidance</small></span><span><strong>100%</strong><small>Focus on you</small></span></div>
-    </div>
+  <section class="ai-mentor container">
+    <div class="robot"><div class="robot-face"><span></span><span></span></div><div class="robot-body">AI</div></div>
+    <div class="ai-copy"><span class="eyebrow">YOUR PERSONAL AI LEARNING MENTOR</span><h2>Meet Your Personal<br><span>AI Learning Mentor</span></h2><p>Get instant answers, personalized study plans, practice questions, and expert guidance — anytime.</p><a routerLink="/auth/register" class="orange-button">Try AI Mentor <span>→</span></a></div>
+    <div class="ai-actions"><button>◉ Ask a question</button><button>◇ Explain a concept</button><button>▣ Create a study plan</button><button>⌘ Generate practice questions</button><button>↗ Review my progress</button><button>✦ Help with my project</button></div>
   </section>
 
-  <section class="cta container">
-    <div><span class="eyebrow">YOUR FUTURE STARTS HERE</span><h2>Ready to build a <span>better future?</span></h2><p>Start learning with a platform designed around progress.</p></div>
-    <div class="cta-actions"><a routerLink="/auth/register" class="white-button">Get Started Free →</a><button type="button" class="cta-link" (click)="scrollTo('courses')">Explore Courses →</button></div>
+  <section id="pricing" class="final-cta">
+    <div class="cta-landscape"></div>
+    <div class="container cta-inner">
+      <div class="cta-student">🎓</div>
+      <div><h2>Ready to Build a Better Future?</h2><p>Join thousands of learners and take the next step towards your goals.</p></div>
+      <div class="cta-actions"><a routerLink="/auth/register" class="orange-button">Get Started Free →</a><button type="button" class="explore-button" (click)="scrollTo('courses')">Explore Courses</button></div>
+      <div class="cta-note">Learn Today<br><strong>Lead Tomorrow</strong></div>
+    </div>
   </section>
 
   <footer class="footer container">
-    <div class="footer-brand"><span class="brand-mark">✦</span><div><strong>Master Learning</strong><small>Learn • Grow • Succeed</small><span>Intelligent education for a brighter tomorrow.</span></div></div>
-    <div class="footer-column"><strong>Platform</strong><a routerLink="/auth/register">Courses</a><a routerLink="/auth/register">Learning Paths</a><a routerLink="/auth/register">For Educators</a><a routerLink="/auth/register">Certificates</a></div>
-    <div class="footer-column"><strong>Resources</strong><a routerLink="/auth/register">Student Stories</a><a routerLink="/auth/register">Community</a><a routerLink="/auth/register">Help Center</a></div>
-    <div class="footer-column"><strong>Company</strong><a routerLink="/auth/register">About</a><a routerLink="/auth/register">Contact</a><a routerLink="/auth/register">Privacy</a></div>
+    <div class="footer-brand"><span class="logo-mark"><span></span><i></i></span><div><strong>MLS</strong><small>Master Learning System</small><p>Learn • Grow • Succeed</p></div></div>
+    <div class="footer-column"><strong>Platform</strong><a routerLink="/auth/register">Courses</a><a routerLink="/auth/register">For Learners</a><a routerLink="/auth/register">For Educators</a><a routerLink="/auth/register">Pricing</a></div>
+    <div class="footer-column"><strong>Resources</strong><a routerLink="/auth/register">Blog</a><a routerLink="/auth/register">Student Stories</a><a routerLink="/auth/register">Help Center</a><a routerLink="/auth/register">Community</a></div>
+    <div class="footer-column"><strong>Company</strong><a routerLink="/auth/register">About Us</a><a routerLink="/auth/register">Careers</a><a routerLink="/auth/register">Contact</a><a routerLink="/auth/register">Privacy Policy</a></div>
+    <div class="footer-column follow"><strong>Follow Us</strong><div><a>▶</a><a>in</a><a>♥</a><a>◎</a><a>f</a></div></div>
   </footer>
-  <div class="copyright container">© 2026 Master Learning System. All rights reserved.<span>Learn • Grow • Succeed</span></div>
+  <div class="copyright container"><span>© 2026 MLS. All rights reserved.</span><span>Education for a brighter tomorrow. 🌎</span></div>
 </main>
