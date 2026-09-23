@@ -1,147 +1,190 @@
-<main class="landing" [class.light]="theme === 'light'">
-  <header class="navbar app-container">
-    <a routerLink="/" class="brand" aria-label="Master Learning home">
-      <span class="brand-mark">✦</span>
-      <span><strong>Master Learning</strong><small>Learn · Grow · Succeed</small></span>
-    </a>
-    <nav class="desktop-nav" [class.open]="mobileMenuOpen" aria-label="Primary navigation">
-      <button type="button" (click)="scrollToSection('home')">Home</button>
-      <button type="button" (click)="scrollToSection('experience')">Experience</button>
-      <button type="button" (click)="scrollToSection('journeys')">Journeys</button>
-      <button type="button" (click)="scrollToSection('features')">Features</button>
-      <button type="button" (click)="scrollToSection('about')">About</button>
-    </nav>
-    <div class="nav-actions">
-      <button class="theme-toggle" type="button" (click)="toggleTheme()" [attr.aria-label]="'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'">{{ theme === 'dark' ? '☀' : '☾' }}</button>
-      <a routerLink="/auth/login" class="login-link">Login</a>
-      <a routerLink="/auth/register" class="nav-cta">Get Started <span>→</span></a>
-      <button class="menu-button" type="button" (click)="toggleMobileMenu()" aria-label="Open navigation">☰</button>
+<main class="landing-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a routerLink="/" class="brand" aria-label="MLS home">
+        <span class="brand-mark" aria-hidden="true">◆</span>
+        <span class="brand-copy">
+          <strong>MLS</strong>
+          <small>Master Learning System</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" [class.open]="mobileMenuOpen" aria-label="Primary navigation">
+        <button type="button" class="active" (click)="scrollTo('home')">Home</button>
+        <button type="button" (click)="scrollTo('courses')">Courses</button>
+        <button type="button" (click)="scrollTo('learners')">For Learners</button>
+        <button type="button" (click)="scrollTo('educators')">For Educators</button>
+        <button type="button" (click)="scrollTo('about')">About</button>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="search-button" (click)="scrollTo('courses')">⌕ <span>Search courses, skills...</span></button>
+        <a routerLink="/auth/login" class="login-link">Login</a>
+        <a routerLink="/auth/register" class="gradient-button small">Get Started</a>
+        <button type="button" class="menu-button" (click)="toggleMobileMenu()" aria-label="Toggle navigation">☰</button>
+      </div>
     </div>
   </header>
 
-  <section id="home" class="immersive-hero app-container">
-    <div class="hero-copy">
-      <span class="hero-kicker">✦ INTELLIGENT LEARNING SYSTEM</span>
-      <p class="hero-greeting">Learn smarter. Build momentum. Stay ahead.</p>
-      <h1>Education that <span>adapts to you.</span></h1>
-      <p class="hero-description">A next-generation learning ecosystem where courses, assessments, AI guidance and personalized decisions work together around every learner.</p>
-      <div class="hero-actions">
-        <a routerLink="/auth/register" class="primary-action">Start Learning <span>→</span></a>
-        <button type="button" class="secondary-action" (click)="scrollToSection('experience')">See the Experience <span>↘</span></button>
-      </div>
-      <div class="hero-proof">
-        <span>● Live platform</span>
-        <span>✓ Personalized paths</span>
-        <span>✦ AI-powered guidance</span>
-      </div>
-    </div>
+  <section id="home" class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">LEARN • GROW • SUCCEED</span>
+        <h1>Your Future<br><span>Starts Here.</span></h1>
+        <p class="hero-text">Learn in-demand skills, get certified, and build the career you always dreamed of with MLS.</p>
 
-    <div class="experience-stage" id="experience" aria-label="Immersive learning intelligence visualization">
-      <div class="stage-grid"></div>
-      <div class="aurora aurora-one"></div>
-      <div class="aurora aurora-two"></div>
-      <div class="light-sweep"></div>
-      <div class="orbital orbital-one"></div>
-      <div class="orbital orbital-two"></div>
-      <div class="orbital orbital-three"></div>
-
-      <div class="platform-core">
-        <span class="core-spark">✦</span>
-        <strong>ML</strong>
-        <small>MASTER<br>LEARNING</small>
-      </div>
-
-      <div class="floating-chip chip-top">⚡ Adaptive</div>
-      <div class="floating-chip chip-side">✓ On track</div>
-      <div class="floating-chip chip-bottom">↗ Growing faster</div>
-
-      <article class="live-card learner-card">
-        <div class="card-icon">◒</div>
-        <div><small>LEARNER STATE</small><strong>Focused &amp; ready</strong></div>
-        <b>+12%</b>
-      </article>
-
-      <article class="live-card ai-card">
-        <div class="card-icon">✦</div>
-        <div><small>AI TUTOR</small><strong>Thinking with you</strong></div>
-        <i>●</i>
-      </article>
-
-      <article class="live-card next-card">
-        <small>NEXT BEST STEP</small>
-        <strong>Continue Module 04</strong>
-        <div class="mini-progress"><span></span></div>
-        <b>82% ready</b>
-      </article>
-
-      <div class="laptop">
-        <div class="laptop-screen">
-          <div class="screen-top"><span></span><span></span><span></span><strong>adaptive-learning.engine</strong></div>
-          <div class="screen-flow">
-            <div class="flow-node"><b>Goals</b><small>intent</small></div>
-            <div class="flow-node"><b>Mastery</b><small>signal</small></div>
-            <div class="flow-node"><b>AI Tutor</b><small>guide</small></div>
-            <div class="flow-node"><b>Next Step</b><small>action</small></div>
-          </div>
+        <div class="hero-benefits">
+          <span><i class="tone-red">✓</i> World-class courses</span>
+          <span><i class="tone-blue">✓</i> AI-powered learning</span>
+          <span><i class="tone-orange">✓</i> Expert instructors</span>
+          <span><i class="tone-green">✓</i> Flexible learning</span>
+          <span><i class="tone-yellow">✓</i> Hands-on projects</span>
+          <span><i class="tone-violet">✓</i> Recognized certificates</span>
         </div>
-        <div class="laptop-base"></div>
+
+        <div class="hero-actions">
+          <a routerLink="/auth/register" class="gradient-button">Start Learning Free <span>→</span></a>
+          <a href="#courses" class="outline-button" (click)="$event.preventDefault(); scrollTo('courses')">Explore Courses <span>→</span></a>
+        </div>
+
+        <div class="learner-proof">
+          <div class="avatar-stack">
+            <span>R</span><span>P</span><span>D</span><span>A</span><span>V</span>
+          </div>
+          <div><strong>100,000+ learners</strong><small>already building their future with MLS</small></div>
+        </div>
       </div>
 
-      <div class="energy-line line-one"></div>
-      <div class="energy-line line-two"></div>
-      <div class="energy-line line-three"></div>
-      <div class="typing-zone"><span></span><span></span><span></span><span></span></div>
+      <div class="hero-visual" aria-label="Student learning illustration">
+        <div class="rainbow-arc"></div>
+        <div class="learning-orb orb-one"><span>Learn</span></div>
+        <div class="learning-orb orb-two"><span>Practice</span></div>
+        <div class="learning-orb orb-three"><span>Get Certified</span></div>
+        <div class="learning-orb orb-four"><span>Build Projects</span></div>
 
-      <aside class="live-status">
-        <div><span class="status-dot" [class.online]="platformOnline"></span><span>{{ platformOnline ? 'PLATFORM LIVE' : 'SYSTEM READY' }}</span></div>
-        <strong>98.4%</strong>
-        <small>learning intelligence</small>
-        <div class="mini-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      </aside>
+        <div class="student-illustration">
+          <div class="student-hair"></div>
+          <div class="student-face"></div>
+          <div class="student-body">
+            <span class="hoodie-logo">MLS</span>
+          </div>
+          <div class="student-book">▰</div>
+          <div class="student-bag"></div>
+        </div>
 
-      <div class="particle-field" aria-hidden="true">
-        <span *ngFor="let particle of [1,2,3,4,5,6,7,8,9,10,11,12]" [style.--i]="particle"></span>
+        <div class="visual-note">
+          <strong>Better Skills<br>Better Opportunities</strong>
+          <span>Education changes everything.</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="metric-strip app-container">
-    <article *ngFor="let metric of metrics"><strong>{{ metric.value }}</strong><span>{{ metric.label }}</span></article>
+  <section class="stats container" aria-label="MLS statistics">
+    <article><span class="stat-icon tone-red">♟</span><div><strong>100K+</strong><small>Active Learners</small></div></article>
+    <article><span class="stat-icon tone-orange">◆</span><div><strong>500+</strong><small>Expert Instructors</small></div></article>
+    <article><span class="stat-icon tone-yellow">▤</span><div><strong>1,000+</strong><small>Courses</small></div></article>
+    <article><span class="stat-icon tone-green">↗</span><div><strong>95%</strong><small>Success Rate</small></div></article>
+    <article><span class="stat-icon tone-blue">◎</span><div><strong>50+</strong><small>Countries</small></div></article>
   </section>
 
-  <section id="journeys" class="section app-container">
-    <div class="section-intro"><span class="eyebrow">ONE INTELLIGENT ECOSYSTEM</span><h2>Built around the way <span>people actually learn.</span></h2><p>From first concept to confident mastery, every part of the platform is connected.</p></div>
-    <div class="journey-grid">
-      <article *ngFor="let journey of journeys" class="journey-card">
-        <div class="journey-top"><span>{{ journey.icon }}</span><b>{{ journey.number }}</b></div>
-        <h3>{{ journey.title }}</h3>
-        <p>{{ journey.description }}</p>
-        <ul><li *ngFor="let point of journey.points">{{ point }}</li></ul>
-        <a href="#home" (click)="$event.preventDefault(); scrollToSection('home')">{{ journey.action }} <span>→</span></a>
+  <section id="learners" class="section container">
+    <div class="section-heading">
+      <div><span class="eyebrow">WHY CHOOSE MLS?</span><h2>Everything you need to <span>learn, grow & succeed.</span></h2></div>
+      <p>One clear learning platform for courses, practice, projects, guidance and meaningful progress.</p>
+    </div>
+
+    <div class="feature-grid">
+      <article *ngFor="let feature of features">
+        <span class="feature-icon" [ngClass]="'tone-' + feature.tone">{{ feature.icon }}</span>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
       </article>
     </div>
   </section>
 
-  <section id="features" class="section app-container">
-    <div class="section-intro"><span class="eyebrow">LEARNING INTELLIGENCE</span><h2>More than content.<br><span>A system that learns with you.</span></h2></div>
-    <div class="feature-grid">
-      <article *ngFor="let feature of features"><span class="feature-icon">{{ feature.icon }}</span><h3>{{ feature.title }}</h3><p>{{ feature.description }}</p><b>Explore →</b></article>
+  <section id="about" class="section container">
+    <div class="section-heading compact">
+      <div><span class="eyebrow">EXPLORE LEARNING</span><h2>Popular <span>Categories</span></h2></div>
+      <button type="button" class="text-button" (click)="scrollTo('courses')">View all categories →</button>
+    </div>
+
+    <div class="category-grid">
+      <button type="button" *ngFor="let category of categories" class="category-card" [ngClass]="'category-' + category.tone">
+        <span>{{ category.icon }}</span><strong>{{ category.name }}</strong>
+      </button>
     </div>
   </section>
 
-  <section id="about" class="impact-band app-container">
-    <div><span class="eyebrow">DESIGNED FOR SCALE</span><h2>From learner intelligence to institutional insight.</h2><p>One platform can power individual learning journeys, educators, programs and institutions without losing the personal experience.</p></div>
-    <div class="impact-grid"><article *ngFor="let stat of statistics"><span>{{ stat.icon }}</span><strong>{{ stat.value }}</strong><small>{{ stat.label }}</small></article></div>
+  <section id="courses" class="section container">
+    <div class="section-heading compact">
+      <div><span class="eyebrow">LEARN TODAY • APPLY TOMORROW</span><h2>Featured <span>Courses</span></h2></div>
+      <a routerLink="/auth/register" class="text-button">View all courses →</a>
+    </div>
+
+    <div class="course-grid">
+      <article class="course-card" *ngFor="let course of courses">
+        <div class="course-image" [ngClass]="'course-' + course.color">
+          <span class="course-badge">{{ course.category }}</span>
+          <div class="course-illustration"><span></span><i></i><b></b></div>
+        </div>
+        <div class="course-content">
+          <small class="course-category">{{ course.category }}</small>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.description }}</p>
+          <div class="course-meta"><span>★ {{ course.rating }}</span><span>♟ {{ course.students }}</span><span>{{ course.level }}</span></div>
+          <div class="course-footer"><span>By {{ course.instructor }}</span><button type="button" aria-label="Open course">→</button></div>
+        </div>
+      </article>
+    </div>
   </section>
 
-  <section class="final-cta app-container">
-    <div><span class="eyebrow">START YOUR JOURNEY</span><h2>Turn learning into <span>momentum.</span></h2><p>Join a learning environment that understands progress, adapts to change and keeps the next step clear.</p></div>
-    <a routerLink="/auth/register" class="primary-action">Create Your Free Account <span>→</span></a>
+  <section id="educators" class="learning-journey container">
+    <div class="journey-copy">
+      <span class="eyebrow">A SIMPLE LEARNING JOURNEY</span>
+      <h2>Discover. Learn. Practice. <span>Build.</span></h2>
+      <p>MLS connects every important part of learning into one simple experience so learners always know what to do next.</p>
+      <a routerLink="/auth/register" class="outline-button">Start Your Journey <span>→</span></a>
+    </div>
+    <div class="journey-steps">
+      <div><span class="step-number tone-red">01</span><strong>Discover</strong><small>Find the right path</small></div>
+      <div><span class="step-number tone-orange">02</span><strong>Learn</strong><small>Understand the concepts</small></div>
+      <div><span class="step-number tone-yellow">03</span><strong>Practice</strong><small>Strengthen your skills</small></div>
+      <div><span class="step-number tone-green">04</span><strong>Build</strong><small>Create real projects</small></div>
+      <div><span class="step-number tone-blue">05</span><strong>Certify</strong><small>Show what you know</small></div>
+      <div><span class="step-number tone-violet">06</span><strong>Grow</strong><small>Move toward your goals</small></div>
+    </div>
   </section>
 
-  <footer class="footer app-container">
-    <div class="footer-brand"><span class="brand-mark">✦</span><div><strong>Master Learning</strong><small>Learn · Grow · Succeed</small></div></div>
-    <div class="footer-links"><button type="button" (click)="scrollToSection('journeys')">Journeys</button><button type="button" (click)="scrollToSection('features')">Features</button><a routerLink="/auth/login">Login</a><a routerLink="/auth/register">Register</a></div>
-    <small>© 2026 Master Learning. All rights reserved.</small>
+  <section class="section container">
+    <div class="section-heading">
+      <div><span class="eyebrow">LEARNER STORIES</span><h2>Real People. <span>Real Progress.</span></h2></div>
+      <p>Thousands of learners use MLS to develop practical skills and keep moving forward.</p>
+    </div>
+
+    <div class="testimonial-grid">
+      <article *ngFor="let testimonial of testimonials" class="testimonial">
+        <div class="person"><span>{{ testimonial.initials }}</span><div><strong>{{ testimonial.name }}</strong><small>{{ testimonial.role }}</small></div></div>
+        <p>“{{ testimonial.text }}”</p>
+        <div class="stars">★★★★★</div>
+      </article>
+    </div>
+  </section>
+
+  <section class="cta container">
+    <div><span class="eyebrow">YOUR FUTURE STARTS HERE</span><h2>Ready to build a <span>better future?</span></h2><p>Join learners who are building skills for tomorrow.</p></div>
+    <div class="cta-actions"><a routerLink="/auth/register" class="white-button">Get Started Free →</a><a href="#courses" class="cta-link" (click)="$event.preventDefault(); scrollTo('courses')">Explore Courses →</a></div>
+  </section>
+
+  <footer class="footer container">
+    <div class="footer-brand">
+      <span class="brand-mark">◆</span>
+      <div><strong>MLS</strong><small>Master Learning System</small><span>Learn · Grow · Succeed</span></div>
+    </div>
+    <div class="footer-column"><strong>Platform</strong><a routerLink="/auth/register">Courses</a><a routerLink="/auth/register">For Learners</a><a routerLink="/auth/register">For Educators</a><a routerLink="/auth/register">Pricing</a></div>
+    <div class="footer-column"><strong>Resources</strong><a routerLink="/auth/register">Student Stories</a><a routerLink="/auth/register">Help Center</a><a routerLink="/auth/register">Community</a></div>
+    <div class="footer-column"><strong>Company</strong><a routerLink="/auth/register">About Us</a><a routerLink="/auth/register">Careers</a><a routerLink="/auth/register">Contact</a><a routerLink="/auth/register">Privacy Policy</a></div>
+    <div class="footer-column social"><strong>Follow MLS</strong><div><span>▶</span><span>in</span><span>𝕏</span><span>◎</span></div></div>
   </footer>
+  <div class="copyright container">© 2026 MLS. All rights reserved. <span>Education for a brighter tomorrow. 🌍</span></div>
 </main>
