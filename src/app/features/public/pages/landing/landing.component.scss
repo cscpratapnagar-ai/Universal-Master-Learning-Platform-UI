@@ -85,3 +85,7 @@
 .mode-pill{position:relative;overflow:hidden;transition:background .45s ease,transform .25s ease,box-shadow .45s ease}
 .mode-pill:after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.18);left:5px;transform:scale(0);transition:transform .55s ease}
 .mode-pill:active:after{transform:scale(3)}
+
+.landing-page .mode-pill b{transition:transform .55s cubic-bezier(.2,.8,.2,1),background .45s ease,box-shadow .45s ease}
+.landing-page.dark .mode-pill b{transform:translateX(15px);box-shadow:0 0 14px rgba(255,255,255,.45)}
+.landing-page.dark .mode-pill{box-shadow:0 0 18px rgba(8,117,223,.28)}
