@@ -1,49 +1,104 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Course { title:string; description:string; instructor:string; rating:string; students:string; level:string; image:string; category:string; duration:string; }
-interface Story { name:string; role:string; quote:string; photo:string; }
+interface FeatureCard { icon: string; title: string; description: string; tone: string; }
+interface CourseCard { title: string; description: string; instructor: string; rating: string; students: string; level: string; image: string; tag: string; tagTone: string; duration: string; }
+interface Story { name: string; role: string; quote: string; photo: string; }
 
-@Component({ selector:'app-landing', templateUrl:'./landing.component.html', styleUrls:['./landing.component.scss'] })
+@Component({
+  selector: 'app-landing',
+  templateUrl: './landing.component.html',
+  styleUrls: ['./landing.component.scss']
+})
 export class LandingComponent implements OnInit {
-  isDark=false; mobileMenuOpen=false; themeTransitioning=false; searchOpen=false; selectedCategory='All';
+  isDark = false;
+  mobileMenuOpen = false;
+  themeTransitioning = false;
+  searchOpen = false;
 
-  readonly navItems=[{label:'Home',id:'home'},{label:'Courses',id:'courses'},{label:'Experience',id:'experience'},{label:'For Educators',id:'educators'},{label:'About',id:'about'}];
-  readonly stats=[{value:'100K+',label:'Learners growing with MLS',icon:'01'},{value:'1,000+',label:'Courses & learning resources',icon:'02'},{value:'500+',label:'Expert instructors',icon:'03'},{value:'50+',label:'Countries reached',icon:'04'}];
-  readonly principles=[
-    {number:'01',title:'Personalized',text:'Learning paths adapt around goals, skills and progress.',tone:'blue'},
-    {number:'02',title:'Practical',text:'Practice, projects and assessments turn knowledge into capability.',tone:'orange'},
-    {number:'03',title:'Intelligent',text:'AI guidance helps learners understand what to do next.',tone:'green'},
-    {number:'04',title:'Measurable',text:'Clear progress signals help learners see growth over time.',tone:'purple'}
+  readonly heroFeatures = [
+    { icon: 'AI', label: 'AI Learning', tone: 'blue' },
+    { icon: '★', label: 'Expert Mentors', tone: 'orange' },
+    { icon: '⌘', label: 'Hands-on Projects', tone: 'green' },
+    { icon: '✓', label: 'Get Certified', tone: 'purple' },
+    { icon: '↗', label: 'Career Support', tone: 'pink' }
   ];
-  readonly journey=[
-    {step:'01',title:'Discover',text:'Define your goal and find the right direction.'},
-    {step:'02',title:'Learn',text:'Follow structured lessons from trusted educators.'},
-    {step:'03',title:'Practice',text:'Test understanding with quizzes and challenges.'},
-    {step:'04',title:'Build',text:'Apply skills through meaningful real-world projects.'},
-    {step:'05',title:'Prove',text:'Assess progress and earn credentials that show capability.'},
-    {step:'06',title:'Grow',text:'Get the next recommendation and keep moving forward.'}
-  ];
-  readonly categories=['All','Development','AI & ML','Design','Data Science','Business'];
-  readonly courses:Course[]=[
-    {title:'Complete Web Development Bootcamp',description:'Build modern web experiences from fundamentals to advanced apps.',instructor:'John Carter',rating:'4.8',students:'12.5K',level:'Beginner',category:'Development',duration:'12h',image:'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1000&q=88'},
-    {title:'AI & Machine Learning Mastery',description:'Understand modern AI concepts and build practical machine learning solutions.',instructor:'Dr. Sarah Khan',rating:'4.7',students:'9.8K',level:'Intermediate',category:'AI & ML',duration:'15h',image:'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1000&q=88'},
-    {title:'UI/UX Design — From Zero to Pro',description:'Design thoughtful digital products with research, systems and prototyping.',instructor:'Alex Morgan',rating:'4.8',students:'7.1K',level:'Beginner',category:'Design',duration:'10h',image:'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1000&q=88'},
-    {title:'Data Science with Python',description:'Analyze data, build models and solve practical business problems.',instructor:'Emily Chen',rating:'4.9',students:'5.4K',level:'Intermediate',category:'Data Science',duration:'14h',image:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=88'}
-  ];
-  readonly skills=[{name:'Angular',value:86},{name:'TypeScript',value:78},{name:'UI Architecture',value:64},{name:'Testing',value:48}];
-  readonly assessmentStages=[{number:'01',title:'Assess',text:'Measure what you know.'},{number:'02',title:'Analyze',text:'Understand your skill profile.'},{number:'03',title:'Recommend',text:'Find the right next resource.'},{number:'04',title:'Improve',text:'Practice and reassess.'}];
-  readonly stories:Story[]=[
-    {name:'Rahul Mehta',role:'Software Developer',quote:'The platform gave me a clear path from learning concepts to building projects I could actually show.',photo:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=85'},
-    {name:'Priya Shah',role:'Data Analyst',quote:'I could see exactly where I was improving and what I needed to practice next.',photo:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=85'},
-    {name:'Daniel Kim',role:'Product Designer',quote:'A polished learning experience that keeps practical work at the center.',photo:'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=85'}
-  ];
-  readonly studentPhoto='https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=90';
 
-  get filteredCourses():Course[]{ return this.selectedCategory==='All'?this.courses:this.courses.filter(c=>c.category===this.selectedCategory); }
-  ngOnInit():void{ try{this.isDark=localStorage.getItem('mls-theme')==='dark';}catch{} }
-  toggleTheme():void{this.themeTransitioning=true;this.isDark=!this.isDark;try{localStorage.setItem('mls-theme',this.isDark?'dark':'light');}catch{} window.setTimeout(()=>this.themeTransitioning=false,650);}
-  toggleMobileMenu():void{this.mobileMenuOpen=!this.mobileMenuOpen;}
-  toggleSearch():void{this.searchOpen=!this.searchOpen;}
-  closeSearch():void{this.searchOpen=false;}
-  scrollTo(id:string):void{this.mobileMenuOpen=false;document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+  readonly stats = [
+    { icon: '♟', value: '100K+', label: 'Active Learners', tone: 'blue' },
+    { icon: '♟', value: '500+', label: 'Expert Instructors', tone: 'orange' },
+    { icon: '▣', value: '1,000+', label: 'Courses', tone: 'green' },
+    { icon: '↗', value: '95%', label: 'Success Rate', tone: 'purple' },
+    { icon: '◎', value: '50+', label: 'Countries', tone: 'blue' }
+  ];
+
+  readonly features: FeatureCard[] = [
+    { icon: '◉', title: 'AI-Powered Learning', description: 'Personalized learning paths powered by advanced AI.', tone: 'blue' },
+    { icon: '●', title: 'Learn from Experts', description: 'Industry professionals with real-world experience.', tone: 'orange' },
+    { icon: '</>', title: 'Hands-on Projects', description: 'Build real-world projects and practical skills.', tone: 'green' },
+    { icon: '✦', title: 'Globally Recognized', description: 'Earn certificates that showcase your skills worldwide.', tone: 'purple' }
+  ];
+
+  readonly categories = [
+    { icon: '</>', name: 'Development', tone: 'blue' },
+    { icon: '▥', name: 'Data Science', tone: 'blue' },
+    { icon: '●', name: 'Design', tone: 'pink' },
+    { icon: '▣', name: 'Business', tone: 'blue' },
+    { icon: 'AI', name: 'AI & ML', tone: 'purple' },
+    { icon: '◀', name: 'Marketing', tone: 'orange' },
+    { icon: '◒', name: 'Personal Growth', tone: 'green' },
+    { icon: '▭', name: 'IT & Software', tone: 'blue' },
+    { icon: '•••', name: 'More', tone: 'blue' }
+  ];
+
+  readonly courses: CourseCard[] = [
+    { title: 'Complete Web Development Bootcamp', description: 'HTML, CSS, JavaScript, React & More', instructor: 'John Carter', rating: '4.8', students: '12.5K', level: 'Beginner', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=85', tag: 'Bestseller', tagTone: 'yellow', duration: '12h' },
+    { title: 'AI & Machine Learning Mastery', description: 'From Basics to Advanced', instructor: 'Dr. Sarah Khan', rating: '4.7', students: '9.8K', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=85', tag: 'Hot', tagTone: 'red', duration: '15h' },
+    { title: 'UI/UX Design — From Zero to Pro', description: 'Design Modern Digital Experiences', instructor: 'Alex Morgan', rating: '4.8', students: '7.1K', level: 'Beginner', image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=85', tag: 'Trending', tagTone: 'purple', duration: '10h' },
+    { title: 'Data Science with Python', description: 'Analyze Data, Build Models, Solve Real Problems', instructor: 'Emily Chen', rating: '4.9', students: '5.4K', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85', tag: 'New', tagTone: 'green', duration: '14h' }
+  ];
+
+  readonly studentPhotos = [
+    'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=90'
+  ];
+
+  readonly journey = [
+    { step: '01', title: 'Discover', text: 'Tell MLS your goals and explore the right learning path.', tone: 'blue' },
+    { step: '02', title: 'Learn', text: 'Follow structured lessons with expert content and AI guidance.', tone: 'orange' },
+    { step: '03', title: 'Practice', text: 'Strengthen your skills with quizzes, challenges and projects.', tone: 'green' },
+    { step: '04', title: 'Build', text: 'Turn knowledge into real-world work you can showcase.', tone: 'purple' },
+    { step: '05', title: 'Grow', text: 'Track progress and get your next personalized recommendation.', tone: 'pink' }
+  ];
+
+  readonly searchItems = [
+    { type: 'Course', title: 'Web Development Bootcamp' },
+    { type: 'Course', title: 'AI & Machine Learning Mastery' },
+    { type: 'Skill', title: 'Angular' },
+    { type: 'Skill', title: 'Python' },
+    { type: 'Topic', title: 'UI/UX Design' }
+  ];
+
+  readonly stories: Story[] = [
+    { name: 'Rahul Mehta', role: 'Software Developer', quote: 'MLS gave me the skills and confidence to switch to a tech career. The learning experience is simply amazing!', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=180&q=80' },
+    { name: 'Priya Shah', role: 'Data Analyst', quote: 'The instructors are top-notch and the hands-on projects helped me build a strong portfolio.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80' },
+    { name: 'Daniel Kim', role: 'Product Designer', quote: 'Flexible learning, great content, and a supportive community. Highly recommended!', photo: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=180&q=80' }
+  ];
+
+  ngOnInit(): void {
+    try { this.isDark = localStorage.getItem('mls-theme') === 'dark'; } catch {}
+  }
+
+  toggleTheme(): void {
+    this.themeTransitioning = true;
+    this.isDark = !this.isDark;
+    try { localStorage.setItem('mls-theme', this.isDark ? 'dark' : 'light'); } catch {}
+    window.setTimeout(() => this.themeTransitioning = false, 650);
+  }
+
+  toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
+  toggleSearch(): void { this.searchOpen = !this.searchOpen; }
+  closeSearch(): void { this.searchOpen = false; }
+  scrollTo(id: string): void {
+    this.mobileMenuOpen = false;
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
