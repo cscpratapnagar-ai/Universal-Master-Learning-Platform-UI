@@ -12,6 +12,7 @@ interface Story { name: string; role: string; quote: string; photo: string; }
 export class LandingComponent implements OnInit {
   isDark = false;
   mobileMenuOpen = false;
+  themeTransitioning = false;
 
   readonly heroFeatures = [
     { icon: 'AI', label: 'AI Learning', tone: 'blue' },
@@ -70,8 +71,10 @@ export class LandingComponent implements OnInit {
   }
 
   toggleTheme(): void {
+    this.themeTransitioning = true;
     this.isDark = !this.isDark;
     try { localStorage.setItem('mls-theme', this.isDark ? 'dark' : 'light'); } catch {}
+    window.setTimeout(() => this.themeTransitioning = false, 650);
   }
 
   toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
