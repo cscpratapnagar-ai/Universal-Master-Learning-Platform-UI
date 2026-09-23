@@ -1,84 +1,115 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 
-import { PlatformStatusService } from '../../../../core/services/platform-status.service';
-import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
+interface FeatureCard {
+  icon: string;
+  title: string;
+  description: string;
+  tone: string;
+}
 
-interface FeatureCard { icon: string; title: string; description: string; badge?: string; }
-interface StatCard { icon: string; value: string; label: string; }
-interface Metric { value: string; label: string; }
-interface JourneyCard { icon: string; number: string; title: string; description: string; points: string[]; action: string; }
+interface CourseCard {
+  category: string;
+  title: string;
+  description: string;
+  instructor: string;
+  rating: string;
+  students: string;
+  level: string;
+  color: string;
+}
+
+interface Testimonial {
+  name: string;
+  role: string;
+  text: string;
+  initials: string;
+}
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
-export class LandingComponent implements OnInit, OnDestroy {
-  theme: ThemeMode = 'dark';
+export class LandingComponent {
   mobileMenuOpen = false;
-  platformOnline = false;
-
-  readonly metrics: Metric[] = [
-    { value: '10K+', label: 'Active learners' },
-    { value: '500+', label: 'Expert educators' },
-    { value: '1,200+', label: 'Learning experiences' },
-    { value: '95%', label: 'Learner satisfaction' }
-  ];
-
-  readonly journeys: JourneyCard[] = [
-    { icon: '◉', number: '01', title: 'For Learners', description: 'A personal space that turns goals into a clear, measurable learning journey.', points: ['Courses & learning paths', 'Practice & assessments', 'Progress intelligence'], action: 'Start learning' },
-    { icon: '✦', number: '02', title: 'For Educators', description: 'Design experiences, understand learner progress and create stronger learning outcomes.', points: ['Create & deliver courses', 'Live teaching tools', 'Actionable analytics'], action: 'Explore teaching' },
-    { icon: '▦', number: '03', title: 'For Institutions', description: 'Bring people, programs and data together through one scalable education ecosystem.', points: ['Organization management', 'Role-based workspaces', 'Institutional insights'], action: 'Explore institutions' }
-  ];
 
   readonly features: FeatureCard[] = [
-    { icon: '◆', title: 'Expert Courses', description: 'Learn from experienced educators and industry experts.' },
-    { icon: '▣', title: 'Live Classes', description: 'Interactive sessions with real-time collaboration and Q&A.' },
-    { icon: '◉', title: 'AI Learning Guide', description: 'Context-aware support whenever you need clarity.' },
-    { icon: '▤', title: 'Smart Assessments', description: 'Practice, evaluate and understand where to improve.' },
-    { icon: '⬡', title: 'Certificates', description: 'Recognize meaningful learning milestones and achievements.' },
-    { icon: '♧', title: 'Community', description: 'Connect, collaborate and grow with your learning network.' }
+    { icon: 'AI', title: 'AI-Powered Learning', description: 'Personalized guidance that helps every learner understand what to learn next.', tone: 'red' },
+    { icon: '★', title: 'Learn from Experts', description: 'Structured lessons and practical knowledge from experienced educators.', tone: 'orange' },
+    { icon: '↗', title: 'Hands-on Projects', description: 'Build real projects, practice your skills and learn by doing.', tone: 'yellow' },
+    { icon: '✓', title: 'Recognized Certificates', description: 'Showcase meaningful achievements with professional certificates.', tone: 'green' }
   ];
 
-  readonly statistics: StatCard[] = [
-    { icon: '♛', value: '10K+', label: 'Active Learners' },
-    { icon: '♛', value: '500+', label: 'Expert Instructors' },
-    { icon: '▤', value: '1,200+', label: 'Courses Available' },
-    { icon: '◷', value: '25K+', label: 'Hours of Content' },
-    { icon: '◉', value: '95%', label: 'Satisfaction Rate' },
-    { icon: '◎', value: '50+', label: 'Countries' }
+  readonly categories = [
+    { icon: '</>', name: 'Development', tone: 'red' },
+    { icon: '◫', name: 'Data Science', tone: 'orange' },
+    { icon: '●', name: 'Design', tone: 'yellow' },
+    { icon: '▣', name: 'Business', tone: 'green' },
+    { icon: 'AI', name: 'AI & ML', tone: 'blue' },
+    { icon: '↗', name: 'Marketing', tone: 'indigo' },
+    { icon: '✦', name: 'Personal Growth', tone: 'violet' },
+    { icon: '+', name: 'More', tone: 'rainbow' }
   ];
 
-  private readonly subscriptions = new Subscription();
+  readonly courses: CourseCard[] = [
+    {
+      category: 'Development',
+      title: 'Complete Web Development Bootcamp',
+      description: 'HTML, CSS, JavaScript, Angular, React & more',
+      instructor: 'John Carter',
+      rating: '4.8',
+      students: '12.5K',
+      level: 'Beginner',
+      color: 'blue'
+    },
+    {
+      category: 'AI & Machine Learning',
+      title: 'AI & Machine Learning Mastery',
+      description: 'From fundamentals to real-world intelligent systems',
+      instructor: 'Dr. Sarah Khan',
+      rating: '4.7',
+      students: '9.8K',
+      level: 'Intermediate',
+      color: 'violet'
+    },
+    {
+      category: 'Design',
+      title: 'UI/UX Design — From Zero to Pro',
+      description: 'Design modern digital experiences users love',
+      instructor: 'Alex Morgan',
+      rating: '4.8',
+      students: '7.1K',
+      level: 'Beginner',
+      color: 'orange'
+    },
+    {
+      category: 'Data Science',
+      title: 'Data Science with Python',
+      description: 'Analyze data, build models and solve real problems',
+      instructor: 'Emily Chen',
+      rating: '4.9',
+      students: '5.4K',
+      level: 'Intermediate',
+      color: 'green'
+    }
+  ];
 
-  constructor(
-    private readonly themeService: ThemeService,
-    private readonly platformStatusService: PlatformStatusService
-  ) {}
+  readonly testimonials: Testimonial[] = [
+    { name: 'Rahul Mehta', role: 'Software Developer', initials: 'RM', text: 'MLS helped me build the skills and confidence I needed for my next career step.', },
+    { name: 'Priya Shah', role: 'Data Analyst', initials: 'PS', text: 'The courses are clear, practical and easy to follow. I can learn at my own pace.', },
+    { name: 'Daniel Kim', role: 'Product Designer', initials: 'DK', text: 'A clean learning experience with useful projects and a strong community.', }
+  ];
 
-  ngOnInit(): void {
-    this.subscriptions.add(this.themeService.theme$.subscribe((theme: ThemeMode) => this.theme = theme));
-    this.subscriptions.add(this.platformStatusService.check().subscribe((online: boolean) => this.platformOnline = online));
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 
-  ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
-  toggleTheme(): void { this.themeService.toggle(); }
-  toggleMobileMenu(): void { this.mobileMenuOpen = !this.mobileMenuOpen; }
-  closeMobileMenu(): void { this.mobileMenuOpen = false; }
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
 
-  scrollToSection(sectionId: string): void {
+  scrollTo(id: string): void {
     this.closeMobileMenu();
-    requestAnimationFrame(() => {
-      const target = document.getElementById(sectionId);
-      if (!target) return;
-      const headerOffset = 96;
-      const rect = target.getBoundingClientRect();
-      const absoluteTop = rect.top + window.scrollY;
-      const viewport = window.innerHeight;
-      const targetHeight = Math.min(target.offsetHeight, Math.max(0, viewport - headerOffset));
-      const centeredTop = absoluteTop - Math.max(headerOffset, (viewport - targetHeight) / 2);
-      window.scrollTo({ top: Math.max(0, centeredTop), behavior: 'smooth' });
-    });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
