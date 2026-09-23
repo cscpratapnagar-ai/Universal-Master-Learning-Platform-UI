@@ -77,6 +77,27 @@ export class LandingComponent implements OnInit {
     { type: 'Topic', title: 'UI/UX Design' }
   ];
 
+  readonly intelligence = [
+    { icon: '01', title: 'Your Goal', text: 'Start with what you want to achieve — career, exam, skill or project.', tone: 'blue' },
+    { icon: '02', title: 'Your Skills', text: 'Understand what you already know and where you can improve.', tone: 'orange' },
+    { icon: '03', title: 'Your Progress', text: 'See meaningful progress across courses, practice and projects.', tone: 'green' },
+    { icon: '04', title: 'Your Gaps', text: 'Identify knowledge gaps before they become roadblocks.', tone: 'purple' },
+    { icon: '05', title: 'Your Next Step', text: 'Get a clear next action instead of wondering what to learn next.', tone: 'pink' }
+  ];
+
+  readonly assessmentStages = [
+    { title: 'Assess', text: 'Measure knowledge and practical understanding.', icon: '01' },
+    { title: 'Analyze', text: 'Turn results into a clear skill profile.', icon: '02' },
+    { title: 'Recommend', text: 'Connect gaps to the right learning resources.', icon: '03' },
+    { title: 'Improve', text: 'Practice, build and reassess with confidence.', icon: '04' }
+  ];
+
+  readonly educatorHighlights = [
+    { title: 'Create', text: 'Build structured courses, lessons and assessments.', icon: '✦' },
+    { title: 'Teach', text: 'Give learners a focused and engaging experience.', icon: '↗' },
+    { title: 'Measure', text: 'Understand progress with meaningful learning analytics.', icon: '▣' }
+  ];
+
   readonly stories: Story[] = [
     { name: 'Rahul Mehta', role: 'Software Developer', quote: 'MLS gave me the skills and confidence to switch to a tech career. The learning experience is simply amazing!', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=180&q=80' },
     { name: 'Priya Shah', role: 'Data Analyst', quote: 'The instructors are top-notch and the hands-on projects helped me build a strong portfolio.', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=180&q=80' },
