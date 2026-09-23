@@ -52,6 +52,13 @@
           <div *ngFor="let item of heroFeatures" class="hero-feature"><span [ngClass]="item.tone">{{ item.icon }}</span><strong>{{ item.label }}</strong></div>
         </div>
         <div class="future-note">Your<br>Future<br><strong>Mission</strong></div>
+        <div class="hero-learning-card">
+          <div class="learning-card-top"><span>MY LEARNING PATH</span><b>82%</b></div>
+          <strong>Web Development</strong>
+          <div class="learning-progress"><i></i></div>
+          <div class="learning-meta"><span>12 of 15 lessons</span><span>Next: Angular</span></div>
+          <div class="learning-next"><span>▶</span><div><small>CONTINUE LEARNING</small><strong>Angular Components</strong></div><b>→</b></div>
+        </div>
       </div>
     </div>
   </section>
@@ -126,6 +133,8 @@
       <h2>Meet Your Personal<br><span>AI Learning Mentor</span></h2>
       <p>Get instant answers, personalized study plans, practice questions, and expert guidance — anytime.</p>
       <div class="ai-status"><span></span><strong>AI Mentor is ready</strong><small>Personalized for your learning journey</small></div>
+      <div class="ai-input"><span>⌕</span><input type="text" placeholder="Ask your learning mentor anything..." aria-label="Ask your learning mentor anything"><button type="button">→</button></div>
+      <div class="ai-suggestions"><button type="button">Explain a concept</button><button type="button">Create a study plan</button><button type="button">Practice questions</button></div>
       <a routerLink="/auth/register" class="orange-button">Try AI Mentor <span>→</span></a>
     </div>
     <div class="ai-actions">
