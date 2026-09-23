@@ -363,3 +363,27 @@
  .ai-suggestions{justify-content:center}
  .ai-input{max-width:420px;margin-left:auto;margin-right:auto}
 }
+
+/* Smart search */
+.search-overlay{position:fixed;inset:76px 0 0;z-index:300;background:rgba(3,14,32,.48);backdrop-filter:blur(8px);padding-top:18px}
+.search-panel{width:min(680px,calc(100% - 32px));margin:0 auto;border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:0 30px 80px rgba(0,0,0,.25);padding:14px;animation:mlsReveal .28s ease both}
+.search-panel-top{display:flex;align-items:center;gap:10px;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 10px}
+.search-panel-top>span{font-size:20px;color:var(--blue)}.search-panel-top input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);font-size:15px}.search-panel-top button{border:0;background:transparent;color:var(--muted);font-size:24px;cursor:pointer}
+.search-panel-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--muted);padding:18px 8px 8px}
+.search-result{width:100%;display:grid;grid-template-columns:58px 1fr 20px;gap:10px;align-items:center;border:0;background:transparent;color:var(--text);padding:11px 9px;border-radius:10px;text-align:left;cursor:pointer}.search-result:hover{background:color-mix(in srgb,var(--blue) 8%,transparent)}.search-result span{font-size:9px;color:var(--blue);font-weight:800;text-transform:uppercase}.search-result strong{font-size:13px}.search-result b{color:var(--blue)}
+
+/* Learning journey */
+.section-kicker{display:block;color:var(--blue);font-size:10px;font-weight:800;letter-spacing:.18em;margin-bottom:7px}
+.journey-section{padding-top:6px}
+.journey-track{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:26px}
+.journey-line{position:absolute;left:9%;right:9%;top:23px;height:2px;background:var(--line);overflow:hidden}.journey-line i{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--blue),var(--orange),var(--green),var(--purple),var(--pink));transform-origin:left;animation:journeyFlow 5s ease-in-out infinite}
+@keyframes journeyFlow{0%,100%{transform:scaleX(.08);opacity:.45}50%{transform:scaleX(1);opacity:1}}
+.journey-step{position:relative;z-index:1;padding-top:0}.journey-number{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);color:var(--text);font-size:11px;font-weight:800;box-shadow:0 7px 20px rgba(7,27,70,.08);transition:.35s}
+.journey-step>div{margin-top:15px;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--surface);min-height:112px;transition:.35s}.journey-step strong{font-size:15px}.journey-step p{font-size:11px;line-height:1.55;color:var(--muted);margin:7px 0 0}.journey-step:hover .journey-number{transform:scale(1.12);color:var(--blue);border-color:var(--blue);box-shadow:0 0 0 7px color-mix(in srgb,var(--blue) 10%,transparent)}.journey-step:hover>div{transform:translateY(-5px);box-shadow:var(--shadow)}
+.journey-step:nth-child(3) .journey-number{border-color:var(--orange)}.journey-step:nth-child(4) .journey-number{border-color:var(--green)}.journey-step:nth-child(5) .journey-number{border-color:var(--purple)}.journey-step:nth-child(6) .journey-number{border-color:var(--pink)}
+
+/* Course actions */
+.course-body{position:relative}.course-preview{display:flex;gap:7px;opacity:0;transform:translateY(5px);transition:.3s;margin-bottom:8px}.course-card:hover .course-preview{opacity:1;transform:none}.course-preview button,.course-preview a{height:29px;border-radius:7px;padding:0 9px;border:1px solid var(--line);background:var(--surface);color:var(--text);font-size:10px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;cursor:pointer}.course-preview a{background:var(--blue);border-color:var(--blue);color:#fff}
+@media(max-width:900px){.journey-track{grid-template-columns:repeat(3,1fr)}.journey-line{display:none}}
+@media(max-width:620px){.journey-track{grid-template-columns:1fr 1fr}.journey-step>div{min-height:100px}.search-overlay{inset:76px 0 0}}
+@media(max-width:480px){.journey-track{grid-template-columns:1fr}.journey-step>div{min-height:auto}.search-panel{border-radius:14px}.search-result{grid-template-columns:52px 1fr 18px}}
