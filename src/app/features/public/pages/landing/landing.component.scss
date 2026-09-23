@@ -148,3 +148,24 @@
  .ai-actions{grid-template-columns:1fr}
  .ai-actions button{min-height:58px}
 }
+
+
+/* Final AI mentor responsive repair */
+.ai-mentor{display:grid!important;grid-template-columns:180px minmax(0,1fr) minmax(390px,1.15fr)!important;align-items:center!important;width:min(1240px,calc(100% - 56px));min-height:225px}
+.ai-mentor .ai-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;min-width:0!important;grid-column:auto!important;align-self:center!important}
+.ai-mentor .ai-actions button{width:100%!important;min-width:0!important;box-sizing:border-box!important;writing-mode:horizontal-tb!important;word-break:normal!important;overflow-wrap:break-word!important;white-space:normal!important}
+.ai-mentor .ai-actions button strong,.ai-mentor .ai-actions button small{writing-mode:horizontal-tb!important;word-break:normal!important}
+.ai-mentor .ai-actions button div{width:auto!important;min-width:0!important}
+@media(max-width:1100px){
+ .ai-mentor{grid-template-columns:155px minmax(0,1fr)!important;gap:22px!important}
+ .ai-mentor .ai-actions{grid-column:1/-1!important;width:100%!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:820px){
+ .ai-mentor{grid-template-columns:130px minmax(0,1fr)!important;padding:20px!important}
+ .ai-mentor .ai-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:560px){
+ .ai-mentor{display:grid!important;grid-template-columns:1fr!important;width:calc(100% - 22px)!important}
+ .ai-mentor .ai-actions{grid-column:1!important;grid-template-columns:1fr!important}
+ .ai-mentor .robot{justify-self:center}
+}
