@@ -17,7 +17,7 @@
       </nav>
 
       <div class="header-actions">
-        <button class="search-pill" type="button" (click)="scrollTo('courses')"><span>⌕</span> Search courses, skills, topics...</button>
+        <button class="search-pill" type="button" (click)="toggleSearch()"><span>⌕</span> Search courses, skills, topics...</button>
         <button class="mode-pill" type="button" (click)="toggleTheme()" [attr.aria-label]="isDark ? 'Switch to day mode' : 'Switch to night mode'"><span>☼</span><b></b><span>☾</span></button>
         <a routerLink="/auth/login" class="login-link">Login</a>
         <a routerLink="/auth/register" class="get-started">Get Started</a>
@@ -25,6 +25,13 @@
       </div>
     </div>
   </header>
+  <div class="search-overlay" *ngIf="searchOpen" (click)="closeSearch()">
+    <div class="search-panel" (click)="$event.stopPropagation()">
+      <div class="search-panel-top"><span>⌕</span><input autofocus placeholder="Search courses, skills, topics..." aria-label="Search MLS"><button type="button" (click)="closeSearch()">×</button></div>
+      <div class="search-panel-label">Popular on MLS</div>
+      <button class="search-result" *ngFor="let item of searchItems" type="button" (click)="scrollTo('courses'); closeSearch()"><span>{{ item.type }}</span><strong>{{ item.title }}</strong><b>→</b></button>
+    </div>
+  </div>
 
   <section id="home" class="hero">
     <div class="hero-backdrop"></div>
@@ -92,6 +99,20 @@
     </div>
   </section>
 
+
+  <section class="journey-section section container">
+    <div class="section-title-row">
+      <div><span class="section-kicker">THE MLS LEARNING JOURNEY</span><h2>From Curious to Confident.</h2><p>One intelligent path from your first question to real-world capability.</p></div>
+    </div>
+    <div class="journey-track">
+      <div class="journey-line"><i></i></div>
+      <article *ngFor="let item of journey" class="journey-step" [ngClass]="item.tone">
+        <span class="journey-number">{{ item.step }}</span>
+        <div><strong>{{ item.title }}</strong><p>{{ item.text }}</p></div>
+      </article>
+    </div>
+  </section>
+
   <section id="courses" class="section container">
     <div class="section-title-row">
       <div><h2>Featured Courses</h2></div>
@@ -104,7 +125,7 @@
           <span class="course-tag" [ngClass]="course.tagTone">{{ course.tag }}</span>
           <span class="duration">◷ {{ course.duration }}</span>
         </div>
-        <div class="course-body">
+        <div class="course-body"><div class="course-preview"><button type="button">Preview</button><a routerLink="/auth/register">Start Learning →</a></div>
           <h3>{{ course.title }}</h3>
           <p>{{ course.description }}</p>
           <div class="course-instructor"><span class="avatar">{{ course.instructor.charAt(0) }}</span><strong>{{ course.instructor }}</strong><span class="rating">★ {{ course.rating }}</span><small>({{ course.students }})</small></div>
