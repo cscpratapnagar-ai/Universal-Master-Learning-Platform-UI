@@ -35,3 +35,163 @@
 }
 
 .existing-session{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:16px;border:1px solid #e0e5f0;border-radius:14px;background:#fbfcff}.session-avatar{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#5650ec,#e148bd);font-weight:800}.session-copy{display:grid;gap:4px;min-width:0}.session-copy strong{font-size:11px;color:#203568}.session-copy span{font-size:9px;color:#7b89a5;overflow:hidden;text-overflow:ellipsis}.session-primary,.session-secondary{grid-column:1/-1;height:43px;border-radius:9px;font-size:10px;font-weight:800;cursor:pointer}.session-primary{border:0;color:#fff;background:linear-gradient(100deg,#5650ec,#e148bd)}.session-secondary{border:1px solid #dfe5f1;color:#304271;background:#fff}.session-primary:hover,.session-secondary:hover{transform:translateY(-1px)}
+
+
+/* PREMIUM THEME SYSTEM — explicit light/dark surfaces for the complete auth experience */
+.auth-page{
+  transition:background .55s cubic-bezier(.22,1,.36,1),color .35s ease;
+}
+.auth-page.light-mode{
+  --auth-text:#12285d;
+  --auth-muted:#6d7c9d;
+  --auth-surface:rgba(255,255,255,.94);
+  --auth-surface-soft:#f4f7ff;
+  --auth-input:#fbfcff;
+  --auth-line:#dfe5f1;
+  --auth-shadow:0 28px 70px rgba(39,58,113,.13);
+}
+.auth-page.dark-mode{
+  --auth-text:#f4f7ff;
+  --auth-muted:#aab7d0;
+  --auth-surface:rgba(12,24,46,.96);
+  --auth-surface-soft:#101f39;
+  --auth-input:#0c1a31;
+  --auth-line:rgba(166,186,226,.17);
+  --auth-shadow:0 30px 90px rgba(0,0,0,.42);
+  color:var(--auth-text);
+  background:
+    radial-gradient(circle at 72% 24%,rgba(111,83,255,.22),transparent 25%),
+    radial-gradient(circle at 88% 72%,rgba(224,70,187,.16),transparent 27%),
+    linear-gradient(135deg,#061225 0%,#0b1931 48%,#180d28 100%);
+}
+.auth-page.dark-mode .grid{
+  opacity:.24;
+  background-image:linear-gradient(rgba(155,177,224,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(155,177,224,.055) 1px,transparent 1px);
+}
+.auth-page.dark-mode .brand,
+.auth-page.dark-mode .form-intro h2,
+.auth-page.dark-mode .mini-head,
+.auth-page.dark-mode .form-card form>label,
+.auth-page.dark-mode .session-copy strong{
+  color:var(--auth-text);
+}
+.auth-page.dark-mode .brand small,
+.auth-page.dark-mode .new-here,
+.auth-page.dark-mode .form-intro p,
+.auth-page.dark-mode .showcase>p,
+.auth-page.dark-mode .showcase-bottom,
+.auth-page.dark-mode .secure-note{
+  color:var(--auth-muted);
+}
+.auth-page.dark-mode .theme-toggle,
+.auth-page.dark-mode .outline-btn{
+  color:#dbe5fb;
+  background:rgba(17,32,57,.9);
+  border-color:var(--auth-line);
+}
+.auth-page.dark-mode .theme-toggle span{
+  background:#1b2d50;
+  color:#bcaeff;
+}
+.auth-page.dark-mode .eyebrow{
+  color:#b8abff;
+  background:rgba(92,73,190,.18);
+  border-color:rgba(145,124,255,.22);
+}
+.auth-page.dark-mode .mini-dashboard{
+  background:linear-gradient(145deg,rgba(17,31,57,.96),rgba(11,24,45,.96));
+  border-color:var(--auth-line);
+  box-shadow:var(--auth-shadow);
+}
+.auth-page.dark-mode .mini-stats article{
+  background:#12233f;
+}
+.auth-page.dark-mode .mini-stats b{color:#edf3ff}
+.auth-page.dark-mode .mini-stats span{color:#9cabc5}
+.auth-page.dark-mode .ai-orb{
+  background:#172746;
+  border-color:rgba(137,116,255,.22);
+}
+.auth-page.dark-mode .ai-orb small{color:#aebbd3}
+.auth-page.dark-mode .avatars i{border-color:#0b1930}
+.auth-page.dark-mode .avatars b{background:#211e4b;color:#c2b9ff}
+.auth-page.dark-mode .art-chip{
+  color:#aebbd3;
+  background:rgba(13,28,51,.9);
+  border-color:rgba(171,190,228,.18);
+}
+.auth-page.dark-mode .art-chip b{color:#39d7ad}
+.auth-page.dark-mode .form-card{
+  background:var(--auth-surface);
+  border-color:var(--auth-line);
+  box-shadow:var(--auth-shadow);
+}
+.auth-page.dark-mode .input-wrap{
+  background:var(--auth-input);
+  border-color:var(--auth-line);
+}
+.auth-page.dark-mode .input-wrap input{color:#edf3ff}
+.auth-page.dark-mode .input-wrap input::placeholder{color:#71819e}
+.auth-page.dark-mode .input-wrap>i,
+.auth-page.dark-mode .input-wrap button{color:#92a2bf}
+.auth-page.dark-mode .form-options .check,
+.auth-page.dark-mode .divider,
+.auth-page.dark-mode .switch-mobile{color:#9baac4}
+.auth-page.dark-mode .check span{
+  background:#0b1930;
+  border-color:var(--auth-line);
+}
+.auth-page.dark-mode .divider span{background:var(--auth-surface)}
+.auth-page.dark-mode .divider:before,
+.auth-page.dark-mode .divider:after{background:rgba(166,186,226,.14)}
+.auth-page.dark-mode .social-buttons button,
+.auth-page.dark-mode .session-secondary{
+  color:#dbe5fb;
+  background:#101f39;
+  border-color:var(--auth-line);
+}
+.auth-page.dark-mode .secure-note i{color:#3fe0b0}
+.auth-page.dark-mode .existing-session{
+  background:#101f39;
+  border-color:var(--auth-line);
+}
+.auth-page.dark-mode .session-copy span{color:#9baac4}
+.auth-page.dark-mode .mobile-brand{color:#9baac4}
+
+/* High-definition but restrained motion: transform/opacity only, avoiding GPU-heavy filters. */
+.auth-page .auth-nav,
+.auth-page .showcase,
+.auth-page .form-zone{
+  animation:authReveal .65s cubic-bezier(.22,1,.36,1) both;
+}
+.auth-page .showcase{animation-delay:.06s}
+.auth-page .form-zone{animation-delay:.12s}
+.auth-page .mini-dashboard{
+  transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease,border-color .35s ease;
+}
+.auth-page .mini-dashboard:hover{
+  transform:translateY(-5px);
+  box-shadow:0 30px 70px rgba(39,58,113,.16);
+}
+.auth-page.dark-mode .mini-dashboard:hover{box-shadow:0 30px 80px rgba(0,0,0,.38)}
+.auth-page .form-card{
+  transition:background .4s ease,border-color .4s ease,box-shadow .4s ease,transform .35s cubic-bezier(.22,1,.36,1);
+}
+.auth-page .form-card:hover{transform:translateY(-2px)}
+.auth-page .theme-toggle,.auth-page .outline-btn,.auth-page .social-buttons button{
+  transition:transform .22s cubic-bezier(.22,1,.36,1),background .3s ease,border-color .3s ease,color .3s ease,box-shadow .3s ease;
+}
+.auth-page .theme-toggle:hover,.auth-page .outline-btn:hover,.auth-page .social-buttons button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(53,72,130,.12);
+}
+.auth-page .input-wrap{transition:border-color .25s ease,box-shadow .25s ease,background .3s ease}
+.auth-page .submit-btn{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease,opacity .25s ease}
+@keyframes authReveal{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .auth-page .auth-nav,.auth-page .showcase,.auth-page .form-zone{animation:none}
+  .auth-page .form-card,.auth-page .mini-dashboard{transition:none}
+}
