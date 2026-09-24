@@ -1,0 +1,16 @@
+<section class="requests-page">
+  <header class="page-head"><div><p class="eyebrow">ACCESS GOVERNANCE</p><h1>Role Requests</h1><p>Review requests for elevated workspace access while keeping one secure user identity.</p></div><button type="button" class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button></header>
+  <div class="notice" *ngIf="notice">{{notice}}</div><div class="error" *ngIf="error">{{error}}</div>
+  <section class="summary"><div><span>Pending requests</span><strong>{{requests.length}}</strong></div><div><span>Teacher access</span><strong>{{teacherCount}}</strong></div><div><span>Organization access</span><strong>{{organizationCount}}</strong></div></section>
+  <div class="loading" *ngIf="loading">Loading access requests…</div>
+  <section class="request-list" *ngIf="!loading">
+    <article class="request-card" *ngFor="let request of requests; trackBy:trackById">
+      <div class="identity"><div class="avatar">{{request.userName.charAt(0).toUpperCase()}}</div><div><strong>{{request.userName}}</strong><small>{{request.userEmail}}</small></div></div>
+      <div class="role"><span>Requested access</span><strong>{{request.requestedRole}}</strong></div>
+      <div class="reason"><span>Reason</span><p>{{request.reason || 'No reason supplied.'}}</p></div>
+      <div class="status"><span>PENDING REVIEW</span></div>
+      <div class="actions"><button type="button" class="reject" (click)="reject(request)" [disabled]="processing===request.id">Reject</button><button type="button" class="approve" (click)="approve(request)" [disabled]="processing===request.id">{{processing===request.id?'Processing…':'Approve'}}</button></div>
+    </article>
+    <div class="empty" *ngIf="!requests.length"><strong>No pending role requests</strong><span>New Teacher and Organization access requests will appear here.</span></div>
+  </section>
+</section>
