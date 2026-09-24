@@ -54,3 +54,6 @@
 @media(max-width:1100px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.primary-grid,.secondary-grid,.bottom-grid{grid-template-columns:1fr}.activity-panel,.revenue-panel{grid-column:auto}}
 @media(max-width:700px){:host{padding:18px 14px 32px}.welcome-hero{padding:24px;min-height:230px}.hero-actions{width:100%;margin-top:10px}.primary-action,.refresh-action{flex:1}.metric-grid{grid-template-columns:1fr}.metric-card{min-height:100px}.panel{padding:17px}.chart-area{height:215px}.quick-actions{grid-template-columns:repeat(2,1fr)}.health-body{align-items:center}.growth-banner{padding:20px}.welcome-hero h2{font-size:26px}}
 @media(prefers-reduced-motion:reduce){.welcome-hero:after{animation:none}.metric-card:hover,.panel:hover,.course:hover,.activity:hover{transform:none}}
+
+.governance-strip{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px;background:linear-gradient(120deg,rgba(139,92,246,.10),rgba(6,182,212,.06));}.governance-strip h3{margin:0;font-size:18px}.governance-strip p:not(.eyebrow){margin:5px 0 0;color:var(--muted);font-size:10px}.governance-strip .primary-action{border:0;cursor:pointer}.governance-strip .primary-action:hover{transform:translateY(-2px)}
+@media (max-width:900px){.governance-strip{align-items:flex-start;flex-direction:column}.governance-strip .primary-action{width:100%}}
