@@ -26,7 +26,7 @@ export class TeacherDashboardComponent {
     { title: 'Create Course', description: 'Start a new learning experience', icon: '＋', route: '/teacher/courses' },
     { title: 'Build Assessment', description: 'Create assessments and knowledge checks', icon: '✓', route: '/teacher/assessments' },
     { title: 'Question Bank', description: 'Organize reusable assessment questions', icon: '▤', route: '/teacher/question-bank' },
-    { title: 'Learner Progress', description: 'Review learner activity and mastery', icon: '◉', route: '' }
+    { title: 'Learner Progress', description: 'Review learner activity and mastery', icon: '◉', route: '/teacher/learners' }
   ];
 
   isLoggingOut = false;
