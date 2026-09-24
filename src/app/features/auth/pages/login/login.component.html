@@ -40,9 +40,19 @@
     <section class="form-zone">
       <div class="form-card">
         <div class="mobile-brand"><span class="cube">✦</span> Master Learning System</div>
-        <div class="form-intro"><span class="step">01 / 02</span><h2>Welcome back<span>.</span></h2><p>Enter your details to continue your learning journey.</p></div>
+        <div class="form-intro"><span class="step">01 / 02</span><h2>Welcome back<span>.</span></h2><p *ngIf="!existingUser">Enter your details to continue your learning journey.</p><p *ngIf="existingUser">You are already signed in. Continue with this account or switch to another account.</p></div>
 
-        <form (ngSubmit)="submit()" #loginForm="ngForm">
+        <section class="existing-session" *ngIf="existingUser">
+          <div class="session-avatar">{{ (existingUser.firstName || existingUser.email || 'U').charAt(0).toUpperCase() }}</div>
+          <div class="session-copy">
+            <strong>{{ existingUser.firstName || 'Current account' }} {{ existingUser.lastName || '' }}</strong>
+            <span>{{ existingUser.email }}</span>
+          </div>
+          <button type="button" class="session-primary" (click)="continueAsCurrentUser()">Continue</button>
+          <button type="button" class="session-secondary" (click)="switchAccount()">Switch account</button>
+        </section>
+
+        <form *ngIf="!existingUser" (ngSubmit)="submit()" #loginForm="ngForm">
           <label>Email address
             <span class="input-wrap"><i>✉</i><input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required email></span>
           </label>
