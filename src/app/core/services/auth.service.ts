@@ -69,6 +69,11 @@ export class AuthService {
     ).pipe(finalize(() => this.tokenService.clearSession()));
   }
 
+  switchAccount(): void {
+    this.tokenService.clearSession();
+    this.sessionReadySubject.next(false);
+  }
+
   hasStoredSession(): boolean {
     return !!this.tokenService.getAccessToken() || !!this.tokenService.getRefreshToken();
   }
