@@ -63,22 +63,26 @@
     </article>
 
     <article class="panel courses-panel">
-      <div class="panel-head compact"><div><p class="eyebrow">TOP COURSES</p><h3>Learning momentum</h3></div><button class="text-btn">View all</button></div>
+      <div class="panel-head compact"><div><p class="eyebrow">LIVE PLATFORM SIGNALS</p><h3>Connected control surfaces</h3></div></div>
       <div class="course-list">
-        <div class="course" *ngFor="let course of courses">
-          <div class="course-icon {{ course.tone }}">{{ course.icon }}</div>
-          <div class="course-main"><strong>{{ course.title }}</strong><small>● {{ course.students }} students</small><div class="course-progress"><i [class]="course.tone" [style.width.%]="course.progress"></i></div></div>
-          <b>{{ course.progress }}%</b>
+        <div class="course" *ngFor="let signal of quickSignals">
+          <div class="course-icon {{ signal.tone }}">{{ signal.icon }}</div>
+          <div class="course-main"><strong>{{ signal.title }}</strong><small>{{ signal.detail }}</small><div class="course-progress"><i class="{{ signal.tone }}" style="width:100%"></i></div></div>
+          <b>LIVE</b>
         </div>
       </div>
     </article>
 
     <article class="panel activity-panel">
-      <div class="panel-head compact"><div><p class="eyebrow">RECENT ACTIVITY</p><h3>Live control feed</h3></div><button class="text-btn">View all</button></div>
+      <div class="panel-head compact"><div><p class="eyebrow">ACCESS GOVERNANCE</p><h3>Pending approvals</h3></div><button class="text-btn" type="button" (click)="navigate('/super-admin/role-requests')">Open queue</button></div>
       <div class="activity-list">
-        <div class="activity" *ngFor="let item of activities">
-          <div class="activity-icon {{ item.tone }}">{{ item.icon }}</div>
-          <div><strong>{{ item.title }}</strong><small>{{ item.detail }} · {{ item.time }}</small></div>
+        <div class="activity">
+          <div class="activity-icon orange">◇</div>
+          <div><strong>{{ pendingRoleRequestCount }} request{{ pendingRoleRequestCount === 1 ? '' : 's' }} awaiting review</strong><small>Teacher, Instructor and Organization Admin access</small></div>
+        </div>
+        <div class="activity">
+          <div class="activity-icon green">✓</div>
+          <div><strong>Backend governance API connected</strong><small>Approval actions are protected by role authorization</small></div>
         </div>
       </div>
     </article>
@@ -100,9 +104,9 @@
     </article>
 
     <article class="panel revenue-panel">
-      <div class="panel-head compact"><div><p class="eyebrow">REVENUE OVERVIEW</p><h3>₹ 12.45 L <small>↑ 22.8%</small></h3></div><button class="period-btn">This month⌄</button></div>
-      <div class="revenue-bars"><span *ngFor="let point of activityTrend; let i = index" [style.height.%]="trendHeight(point.value)" [style.animation-delay.ms]="i * 80"></span></div>
-      <div class="revenue-labels"><small>May</small><small>Jun 03</small><small>Jun 10</small><small>Today</small></div>
+      <div class="panel-head compact"><div><p class="eyebrow">PLATFORM STATUS</p><h3>{{ overview.status }} <small>Live</small></h3></div><button class="period-btn">This month⌄</button></div>
+      <div class="revenue-bars"><span style="height:100%"></span><span style="height:100%"></span><span style="height:100%"></span><span style="height:100%"></span></div>
+      <div class="revenue-labels"><small>API</small><small>Users</small><small>Orgs</small><small>Governance</small></div>
     </article>
   </section>
 
