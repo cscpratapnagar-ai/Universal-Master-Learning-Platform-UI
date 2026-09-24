@@ -36,10 +36,10 @@
       <div class="metric-icon">◇</div><div><span>Total Students</span><strong>{{ overview.totalUsers | number }}</strong><small>{{ overview.usersByRole ? (overview.usersByRole['LEARNER'] || 0) : 0 | number }} learners identified</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card orange">
-      <div class="metric-icon">▣</div><div><span>Learning Modules</span><strong>512</strong><small>↑ 15.7% from last month</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">◇</div><div><span>Pending Role Requests</span><strong>{{ pendingRoleRequestCount | number }}</strong><small>Teacher & organization access awaiting review</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card pink">
-      <div class="metric-icon">₹</div><div><span>Platform Revenue</span><strong>₹ 12.45L</strong><small>↑ 22.8% from last month</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">✓</div><div><span>Platform Status</span><strong>{{ overview.status }}</strong><small>Live backend health signal</small></div><i class="metric-orb"></i>
     </article>
   </section>
 
@@ -131,6 +131,11 @@
   </section>
 
   <p class="intelligence-warning" *ngIf="intelligenceWarning">{{ intelligenceWarning }}</p>
+
+  <section class="panel governance-strip">
+    <div><p class="eyebrow">ACCESS GOVERNANCE</p><h3>{{ pendingRoleRequestCount }} pending role request{{ pendingRoleRequestCount === 1 ? "" : "s" }}</h3><p>Review Teacher, Instructor and Organization Admin access requests.</p></div>
+    <button type="button" class="primary-action" (click)="navigate('/super-admin/role-requests')">Review requests →</button>
+  </section>
 
   <section class="bottom-grid">
     <article class="panel quick-panel">
