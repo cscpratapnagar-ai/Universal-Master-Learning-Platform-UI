@@ -33,7 +33,7 @@
       <div class="loading" *ngIf="loading">Loading course workspace…</div>
       <article class="course" *ngFor="let course of courses">
         <div class="course-head" (click)="toggleCourse(course.id)">
-          <div><span class="status" [class.published]="course.status==='PUBLISHED'">{{course.status}}</span><h3>{{course.title}}</h3><p>{{course.modules.length}} modules · {{course.modules.length ? (course.modules[0].lessons.length) : 0}}+ lessons</p></div>
+          <div><span class="status" [class.published]="course.status==='PUBLISHED'">{{course.status}}</span><h3>{{course.title}}</h3><p>{{course.modules.length}} modules · {{totalLessons(course)}} lessons</p></div>
           <div class="course-actions"><button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED'" (click)="$event.stopPropagation();publish(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button><b>{{expandedCourse===course.id?'−':'+'}}</b></div>
         </div>
 
@@ -41,7 +41,7 @@
           <div class="module" *ngFor="let module of course.modules">
             <button type="button" class="module-head" (click)="toggleModule(module.id)"><span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b></button>
             <div class="lessons" *ngIf="expandedModule===module.id">
-              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div></div>
+              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div><select [ngModel]="lesson.completionMode" (ngModelChange)="setCompletionMode(lesson,$event)" (click)="$event.stopPropagation()"><option value="AUTO_COMPLETE">Auto complete</option><option value="ASSESSMENT_REQUIRED">Assessment required</option></select></div>
               <div class="inline-form">
                 <input [(ngModel)]="lessonTitle" placeholder="Lesson title"/>
                 <select [(ngModel)]="lessonType"><option value="TEXT">Text</option><option value="VIDEO">Video</option><option value="PDF">PDF</option></select>
