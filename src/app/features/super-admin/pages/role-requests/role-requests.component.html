@@ -1,16 +1,54 @@
 <section class="requests-page">
-  <header class="page-head"><div><p class="eyebrow">ACCESS GOVERNANCE</p><h1>Role Requests</h1><p>Review requests for elevated workspace access while keeping one secure user identity.</p></div><button type="button" class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button></header>
-  <div class="notice" *ngIf="notice">{{notice}}</div><div class="error" *ngIf="error">{{error}}</div>
-  <section class="summary"><div><span>Pending requests</span><strong>{{requests.length}}</strong></div><div><span>Teacher access</span><strong>{{teacherCount}}</strong></div><div><span>Organization access</span><strong>{{organizationCount}}</strong></div></section>
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">ACCESS GOVERNANCE</p>
+      <h1>Role Requests</h1>
+      <p>Review elevated access requests and retain a complete governance history.</p>
+    </div>
+    <button type="button" class="refresh" (click)="load()" [disabled]="loading || !!processing">↻ Refresh</button>
+  </header>
+
+  <div class="notice" *ngIf="notice">{{notice}}</div>
+  <div class="error" *ngIf="error">{{error}}</div>
+
+  <section class="summary">
+    <div><span>Pending</span><strong>{{pendingCount}}</strong></div>
+    <div><span>Teacher access</span><strong>{{teacherCount}}</strong></div>
+    <div><span>Organization access</span><strong>{{organizationCount}}</strong></div>
+    <div><span>Approved</span><strong>{{approvedCount}}</strong></div>
+    <div><span>Rejected</span><strong>{{rejectedCount}}</strong></div>
+  </section>
+
+  <nav class="filters" aria-label="Role request status">
+    <button type="button" [class.active]="filter==='PENDING'" (click)="setFilter('PENDING')">Pending</button>
+    <button type="button" [class.active]="filter==='APPROVED'" (click)="setFilter('APPROVED')">Approved</button>
+    <button type="button" [class.active]="filter==='REJECTED'" (click)="setFilter('REJECTED')">Rejected</button>
+    <button type="button" [class.active]="filter==='ALL'" (click)="setFilter('ALL')">All history</button>
+  </nav>
+
   <div class="loading" *ngIf="loading">Loading access requests…</div>
+
   <section class="request-list" *ngIf="!loading">
     <article class="request-card" *ngFor="let request of requests; trackBy:trackById">
-      <div class="identity"><div class="avatar">{{request.userName.charAt(0).toUpperCase()}}</div><div><strong>{{request.userName}}</strong><small>{{request.userEmail}}</small></div></div>
+      <div class="identity">
+        <div class="avatar">{{request.userName.charAt(0).toUpperCase()}}</div>
+        <div><strong>{{request.userName}}</strong><small>{{request.userEmail}}</small></div>
+      </div>
       <div class="role"><span>Requested access</span><strong>{{request.requestedRole}}</strong></div>
       <div class="reason"><span>Reason</span><p>{{request.reason || 'No reason supplied.'}}</p></div>
-      <div class="status"><span>PENDING REVIEW</span></div>
-      <div class="actions"><button type="button" class="reject" (click)="reject(request)" [disabled]="processing===request.id">Reject</button><button type="button" class="approve" (click)="approve(request)" [disabled]="processing===request.id">{{processing===request.id?'Processing…':'Approve'}}</button></div>
+      <div class="status" [class.approved]="request.status==='APPROVED'" [class.rejected]="request.status==='REJECTED'">
+        <span>{{request.status}} {{request.status==='PENDING' ? 'REVIEW' : 'REQUEST'}}</span>
+        <small *ngIf="request.rejectionReason">{{request.rejectionReason}}</small>
+      </div>
+      <div class="actions" *ngIf="request.status==='PENDING'">
+        <button type="button" class="reject" (click)="reject(request)" [disabled]="processing===request.id">Reject</button>
+        <button type="button" class="approve" (click)="approve(request)" [disabled]="processing===request.id">{{processing===request.id?'Processing…':'Approve'}}</button>
+      </div>
+      <div class="actions history-action" *ngIf="request.status!=='PENDING'"><span>Decision recorded</span></div>
     </article>
-    <div class="empty" *ngIf="!requests.length"><strong>No pending role requests</strong><span>New Teacher and Organization access requests will appear here.</span></div>
+    <div class="empty" *ngIf="!requests.length">
+      <strong>No {{filter === 'ALL' ? '' : filter.toLowerCase() + ' '}}role requests</strong>
+      <span>Governance activity for this status will appear here.</span>
+    </div>
   </section>
 </section>
