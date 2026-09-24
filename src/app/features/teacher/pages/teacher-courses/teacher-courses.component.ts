@@ -42,5 +42,13 @@ export class TeacherCoursesComponent implements OnInit {
   }
   toggleCourse(id:string):void{this.expandedCourse=this.expandedCourse===id?'':id;}
   toggleModule(id:string):void{this.expandedModule=this.expandedModule===id?'':id;}
+  totalLessons(course:LearningPathCourse):number{return course.modules.reduce((total,module)=>total+module.lessons.length,0);}
+  setCompletionMode(lesson:any,completionMode:string):void{
+    if(lesson.completionMode===completionMode)return;
+    this.learning.updateLessonCompletionMode(lesson.id,completionMode).subscribe({
+      next:()=>{lesson.completionMode=completionMode;this.notice='Lesson completion requirement updated.';this.error='';},
+      error:e=>{this.error=e?.error?.message||'Unable to update lesson completion requirement.';}
+    });
+  }
   back():void{this.router.navigateByUrl('/teacher');}
 }
