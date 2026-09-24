@@ -144,7 +144,11 @@
             <p>{{course.description || 'No course description configured.'}}</p>
           </div>
         </div>
-        <span class="course-status" [class.published]="course.status==='PUBLISHED'" [class.archived]="course.status==='ARCHIVED'">{{course.status}}</span>
+        <div class="course-actions">
+          <span class="course-status" [class.published]="course.status==='PUBLISHED'" [class.archived]="course.status==='ARCHIVED'">{{course.status}}</span>
+          <button type="button" class="course-action publish" *ngIf="course.status==='DRAFT'" (click)="publishCourse(course)" [disabled]="courseLoading">Publish</button>
+          <button type="button" class="course-action archive" *ngIf="course.status!=='ARCHIVED'" (click)="archiveCourse(course)" [disabled]="courseLoading">Archive</button>
+        </div>
       </article>
       <p class="empty" *ngIf="!courses.length">No courses are assigned to this organization yet.</p>
     </div>
