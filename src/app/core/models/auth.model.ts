@@ -23,6 +23,7 @@ export interface RegisterRequest {
   password: string;
   firstName: string;
   lastName?: string | null;
+  requestedRole?: 'TEACHER' | 'INSTRUCTOR' | 'ORG_ADMIN' | null;
 }
 
 export interface RefreshTokenRequest {
