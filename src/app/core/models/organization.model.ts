@@ -32,6 +32,21 @@ export interface OrganizationProfile extends Organization {
   status: OrganizationStatus;
 }
 
+export interface OrganizationOverview {
+  organizationId: string;
+  organizationName: string;
+  organizationCode: string;
+  status: OrganizationStatus;
+  active: boolean;
+  totalMembers: number;
+  activeMembers: number;
+  inactiveMembers: number;
+  totalCourses: number;
+  publishedCourses: number;
+  draftCourses: number;
+  archivedCourses: number;
+}
+
 export interface CreateOrganizationRequest {
   code: string;
   name: string;
