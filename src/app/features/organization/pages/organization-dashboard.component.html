@@ -1,6 +1,6 @@
 <main class="org-shell"><header><p>ORGANIZATION ADMIN</p><h1>Institute Command Center</h1><span>Manage identity, contact, branding and lifecycle.</span></header><section class="lookup" *ngIf="organizations.length>1">
   <label>Organization workspace</label>
-  <select [ngModel]="form.controls.organizationId.value" (ngModelChange)="selectOrganization($event)">
+  <select [formControl]="form.controls.organizationId" (change)="selectOrganization(form.controls.organizationId.value || '')">
     <option *ngFor="let organization of organizations" [value]="organization.id">{{organization.name}}</option>
   </select>
 </section>
