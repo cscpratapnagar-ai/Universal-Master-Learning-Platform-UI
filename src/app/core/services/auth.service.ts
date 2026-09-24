@@ -114,7 +114,9 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.tokenService.getAccessToken();
+    if (this.tokenService.isAccessTokenValid()) return true;
+    if (this.tokenService.getAccessToken() === null && this.tokenService.getRefreshToken() === null) return false;
+    return false;
   }
 
   currentUser(): User | null {
