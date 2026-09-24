@@ -16,6 +16,8 @@ export class OrganizationService {
   deactivate(id: string): Observable<ApiResponse<void>> { return this.http.delete<ApiResponse<void>>(`${this.url}/${id}`); }
   getOverview(id: string): Observable<ApiResponse<OrganizationOverview>> { return this.http.get<ApiResponse<OrganizationOverview>>(`${this.url}/${id}/overview`); }
   getCourses(id: string): Observable<ApiResponse<OrganizationCourse[]>> { return this.http.get<ApiResponse<OrganizationCourse[]>>(`${this.url}/${id}/courses`); }
+  publishCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/publish`, {}); }
+  archiveCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/archive`, {}); }
   getProfile(id: string): Observable<ApiResponse<OrganizationProfile>> { return this.http.get<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/profile`); }
   updateProfile(id: string, body: OrganizationProfileUpdate): Observable<ApiResponse<OrganizationProfile>> { return this.http.put<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/profile`, body); }
   updateStatus(id: string, status: OrganizationStatus): Observable<ApiResponse<OrganizationProfile>> { return this.http.put<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/status`, { status }); }
