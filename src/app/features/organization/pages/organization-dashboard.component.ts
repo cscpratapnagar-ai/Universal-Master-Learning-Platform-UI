@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Organization, OrganizationProfile, OrganizationStatus, OrganizationMember } from '../../../core/models/organization.model';
+import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember } from '../../../core/models/organization.model';
 import { OrganizationService } from '../../../core/services/organization.service';
 
 @Component({
@@ -10,9 +10,11 @@ import { OrganizationService } from '../../../core/services/organization.service
 })
 export class OrganizationDashboardComponent implements OnInit {
   profile: OrganizationProfile | null = null;
+  overview: OrganizationOverview | null = null;
   organizations: Organization[] = [];
   members: OrganizationMember[] = [];
   loading = false;
+  overviewLoading = false;
   saving = false;
   memberLoading = false;
   memberSaving = false;
@@ -76,7 +78,10 @@ export class OrganizationDashboardComponent implements OnInit {
     if (!id) return;
 
     this.loading = true;
+    this.overviewLoading = true;
     this.memberLoading = true;
+    this.error = '';
+    this.success = '';
 
     this.org.getProfile(id).subscribe({
       next: response => {
@@ -87,6 +92,17 @@ export class OrganizationDashboardComponent implements OnInit {
       error: error => {
         this.error = error?.error?.message || 'Unable to load organization.';
         this.loading = false;
+      }
+    });
+
+    this.org.getOverview(id).subscribe({
+      next: response => {
+        this.overview = response.data || null;
+        this.overviewLoading = false;
+      },
+      error: error => {
+        this.error = error?.error?.message || 'Unable to load organization overview.';
+        this.overviewLoading = false;
       }
     });
 
@@ -124,10 +140,11 @@ export class OrganizationDashboardComponent implements OnInit {
   }
 
   changeStatus(status: OrganizationStatus): void {
-    if (!this.profile) return;
+    if (!this.profile || status === this.profile.status) return;
     this.org.updateStatus(this.profile.id, status).subscribe({
       next: response => {
         this.profile = response.data || this.profile;
+        this.load();
       },
       error: error => {
         this.error = error?.error?.message || 'Unable to update status.';
