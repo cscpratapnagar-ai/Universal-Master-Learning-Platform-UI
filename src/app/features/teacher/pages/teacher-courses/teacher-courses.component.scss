@@ -6,3 +6,20 @@
 .prerequisite-list span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06);font-size:.82rem}
 .prerequisite-list small{opacity:.65}
 .lesson select,.lesson button{margin-left:8px}
+
+.publish-readiness{margin:14px 0;padding:14px 16px;border:1px solid #253149;border-radius:12px;background:#0a111d}
+.publish-readiness>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.publish-readiness>div:first-child span{font-size:10px;letter-spacing:.12em;font-weight:800;color:#e0b866}
+.readiness-grid{display:flex;flex-wrap:wrap;gap:8px}
+.readiness-grid span{font-size:11px;color:#7f8da4;background:#101a29;border-radius:999px;padding:7px 9px}
+.readiness-grid span.ready{color:#83d5ae;background:#10271f}
+.edit-card,.course-edit-row,.module-edit{padding:14px;margin:12px 0;border:1px solid #243149;border-radius:12px;background:#0a111d}
+.tool-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.tool-head button{border:0;background:transparent;color:#8d9ab0;cursor:pointer}
+.edit-card label{display:block;font-size:11px;color:#8190a8;margin:9px 0}
+.edit-card input,.edit-card textarea,.edit-card select,.module-edit input{width:100%;box-sizing:border-box;background:#080d16;border:1px solid #263247;color:#edf2fb;border-radius:9px;padding:10px;margin-top:6px}
+.course-edit-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.course-edit-row span{font-family:monospace;color:#91a0b8}
+.course-edit-row small{color:#718097;flex:1}
+.module-edit{display:grid;grid-template-columns:1fr 100px auto auto;gap:8px}
+@media(max-width:700px){.module-edit{grid-template-columns:1fr}.course-edit-row small{flex-basis:100%}}
