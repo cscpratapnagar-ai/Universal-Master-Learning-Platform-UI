@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   password = '';
   confirmPassword = '';
   acceptedTerms = false;
+  accountType: 'LEARNER' | 'TEACHER' | 'ORG_ADMIN' = 'LEARNER';
   isSubmitting = false;
   errorMessage = '';
 
@@ -75,7 +76,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstName,
       lastName,
       email: this.email.trim().toLowerCase(),
-      password: this.password
+      password: this.password,
+      requestedRole: this.accountType === 'LEARNER' ? null : this.accountType
     }).subscribe({
       next: response => {
         this.isSubmitting = false;
