@@ -41,7 +41,7 @@
           <div class="module" *ngFor="let module of course.modules">
             <button type="button" class="module-head" (click)="toggleModule(module.id)"><span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b></button>
             <div class="lessons" *ngIf="expandedModule===module.id">
-              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div><select [ngModel]="lesson.completionMode" (ngModelChange)="setCompletionMode(lesson,$event)" (click)="$event.stopPropagation()"><option value="AUTO_COMPLETE">Auto complete</option><option value="ASSESSMENT_REQUIRED">Assessment required</option></select></div>
+              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div><select [ngModel]="lesson.completionMode" (ngModelChange)="setCompletionMode(lesson,$event)" (click)="$event.stopPropagation()"><option value="AUTO_COMPLETE">Auto complete</option><option value="ASSESSMENT_REQUIRED">Assessment required</option></select><button type="button" (click)="$event.stopPropagation();beginLessonTools(lesson)">Manage</button></div>
               <div class="inline-form">
                 <input [(ngModel)]="lessonTitle" placeholder="Lesson title"/>
                 <select [(ngModel)]="lessonType"><option value="TEXT">Text</option><option value="VIDEO">Video</option><option value="PDF">PDF</option></select>
@@ -51,6 +51,15 @@
             </div>
           </div>
           <div class="inline-form module-form"><input [(ngModel)]="moduleTitle" placeholder="New module title"/><button type="button" (click)="addModule(course)">＋ Module</button></div>
+          <div class="lesson-tools" *ngIf="selectedLessonId">
+            <div class="tool-head"><strong>Lesson intelligence & assessment</strong><button type="button" (click)="selectedLessonId=''">Close</button></div>
+            <div class="inline-form">
+              <select [(ngModel)]="prerequisiteTargetId"><option value="">Add prerequisite lesson</option><ng-container *ngFor="let m of course.modules"><option *ngFor="let l of m.lessons" [value]="l.id" [disabled]="l.id===selectedLessonId">{{l.title}}</option></ng-container></select>
+              <button type="button" (click)="addPrerequisite({id:selectedLessonId})">＋ Prerequisite</button>
+            </div>
+            <div class="prerequisite-list"><span *ngFor="let p of prerequisiteLessons">{{p.title}} <button type="button" (click)="removePrerequisite({id:selectedLessonId},p)">×</button></span><small *ngIf="!prerequisiteLessons.length">No prerequisites configured.</small></div>
+            <div class="inline-form"><input [(ngModel)]="assessmentTitle" placeholder="Lesson assessment title"/><input type="number" min="1" max="100" [(ngModel)]="assessmentPassingScore"/><button type="button" (click)="createLessonAssessment()">＋ Assessment</button></div>
+          </div>
         </div>
       </article>
       <div class="empty" *ngIf="!loading && !courses.length">No courses yet. Create your first course above.</div>
