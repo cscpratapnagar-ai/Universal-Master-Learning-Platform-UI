@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { LearningService, TeacherAnalytics } from '../../../../core/services/learning.service';
 
 interface Metric {
   label: string;
@@ -15,12 +16,25 @@ interface Metric {
   styleUrls: ['./teacher-dashboard.component.scss']
 })
 export class TeacherDashboardComponent {
-  readonly metrics: Metric[] = [
-    { label: 'My Courses', value: '0', detail: 'Courses you manage', icon: '▣' },
-    { label: 'Active Learners', value: '0', detail: 'Learners enrolled', icon: '◉' },
-    { label: 'Pending Reviews', value: '0', detail: 'Assessments to review', icon: '✓' },
-    { label: 'Completion Rate', value: '—', detail: 'Across your courses', icon: '↗' }
-  ];
+  analytics: TeacherAnalytics = {
+    courseCount: 0,
+    learnerCount: 0,
+    assessmentCount: 0,
+    completionRate: 0,
+    publishedCourseCount: 0,
+    draftCourseCount: 0
+  };
+  loading = true;
+  error = '';
+
+  get metrics(): Metric[] {
+    return [
+      { label: 'My Courses', value: String(this.analytics.courseCount), detail: `${this.analytics.publishedCourseCount} published · ${this.analytics.draftCourseCount} draft`, icon: '▣' },
+      { label: 'Active Learners', value: String(this.analytics.learnerCount), detail: 'Learners enrolled in your courses', icon: '◉' },
+      { label: 'Assessments', value: String(this.analytics.assessmentCount), detail: 'Knowledge checks you manage', icon: '✓' },
+      { label: 'Completion Rate', value: `${this.analytics.completionRate}%`, detail: 'Average learner progress', icon: '↗' }
+    ];
+  }
 
   readonly quickActions = [
     { title: 'Create Course', description: 'Start a new learning experience', icon: '＋', route: '/teacher/courses' },
@@ -33,8 +47,22 @@ export class TeacherDashboardComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly learning: LearningService
   ) {}
+
+  ngOnInit(): void {
+    this.learning.getTeacherAnalytics().subscribe({
+      next: response => {
+        this.analytics = response.data || this.analytics;
+        this.loading = false;
+      },
+      error: response => {
+        this.error = response?.error?.message || 'Unable to load live teaching analytics.';
+        this.loading = false;
+      }
+    });
+  }
 
   open(action: { route: string }): void {
     if (action.route) {
