@@ -8,3 +8,6 @@
 .admin-app .hero>div{position:relative;z-index:3}.admin-app .metrics,.admin-app .dashboard-grid{position:relative;z-index:2}.admin-app .metric-card,.admin-app .panel{box-shadow:0 18px 55px rgba(0,0,0,.18)}
 .admin-app .metric-card:nth-child(1) .metric-icon{color:#20d9ff}.admin-app .metric-card:nth-child(2) .metric-icon{color:#d94dff}.admin-app .metric-card:nth-child(3) .metric-icon{color:#36e0b0}.admin-app .metric-card:nth-child(4) .metric-icon{color:#ffbf55}
 @keyframes adminHeroSpin{to{transform:rotate(360deg)}}
+
+.workspace-back{height:40px;padding:0 12px;border:1px solid rgba(132,92,255,.35);border-radius:11px;background:linear-gradient(135deg,rgba(79,124,255,.14),rgba(217,77,255,.12));color:#cbbdff;font-size:10px;font-weight:800;cursor:pointer;transition:.2s}.workspace-back:hover{transform:translateY(-2px);border-color:#8b5cf6;box-shadow:0 10px 24px rgba(99,102,241,.16)}
+@media(max-width:760px){.workspace-back{padding:0 9px;font-size:9px}.workspace-back{display:inline-flex;align-items:center}}
