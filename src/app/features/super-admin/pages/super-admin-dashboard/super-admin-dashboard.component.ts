@@ -13,13 +13,6 @@ import { ThemeMode, ThemeService } from '../../../../core/services/theme.service
 import { RoleRequest, RoleRequestService } from '../../../../core/services/role-request.service';
 
 interface TrendPoint { label: string; value: number; color: string; }
-interface DashboardCourse {
-  title: string;
-  students: number;
-  progress: number;
-  icon: string;
-  tone: string;
-}
 interface DashboardActivity {
   title: string;
   detail: string;
@@ -52,25 +45,13 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   pendingRoleRequests: RoleRequest[] = [];
   private readonly subscriptions = new Subscription();
 
-  // Temporary presentation signals until the dedicated analytics module is connected.
-  // Core user and organization metrics below are loaded from live backend APIs.
-  readonly courses: DashboardCourse[] = [
-    { title: 'Course analytics', students: 0, progress: 0, icon: '◫', tone: 'violet' },
-    { title: 'Learning catalog', students: 0, progress: 0, icon: '◈', tone: 'cyan' },
-    { title: 'Engagement engine', students: 0, progress: 0, icon: '◎', tone: 'green' }
+  readonly quickSignals = [
+    { title: 'User directory', detail: 'Identity data is live', icon: '◉', tone: 'cyan' },
+    { title: 'Organization tenants', detail: 'Tenant data is live', icon: '▦', tone: 'violet' },
+    { title: 'Access governance', detail: 'Role approvals are live', icon: '◇', tone: 'orange' }
   ];
 
-  readonly activities: DashboardActivity[] = [
-    { title: 'Platform intelligence connected', detail: 'Live user and organization APIs', time: 'Now', icon: '◉', tone: 'cyan' },
-    { title: 'Role-based security active', detail: 'Super Admin command access protected', time: 'Live', icon: '◇', tone: 'violet' },
-    { title: 'Auto refresh enabled', detail: 'Dashboard sync interval: 30 seconds', time: '30s', icon: '↻', tone: 'green' }
-  ];
-
-  readonly quickActions: QuickAction[] = [
-    { label: 'Manage Users', icon: '◉', tone: 'cyan', route: '/super-admin/users' },
-    { label: 'Organizations', icon: '▦', tone: 'violet', route: '/super-admin/organizations' },
-    { label: 'Refresh Intelligence', icon: '↻', tone: 'green', route: '/super-admin/dashboard' }
-  ];
+  readonly activities: DashboardActivity[] = [];
 
   activityTrend: TrendPoint[] = [
     { label: 'May 20', value: 0, color: 'violet' }, { label: 'May 27', value: 0, color: 'blue' },
@@ -188,6 +169,8 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   }
 
   get pendingRoleRequestCount(): number { return this.pendingRoleRequests.length; }
+
+  get liveSignalCount(): number { return this.quickSignals.length; }
 
   get activeOrganizationRate(): number {
     if (!this.overview?.totalOrganizations) return 0;
