@@ -52,8 +52,10 @@ export class TokenService {
   private isUsableJwt(token: string | null): boolean {
     if (!token) return false;
     try {
-      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      return typeof payload?.exp !== 'number' || payload.exp * 1000 > Date.now() + 5000;
+      const payloadPart = token.split('.')[1];
+      if (!payloadPart) return false;
+      const payload = JSON.parse(atob(payloadPart.replace(/-/g, '+').replace(/_/g, '/')));
+      return typeof payload?.exp === 'number' && payload.exp * 1000 > Date.now() + 5000;
     } catch {
       return false;
     }
