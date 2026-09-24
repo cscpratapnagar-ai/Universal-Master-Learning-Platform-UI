@@ -7,6 +7,7 @@
 <ng-container *ngIf="!loading && overview">
   <section class="welcome-hero">
     <div class="hero-glow hero-glow-a"></div><div class="hero-glow hero-glow-b"></div>
+    <div class="hero-network" aria-hidden="true"><span class="network-ring ring-one"></span><span class="network-ring ring-two"></span><span class="network-core"></span><i class="node node-a"></i><i class="node node-b"></i><i class="node node-c"></i><i class="node node-d"></i><i class="node node-e"></i><span class="beam beam-a"></span><span class="beam beam-b"></span><span class="beam beam-c"></span></div>
     <div class="hero-copy">
       <span class="kicker"><i></i> LIVE LEARNING INTELLIGENCE</span>
       <h2>{{ greeting }}, <span>{{ user?.firstName || 'Super Admin' }}</span> 👋</h2>
@@ -49,7 +50,7 @@
         <div><p class="eyebrow">PLATFORM OVERVIEW</p><h3>Growth & engagement</h3><p>Live activity signals across the ecosystem</p></div>
         <button class="period-btn">This month⌄</button>
       </div>
-      <div class="chart-area">
+      <div class="chart-area cinematic-chart"><div class="chart-scan" aria-hidden="true"></div>
         <div class="grid-lines"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div>
         <div class="bars">
           <div class="bar-group" *ngFor="let point of activityTrend; let i = index">
@@ -100,7 +101,7 @@
 
     <article class="panel health-panel">
       <div class="panel-head compact"><div><p class="eyebrow">SYSTEM HEALTH</p><h3>Operational confidence</h3></div><span class="verified">● HEALTHY</span></div>
-      <div class="health-body"><div class="health-ring"><strong>LIVE</strong><small>{{ overview.status }}</small></div><div class="health-checks"><span><i></i>API service <b>{{ overview.status }}</b></span><span><i></i>Live users <b>{{ overview.activeUsers | number }}</b></span><span><i></i>Organizations <b>{{ overview.activeOrganizations | number }} active</b></span><span><i></i>Last sync <b>{{ lastRefresh | date:'shortTime' }}</b></span><span><i></i>Role queue <b>{{ pendingRoleRequestCount }} pending</b></span></div></div>
+      <div class="health-body"><div class="health-ring"><span class="health-orbit orbit-a"></span><span class="health-orbit orbit-b"></span><strong>LIVE</strong><small>{{ overview.status }}</small></div><div class="health-checks"><span><i></i>API service <b>{{ overview.status }}</b></span><span><i></i>Live users <b>{{ overview.activeUsers | number }}</b></span><span><i></i>Organizations <b>{{ overview.activeOrganizations | number }} active</b></span><span><i></i>Last sync <b>{{ lastRefresh | date:'shortTime' }}</b></span><span><i></i>Role queue <b>{{ pendingRoleRequestCount }} pending</b></span></div></div>
     </article>
 
     <article class="panel revenue-panel">
