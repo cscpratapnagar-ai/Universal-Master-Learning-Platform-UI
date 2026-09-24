@@ -33,7 +33,7 @@
       <div class="metric-icon">◎</div><div><span>Total Users</span><strong>{{ overview.totalUsers | number }}</strong><small>+{{ overview.newUsersLast30Days | number }} new in last 30 days</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card green">
-      <div class="metric-icon">◇</div><div><span>Total Students</span><strong>{{ overview.totalUsers | number }}</strong><small>{{ overview.usersByRole ? (overview.usersByRole['LEARNER'] || 0) : 0 | number }} learners identified</small></div><i class="metric-orb"></i>
+      <div class="metric-icon">◇</div><div><span>Total Students</span><strong>{{ overview.usersByRole ? (overview.usersByRole['LEARNER'] || 0) : 0 | number }}</strong><small>Learner identities currently registered</small></div><i class="metric-orb"></i>
     </article>
     <article class="metric-card orange">
       <div class="metric-icon">◇</div><div><span>Pending Role Requests</span><strong>{{ pendingRoleRequestCount | number }}</strong><small>Teacher & organization access awaiting review</small></div><i class="metric-orb"></i>
@@ -100,7 +100,7 @@
 
     <article class="panel health-panel">
       <div class="panel-head compact"><div><p class="eyebrow">SYSTEM HEALTH</p><h3>Operational confidence</h3></div><span class="verified">● HEALTHY</span></div>
-      <div class="health-body"><div class="health-ring"><strong>99%</strong><small>Healthy</small></div><div class="health-checks"><span><i></i>API service <b>{{ overview.status }}</b></span><span><i></i>Live users <b>{{ overview.activeUsers | number }}</b></span><span><i></i>Organizations <b>{{ overview.activeOrganizations | number }} active</b></span><span><i></i>Last sync <b>{{ lastRefresh | date:'shortTime' }}</b></span></div></div>
+      <div class="health-body"><div class="health-ring"><strong>LIVE</strong><small>{{ overview.status }}</small></div><div class="health-checks"><span><i></i>API service <b>{{ overview.status }}</b></span><span><i></i>Live users <b>{{ overview.activeUsers | number }}</b></span><span><i></i>Organizations <b>{{ overview.activeOrganizations | number }} active</b></span><span><i></i>Last sync <b>{{ lastRefresh | date:'shortTime' }}</b></span><span><i></i>Role queue <b>{{ pendingRoleRequestCount }} pending</b></span></div></div>
     </article>
 
     <article class="panel revenue-panel">
