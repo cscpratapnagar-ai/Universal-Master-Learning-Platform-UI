@@ -88,7 +88,7 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.user = this.authService.currentUser();
     this.subscriptions.add(this.themeService.theme$.subscribe(theme => this.theme = theme));
-    if (!this.authService.isAuthenticated() || !this.user?.roles.includes('SUPER_ADMIN')) {
+    if (!this.authService.isAuthenticated() || !this.user?.roles.some(role => role.trim().toUpperCase() === 'SUPER_ADMIN')) {
       this.router.navigateByUrl('/auth/login');
       return;
     }
