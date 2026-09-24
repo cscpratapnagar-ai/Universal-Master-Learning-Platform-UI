@@ -14,6 +14,8 @@
   </header>
 
   <main class="content">
+    <div class="error" *ngIf="error">{{ error }}</div>
+    <div class="loading" *ngIf="loading">Loading your teaching analytics…</div>
     <section class="hero">
       <div>
         <p class="eyebrow">TEACHER OVERVIEW</p>
@@ -60,10 +62,16 @@
       </article>
     </section>
 
-    <section class="panel empty-state">
+    <section class="panel empty-state" *ngIf="!loading && analytics.courseCount === 0">
       <div class="empty-icon">✦</div>
       <div><p class="eyebrow">MY TEACHING SPACE</p><h2>No courses yet</h2><p>Create your first course to start adding modules, lessons, assessments and learners.</p></div>
       <button type="button" class="secondary" (click)="open(quickActions[0])">Create your first course →</button>
+    </section>
+
+    <section class="panel empty-state" *ngIf="!loading && analytics.courseCount > 0">
+      <div class="empty-icon">✓</div>
+      <div><p class="eyebrow">LIVE WORKSPACE</p><h2>Your teaching space is active</h2><p>{{ analytics.publishedCourseCount }} published courses, {{ analytics.learnerCount }} learners and {{ analytics.assessmentCount }} assessments are connected to your workspace.</p></div>
+      <button type="button" class="secondary" (click)="open(quickActions[0])">Open Course Studio →</button>
     </section>
   </main>
 </section>
