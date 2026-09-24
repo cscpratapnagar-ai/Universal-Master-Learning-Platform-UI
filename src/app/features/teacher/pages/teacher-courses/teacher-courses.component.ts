@@ -246,7 +246,12 @@ export class TeacherCoursesComponent implements OnInit {
       title:this.assessmentTitle.trim(),
       passingScore:this.assessmentPassingScore
     }).subscribe({
-      next:()=>{this.notice='Lesson assessment created and completion gate enabled.';this.assessmentTitle='';this.load();},
+      next:()=>{
+        this.learning.updateLessonCompletionMode(this.assessmentLessonId,'ASSESSMENT_REQUIRED').subscribe({
+          next:()=>{this.notice='Lesson assessment created and assessment completion gate enabled.';this.assessmentTitle='';this.load();},
+          error:e=>{this.error=e?.error?.message||'Assessment was created, but the lesson completion gate could not be enabled.';this.assessmentTitle='';this.load();}
+        });
+      },
       error:e=>this.error=e?.error?.message||'Unable to create lesson assessment.'
     });
   }
