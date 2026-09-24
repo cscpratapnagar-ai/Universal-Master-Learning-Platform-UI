@@ -6,6 +6,7 @@ import { ApiResponse } from '../models/api-response.model';
 import {
   CreateOrganizationRequest,
   Organization,
+  OrganizationOverview,
   OrganizationProfile,
   OrganizationProfileUpdate,
   OrganizationStatus,
@@ -37,6 +38,10 @@ export class OrganizationService {
 
   deactivate(id: string): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.url}/${id}`);
+  }
+
+  getOverview(id: string): Observable<ApiResponse<OrganizationOverview>> {
+    return this.http.get<ApiResponse<OrganizationOverview>>(`${this.url}/${id}/overview`);
   }
 
   getProfile(id: string): Observable<ApiResponse<OrganizationProfile>> {
