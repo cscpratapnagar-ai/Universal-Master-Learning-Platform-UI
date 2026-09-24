@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest } from '../models/organization.model';
+import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationProgram, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest } from '../models/organization.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
@@ -16,6 +16,7 @@ export class OrganizationService {
   deactivate(id: string): Observable<ApiResponse<void>> { return this.http.delete<ApiResponse<void>>(`${this.url}/${id}`); }
   getOverview(id: string): Observable<ApiResponse<OrganizationOverview>> { return this.http.get<ApiResponse<OrganizationOverview>>(`${this.url}/${id}/overview`); }
   getCourses(id: string): Observable<ApiResponse<OrganizationCourse[]>> { return this.http.get<ApiResponse<OrganizationCourse[]>>(`${this.url}/${id}/courses`); }
+  getPrograms(id: string): Observable<ApiResponse<OrganizationProgram[]>> { return this.http.get<ApiResponse<OrganizationProgram[]>>(`${API_CONFIG.baseUrl}/programs/organization/${id}`); }
   publishCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/publish`, {}); }
   archiveCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/archive`, {}); }
   getProfile(id: string): Observable<ApiResponse<OrganizationProfile>> { return this.http.get<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/profile`); }
