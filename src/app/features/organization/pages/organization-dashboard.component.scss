@@ -79,3 +79,16 @@
 @media (max-width: 700px) {
   .course-actions { justify-content: flex-start; }
 }
+
+
+.program-list { display:grid; gap:.8rem; }
+.program-row { display:grid; grid-template-columns:42px 1fr auto; gap:1rem; align-items:center; padding:1rem; border:1px solid rgba(255,255,255,.08); border-radius:16px; background:rgba(255,255,255,.025); transition:transform .25s ease,border-color .25s ease,background .25s ease; }
+.program-row:hover { transform:translateX(4px); border-color:rgba(120,160,255,.28); background:rgba(255,255,255,.045); }
+.program-icon { width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,rgba(99,102,241,.35),rgba(168,85,247,.25)); }
+.program-main strong,.program-main small,.program-main p { display:block; }
+.program-main strong { font-size:.95rem; }
+.program-main small { opacity:.55; margin-top:.2rem; }
+.program-main p { margin:.45rem 0 0; opacity:.68; font-size:.82rem; }
+.program-status { padding:.35rem .65rem; border-radius:999px; font-size:.68rem; font-weight:800; background:rgba(255,255,255,.07); }
+.program-status.published { background:rgba(74,222,128,.12); color:#86efac; }
+@media (max-width:700px) { .program-row { grid-template-columns:42px 1fr; } .program-status { grid-column:2; width:max-content; } }
