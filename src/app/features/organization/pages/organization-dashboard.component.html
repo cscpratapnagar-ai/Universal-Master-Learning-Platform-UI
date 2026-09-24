@@ -125,6 +125,31 @@
     </form>
   </section>
 
+  <section class="course-catalog card" *ngIf="profile">
+    <div class="card-heading">
+      <div>
+        <p class="eyebrow">LEARNING CATALOG</p>
+        <h2>Organization Courses</h2>
+      </div>
+      <span class="save-state">{{courses.length}} loaded</span>
+    </div>
+    <p class="loading" *ngIf="courseLoading">Loading course catalog…</p>
+    <div class="course-list" *ngIf="!courseLoading">
+      <article class="course-row" *ngFor="let course of courses">
+        <div class="course-main">
+          <span class="course-icon">{{course.title.charAt(0).toUpperCase()}}</span>
+          <div>
+            <strong>{{course.title}}</strong>
+            <small>{{course.slug || 'No slug configured'}}</small>
+            <p>{{course.description || 'No course description configured.'}}</p>
+          </div>
+        </div>
+        <span class="course-status" [class.published]="course.status==='PUBLISHED'" [class.archived]="course.status==='ARCHIVED'">{{course.status}}</span>
+      </article>
+      <p class="empty" *ngIf="!courses.length">No courses are assigned to this organization yet.</p>
+    </div>
+  </section>
+
   <section *ngIf="profile" class="members-card card">
     <div class="members-head">
       <div>
