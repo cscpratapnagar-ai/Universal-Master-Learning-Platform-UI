@@ -1,0 +1,27 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { API_CONFIG } from '../config/api.config';
+import { ApiResponse } from '../models/api-response.model';
+
+export interface RoleRequest {
+  id: string; userId: string; userName: string; userEmail: string;
+  requestedRole: string; status: 'PENDING'|'APPROVED'|'REJECTED';
+  reason: string; rejectionReason: string;
+}
+
+@Injectable({providedIn:'root'})
+export class RoleRequestService {
+  private readonly base = API_CONFIG.baseUrl;
+  constructor(private readonly http: HttpClient) {}
+  pending(): Observable<ApiResponse<RoleRequest[]>> {
+    return this.http.get<ApiResponse<RoleRequest[]>>(this.base + '/admin/role-requests');
+  }
+  approve(id: string): Observable<ApiResponse<RoleRequest>> {
+    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/approve', {});
+  }
+  reject(id: string, reason?: string): Observable<ApiResponse<RoleRequest>> {
+    const params = reason?.trim() ? { reason: reason.trim() } : {};
+    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/reject', {}, { params });
+  }
+}
