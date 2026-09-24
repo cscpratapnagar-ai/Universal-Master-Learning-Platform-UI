@@ -4,6 +4,7 @@ import { LearningPathCourse, LearningService } from '../../../../core/services/l
 interface DraftOption { text:string; correct:boolean; }
 interface DraftQuestion { questionText:string; questionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'; points:number; difficultyLevel:'EASY'|'MEDIUM'|'HARD'; options:DraftOption[]; }
 interface TeacherAssessment { id:string; title:string; level:string; passingScore:number; maxAttempts:number; }
+interface ExistingQuestion { id:string; questionText:string; questionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'; points:number; difficultyLevel:'EASY'|'MEDIUM'|'HARD'; sourceAssessmentId:string; sourceAssessmentTitle:string; options:{id:string;text:string;correct:boolean}[]; }
 
 @Component({
   selector:'app-teacher-assessments',
@@ -15,19 +16,55 @@ export class TeacherAssessmentsComponent implements OnInit {
   selectedCourseId=''; title=''; passingScore=70;
   draft:DraftQuestion={questionText:'',questionType:'SINGLE_CHOICE',points:1,difficultyLevel:'MEDIUM',options:[{text:'',correct:false},{text:'',correct:false}]};
   questions:DraftQuestion[]=[]; createdAssessmentId=''; busy=false; message=''; error='';
-  assessments:TeacherAssessment[]=[]; editingAssessmentId=''; editAssessmentTitle=''; editPassingScore=70; editMaxAttempts=3;
+  assessments:TeacherAssessment[]=[]; existingQuestions:ExistingQuestion[]=[]; selectedExistingAssessmentId='';
+  editingAssessmentId=''; editAssessmentTitle=''; editPassingScore=70; editMaxAttempts=3;
+  editingQuestionId=''; editQuestionText=''; editQuestionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'='SINGLE_CHOICE'; editQuestionPoints=1; editQuestionDifficulty:'EASY'|'MEDIUM'|'HARD'='MEDIUM'; editQuestionOptions:{id?:string;text:string;correct:boolean}[]=[];
 
   constructor(private readonly learning:LearningService){}
   ngOnInit():void{this.learning.adminLearningCatalog().subscribe({next:r=>this.courses=r.data||[],error:()=>this.error='Unable to load teaching courses.'});}
   onCourseChange():void{
-    this.assessments=[];
+    this.assessments=[];this.existingQuestions=[];this.selectedExistingAssessmentId='';
     this.editingAssessmentId='';
     if(!this.selectedCourseId)return;
     this.learning.getCourseAssessments(this.selectedCourseId).subscribe({
-      next:r=>this.assessments=r.data||[],
+      next:r=>{this.assessments=r.data||[];this.loadExistingQuestions();},
       error:e=>this.error=e?.error?.message||'Unable to load existing assessments.'
     });
   }
+  loadExistingQuestions():void{
+    if(!this.selectedCourseId)return;
+    this.learning.getQuestionBank(this.selectedCourseId).subscribe({
+      next:r=>this.existingQuestions=(r.data||[]) as ExistingQuestion[],
+      error:e=>this.error=e?.error?.message||'Unable to load existing questions.'
+    });
+  }
+  questionsForAssessment(assessmentId:string):ExistingQuestion[]{return this.existingQuestions.filter(q=>q.sourceAssessmentId===assessmentId);}
+  startQuestionEdit(question:ExistingQuestion):void{
+    this.editingQuestionId=question.id;
+    this.selectedExistingAssessmentId=question.sourceAssessmentId;
+    this.editQuestionText=question.questionText;
+    this.editQuestionType=question.questionType;
+    this.editQuestionPoints=question.points;
+    this.editQuestionDifficulty=question.difficultyLevel;
+    this.editQuestionOptions=question.options.map(o=>({id:o.id,text:o.text,correct:o.correct}));
+    this.error='';
+  }
+  cancelQuestionEdit():void{this.editingQuestionId='';}
+  saveQuestionEdit():void{
+    if(!this.editingQuestionId||!this.selectedExistingAssessmentId||!this.editQuestionText.trim()||!this.editQuestionOptions.length)return;
+    if(!this.editQuestionOptions.every(o=>o.text.trim())||!this.editQuestionOptions.some(o=>o.correct)){this.error='Complete every option and mark at least one correct answer.';return;}
+    this.busy=true;this.error='';
+    this.learning.updateAssessmentQuestion(this.selectedExistingAssessmentId,this.editingQuestionId,{
+      questionText:this.editQuestionText.trim(),questionType:this.editQuestionType,points:Number(this.editQuestionPoints),difficultyLevel:this.editQuestionDifficulty,
+      options:this.editQuestionOptions.map(o=>({text:o.text.trim(),correct:o.correct}))
+    }).subscribe({
+      next:()=>{this.busy=false;this.editingQuestionId='';this.message='Question updated.';this.loadExistingQuestions();},
+      error:e=>{this.busy=false;this.error=e?.error?.message||'Question could not be updated.';}
+    });
+  }
+  addEditQuestionOption():void{this.editQuestionOptions.push({text:'',correct:false});}
+  removeEditQuestionOption(index:number):void{if(this.editQuestionOptions.length>2)this.editQuestionOptions.splice(index,1);}
+  onEditQuestionTypeChange():void{if(this.editQuestionType==='TRUE_FALSE')this.editQuestionOptions=[{text:'True',correct:false},{text:'False',correct:false}];}
   startAssessmentEdit(assessment:TeacherAssessment):void{
     this.editingAssessmentId=assessment.id;
     this.editAssessmentTitle=assessment.title;
