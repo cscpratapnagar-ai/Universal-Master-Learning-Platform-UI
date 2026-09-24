@@ -1,0 +1,38 @@
+<section class="learners-shell">
+  <header class="topbar">
+    <button class="back" type="button" (click)="back()">← Teacher Studio</button>
+    <div><strong>Learner Progress</strong><small>MONITOR • SUPPORT • IMPROVE</small></div>
+  </header>
+
+  <main class="content">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">LEARNER ANALYTICS</p>
+        <h1>See where learners are moving forward.</h1>
+        <p>Track course progress across the learners enrolled in courses you manage.</p>
+      </div>
+      <input class="search" [(ngModel)]="search" placeholder="Search learner or course…">
+    </section>
+
+    <div class="error" *ngIf="error">{{ error }}</div>
+    <div class="loading" *ngIf="loading">Loading learner progress…</div>
+
+    <section class="panel" *ngIf="!loading">
+      <div class="summary"><strong>{{ filtered.length }}</strong><span>learner-course records</span></div>
+      <div class="table-wrap" *ngIf="filtered.length">
+        <table>
+          <thead><tr><th>Learner</th><th>Course</th><th>Progress</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let learner of filtered">
+              <td><strong>{{ learner.learnerName || 'Learner' }}</strong><small>{{ learner.learnerEmail }}</small></td>
+              <td>{{ learner.courseTitle }}</td>
+              <td><div class="progress"><span [style.width.%]="learner.progressPercent"></span></div><b>{{ learner.progressPercent }}%</b></td>
+              <td><span class="status" [class.complete]="learner.completed">{{ learner.completed ? 'COMPLETED' : learner.progressPercent > 0 ? 'IN PROGRESS' : 'NOT STARTED' }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="empty" *ngIf="!filtered.length">No learner records match this view yet.</div>
+    </section>
+  </main>
+</section>
