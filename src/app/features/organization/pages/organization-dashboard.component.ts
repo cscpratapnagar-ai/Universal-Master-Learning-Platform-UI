@@ -207,6 +207,40 @@ export class OrganizationDashboardComponent implements OnInit {
     });
   }
 
+  publishCourse(course: OrganizationCourse): void {
+    if (!course || course.status === 'PUBLISHED') return;
+    this.error = '';
+    this.success = '';
+    this.org.publishCourse(course.id).subscribe({
+      next: response => {
+        const updated = response.data || course;
+        this.courses = this.courses.map(item => item.id === course.id ? updated : item);
+        this.success = `Course “${updated.title}” published.`;
+        this.load();
+      },
+      error: error => {
+        this.error = error?.error?.message || 'Unable to publish this course.';
+      }
+    });
+  }
+
+  archiveCourse(course: OrganizationCourse): void {
+    if (!course || course.status === 'ARCHIVED') return;
+    this.error = '';
+    this.success = '';
+    this.org.archiveCourse(course.id).subscribe({
+      next: response => {
+        const updated = response.data || course;
+        this.courses = this.courses.map(item => item.id === course.id ? updated : item);
+        this.success = `Course “${updated.title}” archived.`;
+        this.load();
+      },
+      error: error => {
+        this.error = error?.error?.message || 'Unable to archive this course.';
+      }
+    });
+  }
+
   deactivateMember(member: OrganizationMember): void {
     if (!this.profile) return;
 
