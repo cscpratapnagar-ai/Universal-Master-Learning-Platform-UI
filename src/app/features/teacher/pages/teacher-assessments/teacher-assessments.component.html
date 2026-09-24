@@ -15,7 +15,7 @@
           <strong>{{assessmentItem.title}}</strong>
           <small>{{assessmentItem.level}} · {{assessmentItem.passingScore}}% passing · {{assessmentItem.maxAttempts}} attempts</small>
         </div>
-        <button type="button" class="secondary" (click)="startAssessmentEdit(assessment)">Edit rules</button>
+        <button type="button" class="secondary" (click)="startAssessmentEdit(assessmentItem)">Edit rules</button>
         <ng-container *ngIf="questionsForAssessment(assessmentItem.id) as assessmentQuestions">
           <div class="existing-questions" *ngIf="assessmentQuestions.length">
             <div class="question-mini" *ngFor="let question of assessmentQuestions">
