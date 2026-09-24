@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   errorMessage = '';
 
   private themeSubscription?: Subscription;
+  private navigationStarted = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -57,7 +58,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   toggleConfirmPassword(): void { this.showConfirmPassword = !this.showConfirmPassword; }
 
   submit(): void {
-    if (
+    if (this.navigationStarted || 
       this.isSubmitting ||
       !this.acceptedTerms ||
       !this.fullName.trim() ||
@@ -81,7 +82,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: response => {
         this.isSubmitting = false;
-        this.router.navigateByUrl(this.authService.resolveDashboard(response.data?.user?.roles));
+        if (this.navigationStarted) return;
+        this.navigationStarted = true;
+        void this.router.navigateByUrl(this.authService.resolveDashboard(response.data?.user?.roles));
       },
       error: (error: Error) => {
         this.isSubmitting = false;
