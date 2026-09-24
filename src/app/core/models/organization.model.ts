@@ -47,6 +47,8 @@ export interface OrganizationOverview {
   archivedCourses: number;
 }
 
+export interface OrganizationProgram { id: string; title: string; slug?: string | null; description?: string | null; status: string; organizationId: string; }
+
 export interface OrganizationCourse {
   id: string;
   title: string;
