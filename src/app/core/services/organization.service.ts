@@ -18,6 +18,10 @@ export class OrganizationService {
 
   constructor(private readonly http: HttpClient) {}
 
+  getMine(): Observable<ApiResponse<Organization[]>> {
+    return this.http.get<ApiResponse<Organization[]>>(`${this.url}/me`);
+  }
+
   getAll(): Observable<ApiResponse<Organization[]>> {
     return this.http.get<ApiResponse<Organization[]>>(this.url);
   }
