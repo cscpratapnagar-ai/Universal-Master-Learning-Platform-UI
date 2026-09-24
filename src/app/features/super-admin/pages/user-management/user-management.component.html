@@ -8,6 +8,9 @@
     <div class="head-actions"><button class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button></div>
   </header>
 
+  <div class="error" *ngIf="errorMessage"><strong>Action failed</strong><span>{{ errorMessage }}</span></div>
+  <div class="notice" *ngIf="noticeMessage">{{ noticeMessage }}</div>
+
   <section class="stats">
     <article><span>◎ Total users</span><strong>{{ users.length }}</strong><small>Registered platform identities</small></article>
     <article><span>● Active accounts</span><strong class="green">{{ activeCount }}</strong><small>Can authenticate and access services</small></article>
@@ -33,8 +36,8 @@
             <td><div class="roles"><span *ngFor="let role of user.roles">{{ role }}</span></div></td>
             <td><span class="badge" [class.off]="!user.enabled"><i></i>{{ user.enabled ? 'ACTIVE' : 'DISABLED' }}</span></td>
             <td class="right actions">
-              <button class="edit" (click)="openRoles(user)" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'You cannot modify your own roles' : 'Manage roles'">Roles</button>
-              <button [class]="user.enabled ? 'danger' : 'activate'" (click)="toggleStatus(user)" [disabled]="isCurrentUser(user)" [title]="isCurrentUser(user) ? 'You cannot change your own account status' : ''">{{ user.enabled ? 'Disable' : 'Activate' }}</button>
+              <button class="edit" (click)="openRoles(user)" [disabled]="isCurrentUser(user) || processingUserId===user.id" [title]="isCurrentUser(user) ? 'You cannot modify your own roles' : 'Manage roles'">Roles</button>
+              <button [class]="user.enabled ? 'danger' : 'activate'" (click)="toggleStatus(user)" [disabled]="isCurrentUser(user) || processingUserId===user.id" [title]="isCurrentUser(user) ? 'You cannot change your own account status' : ''">{{ user.enabled ? 'Disable' : 'Activate' }}</button>
             </td>
           </tr>
           <tr *ngIf="!filtered.length"><td colspan="4" class="empty">No users match the current filters.</td></tr>
