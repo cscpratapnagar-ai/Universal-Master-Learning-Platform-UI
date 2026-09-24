@@ -154,6 +154,26 @@
     </div>
   </section>
 
+  <section class="program-workspace card" *ngIf="profile">
+    <div class="card-heading">
+      <div><p class="eyebrow">PROGRAM OPERATIONS</p><h2>Organization Projects & Programs</h2></div>
+      <span class="save-state">{{programs.length}} active workspace records</span>
+    </div>
+    <p class="loading" *ngIf="programLoading">Loading program workspace…</p>
+    <div class="program-list" *ngIf="!programLoading">
+      <article class="program-row" *ngFor="let program of programs">
+        <div class="program-icon">{{program.title.charAt(0).toUpperCase()}}</div>
+        <div class="program-main">
+          <strong>{{program.title}}</strong>
+          <small>{{program.slug}}</small>
+          <p>{{program.description || 'No program description configured.'}}</p>
+        </div>
+        <span class="program-status" [class.published]="program.status==='PUBLISHED'">{{program.status}}</span>
+      </article>
+      <p class="empty" *ngIf="!programs.length">No programs/projects have been created for this organization yet.</p>
+    </div>
+  </section>
+
   <section *ngIf="profile" class="members-card card">
     <div class="members-head">
       <div>
