@@ -16,12 +16,14 @@
           <small>{{assessment.level}} · {{assessment.passingScore}}% passing · {{assessment.maxAttempts}} attempts</small>
         </div>
         <button type="button" class="secondary" (click)="startAssessmentEdit(assessment)">Edit rules</button>
-        <div class="existing-questions" *ngIf="questionsForAssessment(assessment.id).length">
-          <div class="question-mini" *ngFor="let question of questionsForAssessment(assessment.id)">
-            <div><strong>{{question.questionText}}</strong><small>{{question.questionType}} · {{question.points}} point(s) · {{question.difficultyLevel}}</small></div>
-            <button type="button" class="secondary" (click)="startQuestionEdit(question)">Edit question</button>
+        <ng-container *ngIf="questionsForAssessment(assessment.id) as assessmentQuestions">
+          <div class="existing-questions" *ngIf="assessmentQuestions.length">
+            <div class="question-mini" *ngFor="let question of assessmentQuestions">
+              <div><strong>{{question.questionText}}</strong><small>{{question.questionType}} · {{question.points}} point(s) · {{question.difficultyLevel}}</small></div>
+              <button type="button" class="secondary" (click)="startQuestionEdit(question)">Edit question</button>
+            </div>
           </div>
-        </div>
+        </ng-container>
         <div class="question-edit" *ngIf="editingQuestionId && selectedExistingAssessmentId===assessment.id">
           <label>Question<textarea rows="3" [(ngModel)]="editQuestionText"></textarea></label>
           <div class="grid">
