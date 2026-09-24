@@ -15,7 +15,13 @@ export class TokenService {
   }
 
   getAccessToken(): string | null {
-    return this.read(STORAGE_KEYS.accessToken);
+    const token = this.read(STORAGE_KEYS.accessToken);
+    return this.isUsableJwt(token) ? token : null;
+  }
+
+  isAccessTokenValid(): boolean {
+    const token = this.read(STORAGE_KEYS.accessToken);
+    return this.isUsableJwt(token);
   }
 
   getRefreshToken(): string | null {
@@ -41,6 +47,16 @@ export class TokenService {
       localStorage.removeItem(key);
       sessionStorage.removeItem(key);
     });
+  }
+
+  private isUsableJwt(token: string | null): boolean {
+    if (!token) return false;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return typeof payload?.exp !== 'number' || payload.exp * 1000 > Date.now() + 5000;
+    } catch {
+      return false;
+    }
   }
 
   private read(key: string): string | null {
