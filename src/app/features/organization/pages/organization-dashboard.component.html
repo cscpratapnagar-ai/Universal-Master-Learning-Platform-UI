@@ -9,7 +9,7 @@
   <div class="members-head">
     <div><p class="eyebrow">WORKSPACE ACCESS</p><h2>Organization Members</h2><span>Manage people who belong to this organization.</span></div>
     <form class="invite-form" (ngSubmit)="inviteMember()">
-      <input type="email" [(ngModel)]="memberEmail" name="memberEmail" placeholder="member@email.com" required>
+      <input type="email" [value]="memberEmail" (input)="memberEmail = $any($event.target).value" name="memberEmail" placeholder="member@email.com" required>
       <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Adding...':'Add member'}}</button>
     </form>
   </div>
