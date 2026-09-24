@@ -33,3 +33,5 @@
 @media(max-width:900px){
   .auth-page .art-field{display:none;}
 }
+
+.existing-session{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;padding:16px;border:1px solid #e0e5f0;border-radius:14px;background:#fbfcff}.session-avatar{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#5650ec,#e148bd);font-weight:800}.session-copy{display:grid;gap:4px;min-width:0}.session-copy strong{font-size:11px;color:#203568}.session-copy span{font-size:9px;color:#7b89a5;overflow:hidden;text-overflow:ellipsis}.session-primary,.session-secondary{grid-column:1/-1;height:43px;border-radius:9px;font-size:10px;font-weight:800;cursor:pointer}.session-primary{border:0;color:#fff;background:linear-gradient(100deg,#5650ec,#e148bd)}.session-secondary{border:1px solid #dfe5f1;color:#304271;background:#fff}.session-primary:hover,.session-secondary:hover{transform:translateY(-1px)}
