@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
+import { Subscription } from 'rxjs';
 
 interface Metric { label: string; value: string; icon: string; trend: string; }
 interface Activity { title: string; detail: string; time: string; type: string; }
@@ -10,9 +11,10 @@ interface Activity { title: string; detail: string; time: string; type: string; 
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss']
 })
-export class AdminDashboardComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
   sidebarOpen = true;
+  private themeSubscription?: Subscription;
 
   readonly metrics: Metric[] = [
     { label: 'Total Users', value: '1,248', icon: '◉', trend: '+12.5%' },
@@ -32,8 +34,10 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.theme = this.themeService.theme;
-    this.themeService.theme$.subscribe(theme => this.theme = theme);
+    this.themeSubscription = this.themeService.theme$.subscribe(theme => this.theme = theme);
   }
+
+  ngOnDestroy(): void { this.themeSubscription?.unsubscribe(); }
 
   toggleTheme(): void { this.themeService.toggle(); }
   toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
