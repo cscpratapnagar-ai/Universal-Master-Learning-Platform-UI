@@ -1,12 +1,12 @@
 <section class="courses-shell">
   <header class="topbar">
     <button class="back" type="button" (click)="back()">← Teacher Studio</button>
-    <div><strong>Course Studio</strong><small>BUILD • STRUCTURE • PUBLISH</small></div>
+    <div><strong>Course Studio</strong><small>BUILD • EDIT • STRUCTURE • PUBLISH</small></div>
   </header>
 
   <main class="content">
     <section class="hero">
-      <div><p class="eyebrow">TEACHER COURSE MANAGEMENT</p><h1>Turn your curriculum into a learning experience.</h1><p>Create courses, structure modules and lessons, then publish when the experience is ready.</p></div>
+      <div><p class="eyebrow">TEACHER COURSE MANAGEMENT</p><h1>Turn your curriculum into a learning experience.</h1><p>Create, refine, structure and publish courses from one workspace.</p></div>
       <span class="live">INSTRUCTOR WORKSPACE</span>
     </section>
 
@@ -19,29 +19,81 @@
         <label>Title<input [(ngModel)]="title" placeholder="e.g. Advanced Mathematics"/></label>
         <label>Slug<input [(ngModel)]="slug" placeholder="advanced-mathematics"/></label>
         <label>Description<textarea [(ngModel)]="description" rows="4" placeholder="What will learners achieve?"></textarea></label>
-        <button class="primary" type="button" (click)="createCourse()" [disabled]="saving">{{saving?'Creating…':'＋ Create course'}}</button>
+        <button class="primary" type="button" (click)="createCourse()" [disabled]="saving">{{saving?'Saving…':'＋ Create course'}}</button>
       </article>
 
       <article class="panel roadmap">
         <p class="eyebrow">COURSE PIPELINE</p><h2>Build once, improve continuously</h2>
-        <div class="steps"><div><b>01</b><strong>Course</strong><small>Identity & purpose</small></div><i>→</i><div><b>02</b><strong>Modules</strong><small>Learning structure</small></div><i>→</i><div><b>03</b><strong>Lessons</strong><small>Teaching content</small></div><i>→</i><div><b>04</b><strong>Publish</strong><small>Ready for learners</small></div></div>
+        <div class="steps"><div><b>01</b><strong>Course</strong><small>Identity & purpose</small></div><i>→</i><div><b>02</b><strong>Modules</strong><small>Learning structure</small></div><i>→</i><div><b>03</b><strong>Lessons</strong><small>Teaching content</small></div><i>→</i><div><b>04</b><strong>Validate</strong><small>Publish readiness</small></div></div>
       </article>
     </section>
 
     <section class="catalog">
       <div class="section-head"><div><p class="eyebrow">COURSE CATALOG</p><h2>Your teaching workspace</h2></div><span>{{courses.length}} courses</span></div>
       <div class="loading" *ngIf="loading">Loading course workspace…</div>
+
       <article class="course" *ngFor="let course of courses">
         <div class="course-head" (click)="toggleCourse(course.id)">
           <div><span class="status" [class.published]="course.status==='PUBLISHED'">{{course.status}}</span><h3>{{course.title}}</h3><p>{{course.modules.length}} modules · {{totalLessons(course)}} lessons</p></div>
-          <div class="course-actions"><button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED'" (click)="$event.stopPropagation();publish(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button><b>{{expandedCourse===course.id?'−':'+'}}</b></div>
+          <div class="course-actions">
+            <button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED' && course.status!=='ARCHIVED'" (click)="$event.stopPropagation();publish(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button>
+            <button type="button" class="secondary" *ngIf="course.status!=='ARCHIVED'" (click)="$event.stopPropagation();archive(course)">Archive</button>
+            <b>{{expandedCourse===course.id?'−':'+'}}</b>
+          </div>
         </div>
 
         <div class="course-body" *ngIf="expandedCourse===course.id">
+          <div class="edit-card" *ngIf="editingCourseId===course.id">
+            <div class="tool-head"><strong>Edit course details</strong><button type="button" (click)="cancelCourseEdit()">Cancel</button></div>
+            <label>Title<input [(ngModel)]="editCourseTitle"/></label>
+            <label>Slug<input [(ngModel)]="editCourseSlug"/></label>
+            <label>Description<textarea [(ngModel)]="editCourseDescription" rows="3"></textarea></label>
+            <button class="primary" type="button" (click)="saveCourseEdit(course)" [disabled]="saving">{{saving?'Saving…':'Save course'}}</button>
+          </div>
+          <div class="course-edit-row" *ngIf="editingCourseId!==course.id">
+            <span>{{course.slug}}</span><small>{{course.description || 'No course description yet.'}}</small>
+            <button type="button" class="secondary" (click)="startCourseEdit(course)">Edit course</button>
+          </div>
+
           <div class="module" *ngFor="let module of course.modules">
-            <button type="button" class="module-head" (click)="toggleModule(module.id)"><span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b></button>
+            <button type="button" class="module-head" (click)="toggleModule(module.id)">
+              <span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b>
+            </button>
+
+            <div class="module-edit" *ngIf="editingModuleId===module.id">
+              <input [(ngModel)]="editModuleTitle" placeholder="Module title"/>
+              <input type="number" min="0" [(ngModel)]="editModuleSortOrder" placeholder="Order"/>
+              <button type="button" (click)="saveModuleEdit(module)">Save</button>
+              <button type="button" class="secondary" (click)="cancelModuleEdit()">Cancel</button>
+            </div>
+
             <div class="lessons" *ngIf="expandedModule===module.id">
-              <div class="lesson" *ngFor="let lesson of module.lessons"><span>{{lesson.sortOrder+1}}</span><div><strong>{{lesson.title}}</strong><small>{{lesson.completionMode}}</small></div><select [ngModel]="lesson.completionMode" (ngModelChange)="setCompletionMode(lesson,$event)" (click)="$event.stopPropagation()"><option value="AUTO_COMPLETE">Auto complete</option><option value="ASSESSMENT_REQUIRED">Assessment required</option></select><button type="button" (click)="$event.stopPropagation();beginLessonTools(lesson)">Manage</button></div>
+              <div class="lesson" *ngFor="let lesson of module.lessons">
+                <span>{{lesson.sortOrder+1}}</span>
+                <div><strong>{{lesson.title}}</strong><small>{{lesson.contentType}} · {{lesson.completionMode}}</small></div>
+                <select [ngModel]="lesson.completionMode" (ngModelChange)="setCompletionMode(lesson,$event)" (click)="$event.stopPropagation()">
+                  <option value="AUTO_COMPLETE">Auto complete</option>
+                  <option value="ASSESSMENT_REQUIRED">Assessment required</option>
+                </select>
+                <button type="button" (click)="$event.stopPropagation();startLessonEdit(lesson)">Edit</button>
+                <button type="button" (click)="$event.stopPropagation();beginLessonTools(lesson)">Manage</button>
+              </div>
+
+              <div class="edit-card" *ngIf="editingLessonId">
+                <ng-container *ngFor="let lesson of module.lessons">
+                  <ng-container *ngIf="editingLessonId===lesson.id">
+                    <div class="tool-head"><strong>Edit lesson</strong><button type="button" (click)="cancelLessonEdit()">Cancel</button></div>
+                    <label>Title<input [(ngModel)]="editLessonTitle"/></label>
+                    <div class="inline-form">
+                      <select [(ngModel)]="editLessonType"><option value="TEXT">Text</option><option value="VIDEO">Video</option><option value="PDF">PDF</option></select>
+                      <input type="number" min="0" [(ngModel)]="editLessonSortOrder" placeholder="Order"/>
+                    </div>
+                    <label>Content / resource<textarea [(ngModel)]="editLessonContent" rows="5"></textarea></label>
+                    <button class="primary" type="button" (click)="saveLessonEdit(lesson)">Save lesson</button>
+                  </ng-container>
+                </ng-container>
+              </div>
+
               <div class="inline-form">
                 <input [(ngModel)]="lessonTitle" placeholder="Lesson title"/>
                 <select [(ngModel)]="lessonType"><option value="TEXT">Text</option><option value="VIDEO">Video</option><option value="PDF">PDF</option></select>
@@ -50,7 +102,9 @@
               </div>
             </div>
           </div>
+
           <div class="inline-form module-form"><input [(ngModel)]="moduleTitle" placeholder="New module title"/><button type="button" (click)="addModule(course)">＋ Module</button></div>
+
           <div class="lesson-tools" *ngIf="selectedLessonId">
             <div class="tool-head"><strong>Lesson intelligence & assessment</strong><button type="button" (click)="selectedLessonId=''">Close</button></div>
             <div class="inline-form">
@@ -62,6 +116,7 @@
           </div>
         </div>
       </article>
+
       <div class="empty" *ngIf="!loading && !courses.length">No courses yet. Create your first course above.</div>
     </section>
   </main>
