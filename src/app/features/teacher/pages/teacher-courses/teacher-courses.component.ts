@@ -196,6 +196,20 @@ export class TeacherCoursesComponent implements OnInit {
   toggleModule(id:string):void{this.expandedModule=this.expandedModule===id?'':id;}
   totalLessons(course:LearningPathCourse):number{return course.modules.reduce((total,module)=>total+module.lessons.length,0);}
 
+  publishChecks(course:LearningPathCourse):{label:string;ready:boolean}[]{
+    return [
+      {label:'Course title',ready:!!course.title?.trim()},
+      {label:'Description',ready:!!course.description?.trim()},
+      {label:'At least one module',ready:course.modules.length>0},
+      {label:'At least one lesson',ready:this.totalLessons(course)>0},
+      {label:'Lesson content',ready:course.modules.every(module=>module.lessons.every(lesson=>!!lesson.content?.trim()))}
+    ];
+  }
+
+  publishReady(course:LearningPathCourse):boolean{
+    return this.publishChecks(course).every(check=>check.ready);
+  }
+
   beginLessonTools(lesson:any):void{
     this.selectedLessonId=lesson.id;
     this.assessmentLessonId=lesson.id;
