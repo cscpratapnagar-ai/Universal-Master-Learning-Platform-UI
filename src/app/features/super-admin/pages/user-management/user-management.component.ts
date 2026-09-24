@@ -13,13 +13,15 @@ export class UserManagementComponent implements OnInit {
   filtered: ManagedUser[] = [];
   loading = true;
   saving = false;
+  processingUserId = '';
   errorMessage = '';
+  noticeMessage = '';
   search = '';
   statusFilter: 'ALL' | 'ACTIVE' | 'INACTIVE' = 'ALL';
   selected: ManagedUser | null = null;
   showRoles = false;
   editableRoles: string[] = [];
-  readonly availableRoles = ['SUPER_ADMIN', 'ADMIN', 'TEACHER', 'STUDENT'];
+  readonly availableRoles = ['ADMIN', 'TEACHER', 'INSTRUCTOR', 'ORG_ADMIN', 'LEARNER'];
 
   constructor(
     private readonly usersService: UserManagementService,
@@ -31,6 +33,7 @@ export class UserManagementComponent implements OnInit {
   load(): void {
     this.loading = true;
     this.errorMessage = '';
+    this.noticeMessage = '';
     const enabled = this.statusFilter === 'ALL' ? undefined : this.statusFilter === 'ACTIVE';
 
     this.usersService.getAll(this.search, enabled).subscribe({
