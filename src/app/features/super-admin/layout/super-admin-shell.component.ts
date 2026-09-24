@@ -17,6 +17,7 @@ export class SuperAdminShellComponent implements OnInit, OnDestroy {
   readonly sections = [
     { label: 'Overview', route: '/super-admin', icon: '◈' },
     { label: 'Users', route: '/super-admin/users', icon: '◎' },
+    { label: 'Role Requests', route: '/super-admin/role-requests', icon: '◇' },
     { label: 'Organizations', route: '/super-admin/organizations', icon: '▦' },
     { label: 'Learning', route: '/admin', icon: '◇' },
     { label: 'Security', route: '/super-admin/security', icon: '◉' },
