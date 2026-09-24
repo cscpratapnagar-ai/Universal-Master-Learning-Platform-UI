@@ -122,10 +122,12 @@ export class AuthService {
   }
 
   resolveDashboard(roles: string[] | undefined | null): string {
-    const roleSet = new Set(roles ?? []);
+    const roleSet = new Set((roles ?? []).map(role => role.trim().toUpperCase()));
     if (roleSet.has('SUPER_ADMIN')) return '/super-admin';
     if (roleSet.has('ORG_ADMIN')) return '/organization';
+    if (roleSet.has('ADMIN')) return '/admin';
     if (roleSet.has('INSTRUCTOR') || roleSet.has('TEACHER')) return '/teacher';
+    if (roleSet.has('STUDENT') || roleSet.has('LEARNER')) return '/learner';
     return '/learner';
   }
 
