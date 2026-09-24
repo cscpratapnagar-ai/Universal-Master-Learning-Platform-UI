@@ -10,7 +10,7 @@ export interface LearningProgressAnalytics { enrollmentId:string; courseId:strin
 export interface LearningPathStatus { enrollmentId:string; courseId:string; progressPercent:number; completedLessonsCount:number; availableLessonsCount:number; lockedLessonsCount:number; totalLessonsCount:number; isCourseCompleted:boolean; courseCompletedAt?:string|null; nextRecommendedLesson:{lessonId?:string;title?:string;sortOrder?:number;completed?:boolean;locked?:boolean}; lessons:{lessonId:string;title:string;sortOrder:number;completed:boolean;locked:boolean;status:'COMPLETED'|'AVAILABLE'|'LOCKED';pendingPrerequisiteCount:number}[]; }
 export interface LearningPathLesson { id:string; title:string; sortOrder:number; completionMode:string; prerequisiteLessonIds:string[]; }
 export interface LearningPathModule { id:string; title:string; sortOrder:number; lessons:LearningPathLesson[]; }
-export interface LearningPathCourse { id:string; title:string; status:string; modules:LearningPathModule[]; }
+export interface LearningPathCourse { id:string; title:string; slug?:string; description?:string|null; status:string; modules:LearningPathModule[]; }
 export interface TeacherAnalytics { courseCount:number; learnerCount:number; assessmentCount:number; completionRate:number; publishedCourseCount:number; draftCourseCount:number; }
 export interface TeacherLearner { enrollmentId:string; courseId:string; courseTitle:string; learnerId:string; learnerName:string; learnerEmail:string; progressPercent:number; completed:boolean; completedAt?:string|null; }
 
@@ -19,6 +19,9 @@ export interface CourseResponse { id:string; title:string; slug:string; descript
 
 export interface CreateModuleRequest { title:string; sortOrder:number; }
 export interface CreateLessonRequest { title:string; contentType?:string; content?:string; sortOrder:number; }
+export interface UpdateCourseRequest { title:string; slug:string; description?:string; organizationId?:string|null; }
+export interface UpdateModuleRequest { title:string; sortOrder:number; }
+export interface UpdateLessonRequest { title:string; contentType?:string; content?:string; sortOrder:number; }
 
 @Injectable({providedIn:'root'})
 export class LearningService {
@@ -36,7 +39,11 @@ export class LearningService {
   getTeacherLearners():Observable<ApiResponse<TeacherLearner[]>>{return this.http.get<ApiResponse<TeacherLearner[]>>(`${this.base}/teacher/learners`);}
   adminLearningCatalog():Observable<ApiResponse<LearningPathCourse[]>>{return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog`);}
   createCourse(request:CreateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.post<ApiResponse<CourseResponse>>(`${this.base}/courses`,request);}
+  updateCourse(courseId:string,request:UpdateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}`,request);}
   publishCourse(courseId:string):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}/publish`,{});}
+  archiveCourse(courseId:string):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}/archive`,{});}
+  updateModule(moduleId:string,request:UpdateModuleRequest):Observable<ApiResponse<any>>{return this.http.put<ApiResponse<any>>(`${this.base}/courses/modules/${encodeURIComponent(moduleId)}`,request);}
+  updateLesson(lessonId:string,request:UpdateLessonRequest):Observable<ApiResponse<any>>{return this.http.put<ApiResponse<any>>(`${this.base}/courses/lessons/${encodeURIComponent(lessonId)}`,request);}
   createModule(courseId:string,request:CreateModuleRequest):Observable<ApiResponse<{id:string;title:string}>>{return this.http.post<ApiResponse<{id:string;title:string}>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/modules`,request);}
   createLesson(moduleId:string,request:CreateLessonRequest):Observable<ApiResponse<{id:string;title:string}>>{return this.http.post<ApiResponse<{id:string;title:string}>>(`${this.base}/learning/modules/${encodeURIComponent(moduleId)}/lessons`,request);}
   updateLessonCompletionMode(lessonId:string,completionMode:string):Observable<ApiResponse<{id:string;completionMode:string}>>{return this.http.patch<ApiResponse<{id:string;completionMode:string}>>(`${this.base}/learning/lessons/${encodeURIComponent(lessonId)}/completion-mode`,{completionMode});}
