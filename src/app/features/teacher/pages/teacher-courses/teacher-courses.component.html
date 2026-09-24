@@ -55,6 +55,13 @@
             <button type="button" class="secondary" (click)="startCourseEdit(course)">Edit course</button>
           </div>
 
+          <div class="publish-readiness" *ngIf="course.status!=='PUBLISHED' && course.status!=='ARCHIVED'">
+            <div><strong>Publish readiness</strong><span>{{publishReady(course)?'READY':'NEEDS WORK'}}</span></div>
+            <div class="readiness-grid">
+              <span *ngFor="let check of publishChecks(course)" [class.ready]="check.ready">{{check.ready?'✓':'○'}} {{check.label}}</span>
+            </div>
+          </div>
+
           <div class="module" *ngFor="let module of course.modules">
             <button type="button" class="module-head" (click)="toggleModule(module.id)">
               <span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b>
