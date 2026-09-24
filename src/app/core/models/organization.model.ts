@@ -47,3 +47,12 @@ export type OrganizationProfileUpdate = Partial<Omit<
   OrganizationProfile,
   'id' | 'code' | 'name' | 'description' | 'active' | 'status'
 >>;
+
+export interface OrganizationMember {
+  id: string;
+  userId: string;
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  active: boolean;
+}
