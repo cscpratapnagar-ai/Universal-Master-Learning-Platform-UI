@@ -12,6 +12,7 @@ export interface LearningPathLesson { id:string; title:string; sortOrder:number;
 export interface LearningPathModule { id:string; title:string; sortOrder:number; lessons:LearningPathLesson[]; }
 export interface LearningPathCourse { id:string; title:string; status:string; modules:LearningPathModule[]; }
 export interface TeacherAnalytics { courseCount:number; learnerCount:number; assessmentCount:number; completionRate:number; publishedCourseCount:number; draftCourseCount:number; }
+export interface TeacherLearner { enrollmentId:string; courseId:string; courseTitle:string; learnerId:string; learnerName:string; learnerEmail:string; progressPercent:number; completed:boolean; completedAt?:string|null; }
 
 export interface CreateCourseRequest { title:string; slug:string; description?:string; organizationId?:string|null; }
 export interface CourseResponse { id:string; title:string; slug:string; description?:string|null; status:string; organizationId?:string|null; }
@@ -32,6 +33,7 @@ export class LearningService {
   respondToAiTutor(enrollmentId:string,question:string):Observable<ApiResponse<AiTutorResponse>>{return this.http.post<ApiResponse<AiTutorResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-tutor/respond`,{question} satisfies AiTutorRequest);}
   completeLesson(enrollmentId:string,lessonId:string):Observable<unknown>{return this.http.post(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`,{});}
   getTeacherAnalytics():Observable<ApiResponse<TeacherAnalytics>>{return this.http.get<ApiResponse<TeacherAnalytics>>(`${this.base}/teacher/analytics`);}
+  getTeacherLearners():Observable<ApiResponse<TeacherLearner[]>>{return this.http.get<ApiResponse<TeacherLearner[]>>(`${this.base}/teacher/learners`);}
   adminLearningCatalog():Observable<ApiResponse<LearningPathCourse[]>>{return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog`);}
   createCourse(request:CreateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.post<ApiResponse<CourseResponse>>(`${this.base}/courses`,request);}
   publishCourse(courseId:string):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}/publish`,{});}
