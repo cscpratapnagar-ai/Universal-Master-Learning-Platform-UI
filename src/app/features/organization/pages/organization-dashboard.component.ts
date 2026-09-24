@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember, OrganizationCourse } from '../../../core/models/organization.model';
+import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember, OrganizationCourse, OrganizationProgram } from '../../../core/models/organization.model';
 import { OrganizationService } from '../../../core/services/organization.service';
 
 @Component({
@@ -14,6 +14,8 @@ export class OrganizationDashboardComponent implements OnInit {
   organizations: Organization[] = [];
   members: OrganizationMember[] = [];
   courses: OrganizationCourse[] = [];
+  programs: OrganizationProgram[] = [];
+  programLoading = false;
   courseLoading = false;
   loading = false;
   overviewLoading = false;
@@ -89,6 +91,7 @@ export class OrganizationDashboardComponent implements OnInit {
     this.overviewLoading = true;
     this.memberLoading = true;
     this.courseLoading = true;
+    this.programLoading = true;
     this.error = '';
     this.success = '';
 
@@ -127,6 +130,11 @@ export class OrganizationDashboardComponent implements OnInit {
         this.error = error?.error?.message || 'Unable to load organization courses.';
         this.courseLoading = false;
       }
+    });
+
+    this.org.getPrograms(id).subscribe({
+      next: response => { this.programs = response.data || []; this.programLoading = false; this.lastRefreshedAt = new Date(); },
+      error: error => { this.error = error?.error?.message || 'Unable to load organization programs.'; this.programLoading = false; }
     });
 
     this.org.getMembers(id).subscribe({
