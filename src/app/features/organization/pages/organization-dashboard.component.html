@@ -4,4 +4,21 @@
     <option *ngFor="let organization of organizations" [value]="organization.id">{{organization.name}}</option>
   </select>
 </section>
-<p class="loading" *ngIf="loading">Loading your organization workspace…</p><p class="error" *ngIf="error">{{error}}</p><p class="success" *ngIf="success">{{success}}</p><section *ngIf="profile" class="grid"><aside class="card"><span class="badge">{{profile.status}}</span><h2>{{profile.displayName||profile.name}}</h2><p>{{profile.code}}</p><div *ngFor="let s of statuses"><button (click)="changeStatus(s)" [disabled]="s===profile.status">{{s}}</button></div></aside><form class="card" [formGroup]="form" (ngSubmit)="save()"><h2>Organization Profile</h2><div class="fields"><label>Slug<input formControlName="slug"></label><label>Legal Name<input formControlName="legalName"></label><label>Display Name<input formControlName="displayName"></label><label>Type<input formControlName="organizationType"></label><label>Email<input formControlName="primaryEmail"></label><label>Phone<input formControlName="primaryPhone"></label><label>Website<input formControlName="website"></label><label>Country<input formControlName="country"></label><label>State<input formControlName="state"></label><label>City<input formControlName="city"></label><label>Logo URL<input formControlName="logoUrl"></label><label>Primary Color<input formControlName="primaryColor"></label></div><button class="save" [disabled]="saving">{{saving?'Saving...':'Save Profile'}}</button></form></section></main>
+<p class="loading" *ngIf="loading">Loading your organization workspace…</p><p class="error" *ngIf="error">{{error}}</p><p class="success" *ngIf="success">{{success}}</p><section *ngIf="profile" class="grid"><aside class="card"><span class="badge">{{profile.status}}</span><h2>{{profile.displayName||profile.name}}</h2><p>{{profile.code}}</p><div *ngFor="let s of statuses"><button (click)="changeStatus(s)" [disabled]="s===profile.status">{{s}}</button></div></aside><form class="card" [formGroup]="form" (ngSubmit)="save()"><h2>Organization Profile</h2><div class="fields"><label>Slug<input formControlName="slug"></label><label>Legal Name<input formControlName="legalName"></label><label>Display Name<input formControlName="displayName"></label><label>Type<input formControlName="organizationType"></label><label>Email<input formControlName="primaryEmail"></label><label>Phone<input formControlName="primaryPhone"></label><label>Website<input formControlName="website"></label><label>Country<input formControlName="country"></label><label>State<input formControlName="state"></label><label>City<input formControlName="city"></label><label>Logo URL<input formControlName="logoUrl"></label><label>Primary Color<input formControlName="primaryColor"></label></div><button class="save" [disabled]="saving">{{saving?'Saving...':'Save Profile'}}</button></form></section>
+<section *ngIf="profile" class="members-card card">
+  <div class="members-head">
+    <div><p class="eyebrow">WORKSPACE ACCESS</p><h2>Organization Members</h2><span>Manage people who belong to this organization.</span></div>
+    <form class="invite-form" (ngSubmit)="inviteMember()">
+      <input type="email" [(ngModel)]="memberEmail" name="memberEmail" placeholder="member@email.com" required>
+      <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Adding...':'Add member'}}</button>
+    </form>
+  </div>
+  <p class="loading" *ngIf="memberLoading">Loading members…</p>
+  <div class="member-list" *ngIf="!memberLoading">
+    <article class="member-row" *ngFor="let member of members">
+      <div><strong>{{(member.firstName||'') + ' ' + (member.lastName||'')}}</strong><small>{{member.email}}</small></div>
+      <div><span class="member-status">{{member.active?'ACTIVE':'INACTIVE'}}</span><button type="button" *ngIf="member.active" (click)="deactivateMember(member)">Deactivate</button></div>
+    </article>
+    <p class="empty" *ngIf="!members.length">No members have been added yet.</p>
+  </div>
+</section></main>
