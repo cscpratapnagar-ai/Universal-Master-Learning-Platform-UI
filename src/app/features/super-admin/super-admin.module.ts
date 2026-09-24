@@ -9,13 +9,15 @@ import { SuperAdminShellComponent } from './layout/super-admin-shell.component';
 import { SuperAdminDashboardComponent } from './pages/super-admin-dashboard/super-admin-dashboard.component';
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { RoleRequestsComponent } from './pages/role-requests/role-requests.component';
 
 @NgModule({
   declarations: [
     SuperAdminShellComponent,
     SuperAdminDashboardComponent,
     OrganizationManagementComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    RoleRequestsComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, SharedModule, SuperAdminRoutingModule]
 })
