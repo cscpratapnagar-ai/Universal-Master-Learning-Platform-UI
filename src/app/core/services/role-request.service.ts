@@ -14,8 +14,12 @@ export interface RoleRequest {
 export class RoleRequestService {
   private readonly base = API_CONFIG.baseUrl;
   constructor(private readonly http: HttpClient) {}
+  list(status: 'PENDING'|'APPROVED'|'REJECTED'|'ALL' = 'PENDING'): Observable<ApiResponse<RoleRequest[]>> {
+    return this.http.get<ApiResponse<RoleRequest[]>>(this.base + '/admin/role-requests', { params: { status } });
+  }
+
   pending(): Observable<ApiResponse<RoleRequest[]>> {
-    return this.http.get<ApiResponse<RoleRequest[]>>(this.base + '/admin/role-requests');
+    return this.list('PENDING');
   }
   approve(id: string): Observable<ApiResponse<RoleRequest>> {
     return this.http.post<ApiResponse<RoleRequest>>(
