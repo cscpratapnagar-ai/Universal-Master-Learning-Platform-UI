@@ -7,6 +7,7 @@ import { SuperAdminShellComponent } from './layout/super-admin-shell.component';
 import { SuperAdminDashboardComponent } from './pages/super-admin-dashboard/super-admin-dashboard.component';
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { RoleRequestsComponent } from './pages/role-requests/role-requests.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
     children: [
       { path: '', component: SuperAdminDashboardComponent },
       { path: 'users', component: UserManagementComponent },
+      { path: 'role-requests', component: RoleRequestsComponent },
       { path: 'organizations', component: OrganizationManagementComponent },
       { path: 'learning', redirectTo: '/admin', pathMatch: 'full' }
     ]
