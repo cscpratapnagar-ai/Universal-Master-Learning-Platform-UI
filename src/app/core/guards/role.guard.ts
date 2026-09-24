@@ -15,14 +15,15 @@ export class RoleGuard implements CanActivate {
       return this.router.createUrlTree(['/auth/login']);
     }
 
-    const allowedRoles = route.data['roles'] as string[] | undefined;
+    const allowedRoles = (route.data['roles'] as string[] | undefined)?.map(role => role.trim().toUpperCase());
     const user = this.authService.currentUser();
 
     if (!allowedRoles?.length) {
       return true;
     }
 
-    const hasRole = user?.roles?.some(role => allowedRoles.includes(role));
+    const userRoles = (user?.roles ?? []).map(role => role.trim().toUpperCase());
+    const hasRole = userRoles.some(role => allowedRoles.includes(role));
 
     if (hasRole) {
       return true;
