@@ -16,23 +16,23 @@
           <small>{{assessment.level}} · {{assessment.passingScore}}% passing · {{assessment.maxAttempts}} attempts</small>
         </div>
         <button type="button" class="secondary" (click)="startAssessmentEdit(assessment)">Edit rules</button>
+        <div class="existing-questions" *ngIf="questionsForAssessment(assessment.id).length">
+          <div class="question-mini" *ngFor="let question of questionsForAssessment(assessment.id)">
+            <div><strong>{{question.questionText}}</strong><small>{{question.questionType}} · {{question.points}} point(s) · {{question.difficultyLevel}}</small></div>
+            <button type="button" class="secondary" (click)="startQuestionEdit(question)">Edit question</button>
+          </div>
+        </div>
+        <div class="question-edit" *ngIf="editingQuestionId && selectedExistingAssessmentId===assessment.id">
+          <label>Question<textarea rows="3" [(ngModel)]="editQuestionText"></textarea></label>
+          <div class="grid">
+            <label>Type<select [(ngModel)]="editQuestionType" (ngModelChange)="onEditQuestionTypeChange()"><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label>
+            <label>Points<input type="number" min="1" max="100" [(ngModel)]="editQuestionPoints"></label>
+            <label>Difficulty<select [(ngModel)]="editQuestionDifficulty"><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label>
+          </div>
+          <div class="options"><div class="option-row" *ngFor="let option of editQuestionOptions; let i=index"><input type="checkbox" [(ngModel)]="option.correct"><input type="text" [(ngModel)]="option.text" [disabled]="editQuestionType === 'TRUE_FALSE'"><button type="button" class="icon" *ngIf="editQuestionType !== 'TRUE_FALSE'" (click)="removeEditQuestionOption(i)">×</button></div></div>
+          <div class="editor-actions"><button type="button" class="secondary" *ngIf="editQuestionType !== 'TRUE_FALSE'" (click)="addEditQuestionOption()">＋ Add option</button><button type="button" class="secondary" (click)="cancelQuestionEdit()">Cancel</button><button type="button" class="primary" [disabled]="busy" (click)="saveQuestionEdit()">{{busy?'Saving…':'Save question'}}</button></div>
+        </div>
       </article>
-      <div class="existing-questions" *ngIf="questionsForAssessment(assessment.id).length">
-        <div class="question-mini" *ngFor="let question of questionsForAssessment(assessment.id)">
-          <div><strong>{{question.questionText}}</strong><small>{{question.questionType}} · {{question.points}} point(s) · {{question.difficultyLevel}}</small></div>
-          <button type="button" class="secondary" (click)="startQuestionEdit(question)">Edit question</button>
-        </div>
-      </div>
-      <div class="question-edit" *ngIf="editingQuestionId && selectedExistingAssessmentId===assessment.id">
-        <label>Question<textarea rows="3" [(ngModel)]="editQuestionText"></textarea></label>
-        <div class="grid">
-          <label>Type<select [(ngModel)]="editQuestionType" (ngModelChange)="onEditQuestionTypeChange()"><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label>
-          <label>Points<input type="number" min="1" max="100" [(ngModel)]="editQuestionPoints"></label>
-          <label>Difficulty<select [(ngModel)]="editQuestionDifficulty"><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label>
-        </div>
-        <div class="options"><div class="option-row" *ngFor="let option of editQuestionOptions; let i=index"><input type="checkbox" [(ngModel)]="option.correct"><input type="text" [(ngModel)]="option.text" [disabled]="editQuestionType === 'TRUE_FALSE'"><button type="button" class="icon" *ngIf="editQuestionType !== 'TRUE_FALSE'" (click)="removeEditQuestionOption(i)">×</button></div></div>
-        <div class="editor-actions"><button type="button" class="secondary" *ngIf="editQuestionType !== 'TRUE_FALSE'" (click)="addEditQuestionOption()">＋ Add option</button><button type="button" class="secondary" (click)="cancelQuestionEdit()">Cancel</button><button type="button" class="primary" [disabled]="busy" (click)="saveQuestionEdit()">{{busy?'Saving…':'Save question'}}</button></div>
-      </div>
     </div>
     <div class="empty" *ngIf="!assessments.length">No existing assessments for this course yet.</div>
     <div class="edit-assessment" *ngIf="editingAssessmentId">
