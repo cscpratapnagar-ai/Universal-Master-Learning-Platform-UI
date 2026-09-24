@@ -23,3 +23,12 @@
 .course-edit-row small{color:#718097;flex:1}
 .module-edit{display:grid;grid-template-columns:1fr 100px auto auto;gap:8px}
 @media(max-width:700px){.module-edit{grid-template-columns:1fr}.course-edit-row small{flex-basis:100%}}
+
+
+.module-head{display:flex;align-items:center;gap:10px}
+.module-toggle{flex:1;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;text-align:left}
+.module-edit-button{white-space:nowrap}
+@media(max-width:700px){
+  .module-head{align-items:stretch;flex-direction:column}
+  .module-edit-button{width:100%}
+}
