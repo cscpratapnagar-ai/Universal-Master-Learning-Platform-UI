@@ -62,7 +62,8 @@ export class AssessmentResultComponent {
       queryParams: {
         assessmentId: this.assessmentId,
         mode: this.adaptiveMode ? 'adaptive' : undefined,
-        enrollmentId: this.enrollmentId || undefined
+        enrollmentId: this.enrollmentId || undefined,
+        lessonId: this.lessonId || undefined
       }
     });
   }
