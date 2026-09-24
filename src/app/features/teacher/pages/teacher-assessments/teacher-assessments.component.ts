@@ -3,6 +3,7 @@ import { LearningPathCourse, LearningService } from '../../../../core/services/l
 
 interface DraftOption { text:string; correct:boolean; }
 interface DraftQuestion { questionText:string; questionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'; points:number; difficultyLevel:'EASY'|'MEDIUM'|'HARD'; options:DraftOption[]; }
+interface TeacherAssessment { id:string; title:string; level:string; passingScore:number; maxAttempts:number; }
 
 @Component({
   selector:'app-teacher-assessments',
@@ -14,9 +15,47 @@ export class TeacherAssessmentsComponent implements OnInit {
   selectedCourseId=''; title=''; passingScore=70;
   draft:DraftQuestion={questionText:'',questionType:'SINGLE_CHOICE',points:1,difficultyLevel:'MEDIUM',options:[{text:'',correct:false},{text:'',correct:false}]};
   questions:DraftQuestion[]=[]; createdAssessmentId=''; busy=false; message=''; error='';
+  assessments:TeacherAssessment[]=[]; editingAssessmentId=''; editAssessmentTitle=''; editPassingScore=70; editMaxAttempts=3;
 
   constructor(private readonly learning:LearningService){}
   ngOnInit():void{this.learning.adminLearningCatalog().subscribe({next:r=>this.courses=r.data||[],error:()=>this.error='Unable to load teaching courses.'});}
+  onCourseChange():void{
+    this.assessments=[];
+    this.editingAssessmentId='';
+    if(!this.selectedCourseId)return;
+    this.learning.getCourseAssessments(this.selectedCourseId).subscribe({
+      next:r=>this.assessments=r.data||[],
+      error:e=>this.error=e?.error?.message||'Unable to load existing assessments.'
+    });
+  }
+  startAssessmentEdit(assessment:TeacherAssessment):void{
+    this.editingAssessmentId=assessment.id;
+    this.editAssessmentTitle=assessment.title;
+    this.editPassingScore=assessment.passingScore;
+    this.editMaxAttempts=assessment.maxAttempts;
+    this.error='';
+  }
+  cancelAssessmentEdit():void{this.editingAssessmentId='';}
+  saveAssessmentEdit():void{
+    if(!this.editingAssessmentId||!this.editAssessmentTitle.trim())return;
+    this.busy=true;this.error='';
+    this.learning.updateAssessment(this.editingAssessmentId,{
+      title:this.editAssessmentTitle.trim(),
+      passingScore:Number(this.editPassingScore),
+      maxAttempts:Number(this.editMaxAttempts)
+    }).subscribe({
+      next:r=>{
+        this.busy=false;
+        const updated=r.data;
+        const index=this.assessments.findIndex(a=>a.id===updated.id);
+        if(index>=0)this.assessments[index]=updated;
+        this.assessments=[...this.assessments];
+        this.editingAssessmentId='';
+        this.message='Assessment rules updated.';
+      },
+      error:e=>{this.busy=false;this.error=e?.error?.message||'Assessment could not be updated.';}
+    });
+  }
   addOption():void{this.draft.options.push({text:'',correct:false});}
   removeOption(index:number):void{if(this.draft.options.length>2)this.draft.options.splice(index,1);}
   toggleType():void{
@@ -37,7 +76,7 @@ export class TeacherAssessmentsComponent implements OnInit {
     if(!this.questions.length){this.error='Add at least one question before publishing.';return;}
     this.busy=true;
     this.learning.createAssessment(this.selectedCourseId,{title:this.title.trim(),passingScore:this.passingScore}).subscribe({
-      next:r=>{this.createdAssessmentId=r.data?.id||'';this.createQuestionsSequentially(0);},
+      next:r=>{this.createdAssessmentId=r.data?.id||'';this.createQuestionsSequentially(0);this.onCourseChange();},
       error:e=>{this.busy=false;this.error=e?.error?.message||'Assessment creation failed.';}
     });
   }
