@@ -8,6 +8,7 @@ export class TeacherCoursesComponent implements OnInit {
   error=''; notice='';
   title=''; slug=''; description='';
   expandedCourse=''; expandedModule=''; moduleTitle=''; lessonTitle=''; lessonContent=''; lessonType='TEXT';
+  selectedLessonId=''; prerequisiteTargetId=''; prerequisiteLessons:any[]=[]; assessmentTitle=''; assessmentPassingScore=70; assessmentLessonId='';
   constructor(private readonly learning:LearningService,private readonly router:Router){}
   ngOnInit():void{this.load();}
   load():void{this.loading=true;this.learning.adminLearningCatalog().subscribe({next:r=>{this.courses=r.data||[];this.loading=false;},error:()=>{this.error='Unable to load the course workspace.';this.loading=false;}});}
@@ -43,6 +44,11 @@ export class TeacherCoursesComponent implements OnInit {
   toggleCourse(id:string):void{this.expandedCourse=this.expandedCourse===id?'':id;}
   toggleModule(id:string):void{this.expandedModule=this.expandedModule===id?'':id;}
   totalLessons(course:LearningPathCourse):number{return course.modules.reduce((total,module)=>total+module.lessons.length,0);}
+  beginLessonTools(lesson:any):void{this.selectedLessonId=lesson.id;this.assessmentLessonId=lesson.id;this.assessmentTitle='';this.prerequisiteTargetId='';this.loadPrerequisites(lesson);}
+  loadPrerequisites(lesson:any):void{this.learning.getPrerequisites(lesson.id).subscribe({next:r=>this.prerequisiteLessons=r.data||[],error:()=>this.prerequisiteLessons=[]});}
+  addPrerequisite(lesson:any):void{if(!this.prerequisiteTargetId||this.prerequisiteTargetId===lesson.id)return;this.learning.addPrerequisite(lesson.id,this.prerequisiteTargetId).subscribe({next:()=>{this.notice='Prerequisite added.';this.loadPrerequisites(lesson);},error:e=>this.error=e?.error?.message||'Unable to add prerequisite.'});}
+  removePrerequisite(lesson:any,prerequisite:any):void{this.learning.removePrerequisite(lesson.id,prerequisite.id).subscribe({next:()=>{this.notice='Prerequisite removed.';this.loadPrerequisites(lesson);},error:e=>this.error=e?.error?.message||'Unable to remove prerequisite.'});}
+  createLessonAssessment():void{if(!this.assessmentLessonId||!this.assessmentTitle.trim())return;this.learning.createLessonAssessment(this.assessmentLessonId,{title:this.assessmentTitle.trim(),passingScore:this.assessmentPassingScore}).subscribe({next:()=>{this.notice='Lesson assessment created and completion gate enabled.';this.assessmentTitle='';this.load();},error:e=>this.error=e?.error?.message||'Unable to create lesson assessment.'});}
   setCompletionMode(lesson:any,completionMode:string):void{
     if(lesson.completionMode===completionMode)return;
     this.learning.updateLessonCompletionMode(lesson.id,completionMode).subscribe({
