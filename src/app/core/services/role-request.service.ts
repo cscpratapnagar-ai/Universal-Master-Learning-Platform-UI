@@ -21,7 +21,7 @@ export class RoleRequestService {
     return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/approve', {});
   }
   reject(id: string, reason?: string): Observable<ApiResponse<RoleRequest>> {
-    const params = reason?.trim() ? { reason: reason.trim() } : {};
-    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/reject', {}, { params });
+    const params = reason?.trim() ? { reason: reason.trim() } : undefined;
+    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/reject', {}, params ? { params } : {});
   }
 }
