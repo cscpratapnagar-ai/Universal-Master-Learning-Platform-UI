@@ -63,9 +63,12 @@
           </div>
 
           <div class="module" *ngFor="let module of course.modules">
-            <button type="button" class="module-head" (click)="toggleModule(module.id)">
-              <span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b>
-            </button>
+            <div class="module-head">
+              <button type="button" class="module-toggle" (click)="toggleModule(module.id)">
+                <span>Module {{module.sortOrder+1}}</span><strong>{{module.title}}</strong><b>{{module.lessons.length}} lessons</b>
+              </button>
+              <button type="button" class="secondary module-edit-button" (click)="startModuleEdit(module)">Edit module</button>
+            </div>
 
             <div class="module-edit" *ngIf="editingModuleId===module.id">
               <input [(ngModel)]="editModuleTitle" placeholder="Module title"/>
