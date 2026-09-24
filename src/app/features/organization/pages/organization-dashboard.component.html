@@ -9,10 +9,15 @@
       <h1>Institute Command Center</h1>
       <span>Operate your organization from one secure workspace.</span>
     </div>
-    <div class="hero-status" *ngIf="profile">
-      <span class="status-dot" [class.offline]="!profile.active"></span>
-      <strong>{{profile.status}}</strong>
-      <small>{{profile.code}}</small>
+    <div class="hero-actions">
+      <button type="button" class="refresh" (click)="refresh()" [disabled]="loading || overviewLoading || memberLoading">
+        {{loading || overviewLoading || memberLoading ? 'Refreshing…' : 'Refresh workspace'}}
+      </button>
+      <div class="hero-status" *ngIf="profile">
+        <span class="status-dot" [class.offline]="!profile.active"></span>
+        <strong>{{profile.status}}</strong>
+        <small>{{profile.code}}</small>
+      </div>
     </div>
   </section>
 
@@ -48,6 +53,30 @@
       <strong>{{overview.publishedCourses}} / {{overview.totalCourses || 0}}</strong>
       <small>{{overview.archivedCourses}} archived</small>
     </article>
+  </section>
+
+  <section class="content-health card" *ngIf="overview">
+    <div class="card-heading">
+      <div>
+        <p class="eyebrow">CONTENT HEALTH</p>
+        <h2>Course distribution</h2>
+      </div>
+      <span class="save-state" *ngIf="lastRefreshedAt">Updated {{lastRefreshedAt | date:'shortTime'}}</span>
+    </div>
+    <div class="course-bars">
+      <div class="course-bar">
+        <div><span>Published</span><strong>{{overview.publishedCourses}} · {{publishedCoursePercent}}%</strong></div>
+        <div class="bar-track"><span class="bar-fill published" [style.width.%]="publishedCoursePercent"></span></div>
+      </div>
+      <div class="course-bar">
+        <div><span>Draft</span><strong>{{overview.draftCourses}} · {{draftCoursePercent}}%</strong></div>
+        <div class="bar-track"><span class="bar-fill draft" [style.width.%]="draftCoursePercent"></span></div>
+      </div>
+      <div class="course-bar">
+        <div><span>Archived</span><strong>{{overview.archivedCourses}} · {{archivedCoursePercent}}%</strong></div>
+        <div class="bar-track"><span class="bar-fill archived" [style.width.%]="archivedCoursePercent"></span></div>
+      </div>
+    </div>
   </section>
 
   <section *ngIf="profile" class="grid">
@@ -92,7 +121,7 @@
         <label>Logo URL<input formControlName="logoUrl"></label>
         <label>Primary Color<input formControlName="primaryColor"></label>
       </div>
-      <button class="save" [disabled]="saving">{{saving?'Saving…':'Save Profile'}}</button>
+      <button class="save" [disabled]="saving || form.invalid">{{saving?'Saving…':'Save Profile'}}</button>
     </form>
   </section>
 
@@ -105,7 +134,7 @@
       </div>
       <form class="invite-form" (ngSubmit)="inviteMember()">
         <input type="email" [value]="memberEmail" (input)="memberEmail = $any($event.target).value" name="memberEmail" placeholder="member@email.com" required>
-        <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Adding…':'Add member'}}</button>
+        <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Sending…':'Invite member'}}</button>
       </form>
     </div>
     <p class="loading" *ngIf="memberLoading">Loading members…</p>
