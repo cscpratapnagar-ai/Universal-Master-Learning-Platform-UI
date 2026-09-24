@@ -2,11 +2,35 @@
   <header class="studio-header"><div><p class="eyebrow">TEACHER STUDIO / ASSESSMENTS</p><h1>Build an assessment</h1><p>Create a course-level knowledge check with structured questions and scoring.</p></div><div class="header-badge">AUTHORING</div></header>
   <div class="layout">
     <main class="panel"><div class="section-title"><span>01</span><div><strong>Assessment setup</strong><small>Define the assessment rules</small></div></div>
-      <div class="grid"><label>Course<select [(ngModel)]="selectedCourseId"><option value="">Choose a course</option><option *ngFor="let course of courses" [value]="course.id">{{course.title}}</option></select></label><label>Passing score<input type="number" min="1" max="100" [(ngModel)]="passingScore"></label></div>
+      <div class="grid"><label>Course<select [(ngModel)]="selectedCourseId" (ngModelChange)="onCourseChange()"><option value="">Choose a course</option><option *ngFor="let course of courses" [value]="course.id">{{course.title}}</option></select></label><label>Passing score<input type="number" min="1" max="100" [(ngModel)]="passingScore"></label></div>
       <label>Assessment title<input type="text" maxlength="180" [(ngModel)]="title" placeholder="e.g. Module 1 Knowledge Check"></label>
     </main>
     <aside class="panel summary"><p class="eyebrow">LIVE SUMMARY</p><strong>{{questions.length}} questions</strong><span>{{passingScore}}% passing score</span><span>{{title || 'Untitled assessment'}}</span></aside>
   </div>
+  <section class="panel existing" *ngIf="selectedCourseId">
+    <div class="section-title"><span>01B</span><div><strong>Existing assessments</strong><small>Edit scoring rules without rebuilding the assessment</small></div></div>
+    <div class="existing-list" *ngIf="assessments.length">
+      <article class="assessment-row" *ngFor="let assessment of assessments">
+        <div class="assessment-info">
+          <strong>{{assessment.title}}</strong>
+          <small>{{assessment.level}} · {{assessment.passingScore}}% passing · {{assessment.maxAttempts}} attempts</small>
+        </div>
+        <button type="button" class="secondary" (click)="startAssessmentEdit(assessment)">Edit rules</button>
+      </article>
+    </div>
+    <div class="empty" *ngIf="!assessments.length">No existing assessments for this course yet.</div>
+    <div class="edit-assessment" *ngIf="editingAssessmentId">
+      <label>Title<input [(ngModel)]="editAssessmentTitle" maxlength="180"></label>
+      <div class="grid">
+        <label>Passing score<input type="number" min="1" max="100" [(ngModel)]="editPassingScore"></label>
+        <label>Maximum attempts<input type="number" min="1" max="100" [(ngModel)]="editMaxAttempts"></label>
+      </div>
+      <div class="editor-actions">
+        <button type="button" class="secondary" (click)="cancelAssessmentEdit()">Cancel</button>
+        <button type="button" class="primary" [disabled]="busy" (click)="saveAssessmentEdit()">{{busy?'Saving…':'Save assessment rules'}}</button>
+      </div>
+    </div>
+  </section>
   <section class="panel question-editor"><div class="section-title"><span>02</span><div><strong>Question builder</strong><small>Compose questions and answer keys</small></div></div>
     <label>Question<textarea rows="3" [(ngModel)]="draft.questionText" placeholder="Write a clear question..."></textarea></label>
     <div class="grid"><label>Question type<select [(ngModel)]="draft.questionType" (change)="toggleType()"><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label><label>Points<input type="number" min="1" max="100" [(ngModel)]="draft.points"></label><label>Difficulty<select [(ngModel)]="draft.difficultyLevel"><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label></div>
