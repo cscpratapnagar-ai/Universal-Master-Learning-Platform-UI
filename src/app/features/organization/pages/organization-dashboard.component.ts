@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember } from '../../../core/models/organization.model';
+import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember, OrganizationCourse } from '../../../core/models/organization.model';
 import { OrganizationService } from '../../../core/services/organization.service';
 
 @Component({
@@ -13,6 +13,8 @@ export class OrganizationDashboardComponent implements OnInit {
   overview: OrganizationOverview | null = null;
   organizations: Organization[] = [];
   members: OrganizationMember[] = [];
+  courses: OrganizationCourse[] = [];
+  courseLoading = false;
   loading = false;
   overviewLoading = false;
   saving = false;
@@ -86,6 +88,7 @@ export class OrganizationDashboardComponent implements OnInit {
     this.loading = true;
     this.overviewLoading = true;
     this.memberLoading = true;
+    this.courseLoading = true;
     this.error = '';
     this.success = '';
 
@@ -111,6 +114,18 @@ export class OrganizationDashboardComponent implements OnInit {
       error: error => {
         this.error = error?.error?.message || 'Unable to load organization overview.';
         this.overviewLoading = false;
+      }
+    });
+
+    this.org.getCourses(id).subscribe({
+      next: response => {
+        this.courses = response.data || [];
+        this.courseLoading = false;
+        this.lastRefreshedAt = new Date();
+      },
+      error: error => {
+        this.error = error?.error?.message || 'Unable to load organization courses.';
+        this.courseLoading = false;
       }
     });
 
