@@ -13,6 +13,15 @@
         <p class="intro">Build a learning experience that adapts to your goals, pace and potential.</p>
 
         <form (ngSubmit)="submit()" #registerForm="ngForm">
+          <div class="account-type">
+            <p class="choice-label">How will you use Master Learning?</p>
+            <div class="choice-grid">
+              <button type="button" [class.selected]="accountType==='LEARNER'" (click)="accountType='LEARNER'"><strong>🎓 Learn</strong><small>Study courses and build skills</small></button>
+              <button type="button" [class.selected]="accountType==='TEACHER'" (click)="accountType='TEACHER'"><strong>👨‍🏫 Teach</strong><small>Request access to create courses</small></button>
+              <button type="button" [class.selected]="accountType==='ORG_ADMIN'" (click)="accountType='ORG_ADMIN'"><strong>🏢 Organization</strong><small>Request organization management access</small></button>
+            </div>
+            <p class="choice-note" *ngIf="accountType !== 'LEARNER'">Your account starts as a learner. Your requested role will remain pending until an authorized administrator approves it.</p>
+          </div>
           <div class="name-row">
             <label>Full name<span class="input-wrap"><i>◌</i><input name="fullName" [(ngModel)]="fullName" placeholder="Your full name" required></span></label>
             <label>Email<span class="input-wrap"><i>✉</i><input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" required email></span></label>
