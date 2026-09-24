@@ -10,6 +10,7 @@ import { OrganizationService } from '../../../../core/services/organization.serv
 import { ManagedUser } from '../../../../core/models/user-management.model';
 import { Organization } from '../../../../core/models/organization.model';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
+import { RoleRequest, RoleRequestService } from '../../../../core/services/role-request.service';
 
 interface TrendPoint { label: string; value: number; color: string; }
 interface DashboardCourse {
@@ -48,6 +49,7 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
   recentUsers: ManagedUser[] = [];
   recentOrganizations: Organization[] = [];
   intelligenceWarning = '';
+  pendingRoleRequests: RoleRequest[] = [];
   private readonly subscriptions = new Subscription();
 
   // Temporary presentation signals until the dedicated analytics module is connected.
@@ -81,6 +83,7 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
     private readonly internalPortalService: InternalPortalService,
     private readonly userManagementService: UserManagementService,
     private readonly organizationService: OrganizationService,
+    private readonly roleRequestService: RoleRequestService,
     private readonly themeService: ThemeService,
     private readonly router: Router
   ) {}
@@ -94,7 +97,8 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
     }
     this.loadOverview();
     this.loadIntelligence();
-    this.subscriptions.add(interval(30000).subscribe(() => { this.loadOverview(false); this.loadIntelligence(); }));
+    this.loadRoleRequests();
+    this.subscriptions.add(interval(30000).subscribe(() => { this.loadOverview(false); this.loadIntelligence(); this.loadRoleRequests(); }));
   }
 
   ngOnDestroy(): void { this.subscriptions.unsubscribe(); }
@@ -113,6 +117,13 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.errorMessage = error.message || 'Unable to load internal portal data.';
       }
+    });
+  }
+
+  loadRoleRequests(): void {
+    this.roleRequestService.pending().subscribe({
+      next: response => this.pendingRoleRequests = response.data || [],
+      error: () => this.intelligenceWarning = 'Some live governance data is temporarily unavailable.'
     });
   }
 
@@ -175,6 +186,8 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
         percent: Math.round((count / total) * 100)
       }));
   }
+
+  get pendingRoleRequestCount(): number { return this.pendingRoleRequests.length; }
 
   get activeOrganizationRate(): number {
     if (!this.overview?.totalOrganizations) return 0;
