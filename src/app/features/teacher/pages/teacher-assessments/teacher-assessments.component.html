@@ -10,13 +10,13 @@
   <section class="panel existing" *ngIf="selectedCourseId">
     <div class="section-title"><span>01B</span><div><strong>Existing assessments</strong><small>Edit scoring rules without rebuilding the assessment</small></div></div>
     <div class="existing-list" *ngIf="assessments.length">
-      <article class="assessment-row" *ngFor="let assessment of assessments">
+      <article class="assessment-row" *ngFor="let assessmentItem of assessments">
         <div class="assessment-info">
-          <strong>{{assessment.title}}</strong>
-          <small>{{assessment.level}} · {{assessment.passingScore}}% passing · {{assessment.maxAttempts}} attempts</small>
+          <strong>{{assessmentItem.title}}</strong>
+          <small>{{assessmentItem.level}} · {{assessmentItem.passingScore}}% passing · {{assessmentItem.maxAttempts}} attempts</small>
         </div>
         <button type="button" class="secondary" (click)="startAssessmentEdit(assessment)">Edit rules</button>
-        <ng-container *ngIf="questionsForAssessment(assessment.id) as assessmentQuestions">
+        <ng-container *ngIf="questionsForAssessment(assessmentItem.id) as assessmentQuestions">
           <div class="existing-questions" *ngIf="assessmentQuestions.length">
             <div class="question-mini" *ngFor="let question of assessmentQuestions">
               <div><strong>{{question.questionText}}</strong><small>{{question.questionType}} · {{question.points}} point(s) · {{question.difficultyLevel}}</small></div>
@@ -24,7 +24,7 @@
             </div>
           </div>
         </ng-container>
-        <div class="question-edit" *ngIf="editingQuestionId && selectedExistingAssessmentId===assessment.id">
+        <div class="question-edit" *ngIf="editingQuestionId && selectedExistingAssessmentId===assessmentItem.id">
           <label>Question<textarea rows="3" [(ngModel)]="editQuestionText"></textarea></label>
           <div class="grid">
             <label>Type<select [(ngModel)]="editQuestionType" (ngModelChange)="onEditQuestionTypeChange()"><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label>
