@@ -54,15 +54,27 @@ export class UserManagementComponent implements OnInit {
       this.errorMessage = 'You cannot change the status of the account currently signed in.';
       return;
     }
+    if (this.processingUserId) return;
 
     const next = !user.enabled;
     const action = next ? 'activate' : 'deactivate';
 
     if (!confirm('Are you sure you want to ' + action + ' ' + user.email + '?')) return;
 
+    this.processingUserId = user.id;
+    this.errorMessage = '';
+    this.noticeMessage = '';
+
     this.usersService.updateStatus(user.id, { enabled: next }).subscribe({
-      next: response => this.replaceUser(response.data),
-      error: error => this.errorMessage = error.error?.message || 'Unable to update user status'
+      next: response => {
+        this.replaceUser(response.data);
+        this.processingUserId = '';
+        this.noticeMessage = user.email + ' is now ' + (next ? 'active.' : 'disabled.');
+      },
+      error: error => {
+        this.processingUserId = '';
+        this.errorMessage = error.error?.message || 'Unable to update user status';
+      }
     });
   }
 
@@ -72,6 +84,8 @@ export class UserManagementComponent implements OnInit {
       return;
     }
 
+    this.errorMessage = '';
+    this.noticeMessage = '';
     this.selected = user;
     this.editableRoles = [...user.roles];
     this.showRoles = true;
@@ -87,22 +101,32 @@ export class UserManagementComponent implements OnInit {
   }
 
   saveRoles(): void {
-    if (!this.selected || !this.editableRoles.length || this.isCurrentUser(this.selected)) return;
+    if (!this.selected || !this.editableRoles.length || this.isCurrentUser(this.selected) || this.saving) return;
 
+    const user = this.selected;
     this.saving = true;
+    this.errorMessage = '';
+    this.noticeMessage = '';
 
-    this.usersService.updateRoles(this.selected.id, { roles: this.editableRoles }).subscribe({
+    this.usersService.updateRoles(user.id, { roles: this.editableRoles }).subscribe({
       next: response => {
         this.replaceUser(response.data);
         this.saving = false;
         this.showRoles = false;
         this.selected = null;
+        this.noticeMessage = 'Roles updated successfully for ' + user.email + '.';
       },
       error: error => {
         this.saving = false;
         this.errorMessage = error.error?.message || 'Unable to update user roles';
       }
     });
+  }
+
+  closeRoles(): void {
+    if (this.saving) return;
+    this.showRoles = false;
+    this.selected = null;
   }
 
   isCurrentUser(user: ManagedUser): boolean {
