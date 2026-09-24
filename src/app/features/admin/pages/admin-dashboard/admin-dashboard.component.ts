@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { Subscription } from 'rxjs';
 
 interface Metric { label: string; value: string; icon: string; trend: string; }
@@ -14,6 +15,7 @@ interface Activity { title: string; detail: string; time: string; type: string; 
 export class AdminDashboardComponent implements OnInit, OnDestroy {
   theme: ThemeMode = 'dark';
   sidebarOpen = true;
+  isSuperAdmin = false;
   private themeSubscription?: Subscription;
 
   readonly metrics: Metric[] = [
@@ -30,9 +32,11 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     { title: 'Platform backup completed', detail: 'Database backup finished successfully', time: '2 hours ago', type: 'system' }
   ];
 
-  constructor(private readonly themeService: ThemeService, private readonly router: Router) {}
+  constructor(private readonly themeService: ThemeService, private readonly router: Router, private readonly authService: AuthService) {}
 
   ngOnInit(): void {
+    const user = this.authService.currentUser();
+    this.isSuperAdmin = (user?.roles || []).some(role => role.trim().toUpperCase() === 'SUPER_ADMIN');
     this.theme = this.themeService.theme;
     this.themeSubscription = this.themeService.theme$.subscribe(theme => this.theme = theme);
   }
@@ -41,6 +45,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   toggleTheme(): void { this.themeService.toggle(); }
   toggleSidebar(): void { this.sidebarOpen = !this.sidebarOpen; }
+  backToSuperAdmin(): void { this.router.navigateByUrl('/super-admin'); }
   openCurriculum(): void { this.router.navigateByUrl('/admin/curriculum'); }
   openAssessments(): void { this.router.navigateByUrl('/admin/assessments/new'); }
   openLearningPath(): void { this.router.navigateByUrl('/admin/learning-path'); }
