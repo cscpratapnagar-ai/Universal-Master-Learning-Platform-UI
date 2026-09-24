@@ -9,6 +9,7 @@ import {
   OrganizationProfile,
   OrganizationProfileUpdate,
   OrganizationStatus,
+  OrganizationMember,
   UpdateOrganizationRequest
 } from '../models/organization.model';
 
@@ -48,5 +49,17 @@ export class OrganizationService {
 
   updateStatus(id: string, status: OrganizationStatus): Observable<ApiResponse<OrganizationProfile>> {
     return this.http.put<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/status`, { status });
+  }
+
+  getMembers(id: string): Observable<ApiResponse<OrganizationMember[]>> {
+    return this.http.get<ApiResponse<OrganizationMember[]>>(`${this.url}/${id}/members`);
+  }
+
+  inviteMember(id: string, email: string): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.url}/${id}/members/invite`, { email });
+  }
+
+  deactivateMember(id: string, memberId: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.url}/${id}/members/${memberId}`);
   }
 }
