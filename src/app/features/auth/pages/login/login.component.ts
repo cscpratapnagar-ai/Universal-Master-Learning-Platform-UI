@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   password = '';
   isSubmitting = false;
   errorMessage = '';
+  existingUser = this.authService.currentUser();
 
   private themeSubscription?: Subscription;
 
@@ -28,13 +29,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (this.authService.isAuthenticated()) {
-      this.router.navigateByUrl(
-        this.authService.resolveDashboard(this.authService.currentUser()?.roles)
-      );
-      return;
-    }
-
     this.themeSubscription = this.themeService.theme$.subscribe(theme => {
       this.theme = theme;
     });
@@ -42,6 +36,18 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.themeSubscription?.unsubscribe();
+  }
+
+  switchAccount(): void {
+    this.authService.switchAccount();
+    this.existingUser = null;
+    this.errorMessage = '';
+  }
+
+  continueAsCurrentUser(): void {
+    this.router.navigateByUrl(
+      this.authService.resolveDashboard(this.existingUser?.roles)
+    );
   }
 
   toggleTheme(): void { this.themeService.toggle(); }
