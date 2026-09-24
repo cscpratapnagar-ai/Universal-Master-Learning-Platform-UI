@@ -47,21 +47,19 @@ export interface OrganizationOverview {
   archivedCourses: number;
 }
 
-export interface CreateOrganizationRequest {
-  code: string;
-  name: string;
-  description?: string;
+export interface OrganizationCourse {
+  id: string;
+  title: string;
+  slug?: string | null;
+  description?: string | null;
+  status: string;
+  organizationId: string;
 }
 
-export interface UpdateOrganizationRequest {
-  name: string;
-  description?: string;
-}
+export interface CreateOrganizationRequest { code: string; name: string; description?: string; }
+export interface UpdateOrganizationRequest { name: string; description?: string; }
 
-export type OrganizationProfileUpdate = Partial<Omit<
-  OrganizationProfile,
-  'id' | 'code' | 'name' | 'description' | 'active' | 'status'
->>;
+export type OrganizationProfileUpdate = Partial<Omit<OrganizationProfile,'id' | 'code' | 'name' | 'description' | 'active' | 'status'>>;
 
 export interface OrganizationMember {
   id: string;
