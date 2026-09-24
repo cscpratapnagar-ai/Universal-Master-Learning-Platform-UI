@@ -53,6 +53,12 @@ export class SuperAdminDashboardComponent implements OnInit, OnDestroy {
 
   readonly activities: DashboardActivity[] = [];
 
+  readonly quickActions: QuickAction[] = [
+    { label: 'Manage Users', icon: '◉', tone: 'cyan', route: '/super-admin/users' },
+    { label: 'Role Requests', icon: '◇', tone: 'orange', route: '/super-admin/role-requests' },
+    { label: 'Organizations', icon: '▦', tone: 'violet', route: '/super-admin/organizations' }
+  ];
+
   activityTrend: TrendPoint[] = [
     { label: 'May 20', value: 0, color: 'violet' }, { label: 'May 27', value: 0, color: 'blue' },
     { label: 'Jun 03', value: 0, color: 'cyan' }, { label: 'Jun 10', value: 0, color: 'green' },
