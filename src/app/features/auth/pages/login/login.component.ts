@@ -59,7 +59,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     }, this.rememberMe).subscribe({
       next: response => {
         this.isSubmitting = false;
-        this.router.navigateByUrl(this.authService.resolveDashboard(response.data?.user?.roles));
+        const dashboard = this.authService.resolveDashboard(response.data?.user?.roles);
+        this.router.navigateByUrl(dashboard).catch(() => {
+          this.errorMessage = `Unable to open the ${dashboard.replace('/', '') || 'learning'} workspace. Please refresh and try again.`;
+        });
       },
       error: (error: Error) => {
         this.isSubmitting = false;
