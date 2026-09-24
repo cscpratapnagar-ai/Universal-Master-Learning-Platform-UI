@@ -1,24 +1,126 @@
-<main class="org-shell"><header><p>ORGANIZATION ADMIN</p><h1>Institute Command Center</h1><span>Manage identity, contact, branding and lifecycle.</span></header><section class="lookup" *ngIf="organizations.length>1">
-  <label>Organization workspace</label>
-  <select [formControl]="form.controls.organizationId" (change)="selectOrganization(form.controls.organizationId.value || '')">
-    <option *ngFor="let organization of organizations" [value]="organization.id">{{organization.name}}</option>
-  </select>
-</section>
-<p class="loading" *ngIf="loading">Loading your organization workspace…</p><p class="error" *ngIf="error">{{error}}</p><p class="success" *ngIf="success">{{success}}</p><section *ngIf="profile" class="grid"><aside class="card"><span class="badge">{{profile.status}}</span><h2>{{profile.displayName||profile.name}}</h2><p>{{profile.code}}</p><div *ngFor="let s of statuses"><button (click)="changeStatus(s)" [disabled]="s===profile.status">{{s}}</button></div></aside><form class="card" [formGroup]="form" (ngSubmit)="save()"><h2>Organization Profile</h2><div class="fields"><label>Slug<input formControlName="slug"></label><label>Legal Name<input formControlName="legalName"></label><label>Display Name<input formControlName="displayName"></label><label>Type<input formControlName="organizationType"></label><label>Email<input formControlName="primaryEmail"></label><label>Phone<input formControlName="primaryPhone"></label><label>Website<input formControlName="website"></label><label>Country<input formControlName="country"></label><label>State<input formControlName="state"></label><label>City<input formControlName="city"></label><label>Logo URL<input formControlName="logoUrl"></label><label>Primary Color<input formControlName="primaryColor"></label></div><button class="save" [disabled]="saving">{{saving?'Saving...':'Save Profile'}}</button></form></section>
-<section *ngIf="profile" class="members-card card">
-  <div class="members-head">
-    <div><p class="eyebrow">WORKSPACE ACCESS</p><h2>Organization Members</h2><span>Manage people who belong to this organization.</span></div>
-    <form class="invite-form" (ngSubmit)="inviteMember()">
-      <input type="email" [value]="memberEmail" (input)="memberEmail = $any($event.target).value" name="memberEmail" placeholder="member@email.com" required>
-      <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Adding...':'Add member'}}</button>
-    </form>
-  </div>
-  <p class="loading" *ngIf="memberLoading">Loading members…</p>
-  <div class="member-list" *ngIf="!memberLoading">
-    <article class="member-row" *ngFor="let member of members">
-      <div><strong>{{(member.firstName||'') + ' ' + (member.lastName||'')}}</strong><small>{{member.email}}</small></div>
-      <div><span class="member-status">{{member.active?'ACTIVE':'INACTIVE'}}</span><button type="button" *ngIf="member.active" (click)="deactivateMember(member)">Deactivate</button></div>
+<main class="org-shell">
+  <section class="command-hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-orbit orbit-one"></div>
+    <div class="hero-orbit orbit-two"></div>
+    <div class="hero-core"></div>
+    <div class="hero-copy">
+      <p class="eyebrow">ORGANIZATION ADMIN</p>
+      <h1>Institute Command Center</h1>
+      <span>Operate your organization from one secure workspace.</span>
+    </div>
+    <div class="hero-status" *ngIf="profile">
+      <span class="status-dot" [class.offline]="!profile.active"></span>
+      <strong>{{profile.status}}</strong>
+      <small>{{profile.code}}</small>
+    </div>
+  </section>
+
+  <section class="lookup" *ngIf="organizations.length>1">
+    <label>Organization workspace</label>
+    <select [formControl]="form.controls.organizationId" (change)="selectOrganization(form.controls.organizationId.value || '')">
+      <option *ngFor="let organization of organizations" [value]="organization.id">{{organization.name}}</option>
+    </select>
+  </section>
+
+  <p class="loading" *ngIf="loading || overviewLoading">Synchronizing organization intelligence…</p>
+  <p class="error" *ngIf="error">{{error}}</p>
+  <p class="success" *ngIf="success">{{success}}</p>
+
+  <section class="overview-grid" *ngIf="overview">
+    <article class="metric-card accent-blue">
+      <span>MEMBERS</span>
+      <strong>{{overview.totalMembers}}</strong>
+      <small>{{overview.activeMembers}} active · {{overview.inactiveMembers}} inactive</small>
     </article>
-    <p class="empty" *ngIf="!members.length">No members have been added yet.</p>
-  </div>
-</section></main>
+    <article class="metric-card accent-green">
+      <span>ACTIVE ACCESS</span>
+      <strong>{{overview.activeMembers}}</strong>
+      <small>Currently enabled organization members</small>
+    </article>
+    <article class="metric-card accent-orange">
+      <span>COURSES</span>
+      <strong>{{overview.totalCourses}}</strong>
+      <small>{{overview.publishedCourses}} published · {{overview.draftCourses}} draft</small>
+    </article>
+    <article class="metric-card accent-purple">
+      <span>CONTENT STATE</span>
+      <strong>{{overview.publishedCourses}} / {{overview.totalCourses || 0}}</strong>
+      <small>{{overview.archivedCourses}} archived</small>
+    </article>
+  </section>
+
+  <section *ngIf="profile" class="grid">
+    <aside class="card lifecycle-card">
+      <div class="card-heading">
+        <div>
+          <p class="eyebrow">LIFECYCLE CONTROL</p>
+          <h2>{{profile.displayName||profile.name}}</h2>
+        </div>
+        <span class="badge">{{profile.status}}</span>
+      </div>
+      <p class="muted">{{profile.description || 'Organization workspace and governance controls.'}}</p>
+      <div class="lifecycle-actions">
+        <button *ngFor="let s of statuses" (click)="changeStatus(s)" [disabled]="s===profile.status">{{s}}</button>
+      </div>
+      <div class="signal-list">
+        <div><span>Workspace</span><strong>{{profile.active ? 'ONLINE' : 'RESTRICTED'}}</strong></div>
+        <div><span>Members</span><strong>{{overview?.activeMembers || 0}} ACTIVE</strong></div>
+        <div><span>Courses</span><strong>{{overview?.publishedCourses || 0}} PUBLISHED</strong></div>
+      </div>
+    </aside>
+
+    <form class="card" [formGroup]="form" (ngSubmit)="save()">
+      <div class="card-heading">
+        <div>
+          <p class="eyebrow">ORGANIZATION IDENTITY</p>
+          <h2>Profile & Branding</h2>
+        </div>
+        <span class="save-state" *ngIf="!saving">SYNCED</span>
+      </div>
+      <div class="fields">
+        <label>Slug<input formControlName="slug"></label>
+        <label>Legal Name<input formControlName="legalName"></label>
+        <label>Display Name<input formControlName="displayName"></label>
+        <label>Type<input formControlName="organizationType"></label>
+        <label>Email<input formControlName="primaryEmail"></label>
+        <label>Phone<input formControlName="primaryPhone"></label>
+        <label>Website<input formControlName="website"></label>
+        <label>Country<input formControlName="country"></label>
+        <label>State<input formControlName="state"></label>
+        <label>City<input formControlName="city"></label>
+        <label>Logo URL<input formControlName="logoUrl"></label>
+        <label>Primary Color<input formControlName="primaryColor"></label>
+      </div>
+      <button class="save" [disabled]="saving">{{saving?'Saving…':'Save Profile'}}</button>
+    </form>
+  </section>
+
+  <section *ngIf="profile" class="members-card card">
+    <div class="members-head">
+      <div>
+        <p class="eyebrow">WORKSPACE ACCESS</p>
+        <h2>Organization Members</h2>
+        <span>Manage people who belong to this organization.</span>
+      </div>
+      <form class="invite-form" (ngSubmit)="inviteMember()">
+        <input type="email" [value]="memberEmail" (input)="memberEmail = $any($event.target).value" name="memberEmail" placeholder="member@email.com" required>
+        <button class="save" type="submit" [disabled]="memberSaving || !memberEmail.trim()">{{memberSaving?'Adding…':'Add member'}}</button>
+      </form>
+    </div>
+    <p class="loading" *ngIf="memberLoading">Loading members…</p>
+    <div class="member-list" *ngIf="!memberLoading">
+      <article class="member-row" *ngFor="let member of members">
+        <div class="member-identity">
+          <span class="avatar">{{((member.firstName||'U').charAt(0)+(member.lastName||'').charAt(0)).toUpperCase()}}</span>
+          <div><strong>{{(member.firstName||'') + ' ' + (member.lastName||'')}}</strong><small>{{member.email}}</small></div>
+        </div>
+        <div>
+          <span class="member-status">{{member.active?'ACTIVE':'INACTIVE'}}</span>
+          <button type="button" *ngIf="member.active" (click)="deactivateMember(member)">Deactivate</button>
+        </div>
+      </article>
+      <p class="empty" *ngIf="!members.length">No members have been added yet.</p>
+    </div>
+  </section>
+</main>
