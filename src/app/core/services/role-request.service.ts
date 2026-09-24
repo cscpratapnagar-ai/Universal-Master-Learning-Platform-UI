@@ -18,10 +18,26 @@ export class RoleRequestService {
     return this.http.get<ApiResponse<RoleRequest[]>>(this.base + '/admin/role-requests');
   }
   approve(id: string): Observable<ApiResponse<RoleRequest>> {
-    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/approve', {});
+    return this.http.post<ApiResponse<RoleRequest>>(
+      this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/approve',
+      {},
+      { observe: 'body', responseType: 'json' }
+    );
   }
+
   reject(id: string, reason?: string): Observable<ApiResponse<RoleRequest>> {
-    const params = reason?.trim() ? { reason: reason.trim() } : undefined;
-    return this.http.post<ApiResponse<RoleRequest>>(this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/reject', {}, params ? { params } : {});
+    const url = this.base + '/admin/role-requests/' + encodeURIComponent(id) + '/reject';
+    if (reason?.trim()) {
+      return this.http.post<ApiResponse<RoleRequest>>(
+        url,
+        {},
+        { params: { reason: reason.trim() }, observe: 'body', responseType: 'json' }
+      );
+    }
+    return this.http.post<ApiResponse<RoleRequest>>(
+      url,
+      {},
+      { observe: 'body', responseType: 'json' }
+    );
   }
 }
