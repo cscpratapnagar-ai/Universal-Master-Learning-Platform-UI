@@ -1,1 +1,14 @@
 .org-shell{max-width:1200px;margin:auto;padding:32px;font-family:Arial;background:#f7f8fc;min-height:100vh}.lookup{display:flex;gap:10px;margin:24px 0}.lookup input{flex:1}.grid{display:grid;grid-template-columns:300px 1fr;gap:20px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px}.badge{background:#dbeafe;padding:6px 10px;border-radius:999px}.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}label{display:flex;flex-direction:column;gap:5px}input{padding:10px;border:1px solid #d1d5db;border-radius:8px}button{margin:5px;padding:9px 12px;border:0;border-radius:8px;background:#111827;color:white}.save{margin-top:18px}.error{color:#b91c1c}.success{color:#15803d}@media(max-width:800px){.grid,.fields{grid-template-columns:1fr}.org-shell{padding:16px}}
+
+.members-card{margin-top:20px}
+.members-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}
+.members-head h2{margin:4px 0}
+.invite-form{display:flex;gap:10px;min-width:min(460px,100%)}
+.invite-form input{flex:1}
+.member-list{display:grid;gap:10px;margin-top:18px}
+.member-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 16px;border:1px solid rgba(127,145,170,.2);border-radius:14px}
+.member-row small{display:block;opacity:.7;margin-top:4px}
+.member-row button{margin-left:12px}
+.member-status{font-size:.72rem;letter-spacing:.08em}
+.empty{opacity:.65}
+@media(max-width:760px){.members-head{flex-direction:column;align-items:stretch}.invite-form{min-width:0;flex-direction:column}.member-row{align-items:flex-start;flex-direction:column}.member-row button{margin-left:0;margin-top:8px}}
