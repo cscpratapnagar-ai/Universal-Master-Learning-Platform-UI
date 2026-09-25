@@ -5,6 +5,7 @@ import {
   Organization,
   OrganizationProfile,
   OrganizationStatus,
+  OrganizationMember,
   UpdateOrganizationRequest
 } from '../../../../core/models/organization.model';
 
@@ -19,6 +20,7 @@ export class OrganizationManagementComponent implements OnInit {
   organizations: Organization[] = [];
   profiles = new Map<string, OrganizationProfile>();
   filtered: Organization[] = [];
+  orgMembers = new Map<string, OrganizationMember[]>();
 
   loading = true;
   saving = false;
@@ -49,6 +51,7 @@ export class OrganizationManagementComponent implements OnInit {
       next: response => {
         this.organizations = response.data || [];
         this.loadProfiles();
+        this.loadMemberGovernance();
       },
       error: error => {
         this.errorMessage = error.message || 'Unable to load organizations';
@@ -101,6 +104,52 @@ export class OrganizationManagementComponent implements OnInit {
 
       const matchesStatus = this.statusFilter === 'ALL' || status === this.statusFilter;
       return matchesQuery && matchesStatus;
+    });
+  }
+
+  private loadMemberGovernance(): void {
+    this.orgMembers.clear();
+    this.organizations.forEach(org => {
+      this.organizationService.getMembers(org.id).subscribe({
+        next: response => this.orgMembers.set(org.id, response.data || []),
+        error: () => this.orgMembers.set(org.id, [])
+      });
+    });
+  }
+
+  orgAdminMembers(org: Organization): OrganizationMember[] {
+    return (this.orgMembers.get(org.id) || []).filter(member => member.active || member.userId);
+  }
+
+  hasInactiveOrgAdmin(org: Organization): boolean {
+    return this.orgAdminMembers(org).some(member => !member.active);
+  }
+
+  orgAdminAccessLabel(org: Organization): string {
+    const members = this.orgAdminMembers(org);
+    if (!members.length) return 'No membership record';
+    const inactive = members.filter(member => !member.active).length;
+    return inactive ? `${inactive} inactive member${inactive === 1 ? '' : 's'}` : 'Active membership';
+  }
+
+  restoreMember(org: Organization, member: OrganizationMember): void {
+    if (this.statusOf(org) !== 'ACTIVE') {
+      this.errorMessage = 'Activate the organization before restoring administrator access.';
+      return;
+    }
+    if (!confirm(`Restore access for ${member.email}?`)) return;
+    this.saving = true;
+    this.organizationService.activateMember(org.id, member.id).subscribe({
+      next: () => {
+        this.saving = false;
+        const members = this.orgMembers.get(org.id) || [];
+        const target = members.find(item => item.id === member.id);
+        if (target) target.active = true;
+      },
+      error: error => {
+        this.saving = false;
+        this.errorMessage = error.message || 'Unable to restore member access';
+      }
     });
   }
 
