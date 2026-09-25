@@ -10,9 +10,12 @@
       <span>Operate your organization from one secure workspace.</span>
     </div>
     <div class="hero-actions">
-      <button type="button" class="refresh" (click)="refresh()" [disabled]="loading || overviewLoading || memberLoading || courseLoading || programLoading">
-        {{loading || overviewLoading || memberLoading || courseLoading || programLoading ? 'Refreshing…' : 'Refresh workspace'}}
-      </button>
+      <div class="hero-command-actions">
+        <button type="button" class="refresh" (click)="refresh()" [disabled]="loading || overviewLoading || memberLoading || courseLoading || programLoading">
+          {{loading || overviewLoading || memberLoading || courseLoading || programLoading ? 'Refreshing…' : 'Refresh workspace'}}
+        </button>
+        <button type="button" class="logout" (click)="logout()">Logout</button>
+      </div>
       <div class="hero-status" *ngIf="profile">
         <span class="status-dot" [class.offline]="!profile.active"></span>
         <strong>{{profile.status}}</strong>
