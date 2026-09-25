@@ -72,3 +72,33 @@ export interface OrganizationMember {
   active: boolean;
   roles?: string[];
 }
+
+
+export interface OrganizationProjectCourse {
+  id: string;
+  title: string;
+  slug?: string | null;
+  description?: string | null;
+  status: string;
+  sortOrder: number;
+  organizationId?: string | null;
+}
+
+export interface OrganizationProjectPath {
+  id: string;
+  title: string;
+  description?: string | null;
+  courses: OrganizationProjectCourse[];
+}
+
+export interface OrganizationProjectDetail {
+  id: string;
+  title: string;
+  slug?: string | null;
+  description?: string | null;
+  status: string;
+  organizationId?: string | null;
+  learningPathCount: number;
+  courseCount: number;
+  learningPaths: OrganizationProjectPath[];
+}
