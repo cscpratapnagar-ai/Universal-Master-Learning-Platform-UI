@@ -84,6 +84,26 @@
       <ng-template #noMilestones><div class="empty-state"><strong>No milestones yet</strong><span>Add the first delivery checkpoint and track it through completion.</span></div></ng-template>
     </section>
 
+    <section class="dependency-workspace card">
+      <div class="section-heading"><div><p class="eyebrow">SEQUENCE CONTROL</p><h2>Dependencies & Blockers</h2></div><span class="count">{{dependencies.length}} links</span></div>
+      <div class="dependency-create">
+        <select [(ngModel)]="dependencyFrom"><option value="">Predecessor milestone</option><option *ngFor="let m of milestones" [value]="m.id">{{m.title}}</option></select>
+        <span class="arrow">→ blocks →</span>
+        <select [(ngModel)]="dependencyTo"><option value="">Successor milestone</option><option *ngFor="let m of milestones" [value]="m.id">{{m.title}}</option></select>
+        <button type="button" (click)="createDependency()" [disabled]="!dependencyFrom || !dependencyTo || dependencyFrom === dependencyTo">Create dependency</button>
+      </div>
+      <p class="dependency-error" *ngIf="dependencyAction">{{dependencyAction}}</p>
+      <div class="dependency-list" *ngIf="dependencies.length; else noDependencies">
+        <article class="dependency" *ngFor="let d of dependencies">
+          <div class="node"><span>PREDECESSOR</span><strong>{{d.predecessorTitle}}</strong></div>
+          <div class="connector">BLOCKS</div>
+          <div class="node"><span>SUCCESSOR</span><strong>{{d.successorTitle}}</strong></div>
+          <button type="button" class="danger" (click)="deleteDependency(d)">Remove</button>
+        </article>
+      </div>
+      <ng-template #noDependencies><div class="empty-state"><strong>No dependency links yet</strong><span>Connect milestones to make blockers and execution order explicit.</span></div></ng-template>
+    </section>
+
     <section class="coming-grid">
       <article class="future card"><span>01</span><strong>Milestones</strong><small>Project delivery checkpoints will connect here.</small></article>
       <article class="future card"><span>02</span><strong>Dependencies</strong><small>Cross-path sequencing and blockers will connect here.</small></article>
