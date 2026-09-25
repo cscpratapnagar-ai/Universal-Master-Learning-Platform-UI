@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrganizationService } from '../../../core/services/organization.service';
-import { OrganizationProjectDetail, OrganizationProjectMilestone } from '../../../core/models/organization.model';
+import { OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency } from '../../../core/models/organization.model';
 
 @Component({
   selector: 'app-organization-project-detail',
@@ -17,6 +17,14 @@ export class OrganizationProjectDetailComponent implements OnInit {
   milestoneDueDate = '';
   milestoneSaving = false;
   milestoneAction = '';
+  dependencies: OrganizationProjectDependency[] = [];
+  dependencyFrom = '';
+  dependencyTo = '';
+  dependencyAction = '';
+
+  loadDependencies(): void { if (!this.project) return; this.organization.getDependencies(this.project.id).subscribe({ next: r => this.dependencies = r.data || [], error: e => this.dependencyAction = e?.error?.message || 'Unable to load dependencies.' }); }
+  createDependency(): void { if (!this.project || !this.dependencyFrom || !this.dependencyTo || this.dependencyFrom === this.dependencyTo) return; this.dependencyAction=''; this.organization.createDependency(this.project.id,{predecessorId:this.dependencyFrom,successorId:this.dependencyTo}).subscribe({next:()=>{this.dependencyFrom='';this.dependencyTo='';this.loadDependencies();},error:e=>this.dependencyAction=e?.error?.message || 'Unable to create dependency.'}); }
+  deleteDependency(d: OrganizationProjectDependency): void { this.organization.deleteDependency(d.id).subscribe({next:()=>this.loadDependencies(),error:e=>this.dependencyAction=e?.error?.message || 'Unable to delete dependency.'}); }
 
   get milestones(): OrganizationProjectMilestone[] { return (this.project as OrganizationProjectDetail & { milestones?: OrganizationProjectMilestone[] })?.milestones || []; }
 
@@ -45,9 +53,9 @@ export class OrganizationProjectDetailComponent implements OnInit {
     private readonly organization: OrganizationService
   ) {}
 
-  ngOnInit(): void {
-    this.load();
-  }
+  ngOnInit(): void { this.load(); }
+
+  private refreshProjectWorkspace(): void { this.load(); this.loadDependencies(); }
 
   load(): void {
     const id = this.route.snapshot.paramMap.get('programId');
@@ -59,7 +67,7 @@ export class OrganizationProjectDetailComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.organization.getProgramDetail(id).subscribe({
-      next: response => { this.project = response.data || null; this.loading = false; },
+      next: response => { this.project = response.data || null; this.loading = false; this.loadDependencies(); },
       error: error => {
         this.error = error?.error?.message || 'Unable to load this project.';
         this.loading = false;
