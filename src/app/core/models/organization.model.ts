@@ -117,3 +117,7 @@ export interface OrganizationProjectMilestone {
 export interface OrganizationProjectDependency {
   id: string; programId: string; predecessorId: string; predecessorTitle: string; successorId: string; successorTitle: string; type: string;
 }
+
+export interface OrganizationProjectCourseProgress { courseId: string; title: string; progressPercent: number; enrollmentCount: number; completedEnrollmentCount: number; }
+export interface OrganizationProjectPathProgress { pathId: string; title: string; courseCount: number; progressPercent: number; }
+export interface OrganizationProjectProgress { programId: string; courseCount: number; pathCount: number; learnerCount: number; enrollmentCount: number; projectProgressPercent: number; courses: OrganizationProjectCourseProgress[]; learningPaths: OrganizationProjectPathProgress[]; }
