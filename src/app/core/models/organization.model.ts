@@ -102,3 +102,13 @@ export interface OrganizationProjectDetail {
   courseCount: number;
   learningPaths: OrganizationProjectPath[];
 }
+
+export interface OrganizationProjectMilestone {
+  id: string;
+  programId: string;
+  title: string;
+  description?: string | null;
+  dueDate?: string | null;
+  sortOrder: number;
+  status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'BLOCKED' | 'CANCELLED' | string;
+}
