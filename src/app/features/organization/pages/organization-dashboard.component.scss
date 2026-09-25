@@ -102,3 +102,5 @@
 .program-status.completed { background:rgba(167,139,250,.14); color:#c4b5fd; }
 .program-status.archived { background:rgba(148,163,184,.12); color:#cbd5e1; }
 @media (max-width:700px) { .program-row { grid-template-columns:42px 1fr; } .program-control { grid-column:2; align-items:flex-start; } .program-status { width:max-content; } .program-actions { justify-content:flex-start; } }
+
+.program-actions .open-project{border-color:rgba(83,214,160,.38);background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(16,185,129,.12));}.program-actions .open-project:hover:not(:disabled){border-color:rgba(83,214,160,.7);background:linear-gradient(135deg,rgba(37,99,235,.3),rgba(16,185,129,.2));}
