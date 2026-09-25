@@ -6,6 +6,7 @@ export interface Organization {
   name: string;
   description?: string | null;
   active: boolean;
+  roles?: string[];
 }
 
 export interface OrganizationProfile extends Organization {
