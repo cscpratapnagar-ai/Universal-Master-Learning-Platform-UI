@@ -90,7 +90,8 @@
       </div>
       <p class="muted">{{profile.description || 'Organization workspace and governance controls.'}}</p>
       <div class="lifecycle-actions">
-        <button *ngFor="let s of statuses" (click)="changeStatus(s)" [disabled]="s===profile.status">{{s}}</button>
+        <span class="lifecycle-note">Organization lifecycle is governed by Platform Super Admin.</span>
+        <span class="lifecycle-current">{{profile.status}}</span>
       </div>
       <div class="signal-list">
         <div><span>Workspace</span><strong>{{profile.active ? 'ONLINE' : 'RESTRICTED'}}</strong></div>
