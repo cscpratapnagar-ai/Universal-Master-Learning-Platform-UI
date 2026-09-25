@@ -118,7 +118,9 @@ export class OrganizationManagementComponent implements OnInit {
   }
 
   orgAdminMembers(org: Organization): OrganizationMember[] {
-    return (this.orgMembers.get(org.id) || []).filter(member => member.active || member.userId);
+    return (this.orgMembers.get(org.id) || []).filter(member =>
+      (member.roles || []).some(role => role.toUpperCase() === 'ORG_ADMIN')
+    );
   }
 
   hasInactiveOrgAdmin(org: Organization): boolean {
