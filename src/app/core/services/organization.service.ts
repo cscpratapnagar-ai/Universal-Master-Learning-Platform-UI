@@ -17,6 +17,11 @@ export class OrganizationService {
   getOverview(id: string): Observable<ApiResponse<OrganizationOverview>> { return this.http.get<ApiResponse<OrganizationOverview>>(`${this.url}/${id}/overview`); }
   getCourses(id: string): Observable<ApiResponse<OrganizationCourse[]>> { return this.http.get<ApiResponse<OrganizationCourse[]>>(`${this.url}/${id}/courses`); }
   getPrograms(id: string): Observable<ApiResponse<OrganizationProgram[]>> { return this.http.get<ApiResponse<OrganizationProgram[]>>(`${API_CONFIG.baseUrl}/programs/organization/${id}`); }
+  startProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/start`, {}); }
+  pauseProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/pause`, {}); }
+  resumeProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/resume`, {}); }
+  completeProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/complete`, {}); }
+  archiveProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/archive`, {}); }
   publishCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/publish`, {}); }
   archiveCourse(courseId: string): Observable<ApiResponse<OrganizationCourse>> { return this.http.put<ApiResponse<OrganizationCourse>>(`${API_CONFIG.baseUrl}/courses/${courseId}/archive`, {}); }
   getProfile(id: string): Observable<ApiResponse<OrganizationProfile>> { return this.http.get<ApiResponse<OrganizationProfile>>(`${this.url}/${id}/profile`); }
