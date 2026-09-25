@@ -10,6 +10,7 @@ export class OrganizationService {
   private readonly url = `${API_CONFIG.baseUrl}/organizations`;
   constructor(private readonly http: HttpClient) {}
   getMine(): Observable<ApiResponse<Organization[]>> { return this.http.get<ApiResponse<Organization[]>>(`${this.url}/me`); }
+  getMyMemberships(): Observable<ApiResponse<OrganizationMember[]>> { return this.http.get<ApiResponse<OrganizationMember[]>>(`${this.url}/me/memberships`); }
   getAll(): Observable<ApiResponse<Organization[]>> { return this.http.get<ApiResponse<Organization[]>>(this.url); }
   create(request: CreateOrganizationRequest): Observable<ApiResponse<Organization>> { return this.http.post<ApiResponse<Organization>>(this.url, request); }
   update(id: string, request: UpdateOrganizationRequest): Observable<ApiResponse<Organization>> { return this.http.put<ApiResponse<Organization>>(`${this.url}/${id}`, request); }
