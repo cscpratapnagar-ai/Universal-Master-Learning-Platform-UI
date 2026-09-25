@@ -36,7 +36,7 @@
 
     <div class="table-wrap" *ngIf="!loading&&!errorMessage">
       <table>
-        <thead><tr><th>Organization</th><th>Code</th><th>Type / Location</th><th>Status</th><th class="right">Actions</th></tr></thead>
+        <thead><tr><th>Organization</th><th>Code</th><th>Type / Location</th><th>Status</th><th>Admin access</th><th class="right">Actions</th></tr></thead>
         <tbody>
           <tr *ngFor="let org of filtered; trackBy: trackById">
             <td>
@@ -53,6 +53,16 @@
               <ng-template #noProfile>Institution</ng-template>
             </td>
             <td><span class="badge" [class.suspended]="statusOf(org)==='SUSPENDED'" [class.archived]="statusOf(org)==='ARCHIVED'" [class.off]="statusOf(org)==='INACTIVE' || statusOf(org)==='DRAFT'"><i></i>{{ statusOf(org) }}</span></td>
+            <td class="admin-access">
+              <ng-container *ngIf="orgAdminMembers(org) as admins">
+                <span *ngFor="let admin of admins" class="admin-access-row">
+                  <span class="admin-email">{{ admin.email }}</span>
+                  <span class="badge" [class.off]="!admin.active"><i></i>{{ admin.active ? 'ACTIVE' : 'SELF-DEACTIVATED' }}</span>
+                  <button *ngIf="!admin.active" class="status-action" [disabled]="saving || statusOf(org)!=='ACTIVE'" (click)="restoreMember(org, admin)">Restore</button>
+                </span>
+                <small *ngIf="!admins.length">{{ orgAdminAccessLabel(org) }}</small>
+              </ng-container>
+            </td>
             <td class="right actions">
               <button class="view" (click)="openDetails(org)">View</button>
               <button class="edit" (click)="openEdit(org)">Edit</button>
@@ -61,7 +71,7 @@
               <button class="danger" *ngIf="statusOf(org)!=='ARCHIVED'" (click)="changeStatus(org,'ARCHIVED')">Archive</button>
             </td>
           </tr>
-          <tr *ngIf="!filtered.length"><td colspan="5" class="empty">No organizations match your current filters.</td></tr>
+          <tr *ngIf="!filtered.length"><td colspan="6" class="empty">No organizations match your current filters.</td></tr>
         </tbody>
       </table>
     </div>
