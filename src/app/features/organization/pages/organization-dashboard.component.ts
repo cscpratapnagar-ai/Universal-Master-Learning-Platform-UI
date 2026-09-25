@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember, OrganizationCourse, OrganizationProgram } from '../../../core/models/organization.model';
 import { OrganizationService } from '../../../core/services/organization.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -57,7 +58,8 @@ export class OrganizationDashboardComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly org: OrganizationService,
-    private readonly auth: AuthService
+    private readonly auth: AuthService,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -102,6 +104,21 @@ export class OrganizationDashboardComponent implements OnInit {
 
   refresh(): void {
     this.load();
+  }
+
+  logout(): void {
+    this.error = '';
+    this.success = '';
+    const request = this.auth.logout();
+    if (!request) {
+      void this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    request.subscribe({
+      next: () => void this.router.navigate(['/auth/login']),
+      error: () => void this.router.navigate(['/auth/login'])
+    });
   }
 
   load(): void {
