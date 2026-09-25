@@ -101,6 +101,7 @@ export interface OrganizationProjectDetail {
   learningPathCount: number;
   courseCount: number;
   learningPaths: OrganizationProjectPath[];
+  milestones?: OrganizationProjectMilestone[];
 }
 
 export interface OrganizationProjectMilestone {
