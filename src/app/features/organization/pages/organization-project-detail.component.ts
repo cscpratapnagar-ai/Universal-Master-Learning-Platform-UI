@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { OrganizationService, OrganizationProjectDetail } from '../../../core/services/organization.service';
+import { OrganizationService } from '../../../core/services/organization.service';
+import { OrganizationProjectDetail } from '../../../core/models/organization.model';
 
 @Component({
   selector: 'app-organization-project-detail',
