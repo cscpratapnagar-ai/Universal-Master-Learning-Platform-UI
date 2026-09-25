@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Organization, OrganizationOverview, OrganizationProfile, OrganizationStatus, OrganizationMember, OrganizationCourse, OrganizationProgram } from '../../../core/models/organization.model';
 import { OrganizationService } from '../../../core/services/organization.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-organization-dashboard',
@@ -53,7 +54,11 @@ export class OrganizationDashboardComponent implements OnInit {
     secondaryColor: ['']
   });
 
-  constructor(private readonly fb: FormBuilder, private readonly org: OrganizationService) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly org: OrganizationService,
+    private readonly auth: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.org.getMine().subscribe({
@@ -281,6 +286,10 @@ export class OrganizationDashboardComponent implements OnInit {
         this.programLoading = false;
       }
     });
+  }
+
+  isCurrentUser(member: OrganizationMember): boolean {
+    return member.userId === this.auth.currentUser()?.id;
   }
 
   deactivateMember(member: OrganizationMember): void {
