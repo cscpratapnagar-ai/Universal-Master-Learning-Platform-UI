@@ -51,6 +51,39 @@
       <ng-template #emptyPaths><div class="empty-state"><strong>No learning paths yet</strong><span>Create a learning path to start structuring this project.</span></div></ng-template>
     </section>
 
+    <section class="milestone-workspace card">
+      <div class="section-heading">
+        <div><p class="eyebrow">DELIVERY CONTROL</p><h2>Project Milestones</h2></div>
+        <span class="count">{{milestones.length}} checkpoints</span>
+      </div>
+      <div class="milestone-create">
+        <input [(ngModel)]="milestoneTitle" placeholder="Milestone title" maxlength="180" />
+        <input [(ngModel)]="milestoneDueDate" type="date" />
+        <textarea [(ngModel)]="milestoneDescription" rows="2" placeholder="Outcome / acceptance note"></textarea>
+        <button type="button" (click)="createMilestone()" [disabled]="milestoneSaving || !milestoneTitle.trim()">{{milestoneSaving ? 'Creating…' : 'Create checkpoint'}}</button>
+      </div>
+      <p class="milestone-error" *ngIf="milestoneAction">{{milestoneAction}}</p>
+      <div class="milestone-list" *ngIf="milestones.length; else noMilestones">
+        <article class="milestone" *ngFor="let milestone of milestones">
+          <div class="milestone-index">{{milestone.sortOrder + 1 | number:'2.0-0'}}</div>
+          <div class="milestone-copy">
+            <div class="milestone-title"><strong>{{milestone.title}}</strong><span class="milestone-status" [class]="milestone.status.toLowerCase()">{{milestone.status}}</span></div>
+            <p>{{milestone.description || 'No acceptance note configured.'}}</p>
+            <small>{{milestone.dueDate ? ('Due ' + milestone.dueDate) : 'No due date'}}</small>
+          </div>
+          <div class="milestone-actions">
+            <button *ngIf="milestone.status === 'PLANNED'" type="button" (click)="milestoneTransition(milestone,'start')">Start</button>
+            <button *ngIf="milestone.status === 'IN_PROGRESS'" type="button" (click)="milestoneTransition(milestone,'complete')">Complete</button>
+            <button *ngIf="milestone.status !== 'COMPLETED' && milestone.status !== 'CANCELLED' && milestone.status !== 'BLOCKED'" type="button" (click)="milestoneTransition(milestone,'block')">Block</button>
+            <button *ngIf="milestone.status === 'BLOCKED'" type="button" (click)="milestoneTransition(milestone,'reopen')">Reopen</button>
+            <button *ngIf="milestone.status !== 'COMPLETED' && milestone.status !== 'CANCELLED'" type="button" (click)="milestoneTransition(milestone,'cancel')">Cancel</button>
+            <button *ngIf="milestone.status === 'PLANNED' || milestone.status === 'CANCELLED'" type="button" class="danger" (click)="deleteMilestone(milestone)">Delete</button>
+          </div>
+        </article>
+      </div>
+      <ng-template #noMilestones><div class="empty-state"><strong>No milestones yet</strong><span>Add the first delivery checkpoint and track it through completion.</span></div></ng-template>
+    </section>
+
     <section class="coming-grid">
       <article class="future card"><span>01</span><strong>Milestones</strong><small>Project delivery checkpoints will connect here.</small></article>
       <article class="future card"><span>02</span><strong>Dependencies</strong><small>Cross-path sequencing and blockers will connect here.</small></article>
