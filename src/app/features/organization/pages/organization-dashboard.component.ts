@@ -70,7 +70,22 @@ export class OrganizationDashboardComponent implements OnInit {
         } else if (this.organizations.length > 1) {
           this.error = 'Select an organization workspace below.';
         } else {
-          this.error = 'No organization workspace is assigned to this account yet. If your organization-admin request was just approved, sign out and sign in again once.';
+          this.org.getMyMemberships().subscribe({
+            next: membershipResponse => {
+              const memberships = membershipResponse.data || [];
+              const inactiveAdmin = memberships.find(member =>
+                !member.active && (member.roles || []).some(role => role.toUpperCase() === 'ORG_ADMIN')
+              );
+              if (inactiveAdmin) {
+                this.error = 'Organization admin access is currently disabled. A Super Admin must restore this organization membership before the workspace can open.';
+              } else {
+                this.error = 'No active organization workspace is assigned to this account. If access was just approved or restored, sign out and sign in again once.';
+              }
+            },
+            error: () => {
+              this.error = 'No active organization workspace is assigned to this account. Contact a Super Admin to restore organization access.';
+            }
+          });
         }
       },
       error: error => {
