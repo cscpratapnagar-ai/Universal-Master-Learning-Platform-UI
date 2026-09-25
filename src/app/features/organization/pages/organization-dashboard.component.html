@@ -205,7 +205,8 @@
         </div>
         <div>
           <span class="member-status">{{member.active?'ACTIVE':'INACTIVE'}}</span>
-          <button type="button" *ngIf="member.active" (click)="deactivateMember(member)">Deactivate</button>
+          <span class="member-self-lock" *ngIf="isCurrentUser(member)">CURRENT ADMIN · PROTECTED</span>
+          <button type="button" *ngIf="member.active && !isCurrentUser(member)" (click)="deactivateMember(member)">Deactivate</button>
         </div>
       </article>
       <p class="empty" *ngIf="!members.length">No members have been added yet.</p>
