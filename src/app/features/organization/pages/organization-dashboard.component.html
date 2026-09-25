@@ -175,6 +175,7 @@
         <div class="program-control">
           <span class="program-status" [class.published]="program.status==='PUBLISHED'" [class.active]="program.status==='ACTIVE'" [class.paused]="program.status==='PAUSED'" [class.completed]="program.status==='COMPLETED'" [class.archived]="program.status==='ARCHIVED'">{{program.status}}</span>
           <div class="program-actions">
+            <button type="button" class="open-project" (click)="openProgram(program)" [disabled]="programLoading">Open Project</button>
             <button type="button" *ngIf="program.status==='PUBLISHED'" (click)="startProgram(program)" [disabled]="programLoading">Start</button>
             <button type="button" *ngIf="program.status==='ACTIVE'" (click)="pauseProgram(program)" [disabled]="programLoading">Pause</button>
             <button type="button" *ngIf="program.status==='PAUSED'" (click)="resumeProgram(program)" [disabled]="programLoading">Resume</button>
