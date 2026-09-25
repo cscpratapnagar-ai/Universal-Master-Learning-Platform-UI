@@ -249,6 +249,31 @@ export class OrganizationDashboardComponent implements OnInit {
     });
   }
 
+  startProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'start', 'startProgram', 'Program started.'); }
+  pauseProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'pause', 'pauseProgram', 'Program paused.'); }
+  resumeProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'resume', 'resumeProgram', 'Program resumed.'); }
+  completeProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'complete', 'completeProgram', 'Program completed.'); }
+  archiveProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'archive', 'archiveProgram', 'Program archived.'); }
+
+  private runProgramLifecycle(program: OrganizationProgram, action: string, method: 'startProgram'|'pauseProgram'|'resumeProgram'|'completeProgram'|'archiveProgram', message: string): void {
+    if (!program) return;
+    this.error = '';
+    this.success = '';
+    this.programLoading = true;
+    this.org[method](program.id).subscribe({
+      next: response => {
+        const updated = response.data || { ...program, status: (action === 'start' || action === 'resume') ? 'ACTIVE' : action.toUpperCase() };
+        this.programs = this.programs.map(item => item.id === program.id ? updated : item);
+        this.success = message;
+        this.programLoading = false;
+      },
+      error: error => {
+        this.error = error?.error?.message || ('Unable to ' + action + ' this program.');
+        this.programLoading = false;
+      }
+    });
+  }
+
   deactivateMember(member: OrganizationMember): void {
     if (!this.profile) return;
 
