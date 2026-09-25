@@ -295,6 +295,8 @@ export class OrganizationDashboardComponent implements OnInit {
     });
   }
 
+  openProgram(program: OrganizationProgram): void { void this.router.navigate(['/organization/projects', program.id]); }
+
   startProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'start', 'startProgram', 'Program started.'); }
   pauseProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'pause', 'pauseProgram', 'Program paused.'); }
   resumeProgram(program: OrganizationProgram): void { this.runProgramLifecycle(program, 'resume', 'resumeProgram', 'Program resumed.'); }
