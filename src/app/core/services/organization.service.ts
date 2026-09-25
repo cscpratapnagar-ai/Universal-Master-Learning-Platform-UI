@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationProgram, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest, OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency } from '../models/organization.model';
+import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationProgram, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest, OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress } from '../models/organization.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
@@ -19,6 +19,7 @@ export class OrganizationService {
   getCourses(id: string): Observable<ApiResponse<OrganizationCourse[]>> { return this.http.get<ApiResponse<OrganizationCourse[]>>(`${this.url}/${id}/courses`); }
   getPrograms(id: string): Observable<ApiResponse<OrganizationProgram[]>> { return this.http.get<ApiResponse<OrganizationProgram[]>>(`${API_CONFIG.baseUrl}/programs/organization/${id}`); }
   getProgramDetail(programId: string): Observable<ApiResponse<OrganizationProjectDetail>> { return this.http.get<ApiResponse<OrganizationProjectDetail>>(`${API_CONFIG.baseUrl}/programs/${programId}/detail`); }
+  getProgramProgress(programId: string): Observable<ApiResponse<OrganizationProjectProgress>> { return this.http.get<ApiResponse<OrganizationProjectProgress>>(`${API_CONFIG.baseUrl}/programs/${programId}/progress`); }
   getDependencies(programId: string): Observable<ApiResponse<OrganizationProjectDependency[]>> { return this.http.get<ApiResponse<OrganizationProjectDependency[]>>(`${API_CONFIG.baseUrl}/programs/${programId}/dependencies`); }
   createDependency(programId: string, body: { predecessorId: string; successorId: string }): Observable<ApiResponse<OrganizationProjectDependency>> { return this.http.post<ApiResponse<OrganizationProjectDependency>>(`${API_CONFIG.baseUrl}/programs/${programId}/dependencies`, body); }
   deleteDependency(id: string): Observable<ApiResponse<void>> { return this.http.delete<ApiResponse<void>>(`${API_CONFIG.baseUrl}/programs/dependencies/${id}`); }
