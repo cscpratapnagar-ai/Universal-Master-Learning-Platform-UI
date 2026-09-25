@@ -24,6 +24,7 @@ export class OrganizationDashboardComponent implements OnInit {
   memberSaving = false;
   error = '';
   success = '';
+  private loadErrors = new Set<string>();
   memberEmail = '';
   lastRefreshedAt: Date | null = null;
   statuses: OrganizationStatus[] = ['DRAFT', 'ACTIVE', 'SUSPENDED', 'INACTIVE', 'ARCHIVED'];
@@ -94,6 +95,7 @@ export class OrganizationDashboardComponent implements OnInit {
     this.programLoading = true;
     this.error = '';
     this.success = '';
+    this.loadErrors.clear();
 
     this.org.getProfile(id).subscribe({
       next: response => {
@@ -103,7 +105,7 @@ export class OrganizationDashboardComponent implements OnInit {
         this.lastRefreshedAt = new Date();
       },
       error: error => {
-        this.error = error?.error?.message || 'Unable to load organization.';
+        this.reportLoadError('profile', error);
         this.loading = false;
       }
     });
@@ -115,7 +117,7 @@ export class OrganizationDashboardComponent implements OnInit {
         this.lastRefreshedAt = new Date();
       },
       error: error => {
-        this.error = error?.error?.message || 'Unable to load organization overview.';
+        this.reportLoadError('overview', error);
         this.overviewLoading = false;
       }
     });
@@ -127,14 +129,14 @@ export class OrganizationDashboardComponent implements OnInit {
         this.lastRefreshedAt = new Date();
       },
       error: error => {
-        this.error = error?.error?.message || 'Unable to load organization courses.';
+        this.reportLoadError('courses', error);
         this.courseLoading = false;
       }
     });
 
     this.org.getPrograms(id).subscribe({
       next: response => { this.programs = response.data || []; this.programLoading = false; this.lastRefreshedAt = new Date(); },
-      error: error => { this.error = error?.error?.message || 'Unable to load organization programs.'; this.programLoading = false; }
+      error: error => { this.reportLoadError('programs', error); this.programLoading = false; }
     });
 
     this.org.getMembers(id).subscribe({
@@ -144,10 +146,17 @@ export class OrganizationDashboardComponent implements OnInit {
         this.lastRefreshedAt = new Date();
       },
       error: error => {
-        this.error = error?.error?.message || 'Unable to load organization members.';
+        this.reportLoadError('members', error);
         this.memberLoading = false;
       }
     });
+  }
+
+  private reportLoadError(section: string, error: any): void {
+    this.loadErrors.add(section);
+    const status = error?.status ? ` (HTTP ${error.status})` : '';
+    const message = error?.error?.message || error?.message || 'Request failed';
+    this.error = `Unable to load ${section}${status}: ${message}`;
   }
 
   save(): void {
