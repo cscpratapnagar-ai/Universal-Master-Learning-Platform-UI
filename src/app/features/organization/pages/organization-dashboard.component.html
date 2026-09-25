@@ -10,8 +10,8 @@
       <span>Operate your organization from one secure workspace.</span>
     </div>
     <div class="hero-actions">
-      <button type="button" class="refresh" (click)="refresh()" [disabled]="loading || overviewLoading || memberLoading">
-        {{loading || overviewLoading || memberLoading ? 'Refreshing…' : 'Refresh workspace'}}
+      <button type="button" class="refresh" (click)="refresh()" [disabled]="loading || overviewLoading || memberLoading || courseLoading || programLoading">
+        {{loading || overviewLoading || memberLoading || courseLoading || programLoading ? 'Refreshing…' : 'Refresh workspace'}}
       </button>
       <div class="hero-status" *ngIf="profile">
         <span class="status-dot" [class.offline]="!profile.active"></span>
@@ -168,7 +168,16 @@
           <small>{{program.slug}}</small>
           <p>{{program.description || 'No program description configured.'}}</p>
         </div>
-        <span class="program-status" [class.published]="program.status==='PUBLISHED'">{{program.status}}</span>
+        <div class="program-control">
+          <span class="program-status" [class.published]="program.status==='PUBLISHED'" [class.active]="program.status==='ACTIVE'" [class.paused]="program.status==='PAUSED'" [class.completed]="program.status==='COMPLETED'" [class.archived]="program.status==='ARCHIVED'">{{program.status}}</span>
+          <div class="program-actions">
+            <button type="button" *ngIf="program.status==='PUBLISHED'" (click)="startProgram(program)" [disabled]="programLoading">Start</button>
+            <button type="button" *ngIf="program.status==='ACTIVE'" (click)="pauseProgram(program)" [disabled]="programLoading">Pause</button>
+            <button type="button" *ngIf="program.status==='PAUSED'" (click)="resumeProgram(program)" [disabled]="programLoading">Resume</button>
+            <button type="button" *ngIf="program.status==='ACTIVE' || program.status==='PAUSED'" (click)="completeProgram(program)" [disabled]="programLoading">Complete</button>
+            <button type="button" class="archive" *ngIf="program.status!=='ARCHIVED'" (click)="archiveProgram(program)" [disabled]="programLoading">Archive</button>
+          </div>
+        </div>
       </article>
       <p class="empty" *ngIf="!programs.length">No programs/projects have been created for this organization yet.</p>
     </div>
