@@ -113,3 +113,7 @@ export interface OrganizationProjectMilestone {
   sortOrder: number;
   status: 'PLANNED' | 'IN_PROGRESS' | 'COMPLETED' | 'BLOCKED' | 'CANCELLED' | string;
 }
+
+export interface OrganizationProjectDependency {
+  id: string; programId: string; predecessorId: string; predecessorTitle: string; successorId: string; successorTitle: string; type: string;
+}
