@@ -1,0 +1,60 @@
+<main class="project-shell">
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="project-hero" *ngIf="project">
+    <button class="back" type="button" (click)="back()">← Organization Command Center</button>
+    <div class="hero-content">
+      <div>
+        <p class="eyebrow">PROJECT COMMAND CENTER</p>
+        <h1>{{project.title}}</h1>
+        <p class="slug">{{project.slug || 'No slug configured'}}</p>
+        <p class="description">{{project.description || 'No project description configured yet.'}}</p>
+      </div>
+      <div class="status-panel">
+        <span class="status" [class]="project.status.toLowerCase()">{{project.status}}</span>
+        <small>Organization workspace</small>
+      </div>
+    </div>
+  </header>
+
+  <p class="loading" *ngIf="loading">Synchronizing project intelligence…</p>
+  <div class="error card" *ngIf="error">{{error}} <button type="button" (click)="load()">Retry</button></div>
+
+  <ng-container *ngIf="project && !loading">
+    <section class="metrics">
+      <article class="metric"><span>PROJECT STATE</span><strong>{{project.status}}</strong><small>Current lifecycle state</small></article>
+      <article class="metric"><span>LEARNING PATHS</span><strong>{{project.learningPathCount}}</strong><small>Structured learning journeys</small></article>
+      <article class="metric"><span>COURSES</span><strong>{{project.courseCount}}</strong><small>Courses attached to paths</small></article>
+    </section>
+
+    <section class="workspace card">
+      <div class="section-heading">
+        <div><p class="eyebrow">LEARNING ARCHITECTURE</p><h2>Learning Paths & Courses</h2></div>
+        <span class="count">{{project.courseCount}} courses</span>
+      </div>
+
+      <div class="path-grid" *ngIf="project.learningPaths.length; else emptyPaths">
+        <article class="path-card" *ngFor="let path of project.learningPaths">
+          <div class="path-head">
+            <div class="path-index">{{project.learningPaths.indexOf(path) + 1 | number:'2.0-0'}}</div>
+            <div><h3>{{path.title}}</h3><p>{{path.description || 'No path description configured.'}}</p></div>
+          </div>
+          <div class="course-list">
+            <div class="course" *ngFor="let course of path.courses">
+              <div class="course-number">{{course.sortOrder + 1}}</div>
+              <div class="course-copy"><strong>{{course.title}}</strong><small>{{course.slug || 'No slug'}}</small></div>
+              <span class="course-status" [class]="course.status.toLowerCase()">{{course.status}}</span>
+            </div>
+            <div class="empty-inline" *ngIf="!path.courses.length">No courses assigned to this path yet.</div>
+          </div>
+        </article>
+      </div>
+      <ng-template #emptyPaths><div class="empty-state"><strong>No learning paths yet</strong><span>Create a learning path to start structuring this project.</span></div></ng-template>
+    </section>
+
+    <section class="coming-grid">
+      <article class="future card"><span>01</span><strong>Milestones</strong><small>Project delivery checkpoints will connect here.</small></article>
+      <article class="future card"><span>02</span><strong>Dependencies</strong><small>Cross-path sequencing and blockers will connect here.</small></article>
+      <article class="future card"><span>03</span><strong>Activity Timeline</strong><small>Governance events and operational history will connect here.</small></article>
+    </section>
+  </ng-container>
+</main>
