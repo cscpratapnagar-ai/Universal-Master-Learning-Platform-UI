@@ -28,6 +28,8 @@ export class LearningService {
   private readonly base=API_CONFIG.baseUrl;
   constructor(private readonly http:HttpClient){}
   myCourses():Observable<ApiResponse<StudentCourse[]>>{return this.http.get<ApiResponse<StudentCourse[]>>(`${this.base}/student/courses/me`);}
+  availableCourses():Observable<ApiResponse<AvailableCourse[]>>{return this.http.get<ApiResponse<AvailableCourse[]>>(`${this.base}/student/courses/catalog`);}
+  enrollCourse(courseId:string):Observable<ApiResponse<{id:string;progressPercent:number}>>{return this.http.post<ApiResponse<{id:string;progressPercent:number}>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/enroll`,{});}
   courseLearning(enrollmentId:string):Observable<ApiResponse<CourseLearning>>{return this.http.get<ApiResponse<CourseLearning>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`);}
   getProgressAnalytics(enrollmentId:string):Observable<ApiResponse<LearningProgressAnalytics>>{return this.http.get<ApiResponse<LearningProgressAnalytics>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/progress`);}
   getLearningPath(enrollmentId:string):Observable<ApiResponse<LearningPathStatus>>{return this.http.get<ApiResponse<LearningPathStatus>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`);}
