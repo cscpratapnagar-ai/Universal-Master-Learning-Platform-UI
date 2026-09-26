@@ -42,8 +42,9 @@ export class MyCoursesComponent implements OnInit {
   }
   loadCatalog(): void {
     this.catalogLoading = true;
+    this.catalogError = '';
     this.learning.availableCourses().subscribe({
-      next: response => { this.availableCourses = (response.data || []).filter(c => !c.enrolled); this.catalogLoading = false; },
+      next: response => { this.availableCourses = (response.data || []).filter(c => !c.enrolled && !this.courses.some(m => m.courseId === c.courseId)); this.catalogLoading = false; },
       error: () => { this.catalogError = 'Unable to load the course catalog.'; this.catalogLoading = false; }
     });
   }
@@ -54,7 +55,8 @@ export class MyCoursesComponent implements OnInit {
     this.learning.enrollCourse(course.courseId).subscribe({
       next: response => {
         this.enrollingCourseId = '';
-        this.router.navigate(['/learner/course', response.data.id, 'learn']);
+        this.learning.myCourses().subscribe({ next: mine => { this.courses = mine.data || []; this.loadCatalog(); } });
+        this.router.navigate(['/learner/course', response.data.id]);
       },
       error: e => {
         this.enrollingCourseId = '';
