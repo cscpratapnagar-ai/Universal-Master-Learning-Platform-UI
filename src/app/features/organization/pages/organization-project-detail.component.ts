@@ -5,7 +5,7 @@ import { OrganizationCourse, OrganizationProjectDetail, OrganizationProjectMiles
 @Component({selector:'app-organization-project-detail',templateUrl:'./organization-project-detail.component.html',styleUrls:['./organization-project-detail.component.scss']})
 export class OrganizationProjectDetailComponent implements OnInit {
  project:OrganizationProjectDetail|null=null; loading=true; error=''; commandAction=''; commandBusy=false;
- pathEditing=''; pathTitle=''; pathDescription=''; pathSaving=false; pathAction='';
+ pathEditing=''; pathTitle=''; pathDescription=''; pathSaving=false; pathAction=''; pathCreating=false; newPathTitle=''; newPathDescription='';
  courseCatalog:OrganizationCourse[]=[]; courseCatalogLoading=false; courseAction=''; addingCoursePath=''; selectedCourseId=''; courseOrder=0;
  milestoneTitle=''; milestoneDescription=''; milestoneDueDate=''; milestoneSaving=false; milestoneAction='';
  dependencies:OrganizationProjectDependency[]=[]; progress:OrganizationProjectProgress|null=null; progressLoading=true; progressError=''; health:OrganizationProjectHealth|null=null; healthLoading=true; healthError=''; timeline:OrganizationProjectTimelineItem[]=[]; timelineLoading=true; timelineError=''; activities:OrganizationProjectActivity[]=[]; activityLoading=true; activityError=''; dependencyFrom=''; dependencyTo=''; dependencyAction='';
@@ -20,6 +20,14 @@ export class OrganizationProjectDetailComponent implements OnInit {
  loadActivity():void{if(!this.project)return;this.activityLoading=true;this.organization.getProgramActivity(this.project.id).subscribe({next:r=>{this.activities=r.data||[];this.activityLoading=false;},error:e=>{this.activityError=e?.error?.message||'Unable to load project activity.';this.activityLoading=false;}})}
  loadDependencies():void{if(!this.project)return;this.organization.getDependencies(this.project.id).subscribe({next:r=>this.dependencies=r.data||[],error:e=>this.dependencyAction=e?.error?.message||'Unable to load dependencies.'})}
  loadCourseCatalog():void{if(!this.project?.organizationId)return;this.courseCatalogLoading=true;this.organization.getCourses(this.project.organizationId).subscribe({next:r=>{this.courseCatalog=r.data||[];this.courseCatalogLoading=false;},error:e=>{this.courseAction=e?.error?.message||'Unable to load organization course catalog.';this.courseCatalogLoading=false;}})}
+ createLearningPath():void{
+  if(!this.project||!this.newPathTitle.trim()||this.pathCreating)return;
+  this.pathCreating=true;this.pathAction='';
+  this.organization.createLearningPath(this.project.id,{title:this.newPathTitle.trim(),description:this.newPathDescription.trim()}).subscribe({
+   next:()=>{this.newPathTitle='';this.newPathDescription='';this.pathCreating=false;this.load();},
+   error:e=>{this.pathAction=e?.error?.message||'Unable to create learning path.';this.pathCreating=false;}
+  });
+ }
  beginPathEdit(path:OrganizationProjectPath):void{this.pathEditing=path.id;this.pathTitle=path.title;this.pathDescription=path.description||'';this.pathAction='';}
  cancelPathEdit():void{this.pathEditing='';}
  savePath(path:OrganizationProjectPath):void{if(!this.pathTitle.trim()||this.pathSaving)return;this.pathSaving=true;this.pathAction='';this.organization.updateLearningPath(path.id,{title:this.pathTitle.trim(),description:this.pathDescription.trim()}).subscribe({next:()=>{this.pathSaving=false;this.pathEditing='';this.load();},error:e=>{this.pathAction=e?.error?.message||'Unable to update learning path.';this.pathSaving=false;}})}
