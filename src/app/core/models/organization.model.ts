@@ -121,3 +121,5 @@ export interface OrganizationProjectDependency {
 export interface OrganizationProjectCourseProgress { courseId: string; title: string; progressPercent: number; enrollmentCount: number; completedEnrollmentCount: number; }
 export interface OrganizationProjectPathProgress { pathId: string; title: string; courseCount: number; progressPercent: number; }
 export interface OrganizationProjectProgress { programId: string; courseCount: number; pathCount: number; learnerCount: number; enrollmentCount: number; projectProgressPercent: number; courses: OrganizationProjectCourseProgress[]; learningPaths: OrganizationProjectPathProgress[]; }
+
+export interface OrganizationProjectHealth { programId: string; healthScore: number; healthStatus: 'HEALTHY' | 'ATTENTION' | 'AT_RISK' | string; learningProgressPercent: number; milestoneCompletionPercent: number; deadlineHealthPercent: number; blockerHealthPercent: number; milestoneCount: number; completedMilestoneCount: number; blockedMilestoneCount: number; overdueMilestoneCount: number; dependencyCount: number; generatedAt: string; }
