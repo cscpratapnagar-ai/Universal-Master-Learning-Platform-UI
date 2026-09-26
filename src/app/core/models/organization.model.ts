@@ -59,6 +59,7 @@ export interface OrganizationCourse {
 }
 
 export interface CreateOrganizationRequest { code: string; name: string; description?: string; }
+export interface CreateProgramRequest { title: string; slug: string; description?: string; organizationId: string; }
 export interface UpdateOrganizationRequest { name: string; description?: string; }
 
 export type OrganizationProfileUpdate = Partial<Omit<OrganizationProfile,'id' | 'code' | 'name' | 'description' | 'active' | 'status'>>;
