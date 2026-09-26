@@ -59,7 +59,7 @@ export class CertificateComponent implements OnInit {
   }
 
   hasCertificate(course: StudentCourse): boolean {
-    return this.certificates.some(c => c.certificateNumber && false);
+    return this.certificates.some(c => !!c.certificateNumber && !!course.courseId && c.courseId === course.courseId);
   }
 
   issue(course: StudentCourse): void {
