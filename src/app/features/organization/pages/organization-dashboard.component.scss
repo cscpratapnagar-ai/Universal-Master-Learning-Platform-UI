@@ -150,3 +150,8 @@
 }
 
 .accent-project{border-top:2px solid #53d6a0;background:linear-gradient(145deg,rgba(17,43,53,.9),rgba(9,20,36,.72));}
+
+.catalog-heading-actions{display:flex;align-items:center;gap:9px}
+.studio-link{border:1px solid rgba(105,170,255,.28);border-radius:10px;background:linear-gradient(135deg,rgba(37,99,235,.28),rgba(124,58,237,.2));color:#b9d7ff;padding:8px 11px;font-size:.68rem;font-weight:800;cursor:pointer;transition:transform .2s ease,border-color .2s ease}
+.studio-link:hover{transform:translateY(-2px);border-color:rgba(126,180,255,.55)}
+@media(max-width:700px){.catalog-heading-actions{width:100%;justify-content:space-between}.studio-link{flex:1}}
