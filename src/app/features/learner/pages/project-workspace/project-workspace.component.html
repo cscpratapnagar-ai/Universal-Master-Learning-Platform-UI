@@ -1,0 +1,19 @@
+<main class="workspace-shell">
+  <button class="back" (click)="back()">← My Projects</button>
+  <div class="state" *ngIf="loading">Building your project workspace…</div>
+  <div class="state error" *ngIf="!loading && error">{{error}}</div>
+  <ng-container *ngIf="!loading && project">
+    <header class="hero">
+      <div><p class="eyebrow">LEARNER PROJECT WORKSPACE</p><h1>{{project.programTitle}}</h1><p>Follow the assigned project sequence and continue directly into each published course.</p></div>
+      <div class="score"><strong>{{project.progressPercent}}%</strong><span>project progress</span></div>
+    </header>
+    <div class="project-progress"><i [style.width]="project.progressPercent+'%'"></i></div>
+    <section class="courses">
+      <article class="course" *ngFor="let course of project.courses; let i=index" (click)="openCourse(course)">
+        <div class="index">{{i+1 | number:'2.0'}}</div>
+        <div class="body"><span>{{course.status}}</span><h2>{{course.title}}</h2><div class="bar"><i [style.width]="course.progressPercent+'%'"></i></div><small>{{course.progressPercent}}% complete</small></div>
+        <div class="arrow">→</div>
+      </article>
+    </section>
+  </ng-container>
+</main>
