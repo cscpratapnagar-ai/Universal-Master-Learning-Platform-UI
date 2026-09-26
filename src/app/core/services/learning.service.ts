@@ -5,6 +5,7 @@ import { API_CONFIG } from '../config/api.config';
 import { ApiResponse, StudentCourse, CourseLearning } from '../models/learning.model';
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../models/ai-learning.model';
 import { AiTutorRequest, AiTutorResponse } from '../models/ai-tutor.model';
+import { OrganizationProjectEnrollment } from '../models/organization.model';
 
 export interface LearningProgressAnalytics { enrollmentId:string; courseId:string; courseTitle:string; completionPercent:number; completedLessons:number; totalLessons:number; remainingLessons:number; activeLessons:number; learningSeconds:number; learningMinutes:number; masteryScore:number; masteryLevel:'MASTERED'|'PROFICIENT'|'DEVELOPING'|'EMERGING'|'NOT_ASSESSED'; momentum:'EXCELLENT'|'ON_TRACK'|'BUILDING'|'STARTING'; assessmentCount:number; assessments:{assessmentId:string;lessonId?:string|null;title:string;score:number;masteryLevel:string;passed:boolean;submittedAt:string}[]; }
 export interface LearningPathStatus { enrollmentId:string; courseId:string; progressPercent:number; completedLessonsCount:number; availableLessonsCount:number; lockedLessonsCount:number; totalLessonsCount:number; isCourseCompleted:boolean; courseCompletedAt?:string|null; nextRecommendedLesson:{lessonId?:string;title?:string;sortOrder?:number;completed?:boolean;locked?:boolean}; lessons:{lessonId:string;title:string;sortOrder:number;completed:boolean;locked:boolean;status:'COMPLETED'|'AVAILABLE'|'LOCKED';pendingPrerequisiteCount:number}[]; }
@@ -29,6 +30,7 @@ export class LearningService {
   private readonly base=API_CONFIG.baseUrl;
   constructor(private readonly http:HttpClient){}
   myCourses():Observable<ApiResponse<StudentCourse[]>>{return this.http.get<ApiResponse<StudentCourse[]>>(`${this.base}/student/courses/me`);}
+  myProjects():Observable<ApiResponse<OrganizationProjectEnrollment[]>>{return this.http.get<ApiResponse<OrganizationProjectEnrollment[]>>(`${this.base}/program-enrollments/mine`);}
   availableCourses():Observable<ApiResponse<AvailableCourse[]>>{return this.http.get<ApiResponse<AvailableCourse[]>>(`${this.base}/student/courses/catalog`);}
   enrollCourse(courseId:string):Observable<ApiResponse<{id:string;progressPercent:number}>>{return this.http.post<ApiResponse<{id:string;progressPercent:number}>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/enroll`,{});}
   courseLearning(enrollmentId:string):Observable<ApiResponse<CourseLearning>>{return this.http.get<ApiResponse<CourseLearning>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`);}
