@@ -42,7 +42,7 @@
       <div class="health-loading" *ngIf="healthLoading">Calculating delivery, learning and deadline health…</div>
       <ng-container *ngIf="health && !healthLoading">
         <div class="health-hero">
-          <div class="health-score"><strong>{{health.healthScore}}%</strong><span>HEALTH SCORE</span></div>
+          <div class="health-score" [style.--health]="health.healthScore + '%'"><strong>{{health.healthScore}}%</strong><span>HEALTH SCORE</span></div>
           <div class="health-grid">
             <article><span>LEARNING</span><strong>{{health.learningProgressPercent}}%</strong><i [style.width]="health.learningProgressPercent + '%'"></i></article>
             <article><span>MILESTONES</span><strong>{{health.milestoneCompletionPercent}}%</strong><i [style.width]="health.milestoneCompletionPercent + '%'"></i></article>
