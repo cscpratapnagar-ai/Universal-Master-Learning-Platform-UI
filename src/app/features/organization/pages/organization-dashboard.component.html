@@ -56,6 +56,11 @@
       <strong>{{overview.publishedCourses}} / {{overview.totalCourses || 0}}</strong>
       <small>{{overview.archivedCourses}} archived</small>
     </article>
+    <article class="metric-card accent-project">
+      <span>PROJECTS</span>
+      <strong>{{programs.length}}</strong>
+      <small>{{programs.filter(p => p.status === 'ACTIVE').length}} active · {{programs.filter(p => p.status === 'DRAFT').length}} draft</small>
+    </article>
   </section>
 
   <section class="content-health card" *ngIf="overview">
