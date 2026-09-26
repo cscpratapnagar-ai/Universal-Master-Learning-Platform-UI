@@ -301,6 +301,8 @@ export class OrganizationDashboardComponent implements OnInit {
     });
   }
 
+  openCourseStudio(): void { const organizationId=this.form.controls.organizationId.value; if(organizationId) void this.router.navigate(['/teacher/courses'],{queryParams:{organizationId}}); }
+
   createProgram(): void {
     const organizationId = this.form.controls.organizationId.value;
     if (!organizationId || this.projectForm.invalid || this.projectCreating) {
