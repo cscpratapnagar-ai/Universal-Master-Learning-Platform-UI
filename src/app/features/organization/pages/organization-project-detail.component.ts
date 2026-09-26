@@ -4,6 +4,8 @@ import { OrganizationService } from '../../../core/services/organization.service
 import { OrganizationCourse, OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress, OrganizationProjectHealth, OrganizationProjectTimelineItem, OrganizationProjectActivity, OrganizationProjectPath, OrganizationMember, OrganizationProjectEnrollment } from '../../../core/models/organization.model';
 @Component({selector:'app-organization-project-detail',templateUrl:'./organization-project-detail.component.html',styleUrls:['./organization-project-detail.component.scss']})
 export class OrganizationProjectDetailComponent implements OnInit {
+  members:OrganizationMember[]=[]; projectLearners:OrganizationProjectEnrollment[]=[]; memberLoading=false; learnerAction=''; selectedLearnerId=''; assigningLearner=false;
+
  project:OrganizationProjectDetail|null=null; loading=true; error=''; commandAction=''; commandBusy=false;
  pathEditing=''; pathTitle=''; pathDescription=''; pathSaving=false; pathAction=''; pathCreating=false; newPathTitle=''; newPathDescription='';
  courseCatalog:OrganizationCourse[]=[]; courseCatalogLoading=false; courseAction=''; addingCoursePath=''; selectedCourseId=''; courseOrder=0;
