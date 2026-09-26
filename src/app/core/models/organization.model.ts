@@ -125,3 +125,5 @@ export interface OrganizationProjectProgress { programId: string; courseCount: n
 export interface OrganizationProjectHealth { programId: string; healthScore: number; healthStatus: 'HEALTHY' | 'ATTENTION' | 'AT_RISK' | string; learningProgressPercent: number; milestoneCompletionPercent: number; deadlineHealthPercent: number; blockerHealthPercent: number; milestoneCount: number; completedMilestoneCount: number; blockedMilestoneCount: number; overdueMilestoneCount: number; dependencyCount: number; generatedAt: string; }
 
 export interface OrganizationProjectTimelineItem { id: string; title: string; description?: string | null; status: string; dueDate?: string | null; sortOrder: number; overdue: boolean; }
+
+export interface OrganizationProjectActivity { id: string; action: string; details?: string | null; actor: string; createdAt: string; }
