@@ -10,7 +10,7 @@ export interface LearningProgressAnalytics { enrollmentId:string; courseId:strin
 export interface LearningPathStatus { enrollmentId:string; courseId:string; progressPercent:number; completedLessonsCount:number; availableLessonsCount:number; lockedLessonsCount:number; totalLessonsCount:number; isCourseCompleted:boolean; courseCompletedAt?:string|null; nextRecommendedLesson:{lessonId?:string;title?:string;sortOrder?:number;completed?:boolean;locked?:boolean}; lessons:{lessonId:string;title:string;sortOrder:number;completed:boolean;locked:boolean;status:'COMPLETED'|'AVAILABLE'|'LOCKED';pendingPrerequisiteCount:number}[]; }
 export interface LearningPathLesson { id:string; title:string; contentType:string; content?:string|null; sortOrder:number; completionMode:string; prerequisiteLessonIds:string[]; }
 export interface LearningPathModule { id:string; title:string; sortOrder:number; lessons:LearningPathLesson[]; }
-export interface LearningPathCourse { id:string; title:string; slug?:string; description?:string|null; status:string; modules:LearningPathModule[]; }
+export interface LearningPathCourse { id:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; modules:LearningPathModule[]; }
 export interface TeacherAnalytics { courseCount:number; learnerCount:number; assessmentCount:number; completionRate:number; publishedCourseCount:number; draftCourseCount:number; }
 export interface TeacherLearner { enrollmentId:string; courseId:string; courseTitle:string; learnerId:string; learnerName:string; learnerEmail:string; progressPercent:number; completed:boolean; completedAt?:string|null; }
 
