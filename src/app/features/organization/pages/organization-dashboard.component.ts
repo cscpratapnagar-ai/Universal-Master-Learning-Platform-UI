@@ -18,6 +18,12 @@ export class OrganizationDashboardComponent implements OnInit {
   courses: OrganizationCourse[] = [];
   programs: OrganizationProgram[] = [];
   programLoading = false;
+  projectCreating = false;
+  projectForm = this.fb.group({
+    title: ['', [Validators.required, Validators.maxLength(180)]],
+    slug: ['', [Validators.required, Validators.maxLength(220)]],
+    description: ['', Validators.maxLength(3000)]
+  });
   courseLoading = false;
   loading = false;
   overviewLoading = false;
@@ -293,6 +299,47 @@ export class OrganizationDashboardComponent implements OnInit {
         this.error = error?.error?.message || 'Unable to archive this course.';
       }
     });
+  }
+
+  createProgram(): void {
+    const organizationId = this.form.controls.organizationId.value;
+    if (!organizationId || this.projectForm.invalid || this.projectCreating) {
+      this.projectForm.markAllAsTouched();
+      return;
+    }
+
+    this.projectCreating = true;
+    this.error = '';
+    this.success = '';
+    const raw = this.projectForm.getRawValue();
+
+    this.org.createProgram({
+      title: raw.title?.trim() || '',
+      slug: raw.slug?.trim() || '',
+      description: raw.description?.trim() || '',
+      organizationId
+    }).subscribe({
+      next: response => {
+        const created = response.data;
+        this.success = created ? 'Project “' + created.title + '” created.' : 'Project created.';
+        this.projectCreating = false;
+        this.projectForm.reset();
+        this.load();
+        if (created?.id) void this.router.navigate(['/organization/projects', created.id]);
+      },
+      error: error => {
+        this.error = error?.error?.message || 'Unable to create this project.';
+        this.projectCreating = false;
+      }
+    });
+  }
+
+  autoProjectSlug(): void {
+    const title = this.projectForm.controls.title.value || '';
+    if (this.projectForm.controls.slug.dirty) return;
+    this.projectForm.controls.slug.setValue(
+      title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 220)
+    );
   }
 
   openProgram(program: OrganizationProgram): void { void this.router.navigate(['/organization/projects', program.id]); }
