@@ -117,6 +117,20 @@
       <ng-template #noMilestones><div class="empty-state"><strong>No milestones yet</strong><span>Add the first delivery checkpoint and track it through completion.</span></div></ng-template>
     </section>
 
+    <section class="timeline-workspace card">
+      <div class="section-heading"><div><p class="eyebrow">EXECUTION TIMELINE</p><h2>Project Delivery Timeline</h2></div><span class="count">{{timeline.length}} checkpoints</span></div>
+      <p class="timeline-error" *ngIf="timelineError">{{timelineError}}</p>
+      <div class="timeline-loading" *ngIf="timelineLoading">Building the live project delivery timeline…</div>
+      <div class="timeline" *ngIf="!timelineLoading && timeline.length; else emptyTimeline">
+        <article class="timeline-item" *ngFor="let item of timeline" [class.overdue]="item.overdue" [class.completed]="item.status === 'COMPLETED'">
+          <div class="timeline-node"><span>{{item.sortOrder + 1}}</span></div>
+          <div class="timeline-line"></div>
+          <div class="timeline-content"><div class="timeline-head"><strong>{{item.title}}</strong><span class="milestone-status" [class]="item.status.toLowerCase()">{{item.status}}</span></div><p>{{item.description || 'No execution note configured.'}}</p><small>{{item.dueDate ? ('Due ' + item.dueDate) : 'No due date'}} <b *ngIf="item.overdue">• OVERDUE</b></small></div>
+        </article>
+      </div>
+      <ng-template #emptyTimeline><div class="empty-state"><strong>No timeline checkpoints yet</strong><span>Create milestones to populate the delivery timeline.</span></div></ng-template>
+    </section>
+
     <section class="dependency-workspace card">
       <div class="section-heading"><div><p class="eyebrow">SEQUENCE CONTROL</p><h2>Dependencies & Blockers</h2></div><span class="count">{{dependencies.length}} links</span></div>
       <div class="dependency-create">
