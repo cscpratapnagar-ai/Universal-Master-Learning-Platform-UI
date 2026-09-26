@@ -37,7 +37,7 @@ export class LearningService {
   completeLesson(enrollmentId:string,lessonId:string):Observable<unknown>{return this.http.post(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`,{});}
   getTeacherAnalytics():Observable<ApiResponse<TeacherAnalytics>>{return this.http.get<ApiResponse<TeacherAnalytics>>(`${this.base}/teacher/analytics`);}
   getTeacherLearners():Observable<ApiResponse<TeacherLearner[]>>{return this.http.get<ApiResponse<TeacherLearner[]>>(`${this.base}/teacher/learners`);}
-  adminLearningCatalog():Observable<ApiResponse<LearningPathCourse[]>>{return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog`);}
+  adminLearningCatalog(organizationId?:string):Observable<ApiResponse<LearningPathCourse[]>>{const suffix=organizationId?`?organizationId=${encodeURIComponent(organizationId)}`:'';return this.http.get<ApiResponse<LearningPathCourse[]>>(`${this.base}/admin/learning/catalog${suffix}`);}
   createCourse(request:CreateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.post<ApiResponse<CourseResponse>>(`${this.base}/courses`,request);}
   updateCourse(courseId:string,request:UpdateCourseRequest):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}`,request);}
   publishCourse(courseId:string):Observable<ApiResponse<CourseResponse>>{return this.http.put<ApiResponse<CourseResponse>>(`${this.base}/courses/${encodeURIComponent(courseId)}/publish`,{});}
