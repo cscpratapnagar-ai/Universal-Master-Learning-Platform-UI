@@ -6,6 +6,7 @@ import { ApiResponse } from '../models/api-response.model';
 export interface StudentCertificate {
   id: string;
   certificateNumber: string;
+  courseId?: string;
 }
 
 @Injectable({ providedIn: 'root' })
