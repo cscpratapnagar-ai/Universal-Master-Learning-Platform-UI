@@ -387,6 +387,14 @@ export class OrganizationDashboardComponent implements OnInit {
     });
   }
 
+  get activeProjectCount(): number {
+    return this.programs.filter(program => program.status === 'ACTIVE').length;
+  }
+
+  get draftProjectCount(): number {
+    return this.programs.filter(program => program.status === 'DRAFT').length;
+  }
+
   get publishedCoursePercent(): number {
     return this.coursePercent(this.overview?.publishedCourses || 0);
   }
