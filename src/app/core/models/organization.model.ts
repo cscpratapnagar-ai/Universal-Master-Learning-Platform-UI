@@ -128,3 +128,5 @@ export interface OrganizationProjectHealth { programId: string; healthScore: num
 export interface OrganizationProjectTimelineItem { id: string; title: string; description?: string | null; status: string; dueDate?: string | null; sortOrder: number; overdue: boolean; }
 
 export interface OrganizationProjectActivity { id: string; action: string; details?: string | null; actor: string; createdAt: string; }
+
+export interface OrganizationProjectEnrollment { id:string; programId:string; programTitle:string; organizationId?:string|null; userId:string; status:string; progressPercent:number; completedAt?:string|null; }
