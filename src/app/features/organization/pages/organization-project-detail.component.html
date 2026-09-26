@@ -36,6 +36,29 @@
       </ng-container>
     </section>
 
+    <section class="health-workspace card">
+      <div class="section-heading"><div><p class="eyebrow">EXECUTION INTELLIGENCE</p><h2>Project Health</h2></div><span class="health-badge" *ngIf="health" [class]="health.healthStatus.toLowerCase()">{{health.healthStatus}}</span></div>
+      <p class="health-error" *ngIf="healthError">{{healthError}}</p>
+      <div class="health-loading" *ngIf="healthLoading">Calculating delivery, learning and deadline health…</div>
+      <ng-container *ngIf="health && !healthLoading">
+        <div class="health-hero">
+          <div class="health-score"><strong>{{health.healthScore}}%</strong><span>HEALTH SCORE</span></div>
+          <div class="health-grid">
+            <article><span>LEARNING</span><strong>{{health.learningProgressPercent}}%</strong><i [style.width]="health.learningProgressPercent + '%'"></i></article>
+            <article><span>MILESTONES</span><strong>{{health.milestoneCompletionPercent}}%</strong><i [style.width]="health.milestoneCompletionPercent + '%'"></i></article>
+            <article><span>DEADLINES</span><strong>{{health.deadlineHealthPercent}}%</strong><i [style.width]="health.deadlineHealthPercent + '%'"></i></article>
+            <article><span>BLOCKERS</span><strong>{{health.blockerHealthPercent}}%</strong><i [style.width]="health.blockerHealthPercent + '%'"></i></article>
+          </div>
+        </div>
+        <div class="health-alerts">
+          <span>{{health.completedMilestoneCount}} / {{health.milestoneCount}} milestones completed</span>
+          <span>{{health.overdueMilestoneCount}} overdue</span>
+          <span>{{health.blockedMilestoneCount}} blocked</span>
+          <span>{{health.dependencyCount}} dependencies</span>
+        </div>
+      </ng-container>
+    </section>
+
     <section class="workspace card">
       <div class="section-heading">
         <div><p class="eyebrow">LEARNING ARCHITECTURE</p><h2>Learning Paths & Courses</h2></div>
