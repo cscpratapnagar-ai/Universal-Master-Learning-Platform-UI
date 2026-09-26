@@ -129,4 +129,4 @@ export interface OrganizationProjectTimelineItem { id: string; title: string; de
 
 export interface OrganizationProjectActivity { id: string; action: string; details?: string | null; actor: string; createdAt: string; }
 
-export interface OrganizationProjectEnrollment { id:string; programId:string; programTitle:string; organizationId?:string|null; userId:string; status:string; progressPercent:number; completedAt?:string|null; }
+export interface OrganizationProjectEnrollment { id:string; programId:string; programTitle:string; organizationId?:string|null; userId:string; userEmail?:string; userFirstName?:string|null; userLastName?:string|null; status:string; progressPercent:number; completedAt?:string|null; }
