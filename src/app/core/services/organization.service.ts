@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationProgram, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest, OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress, OrganizationProjectHealth, OrganizationProjectTimelineItem } from '../models/organization.model';
+import { CreateOrganizationRequest, Organization, OrganizationCourse, OrganizationProgram, OrganizationOverview, OrganizationProfile, OrganizationProfileUpdate, OrganizationStatus, OrganizationMember, UpdateOrganizationRequest, OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress, OrganizationProjectHealth, OrganizationProjectTimelineItem, OrganizationProjectActivity } from '../models/organization.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
@@ -22,6 +22,7 @@ export class OrganizationService {
   getProgramProgress(programId: string): Observable<ApiResponse<OrganizationProjectProgress>> { return this.http.get<ApiResponse<OrganizationProjectProgress>>(`${API_CONFIG.baseUrl}/programs/${programId}/progress`); }
   getProgramHealth(programId: string): Observable<ApiResponse<OrganizationProjectHealth>> { return this.http.get<ApiResponse<OrganizationProjectHealth>>(`${API_CONFIG.baseUrl}/programs/${programId}/health`); }
   getProgramTimeline(programId: string): Observable<ApiResponse<OrganizationProjectTimelineItem[]>> { return this.http.get<ApiResponse<OrganizationProjectTimelineItem[]>>(`${API_CONFIG.baseUrl}/programs/${programId}/timeline`); }
+  getProgramActivity(programId: string): Observable<ApiResponse<OrganizationProjectActivity[]>> { return this.http.get<ApiResponse<OrganizationProjectActivity[]>>(`${API_CONFIG.baseUrl}/programs/${programId}/activity`); }
   getDependencies(programId: string): Observable<ApiResponse<OrganizationProjectDependency[]>> { return this.http.get<ApiResponse<OrganizationProjectDependency[]>>(`${API_CONFIG.baseUrl}/programs/${programId}/dependencies`); }
   createDependency(programId: string, body: { predecessorId: string; successorId: string }): Observable<ApiResponse<OrganizationProjectDependency>> { return this.http.post<ApiResponse<OrganizationProjectDependency>>(`${API_CONFIG.baseUrl}/programs/${programId}/dependencies`, body); }
   deleteDependency(id: string): Observable<ApiResponse<void>> { return this.http.delete<ApiResponse<void>>(`${API_CONFIG.baseUrl}/programs/dependencies/${id}`); }
