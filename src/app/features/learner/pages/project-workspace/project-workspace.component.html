@@ -8,6 +8,13 @@
       <div class="score"><strong>{{project.progressPercent}}%</strong><span>project progress</span></div>
     </header>
     <div class="project-progress"><i [style.width]="project.progressPercent+'%'"></i></div>
+    <section class="milestones" *ngIf="milestones.length">
+      <div class="section-title"><p class="eyebrow">EXECUTION TIMELINE</p><h2>Project Milestones</h2></div>
+      <article class="milestone" *ngFor="let milestone of milestones">
+        <div class="milestone-dot" [class.done]="milestone.status==='COMPLETED'" [class.blocked]="milestone.status==='BLOCKED'"></div>
+        <div class="milestone-main"><div class="milestone-meta"><span>{{milestone.status}}</span><strong *ngIf="milestone.overdue">OVERDUE</strong></div><h3>{{milestone.title}}</h3><p *ngIf="milestone.description">{{milestone.description}}</p><small *ngIf="milestone.dueDate">Due {{milestone.dueDate}}</small></div>
+      </article>
+    </section>
     <section class="courses">
       <article class="course" *ngFor="let course of project.courses; let i=index" (click)="openCourse(course)">
         <div class="index">{{i+1 | number:'2.0'}}</div>
