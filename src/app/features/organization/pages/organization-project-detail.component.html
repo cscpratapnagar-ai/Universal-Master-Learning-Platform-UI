@@ -151,6 +151,19 @@
       <ng-template #noDependencies><div class="empty-state"><strong>No dependency links yet</strong><span>Connect milestones to make blockers and execution order explicit.</span></div></ng-template>
     </section>
 
+    <section class="activity-workspace card">
+      <div class="section-heading"><div><p class="eyebrow">GOVERNANCE STREAM</p><h2>Project Activity</h2></div><span class="count">{{activities.length}} events</span></div>
+      <p class="activity-error" *ngIf="activityError">{{activityError}}</p>
+      <div class="activity-loading" *ngIf="activityLoading">Loading project governance events…</div>
+      <div class="activity-list" *ngIf="!activityLoading && activities.length; else emptyActivity">
+        <article class="activity-item" *ngFor="let event of activities">
+          <div class="activity-icon">✦</div>
+          <div class="activity-copy"><div><strong>{{event.action.replace('_',' ')}}</strong><small>{{event.actor}}</small></div><p>{{event.details || 'Project activity recorded.'}}</p><time>{{event.createdAt | date:'medium'}}</time></div>
+        </article>
+      </div>
+      <ng-template #emptyActivity><div class="empty-state"><strong>No activity recorded yet</strong><span>Project governance events will appear here as the workspace changes.</span></div></ng-template>
+    </section>
+
     <section class="coming-grid">
       <article class="future card"><span>01</span><strong>Milestones</strong><small>Project delivery checkpoints will connect here.</small></article>
       <article class="future card"><span>02</span><strong>Dependencies</strong><small>Cross-path sequencing and blockers will connect here.</small></article>
