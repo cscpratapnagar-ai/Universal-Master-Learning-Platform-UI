@@ -12,11 +12,13 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { AssessmentResultComponent } from './pages/assessment-result/assessment-result.component';
 import { CertificateComponent } from './pages/certificate/certificate.component';
 import { AiTutorComponent } from './pages/ai-tutor/ai-tutor.component';
+import { MyProjectsComponent } from './pages/my-projects/my-projects.component';
 
 const LEARNER_ROLES = ['LEARNER', 'STUDENT'];
 
 const routes: Routes = [
   { path: '', component: LearnerDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
+  { path: 'projects', component: MyProjectsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'courses', component: MyCoursesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'course/:enrollmentId', component: CourseDetailsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'course/:enrollmentId/learn', component: CoursePlayerComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
