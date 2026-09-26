@@ -8,6 +8,16 @@
 
 <section class="workspace card architecture"><div class="section-heading"><div><p class="eyebrow">LEARNING ARCHITECTURE CONTROL</p><h2>Paths, Courses & Sequence</h2><span class="command-subtitle">Edit paths, attach organization courses, reorder execution, or remove assignments without leaving the project.</span></div><span class="count">{{project.courseCount}} courses</span></div>
 <div class="catalog-strip"><span *ngIf="courseCatalogLoading">Loading organization catalog…</span><span *ngIf="!courseCatalogLoading">{{availableCourses.length}} unassigned organization courses available</span><span class="catalog-error" *ngIf="courseAction">{{courseAction}}</span></div>
+<div class="path-create">
+  <div class="path-create-copy">
+    <span class="eyebrow">PATH FACTORY</span>
+    <strong>Create learning path</strong>
+    <small>Build the project journey first, then attach courses in sequence.</small>
+  </div>
+  <input [(ngModel)]="newPathTitle" maxlength="180" placeholder="Learning path title">
+  <textarea [(ngModel)]="newPathDescription" rows="1" maxlength="3000" placeholder="Path objective / description"></textarea>
+  <button (click)="createLearningPath()" [disabled]="pathCreating||!newPathTitle.trim()">{{pathCreating?'Creating…':'Create path'}}</button>
+</div>
 <div class="path-grid" *ngIf="project.learningPaths.length; else emptyPaths">
 <article class="path-card editable-path" *ngFor="let path of project.learningPaths">
 <div class="path-head"><div class="path-index">{{project.learningPaths.indexOf(path)+1|number:'2.0-0'}}</div><div class="path-main" *ngIf="pathEditing!==path.id"><h3>{{path.title}}</h3><p>{{path.description||'No path description configured.'}}</p></div><div class="path-edit" *ngIf="pathEditing===path.id"><input [(ngModel)]="pathTitle" maxlength="180"><textarea [(ngModel)]="pathDescription" rows="2"></textarea><div><button (click)="savePath(path)" [disabled]="pathSaving">Save</button><button (click)="cancelPathEdit()">Cancel</button></div></div></div>
