@@ -13,6 +13,7 @@ export interface LearningPathModule { id:string; title:string; sortOrder:number;
 export interface LearningPathCourse { id:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; modules:LearningPathModule[]; }
 export interface TeacherAnalytics { courseCount:number; learnerCount:number; assessmentCount:number; completionRate:number; publishedCourseCount:number; draftCourseCount:number; }
 export interface TeacherLearner { enrollmentId:string; courseId:string; courseTitle:string; learnerId:string; learnerName:string; learnerEmail:string; progressPercent:number; completed:boolean; completedAt?:string|null; }
+export interface AvailableCourse { courseId:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; enrolled:boolean; }
 
 export interface CreateCourseRequest { title:string; slug:string; description?:string; organizationId?:string|null; }
 export interface CourseResponse { id:string; title:string; slug:string; description?:string|null; status:string; organizationId?:string|null; }
