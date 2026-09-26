@@ -33,6 +33,7 @@ export class OrganizationService {
   reopenMilestone(id: string): Observable<ApiResponse<OrganizationProjectMilestone>> { return this.http.put<ApiResponse<OrganizationProjectMilestone>>(`${API_CONFIG.baseUrl}/programs/milestones/${id}/reopen`, {}); }
   cancelMilestone(id: string): Observable<ApiResponse<OrganizationProjectMilestone>> { return this.http.put<ApiResponse<OrganizationProjectMilestone>>(`${API_CONFIG.baseUrl}/programs/milestones/${id}/cancel`, {}); }
   deleteMilestone(id: string): Observable<ApiResponse<void>> { return this.http.delete<ApiResponse<void>>(`${API_CONFIG.baseUrl}/programs/milestones/${id}`); }
+  publishProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/publish`, {}); }
   startProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/start`, {}); }
   pauseProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/pause`, {}); }
   resumeProgram(programId: string): Observable<ApiResponse<OrganizationProgram>> { return this.http.put<ApiResponse<OrganizationProgram>>(`${API_CONFIG.baseUrl}/programs/${programId}/resume`, {}); }
