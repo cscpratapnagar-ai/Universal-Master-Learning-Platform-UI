@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrganizationService } from '../../../core/services/organization.service';
-import { OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress, OrganizationProjectHealth } from '../../../core/models/organization.model';
+import { OrganizationProjectDetail, OrganizationProjectMilestone, OrganizationProjectDependency, OrganizationProjectProgress, OrganizationProjectHealth, OrganizationProjectTimelineItem } from '../../../core/models/organization.model';
 
 @Component({
   selector: 'app-organization-project-detail',
@@ -24,12 +24,16 @@ export class OrganizationProjectDetailComponent implements OnInit {
   health: OrganizationProjectHealth | null = null;
   healthLoading = true;
   healthError = '';
+  timeline: OrganizationProjectTimelineItem[] = [];
+  timelineLoading = true;
+  timelineError = '';
   dependencyFrom = '';
   dependencyTo = '';
   dependencyAction = '';
 
   loadProgress(): void { if (!this.project) return; this.progressLoading = true; this.progressError = ''; this.organization.getProgramProgress(this.project.id).subscribe({ next: r => { this.progress = r.data || null; this.progressLoading = false; }, error: e => { this.progressError = e?.error?.message || 'Unable to load project learning progress.'; this.progressLoading = false; } }); }
   loadHealth(): void { if (!this.project) return; this.healthLoading = true; this.healthError = ''; this.organization.getProgramHealth(this.project.id).subscribe({ next: r => { this.health = r.data || null; this.healthLoading = false; }, error: e => { this.healthError = e?.error?.message || 'Unable to load project health intelligence.'; this.healthLoading = false; } }); }
+  loadTimeline(): void { if (!this.project) return; this.timelineLoading = true; this.timelineError = ''; this.organization.getProgramTimeline(this.project.id).subscribe({ next: r => { this.timeline = r.data || []; this.timelineLoading = false; }, error: e => { this.timelineError = e?.error?.message || 'Unable to load project timeline.'; this.timelineLoading = false; } }); }
   loadDependencies(): void { if (!this.project) return; this.organization.getDependencies(this.project.id).subscribe({ next: r => this.dependencies = r.data || [], error: e => this.dependencyAction = e?.error?.message || 'Unable to load dependencies.' }); }
   createDependency(): void { if (!this.project || !this.dependencyFrom || !this.dependencyTo || this.dependencyFrom === this.dependencyTo) return; this.dependencyAction=''; this.organization.createDependency(this.project.id,{predecessorId:this.dependencyFrom,successorId:this.dependencyTo}).subscribe({next:()=>{this.dependencyFrom='';this.dependencyTo='';this.loadDependencies();},error:e=>this.dependencyAction=e?.error?.message || 'Unable to create dependency.'}); }
   deleteDependency(d: OrganizationProjectDependency): void { this.organization.deleteDependency(d.id).subscribe({next:()=>this.loadDependencies(),error:e=>this.dependencyAction=e?.error?.message || 'Unable to delete dependency.'}); }
@@ -75,7 +79,7 @@ export class OrganizationProjectDetailComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.organization.getProgramDetail(id).subscribe({
-      next: response => { this.project = response.data || null; this.loading = false; this.loadProgress(); this.loadHealth(); this.loadDependencies(); },
+      next: response => { this.project = response.data || null; this.loading = false; this.loadProgress(); this.loadHealth(); this.loadTimeline(); this.loadDependencies(); },
       error: error => {
         this.error = error?.error?.message || 'Unable to load this project.';
         this.loading = false;
