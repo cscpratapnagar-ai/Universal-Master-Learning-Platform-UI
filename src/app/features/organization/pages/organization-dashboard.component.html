@@ -164,6 +164,27 @@
       <span class="save-state">{{programs.length}} active workspace records</span>
     </div>
     <p class="loading" *ngIf="programLoading">Loading program workspace…</p>
+    <form class="project-create" [formGroup]="projectForm" (ngSubmit)="createProgram()">
+      <div class="project-create-copy">
+        <p class="eyebrow">PROJECT FACTORY</p>
+        <h3>Create a new learning project</h3>
+        <span>Start with a secure organization-owned project, then open its Command Center to build paths, courses, milestones and dependencies.</span>
+      </div>
+      <div class="project-create-fields">
+        <label>Project title
+          <input formControlName="title" placeholder="e.g. Advanced Mathematics 2027" (input)="autoProjectSlug()">
+        </label>
+        <label>Project slug
+          <input formControlName="slug" placeholder="advanced-mathematics-2027">
+        </label>
+        <label class="wide">Description
+          <textarea formControlName="description" rows="2" placeholder="What outcome should this project deliver?"></textarea>
+        </label>
+      </div>
+      <button class="create-project" type="submit" [disabled]="projectCreating || projectForm.invalid">
+        {{projectCreating ? 'Creating project…' : 'Create Project & Open Command Center'}}
+      </button>
+    </form>
     <div class="program-list" *ngIf="!programLoading">
       <article class="program-row" *ngFor="let program of programs">
         <div class="program-icon">{{program.title.charAt(0).toUpperCase()}}</div>
