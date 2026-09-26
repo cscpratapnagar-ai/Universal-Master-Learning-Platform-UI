@@ -1,0 +1,31 @@
+<main class="projects-shell">
+  <header class="hero">
+    <div>
+      <p class="eyebrow">PROJECT EXECUTION</p>
+      <h1>My Projects</h1>
+      <p>Organization-assigned learning projects, course progress and completion state — all in one place.</p>
+    </div>
+    <button class="refresh" (click)="load()" [disabled]="loading">↻ Refresh</button>
+  </header>
+
+  <div class="state" *ngIf="loading">Loading your learning projects…</div>
+  <div class="state error" *ngIf="!loading && error">{{error}}</div>
+  <div class="state empty" *ngIf="!loading && !error && !projects.length">
+    <strong>No projects assigned yet</strong>
+    <span>Your organization can assign a project here. Once assigned, its published courses appear in My Learning automatically.</span>
+  </div>
+
+  <section class="project-grid" *ngIf="!loading && projects.length">
+    <article class="project-card" *ngFor="let project of projects; trackBy: trackById" (click)="openProject(project)">
+      <div class="orb"></div>
+      <div class="topline"><span>{{project.status}}</span><b>{{project.progressPercent}}%</b></div>
+      <h2>{{project.programTitle}}</h2>
+      <p>Project learning workspace</p>
+      <div class="progress"><i [style.width]="project.progressPercent + '%'"></i></div>
+      <div class="footer">
+        <span>{{project.progressPercent >= 100 ? 'Completed' : 'Continue learning'}}</span>
+        <span>→</span>
+      </div>
+    </article>
+  </section>
+</main>
