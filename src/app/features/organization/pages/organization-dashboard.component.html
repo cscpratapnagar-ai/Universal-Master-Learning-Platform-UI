@@ -59,7 +59,7 @@
     <article class="metric-card accent-project">
       <span>PROJECTS</span>
       <strong>{{programs.length}}</strong>
-      <small>{{programs.filter(p => p.status === 'ACTIVE').length}} active · {{programs.filter(p => p.status === 'DRAFT').length}} draft</small>
+      <small>{{activeProjectCount}} active · {{draftProjectCount}} draft</small>
     </article>
   </section>
 
