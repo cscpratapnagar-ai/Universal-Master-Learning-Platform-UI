@@ -31,6 +31,7 @@ export class LearningService {
   constructor(private readonly http:HttpClient){}
   myCourses():Observable<ApiResponse<StudentCourse[]>>{return this.http.get<ApiResponse<StudentCourse[]>>(`${this.base}/student/courses/me`);}
   myProjects():Observable<ApiResponse<OrganizationProjectEnrollment[]>>{return this.http.get<ApiResponse<OrganizationProjectEnrollment[]>>(`${this.base}/program-enrollments/mine`);}
+  myProjectWorkspace(programId:string):Observable<ApiResponse<OrganizationProjectEnrollment & {courses:{courseId:string;title:string;status:string;sortOrder:number;enrolled:boolean;progressPercent:number}[]}>>{return this.http.get<ApiResponse<OrganizationProjectEnrollment & {courses:{courseId:string;title:string;status:string;sortOrder:number;enrolled:boolean;progressPercent:number}[]}>>(`${this.base}/program-enrollments/mine/${encodeURIComponent(programId)}/workspace`);}
   availableCourses():Observable<ApiResponse<AvailableCourse[]>>{return this.http.get<ApiResponse<AvailableCourse[]>>(`${this.base}/student/courses/catalog`);}
   enrollCourse(courseId:string):Observable<ApiResponse<{id:string;progressPercent:number}>>{return this.http.post<ApiResponse<{id:string;progressPercent:number}>>(`${this.base}/learning/courses/${encodeURIComponent(courseId)}/enroll`,{});}
   courseLearning(enrollmentId:string):Observable<ApiResponse<CourseLearning>>{return this.http.get<ApiResponse<CourseLearning>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}`);}
