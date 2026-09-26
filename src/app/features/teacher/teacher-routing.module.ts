@@ -12,7 +12,7 @@ const TEACHER_ROLES = ['INSTRUCTOR', 'TEACHER'];
 
 const routes: Routes = [
   { path: '', component: TeacherDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
-  { path: 'courses', component: TeacherCoursesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
+  { path: 'courses', component: TeacherCoursesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN','INSTRUCTOR','TEACHER'] } },
   { path: 'assessments', component: TeacherAssessmentsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
   { path: 'question-bank', component: TeacherQuestionBankComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
   { path: 'learners', component: TeacherLearnersComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } }
