@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LearningPathCourse, LearningService } from '../../../../core/services/learning.service';
 
 @Component({
@@ -14,6 +14,7 @@ export class TeacherCoursesComponent implements OnInit {
   publishing='';
   error='';
   notice='';
+  organizationId='';
 
   title='';
   slug='';
@@ -48,13 +49,13 @@ export class TeacherCoursesComponent implements OnInit {
   editLessonType='TEXT';
   editLessonSortOrder=0;
 
-  constructor(private readonly learning:LearningService,private readonly router:Router){}
+  constructor(private readonly learning:LearningService,private readonly router:Router,private readonly route:ActivatedRoute){}
 
-  ngOnInit():void{this.load();}
+  ngOnInit():void{this.organizationId=this.route.snapshot.queryParamMap.get('organizationId')||'';this.load();}
 
   load():void{
     this.loading=true;
-    this.learning.adminLearningCatalog().subscribe({
+    this.learning.adminLearningCatalog(this.organizationId||undefined).subscribe({
       next:r=>{this.courses=r.data||[];this.loading=false;},
       error:()=>{this.error='Unable to load the course workspace.';this.loading=false;}
     });
@@ -67,7 +68,8 @@ export class TeacherCoursesComponent implements OnInit {
     this.learning.createCourse({
       title:this.title.trim(),
       slug:this.slug.trim().toLowerCase(),
-      description:this.description.trim()||undefined
+      description:this.description.trim()||undefined,
+      organizationId:this.organizationId||undefined
     }).subscribe({
       next:r=>{
         this.saving=false;
@@ -99,7 +101,8 @@ export class TeacherCoursesComponent implements OnInit {
     this.learning.updateCourse(course.id,{
       title:this.editCourseTitle.trim(),
       slug:this.editCourseSlug.trim().toLowerCase(),
-      description:this.editCourseDescription.trim()||undefined
+      description:this.editCourseDescription.trim()||undefined,
+      organizationId:course.organizationId||this.organizationId||undefined
     }).subscribe({
       next:()=>{
         this.saving=false;
