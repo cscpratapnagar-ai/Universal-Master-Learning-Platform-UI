@@ -12,6 +12,8 @@ export class OrganizationProjectDetailComponent implements OnInit {
   project: OrganizationProjectDetail | null = null;
   loading = true;
   error = '';
+  commandAction = '';
+  commandBusy = false;
   milestoneTitle = '';
   milestoneDescription = '';
   milestoneDueDate = '';
@@ -39,8 +41,8 @@ export class OrganizationProjectDetailComponent implements OnInit {
   loadTimeline(): void { if (!this.project) return; this.timelineLoading = true; this.timelineError = ''; this.organization.getProgramTimeline(this.project.id).subscribe({ next: r => { this.timeline = r.data || []; this.timelineLoading = false; }, error: e => { this.timelineError = e?.error?.message || 'Unable to load project timeline.'; this.timelineLoading = false; } }); }
   loadActivity(): void { if (!this.project) return; this.activityLoading = true; this.activityError = ''; this.organization.getProgramActivity(this.project.id).subscribe({ next: r => { this.activities = r.data || []; this.activityLoading = false; }, error: e => { this.activityError = e?.error?.message || 'Unable to load project activity.'; this.activityLoading = false; } }); }
   loadDependencies(): void { if (!this.project) return; this.organization.getDependencies(this.project.id).subscribe({ next: r => this.dependencies = r.data || [], error: e => this.dependencyAction = e?.error?.message || 'Unable to load dependencies.' }); }
-  createDependency(): void { if (!this.project || !this.dependencyFrom || !this.dependencyTo || this.dependencyFrom === this.dependencyTo) return; this.dependencyAction=''; this.organization.createDependency(this.project.id,{predecessorId:this.dependencyFrom,successorId:this.dependencyTo}).subscribe({next:()=>{this.dependencyFrom='';this.dependencyTo='';this.loadDependencies();},error:e=>this.dependencyAction=e?.error?.message || 'Unable to create dependency.'}); }
-  deleteDependency(d: OrganizationProjectDependency): void { this.organization.deleteDependency(d.id).subscribe({next:()=>this.loadDependencies(),error:e=>this.dependencyAction=e?.error?.message || 'Unable to delete dependency.'}); }
+  createDependency(): void { if (!this.project || !this.dependencyFrom || !this.dependencyTo || this.dependencyFrom === this.dependencyTo) return; this.dependencyAction=''; this.organization.createDependency(this.project.id,{predecessorId:this.dependencyFrom,successorId:this.dependencyTo}).subscribe({next:()=>{this.dependencyFrom='';this.dependencyTo='';this.loadDependencies();this.loadActivity();this.loadHealth();},error:e=>this.dependencyAction=e?.error?.message || 'Unable to create dependency.'}); }
+  deleteDependency(d: OrganizationProjectDependency): void { this.organization.deleteDependency(d.id).subscribe({next:()=>{this.loadDependencies();this.loadActivity();this.loadHealth();},error:e=>this.dependencyAction=e?.error?.message || 'Unable to delete dependency.'}); }
 
   get milestones(): OrganizationProjectMilestone[] { return (this.project as OrganizationProjectDetail & { milestones?: OrganizationProjectMilestone[] })?.milestones || []; }
 
@@ -63,6 +65,37 @@ export class OrganizationProjectDetailComponent implements OnInit {
     this.organization.deleteMilestone(m.id).subscribe({ next: () => this.load(), error: e => this.milestoneAction=e?.error?.message || 'Unable to delete milestone.' });
   }
 
+  projectCommand(action: 'publish'|'start'|'pause'|'resume'|'complete'|'archive'): void {
+    if (!this.project || this.commandBusy) return;
+    if (action === 'archive' && !window.confirm('Archive this project? This changes the lifecycle state permanently.')) return;
+    const calls = {
+      publish: this.organization.publishProgram,
+      start: this.organization.startProgram,
+      pause: this.organization.pauseProgram,
+      resume: this.organization.resumeProgram,
+      complete: this.organization.completeProgram,
+      archive: this.organization.archiveProgram
+    };
+    this.commandBusy = true;
+    this.commandAction = '';
+    calls[action].call(this.organization, this.project.id).subscribe({
+      next: response => {
+        if (response.data) this.project = { ...this.project!, status: response.data.status };
+        this.commandBusy = false;
+        this.loadProgress();
+        this.loadHealth();
+        this.loadTimeline();
+        this.loadActivity();
+      },
+      error: e => {
+        this.commandAction = e?.error?.message || 'Project command failed.';
+        this.commandBusy = false;
+      }
+    });
+  }
+
+  refreshWorkspace(): void { this.load(); }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -70,8 +103,6 @@ export class OrganizationProjectDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void { this.load(); }
-
-  private refreshProjectWorkspace(): void { this.load(); this.loadDependencies(); }
 
   load(): void {
     const id = this.route.snapshot.paramMap.get('programId');
@@ -84,10 +115,7 @@ export class OrganizationProjectDetailComponent implements OnInit {
     this.error = '';
     this.organization.getProgramDetail(id).subscribe({
       next: response => { this.project = response.data || null; this.loading = false; this.loadProgress(); this.loadHealth(); this.loadTimeline(); this.loadActivity(); this.loadDependencies(); },
-      error: error => {
-        this.error = error?.error?.message || 'Unable to load this project.';
-        this.loading = false;
-      }
+      error: error => { this.error = error?.error?.message || 'Unable to load this project.'; this.loading = false; }
     });
   }
 
