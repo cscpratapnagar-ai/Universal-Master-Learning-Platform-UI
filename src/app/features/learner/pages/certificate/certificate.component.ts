@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CertificateService, StudentCertificate } from '../../../../core/services/certificate.service';
 import { LearningService } from '../../../../core/services/learning.service';
 import { StudentCourse } from '../../../../core/models/learning.model';
@@ -19,8 +20,11 @@ export class CertificateComponent implements OnInit {
 
   constructor(
     private readonly certificatesApi: CertificateService,
-    private readonly learning: LearningService
+    private readonly learning: LearningService,
+    private readonly router: Router
   ) {}
+
+  back(): void { this.router.navigateByUrl('/learner'); }
 
   ngOnInit(): void {
     this.load();
