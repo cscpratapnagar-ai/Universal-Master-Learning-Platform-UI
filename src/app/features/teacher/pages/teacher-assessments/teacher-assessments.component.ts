@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LearningPathCourse, LearningService } from '../../../../core/services/learning.service';
 
 interface DraftOption { text:string; correct:boolean; }
@@ -20,7 +21,8 @@ export class TeacherAssessmentsComponent implements OnInit {
   editingAssessmentId=''; editAssessmentTitle=''; editPassingScore=70; editMaxAttempts=3;
   editingQuestionId=''; editQuestionText=''; editQuestionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'='SINGLE_CHOICE'; editQuestionPoints=1; editQuestionDifficulty:'EASY'|'MEDIUM'|'HARD'='MEDIUM'; editQuestionOptions:{id?:string;text:string;correct:boolean}[]=[];
 
-  constructor(private readonly learning:LearningService){}
+  constructor(private readonly learning:LearningService,private readonly router:Router){}
+  back():void{this.router.navigateByUrl('/teacher');}
   ngOnInit():void{this.learning.adminLearningCatalog().subscribe({next:r=>this.courses=r.data||[],error:()=>this.error='Unable to load teaching courses.'});}
   onCourseChange():void{
     this.assessments=[];this.existingQuestions=[];this.selectedExistingAssessmentId='';
