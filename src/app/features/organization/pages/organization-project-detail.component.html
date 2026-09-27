@@ -76,9 +76,9 @@
 <div class="section-heading"><div><p class="eyebrow">TEACHER ACTION WORKFLOW</p><h3>Intervention history</h3></div><button (click)="selectedInterventionUser=''">Close</button></div>
 <textarea [(ngModel)]="interventionNote" rows="3" maxlength="3000" placeholder="Add a coaching note, support action, or follow-up context…"></textarea>
 <div class="drawer-actions">
-<button (click)="runIntervention(interventions!.queue.find(x=>x.userId===selectedInterventionUser)!, 'RE_ENGAGEMENT')" [disabled]="interventionBusy">Re-engage</button>
-<button (click)="runIntervention(interventions!.queue.find(x=>x.userId===selectedInterventionUser)!, 'DEADLINE_SUPPORT')" [disabled]="interventionBusy">Deadline support</button>
-<button (click)="runIntervention(interventions!.queue.find(x=>x.userId===selectedInterventionUser)!, 'PROGRESS_COACHING')" [disabled]="interventionBusy">Progress coaching</button>
+<button (click)="runIntervention(interventionTarget!, 'RE_ENGAGEMENT')" [disabled]="interventionBusy">Re-engage</button>
+<button (click)="runIntervention(interventionTarget!, 'DEADLINE_SUPPORT')" [disabled]="interventionBusy">Deadline support</button>
+<button (click)="runIntervention(interventionTarget!, 'PROGRESS_COACHING')" [disabled]="interventionBusy">Progress coaching</button>
 </div>
 <div class="intervention-action-error" *ngIf="interventionActionError">{{interventionActionError}}</div>
 <div class="action-history"><article *ngFor="let action of interventionHistory"><div><strong>{{action.actionType.replace('_',' ')}}</strong><span [class]="'action-status '+action.status.toLowerCase()">{{action.status}}</span></div><p>{{action.note}}</p><small>{{action.actor}} · {{action.createdAt|date:'medium'}}</small><button *ngIf="action.status!=='RESOLVED'" (click)="resolveIntervention(action)" [disabled]="interventionBusy">Resolve</button></article><div class="empty-state" *ngIf="!interventionHistory.length">No actions recorded yet.</div></div>
