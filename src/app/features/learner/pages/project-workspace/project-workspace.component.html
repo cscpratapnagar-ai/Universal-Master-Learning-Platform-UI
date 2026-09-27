@@ -9,6 +9,10 @@
     </header>
     <div class="project-progress"><i [style.width]="project.progressPercent+'%'"></i></div>
 
+    <section class="attention-card" [class]="'attention-card '+attentionLevel.toLowerCase()">
+      <div class="attention-icon">✦</div><div><p class="eyebrow">YOUR PROJECT ATTENTION</p><h2>{{attentionTitle}}</h2><p>{{attentionText}}</p></div>
+    </section>
+
     <section class="execution-summary">
       <article><span>PROJECT STATUS</span><strong>{{project.status}}</strong></article>
       <article><span>MILESTONES</span><strong>{{completedMilestones}} / {{milestoneCount}}</strong></article>
