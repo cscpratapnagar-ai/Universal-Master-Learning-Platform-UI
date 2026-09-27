@@ -140,3 +140,5 @@ export interface OrganizationProjectIntelligence {
   learnerCount: number; criticalCount: number; atRiskCount: number; watchCount: number; onTrackCount: number;
   learners: OrganizationProjectRiskLearner[]; generatedAt: string;
 }
+
+export interface OrganizationProjectInterventionQueue { total:number; immediate:number; targeted:number; watch:number; queue:Array<OrganizationProjectRiskLearner & {priority:number;interventionType:string}>; generatedAt:string; }
