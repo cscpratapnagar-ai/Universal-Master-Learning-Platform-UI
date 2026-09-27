@@ -15,6 +15,7 @@ export class LearnerDashboardComponent implements OnInit {
   isLoggingOut = false;
   activeNav = 'Overview';
   notificationsOpen = false;
+  profileMenuOpen = false;
   theme: ThemeMode = 'dark';
   courses: StudentCourse[] = [];
   ai: AiLearningOrchestration | null = null;
