@@ -142,3 +142,5 @@ export interface OrganizationProjectIntelligence {
 }
 
 export interface OrganizationProjectInterventionQueue { total:number; immediate:number; targeted:number; watch:number; queue:Array<OrganizationProjectRiskLearner & {priority:number;interventionType:string}>; generatedAt:string; }
+
+export interface OrganizationProjectInterventionAction { id:string; programId:string; userId:string; userEmail?:string; actionType:string; status:string; note?:string|null; actor:string; createdAt:string; resolvedAt?:string|null; }
