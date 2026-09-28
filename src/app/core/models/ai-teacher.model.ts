@@ -16,3 +16,12 @@ export interface AiTeacherTurnResponse {
   studentPrompt: string;
   lectureComplete: boolean;
 }
+
+
+export interface AiTeacherQuotaResponse {
+  plan: string;
+  used: number;
+  limit: number;
+  remaining: number;
+  periodStart: string;
+}
