@@ -25,6 +25,7 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
   loading = false;
   error = '';
   speaking = false;
+  listening = false;
   private timer?: ReturnType<typeof setInterval>;
 
   readonly phases: TeacherPhase[] = [
@@ -89,6 +90,31 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
   ask(): void {
     if (!this.studentMessage.trim() || this.loading) return;
     this.nextTurn();
+  }
+
+  startListening(): void {
+    if (typeof window === 'undefined') return;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      this.error = this.language === 'GU' ? 'આ browserમાં voice input support નથી.' : 'Voice input is not supported in this browser.';
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = this.language === 'GU' ? 'gu-IN' : 'en-IN';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    this.listening = true;
+    this.error = '';
+
+    recognition.onresult = (event: any) => {
+      this.studentMessage = event.results?.[0]?.[0]?.transcript || '';
+    };
+    recognition.onerror = () => {
+      this.error = this.language === 'GU' ? 'Voice input capture થઈ શક્યું નથી.' : 'Voice input could not be captured.';
+    };
+    recognition.onend = () => this.listening = false;
+    recognition.start();
   }
 
   speak(): void {
