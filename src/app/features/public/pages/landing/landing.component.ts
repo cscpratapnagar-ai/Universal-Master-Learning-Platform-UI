@@ -141,7 +141,8 @@ export class LandingComponent implements OnInit {
       'private-teachers': '/teacher',
       'learner-space': '/learner',
       examiner: '/examiner',
-      'exam-portal': '/exam-portal'
+      'exam-portal': '/exam-portal',
+      academy: '/academy'
     };
 
     const route = routes[target];
@@ -150,7 +151,7 @@ export class LandingComponent implements OnInit {
       return;
     }
 
-    if (target === 'ai-teacher' || target === 'academy') {
+    if (target === 'ai-teacher') {
       this.scrollTo(target);
     }
   }
