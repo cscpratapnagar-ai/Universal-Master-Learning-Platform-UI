@@ -14,3 +14,5 @@
 @media(max-width:900px){.hero,.lecture-grid{grid-template-columns:1fr}.teacher-stage{min-height:210px}.interaction form{flex-direction:column}}@media(max-width:560px){.teacher-shell{padding:14px}.topbar{align-items:flex-start}.brand{display:none}.hero{padding:20px}.board-content{height:250px}.lecture-grid{gap:12px}}
 
 .mic{border:1px solid rgba(108,134,255,.25);border-radius:12px;background:rgba(255,255,255,.04);color:#c4d0ef;padding:10px 13px;cursor:pointer}.mic.active{background:rgba(255,85,120,.12);border-color:rgba(255,110,140,.4)}
+
+.quota{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(111,135,255,.25);border-radius:999px;background:rgba(74,96,220,.08);font-size:11px}.quota strong{letter-spacing:.08em;color:#cbd6ff}.quota span{color:#8f9abc}.quota-inline{color:#9fb1ff;font-weight:800}
