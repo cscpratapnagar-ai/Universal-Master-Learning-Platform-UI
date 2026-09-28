@@ -14,4 +14,15 @@ export class SubscriptionPlanService {
   getPlans(): Observable<ApiResponse<SubscriptionPlan[]>> {
     return this.http.get<ApiResponse<SubscriptionPlan[]>>(this.url);
   }
+
+  getAdminPlans(): Observable<ApiResponse<SubscriptionPlan[]>> {
+    return this.http.get<ApiResponse<SubscriptionPlan[]>>(`${API_CONFIG.baseUrl}/super-admin/subscription-plans`);
+  }
+
+  updateAdminPlan(code: string, plan: SubscriptionPlan): Observable<ApiResponse<SubscriptionPlan>> {
+    return this.http.put<ApiResponse<SubscriptionPlan>>(
+      `${API_CONFIG.baseUrl}/super-admin/subscription-plans/${encodeURIComponent(code)}`,
+      plan
+    );
+  }
 }
