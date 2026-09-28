@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubscriptionPlan } from '../../../../core/models/subscription-plan.model';
 import { SubscriptionPlanService } from '../../../../core/services/subscription-plan.service';
-import { BillingOrderResponse, UserSubscriptionService } from '../../../../core/services/user-subscription.service';
+import { BillingOrderResponse, BillingOrderSummary, UserSubscriptionService } from '../../../../core/services/user-subscription.service';
 
 declare global {
   interface Window { Razorpay: any; }
@@ -21,6 +21,8 @@ export class BillingCheckoutComponent implements OnInit {
   paying = false;
   error = '';
   message = '';
+  orders: BillingOrderSummary[] = [];
+  currentPlan = '';
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -32,6 +34,16 @@ export class BillingCheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.selectedCode = this.route.snapshot.queryParamMap.get('plan')?.toUpperCase() || 'PRO';
     this.cycle = (this.route.snapshot.queryParamMap.get('cycle')?.toUpperCase() === 'YEARLY' ? 'YEARLY' : 'MONTHLY');
+    this.billing.current().subscribe({
+      next: response => { this.currentPlan = response.data?.name || ''; },
+      error: () => { this.currentPlan = ''; }
+    });
+
+    this.billing.orders().subscribe({
+      next: response => { this.orders = response.data || []; },
+      error: () => { this.orders = []; }
+    });
+
     this.plansService.getPlans().subscribe({
       next: response => { this.plans = response.data || []; this.loading = false; },
       error: () => { this.error = 'Plans could not be loaded.'; this.loading = false; }
@@ -95,6 +107,14 @@ export class BillingCheckoutComponent implements OnInit {
           next: () => {
             this.message = 'Payment verified. Your subscription is now active.';
             this.paying = false;
+            this.billing.current().subscribe({
+              next: current => { this.currentPlan = current.data?.name || ''; },
+              error: () => {}
+            });
+            this.billing.orders().subscribe({
+              next: history => { this.orders = history.data || []; },
+              error: () => {}
+            });
           },
           error: err => {
             this.error = err?.error?.message || 'Payment completed but verification is still pending. Please wait for webhook confirmation.';
