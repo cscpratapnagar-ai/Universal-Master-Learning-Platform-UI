@@ -9,6 +9,21 @@ interface TeacherPhase {
   icon: string;
 }
 
+interface TeachingSubject {
+  key: string;
+  label: string;
+  icon: string;
+  tone: string;
+  defaultTopic: string;
+}
+
+interface TeachingMode {
+  key: string;
+  label: string;
+  icon: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-ai-teacher',
   templateUrl: './ai-teacher.component.html',
@@ -17,6 +32,7 @@ interface TeacherPhase {
 export class AiTeacherComponent implements OnInit, OnDestroy {
   enrollmentId = '';
   topic = 'Projectile Motion';
+  selectedSubject = 'PHYSICS';
   language: 'GU' | 'EN' = 'GU';
   phase = 'INTRO';
   lectureMinute = 0;
@@ -28,6 +44,26 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
   speaking = false;
   listening = false;
   private timer?: ReturnType<typeof setInterval>;
+
+  readonly subjects: TeachingSubject[] = [
+    { key: 'MATHEMATICS', label: 'Mathematics', icon: 'π', tone: 'blue', defaultTopic: 'Quadratic Equations' },
+    { key: 'SCIENCE', label: 'Science', icon: '⚛', tone: 'cyan', defaultTopic: 'The Water Cycle' },
+    { key: 'PHYSICS', label: 'Physics', icon: '◉', tone: 'violet', defaultTopic: 'Projectile Motion' },
+    { key: 'CHEMISTRY', label: 'Chemistry', icon: '⚗', tone: 'pink', defaultTopic: 'Chemical Reactions' },
+    { key: 'BIOLOGY', label: 'Biology', icon: '✿', tone: 'green', defaultTopic: 'Photosynthesis' },
+    { key: 'SOCIAL_SCIENCE', label: 'Social Science', icon: '◎', tone: 'orange', defaultTopic: 'The Indian Constitution' },
+    { key: 'ENGLISH', label: 'English', icon: 'Aa', tone: 'sky', defaultTopic: 'Narrative Writing' },
+    { key: 'COMPUTER_SCIENCE', label: 'Computer Science', icon: '</>', tone: 'indigo', defaultTopic: 'Algorithms' }
+  ];
+
+  readonly teachingModes: TeachingMode[] = [
+    { key: 'CONCEPT', label: 'Concept', icon: '◈', description: 'Simple step-by-step explanation' },
+    { key: 'VISUAL', label: 'Animation & Visuals', icon: '✦', description: 'Diagrams and visual storytelling' },
+    { key: 'REAL_LIFE', label: 'Real Life', icon: '⌂', description: 'Everyday examples and analogies' },
+    { key: 'PRACTICE', label: 'Practice', icon: '✓', description: 'Guided practice with hints' },
+    { key: 'DOUBT', label: 'Doubt Solver', icon: '?', description: 'Ask anything about the concept' },
+    { key: 'RECAP', label: 'Summary & Notes', icon: '≡', description: 'Auto recap and study notes' }
+  ];
 
   readonly phases: TeacherPhase[] = [
     { key: 'INTRO', label: 'Introduction', icon: '01' },
@@ -139,6 +175,35 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
     utterance.onstart = () => this.speaking = true;
     utterance.onend = () => this.speaking = false;
     window.speechSynthesis.speak(utterance);
+  }
+
+  selectSubject(subject: TeachingSubject): void {
+    if (this.loading || subject.key === this.selectedSubject) return;
+    this.selectedSubject = subject.key;
+    this.topic = subject.defaultTopic;
+    this.response = undefined;
+    this.phase = 'INTRO';
+    this.lectureMinute = 0;
+    this.nextTurn();
+  }
+
+  selectMode(mode: TeachingMode): void {
+    if (mode.key === 'DOUBT') {
+      this.studentMessage = '';
+      return;
+    }
+    if (mode.key === 'RECAP') {
+      this.phase = 'RECAP';
+      this.nextTurn();
+      return;
+    }
+    this.phase = mode.key === 'REAL_LIFE' ? 'EXAMPLE' : mode.key === 'PRACTICE' ? 'PRACTICE' : 'EXPLAIN';
+    this.nextTurn();
+  }
+
+  visualModeLabel(): string {
+    const mode = (this.response?.visualMode || 'TEACHER_AVATAR').replace(/_/g, ' ');
+    return mode.replace(/\\b\\w/g, value => value.toUpperCase());
   }
 
   setLanguage(language: 'GU' | 'EN'): void {
