@@ -1,0 +1,43 @@
+<main class="academy-shell">
+  <div class="academy-orb orb-one"></div>
+  <div class="academy-orb orb-two"></div>
+
+  <header class="academy-topbar">
+    <button type="button" class="back-button" (click)="back()">← Back</button>
+    <div class="brand">
+      <span class="brand-mark">★</span>
+      <div><strong>MY ACADEMY</strong><small>Universal Master Learning Platform</small></div>
+    </div>
+    <button type="button" class="logout-button" (click)="logout()">Sign out</button>
+  </header>
+
+  <section class="academy-hero">
+    <div>
+      <span class="eyebrow">ACADEMY COMMAND CENTER</span>
+      <h1>Your academy.<br><span>One intelligent workspace.</span></h1>
+      <p>Bring courses, educators, learners, assessments, examinations and AI-powered learning together from one premium command center.</p>
+      <div class="hero-actions">
+        <button type="button" (click)="open('/teacher/courses')">Manage Courses <span>→</span></button>
+        <button type="button" class="ghost" (click)="open('/teacher')">Open Teaching Studio <span>↗</span></button>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <span>ACADEMY FLOW</span>
+      <strong>Build → Teach → Assess → Certify</strong>
+      <div class="flow"><i>01</i><b>Courses</b><i>02</i><b>Learning</b><i>03</i><b>Assessment</b><i>04</i><b>Results</b></div>
+    </div>
+  </section>
+
+  <section class="area-grid">
+    <article *ngFor="let area of areas" class="area-card" [ngClass]="area.tone" (click)="open(area.route)">
+      <div class="area-icon">{{ area.icon }}</div>
+      <div><span>{{ area.title }}</span><h2>{{ area.title }}</h2><p>{{ area.description }}</p></div>
+      <b class="arrow">→</b>
+    </article>
+  </section>
+
+  <section class="academy-footer">
+    <div><span class="eyebrow">FLAGSHIP ACADEMY LAYER</span><h2>Every existing MLS capability can become part of your academy.</h2></div>
+    <button type="button" (click)="open('/teacher/assessments')">Continue building <span>→</span></button>
+  </section>
+</main>
