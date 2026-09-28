@@ -6,6 +6,8 @@ import { ThemeMode, ThemeService } from '../../../../core/services/theme.service
 import { LearningProgressAnalytics, LearningPathStatus, LearningService } from '../../../../core/services/learning.service';
 import { StudentCourse } from '../../../../core/models/learning.model';
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
+import { UserSubscription } from '../../../../core/models/user-subscription.model';
+import { UserSubscriptionService } from '../../../../core/services/user-subscription.service';
 
 interface DashboardStat { label: string; value: string; change: string; icon: string; }
 
@@ -24,6 +26,7 @@ export class LearnerDashboardComponent implements OnInit {
   progress: LearningProgressAnalytics | null = null;
   learningPath: LearningPathStatus | null = null;
   progressLoading = false;
+  subscription: UserSubscription | null = null;
 
   readonly navigation = [
     { label: 'Overview', icon: '⌂' }, { label: 'My Learning', icon: '▣' }, { label: 'Projects', icon: '◈' }, { label: 'Live Classes', icon: '◉' },
@@ -47,13 +50,15 @@ export class LearnerDashboardComponent implements OnInit {
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
   get todayLabel(): string { return new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()); }
 
-  constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService) {}
+  constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService, private readonly subscriptionService: UserSubscriptionService) {}
 
   ngOnInit(): void {
     this.theme = this.themeService.theme;
     this.themeService.theme$.subscribe(theme => this.theme = theme);
     if (!this.authService.isAuthenticated()) { this.router.navigateByUrl('/auth/login'); return; }
-    this.user = this.authService.currentUser(); this.loadCourses();
+    this.user = this.authService.currentUser();
+    this.subscriptionService.current().subscribe({ next: response => this.subscription = response.data, error: () => this.subscription = null });
+    this.loadCourses();
   }
 
   private loadCourses(): void {
