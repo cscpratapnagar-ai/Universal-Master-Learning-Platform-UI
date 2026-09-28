@@ -107,6 +107,7 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
 
     this.learning.aiTeacherTurn(this.enrollmentId, {
       topic: this.topic,
+      subject: this.selectedSubject,
       language: this.language,
       phase: this.phase,
       studentMessage: this.studentMessage.trim() || undefined,
