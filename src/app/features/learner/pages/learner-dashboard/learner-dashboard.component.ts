@@ -8,6 +8,7 @@ import { StudentCourse } from '../../../../core/models/learning.model';
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
 import { UserSubscription } from '../../../../core/models/user-subscription.model';
 import { UserSubscriptionService } from '../../../../core/services/user-subscription.service';
+import { NotificationItem, NotificationService } from '../../../../core/services/notification.service';
 
 interface DashboardStat { label: string; value: string; change: string; icon: string; }
 
@@ -17,6 +18,8 @@ export class LearnerDashboardComponent implements OnInit {
   isLoggingOut = false;
   activeNav = 'Overview';
   notificationsOpen = false;
+  notifications: NotificationItem[] = [];
+  unreadNotificationCount = 0;
   profileMenuOpen = false;
   theme: ThemeMode = 'dark';
   courses: StudentCourse[] = [];
@@ -50,7 +53,7 @@ export class LearnerDashboardComponent implements OnInit {
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
   get todayLabel(): string { return new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()); }
 
-  constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService, private readonly subscriptionService: UserSubscriptionService) {}
+  constructor(private readonly authService: AuthService, private readonly themeService: ThemeService, private readonly router: Router, private readonly learning: LearningService, private readonly subscriptionService: UserSubscriptionService, private readonly notificationService: NotificationService) {}
 
   ngOnInit(): void {
     this.theme = this.themeService.theme;
@@ -58,6 +61,7 @@ export class LearnerDashboardComponent implements OnInit {
     if (!this.authService.isAuthenticated()) { this.router.navigateByUrl('/auth/login'); return; }
     this.user = this.authService.currentUser();
     this.subscriptionService.current().subscribe({ next: response => this.subscription = response.data, error: () => this.subscription = null });
+    this.loadNotifications();
     this.loadCourses();
   }
 
@@ -95,6 +99,17 @@ export class LearnerDashboardComponent implements OnInit {
       error: () => this.personalization = null,
       complete: () => this.intelligenceLoading = false
     });
+  }
+  loadNotifications(): void {
+    this.notificationService.list().subscribe({ next: response => this.notifications = response.data || [] });
+    this.notificationService.unreadCount().subscribe({ next: response => this.unreadNotificationCount = response.data || 0 });
+  }
+  markNotificationRead(item: NotificationItem): void {
+    if (item.read) return;
+    this.notificationService.markRead(item.id).subscribe({ next: () => { item.read = true; this.unreadNotificationCount = Math.max(0, this.unreadNotificationCount - 1); } });
+  }
+  markAllNotificationsRead(): void {
+    this.notificationService.markAllRead().subscribe({ next: () => { this.notifications = this.notifications.map(item => ({ ...item, read: true })); this.unreadNotificationCount = 0; } });
   }
   toggleTheme(): void { this.themeService.toggle(); }
   selectNav(label: string): void {
