@@ -12,6 +12,7 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { AssessmentResultComponent } from './pages/assessment-result/assessment-result.component';
 import { CertificateComponent } from './pages/certificate/certificate.component';
 import { AiTutorComponent } from './pages/ai-tutor/ai-tutor.component';
+import { AiTeacherComponent } from './pages/ai-teacher/ai-teacher.component';
 import { MyProjectsComponent } from './pages/my-projects/my-projects.component';
 import { ProjectWorkspaceComponent } from './pages/project-workspace/project-workspace.component';
 
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'quiz', component: QuizComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'assessment-result', component: AssessmentResultComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'course/:enrollmentId/ai-tutor', component: AiTutorComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
+  { path: 'course/:enrollmentId/ai-teacher', component: AiTeacherComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'certificates', component: CertificateComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } }
 ];
 
