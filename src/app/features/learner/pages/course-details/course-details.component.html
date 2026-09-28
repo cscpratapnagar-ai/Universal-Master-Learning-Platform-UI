@@ -13,7 +13,7 @@
         <span class="eyebrow">COURSE EXPERIENCE · PERSONALIZED FOR YOU</span>
         <h1>{{ data.title }}</h1>
         <p>{{ data.description || 'A structured learning experience designed to move you from understanding to mastery.' }}</p>
-        <div class="hero-actions"><button type="button" class="primary" (click)="startLearning()">{{ data.progressPercent > 0 ? 'Continue learning' : 'Start learning' }} <span>→</span></button><span class="progress-label">{{ data.progressPercent }}% complete</span></div>
+        <div class="hero-actions"><button type="button" class="primary" (click)="startLearning()">{{ data.progressPercent > 0 ? 'Continue learning' : 'Start learning' }} <span>→</span></button><a class="ai-teacher-link" [routerLink]="['/learner/course', enrollmentId, 'ai-teacher']">🤖 Start AI Teacher <span>→</span></a><span class="progress-label">{{ data.progressPercent }}% complete</span></div>
       </div>
       <div class="hero-visual" aria-hidden="true"><div class="orb-ring ring-one"></div><div class="orb-ring ring-two"></div><div class="orb-core"><strong>{{ data.progressPercent }}%</strong><small>PROGRESS</small></div><span class="spark spark-a">✦</span><span class="spark spark-b">✧</span></div>
     </section>
