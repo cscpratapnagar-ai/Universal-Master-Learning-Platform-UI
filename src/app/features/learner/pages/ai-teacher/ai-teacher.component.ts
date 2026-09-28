@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningService } from '../../../../core/services/learning.service';
-import { AiTeacherTurnResponse } from '../../../../core/models/ai-teacher.model';
+import { AiTeacherQuotaResponse, AiTeacherTurnResponse } from '../../../../core/models/ai-teacher.model';
 
 interface TeacherPhase {
   key: string;
@@ -22,6 +22,7 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
   lectureMinute = 0;
   studentMessage = '';
   response?: AiTeacherTurnResponse;
+  quota?: AiTeacherQuotaResponse;
   loading = false;
   error = '';
   speaking = false;
@@ -50,6 +51,7 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
       return;
     }
     this.startClock();
+    this.loadQuota();
     this.nextTurn();
   }
 
@@ -76,14 +78,25 @@ export class AiTeacherComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: result => {
         this.response = result.data;
+        this.loadQuota();
         this.phase = result.data.nextPhase;
         this.studentMessage = '';
         this.loading = false;
       },
-      error: () => {
-        this.error = 'AI Teacher could not continue the lecture right now.';
+      error: (err) => {
+        this.error = err?.status === 429
+          ? (this.language === 'GU' ? 'તમારો આ મહિનાનો AI Teacher quota પૂરો થયો છે. વધુ AI classes માટે plan upgrade કરો.' : 'Your AI Teacher monthly quota is used up. Upgrade your plan for more AI classes.')
+          : 'AI Teacher could not continue the lecture right now.';
         this.loading = false;
       }
+    });
+  }
+
+  loadQuota(): void {
+    if (!this.enrollmentId) return;
+    this.learning.aiTeacherQuota(this.enrollmentId).subscribe({
+      next: result => this.quota = result.data,
+      error: () => undefined
     });
   }
 
