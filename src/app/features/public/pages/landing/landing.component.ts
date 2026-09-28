@@ -15,6 +15,17 @@ export class LandingComponent implements OnInit {
   themeTransitioning = false;
   searchOpen = false;
 
+  readonly platformAreas = [
+    { icon: '▦', label: 'Organizations', title: 'Build your complete learning ecosystem', text: 'Manage programs, departments, cohorts, teachers, learners, analytics and governance in one place.', tone: 'blue', target: 'organizations' },
+    { icon: '✦', label: 'Private Teachers', title: 'Your own digital teaching studio', text: 'Create courses, teach privately, manage students, assessments, schedules and progress.', tone: 'orange', target: 'private-teachers' },
+    { icon: '✓', label: 'Examiner', title: 'Professional assessment workspace', text: 'Design question banks, evaluate responses, monitor performance and create trusted results.', tone: 'purple', target: 'examiner' },
+    { icon: '▣', label: 'Exam Portal', title: 'Secure online examinations', text: 'Deliver timed exams, attempt controls, automated evaluation and result workflows.', tone: 'green', target: 'exam-portal' },
+    { icon: 'AI', label: 'AI Teacher', title: 'An intelligent teacher beside every learner', text: 'Interactive explanations, practice, voice input, personalized guidance and learning support.', tone: 'cyan', target: 'ai-teacher' },
+    { icon: '★', label: 'Your Academy', title: 'Your flagship academy on MLS', text: 'Run your academy with courses, teachers, students, live learning, exams, certificates and AI.', tone: 'gold', target: 'academy' },
+    { icon: '◉', label: 'Learners', title: 'One intelligent learner journey', text: 'Goals, courses, skills, assessments, projects, certificates and recommendations stay connected.', tone: 'pink', target: 'learners' },
+    { icon: '◎', label: 'About MLS', title: 'The vision behind the platform', text: 'A unified education operating system designed to connect people, learning and measurable growth.', tone: 'navy', target: 'about-mls' }
+  ];
+
   readonly heroFeatures = [
     { icon: 'AI', label: 'AI Learning', tone: 'blue' },
     { icon: '★', label: 'Expert Mentors', tone: 'orange' },
