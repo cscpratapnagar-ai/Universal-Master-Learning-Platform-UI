@@ -1,0 +1,27 @@
+<main class="billing-page">
+  <header><button type="button" (click)="back()">← Back</button><div><span>MLS · SECURE CHECKOUT</span><h1>Choose your plan</h1><p>One subscription powers your learning tools, AI Teacher access and future premium capabilities.</p></div></header>
+
+  <div class="state" *ngIf="loading">Loading plans…</div>
+  <div class="error" *ngIf="error">{{ error }}</div>
+
+  <section class="checkout-grid" *ngIf="!loading">
+    <div class="plans">
+      <div class="cycle"><button [class.active]="cycle==='MONTHLY'" (click)="cycle='MONTHLY'">Monthly</button><button [class.active]="cycle==='YEARLY'" (click)="cycle='YEARLY'">Yearly</button></div>
+      <article *ngFor="let plan of plans" class="plan" [class.selected]="plan.code===selectedCode" (click)="choose(plan.code)">
+        <div><span>{{ plan.code }}</span><b>{{ plan.name }}</b></div>
+        <strong>{{ plan.currency }} {{ price(plan) | number:'1.0-0' }}</strong><small>/ {{ cycle.toLowerCase() }}</small>
+        <p>{{ plan.description }}</p>
+      </article>
+    </div>
+
+    <aside class="summary">
+      <span>CHECKOUT SUMMARY</span><h2>{{ selected?.name || 'Plan' }}</h2>
+      <div class="summary-row"><span>Billing</span><strong>{{ cycle }}</strong></div>
+      <div class="summary-row"><span>Amount</span><strong>{{ selected?.currency }} {{ selected ? (price(selected) | number:'1.0-0') : '—' }}</strong></div>
+      <div class="secure">🔒 Payment details are handled by the payment gateway. MLS never receives your card/UPI secret.</div>
+      <button type="button" class="pay" [disabled]="paying || !selected" (click)="checkout()">{{ paying ? 'Opening secure checkout…' : 'Continue to secure payment →' }}</button>
+      <p class="success" *ngIf="message">{{ message }}</p>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </aside>
+  </section>
+</main>
