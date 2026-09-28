@@ -37,7 +37,7 @@ export class LearnerDashboardComponent implements OnInit {
   ];
 
   get stats(): DashboardStat[] { return [
-    { label: 'Learning streak', value: '7', change: 'Keep going!', icon: '🔥' },
+    { label: 'Learning streak', value: '—', change: 'Tracking soon', icon: '🔥' },
     { label: 'Learning pace', value: this.personalization?.pace || '—', change: 'AI guided', icon: '◷' },
     { label: 'Courses active', value: String(this.courses.length).padStart(2, '0'), change: 'Live data', icon: '▣' },
     { label: 'Next priority', value: this.personalization?.priority || '—', change: this.ai?.learnerState || 'AI guided', icon: '◎' }
