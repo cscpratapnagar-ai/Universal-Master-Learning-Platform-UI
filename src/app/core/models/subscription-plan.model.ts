@@ -5,5 +5,6 @@ export interface SubscriptionPlan {
   monthlyPrice: number;
   yearlyPrice: number;
   currency: string;
+  active: boolean;
   features: Record<string, string>;
 }
