@@ -126,6 +126,13 @@ export class LearnerDashboardComponent implements OnInit {
     const route = routes[label];
     if (route) this.router.navigateByUrl(route);
   }
+  openProfile(): void {
+    if (this.primaryEnrollmentId) {
+      this.router.navigate(['/learner/course', this.primaryEnrollmentId, 'profile']);
+    } else {
+      this.router.navigateByUrl('/learner/courses');
+    }
+  }
   continueCourse(course: StudentCourse): void {
     const queryParams = course.enrollmentId === this.primaryEnrollmentId && this.learningPath?.nextRecommendedLesson?.lessonId
       ? { lessonId: this.learningPath.nextRecommendedLesson.lessonId }
