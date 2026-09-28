@@ -12,8 +12,8 @@
   <div class="state error" *ngIf="error && !loading">{{ error }} <button type="button" (click)="load()">Retry</button></div>
 
   <section class="plan-grid" *ngIf="!loading && !error">
-    <article *ngFor="let plan of plans" class="plan-card" [class.active]="plan.code === 'PRO'">
-      <div class="plan-top"><span>{{ plan.code }}</span><b>{{ plan.currency }}</b></div>
+    <article *ngFor="let plan of plans" class="plan-card" [class.active]="plan.active">
+      <div class="plan-top"><span>{{ plan.code }}</span><b>{{ plan.active ? 'ACTIVE' : 'INACTIVE' }}</b></div>
       <h2>{{ plan.name }}</h2>
       <p>{{ plan.description }}</p>
       <div class="prices"><strong>{{ plan.monthlyPrice | number:'1.0-0' }}</strong><span>/ month</span><strong>{{ plan.yearlyPrice | number:'1.0-0' }}</strong><span>/ year</span></div>
@@ -30,6 +30,7 @@
       <label>Monthly price<input type="number" [(ngModel)]="selected.monthlyPrice"></label>
       <label>Yearly price<input type="number" [(ngModel)]="selected.yearlyPrice"></label>
       <label class="wide">Description<textarea [(ngModel)]="selected.description"></textarea></label>
+      <label class="toggle"><input type="checkbox" [(ngModel)]="selected.active"><span>Plan available for public purchase</span></label>
     </div>
     <div class="feature-editor">
       <h3>Entitlements</h3>
