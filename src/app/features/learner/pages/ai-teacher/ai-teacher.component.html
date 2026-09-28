@@ -2,6 +2,7 @@
   <header class="topbar">
     <button type="button" class="back" (click)="back()">← Back</button>
     <div class="brand"><span class="brand-mark">MLS</span><span>AI TEACHER · LIVE CLASSROOM</span></div>
+    <div class="quota" *ngIf="quota"><strong>{{ quota.plan }}</strong><span>{{ quota.limit < 0 ? "Unlimited" : quota.remaining + " AI turns left" }}</span></div>
     <div class="language">
       <button type="button" [class.active]="language==='GU'" (click)="setLanguage('GU')">ગુજરાતી</button>
       <button type="button" [class.active]="language==='EN'" (click)="setLanguage('EN')">English</button>
@@ -13,7 +14,7 @@
       <span class="eyebrow">LIVE AI TEACHER · ADAPTIVE CLASS</span>
       <h1>{{ topic }}</h1>
       <p>એક lecture જે studentના response પ્રમાણે આગળ વધે છે — concept, real-life example, understanding check અને guided practice સાથે.</p>
-      <div class="meta"><span>● Live</span><span>{{ currentPhaseLabel }}</span><span>{{ lectureMinute }} min</span></div>
+      <div class="meta"><span>● Live</span><span>{{ currentPhaseLabel }}</span><span>{{ lectureMinute }} min</span><span class="quota-inline" *ngIf="quota && quota.limit >= 0">{{ quota.remaining }} turns</span></div>
     </div>
     <div class="teacher-stage">
       <div class="teacher-avatar"><span>AI</span></div>
