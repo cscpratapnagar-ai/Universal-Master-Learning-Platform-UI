@@ -160,7 +160,8 @@ export class LandingComponent implements OnInit {
       window.location.assign('/auth/register');
       return;
     }
-    this.scrollTo('contact');
+    this.mobileMenuOpen = false;
+    window.location.assign(`/learner/billing?plan=${encodeURIComponent(plan.code)}&cycle=${this.pricingYearly ? 'YEARLY' : 'MONTHLY'}`);
   }
   toggleTheme(): void {
     this.themeTransitioning = true;
