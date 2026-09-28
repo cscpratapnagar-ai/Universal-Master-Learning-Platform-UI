@@ -25,6 +25,24 @@
 
   <p class="error" *ngIf="error">{{ error }}</p>
 
+  <section class="subject-strip">
+    <div class="section-heading"><span class="kicker">ONE TEACHER · EVERY SUBJECT</span><h2>Choose what you want to learn</h2><p>AI Teacher adapts the explanation style to the subject and the student's understanding.</p></div>
+    <div class="subject-grid">
+      <button type="button" class="subject-card" *ngFor="let subject of subjects" [class.active]="subject.key === selectedSubject" [attr.data-tone]="subject.tone" (click)="selectSubject(subject)">
+        <span class="subject-icon">{{ subject.icon }}</span><span class="subject-name">{{ subject.label }}</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="mode-strip">
+    <div class="section-heading"><span class="kicker">TEACHING INTELLIGENCE</span><h2>Learn the way your brain understands best</h2></div>
+    <div class="mode-grid">
+      <button type="button" class="mode-card" *ngFor="let mode of teachingModes" (click)="selectMode(mode)">
+        <span class="mode-icon">{{ mode.icon }}</span><strong>{{ mode.label }}</strong><small>{{ mode.description }}</small>
+      </button>
+    </div>
+  </section>
+
   <section class="lecture-grid">
     <div class="classroom">
       <div class="board">
