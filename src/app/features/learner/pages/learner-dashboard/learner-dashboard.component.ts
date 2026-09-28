@@ -114,8 +114,17 @@ export class LearnerDashboardComponent implements OnInit {
   toggleTheme(): void { this.themeService.toggle(); }
   selectNav(label: string): void {
     this.activeNav = label;
+    if (label === 'AI Tutor') {
+      if (this.primaryEnrollmentId) {
+        this.router.navigate(['/learner/course', this.primaryEnrollmentId, 'ai-tutor']);
+      } else {
+        this.router.navigateByUrl('/learner/courses');
+      }
+      return;
+    }
     const routes: Record<string, string> = { Overview: '/learner', 'My Learning': '/learner/courses', Projects: '/learner/projects', Assessments: '/learner/quiz', Certificates: '/learner/certificates' };
-    const route = routes[label]; if (route) this.router.navigateByUrl(route);
+    const route = routes[label];
+    if (route) this.router.navigateByUrl(route);
   }
   continueCourse(course: StudentCourse): void {
     const queryParams = course.enrollmentId === this.primaryEnrollmentId && this.learningPath?.nextRecommendedLesson?.lessonId
