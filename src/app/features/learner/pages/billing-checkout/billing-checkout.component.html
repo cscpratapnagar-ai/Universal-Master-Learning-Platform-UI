@@ -5,6 +5,9 @@
   <div class="error" *ngIf="error">{{ error }}</div>
 
   <section class="checkout-grid" *ngIf="!loading">
+    <div class="current-plan" *ngIf="currentPlan">
+      <span>CURRENT PLAN</span><strong>{{ currentPlan }}</strong><small>Your latest subscription state is synced from the server.</small>
+    </div>
     <div class="plans">
       <div class="cycle"><button [class.active]="cycle==='MONTHLY'" (click)="cycle='MONTHLY'">Monthly</button><button [class.active]="cycle==='YEARLY'" (click)="cycle='YEARLY'">Yearly</button></div>
       <article *ngFor="let plan of plans" class="plan" [class.selected]="plan.code===selectedCode" (click)="choose(plan.code)">
@@ -25,3 +28,11 @@
     </aside>
   </section>
 </main>
+
+<section class="billing-history" *ngIf="orders.length">
+  <div class="history-head"><div><span>BILLING HISTORY</span><h2>Your recent orders</h2></div></div>
+  <article class="history-row" *ngFor="let order of orders">
+    <div><strong>{{ order.currency }} {{ order.amount | number:'1.0-0' }}</strong><small>{{ order.billingCycle }} · {{ order.createdAt | date:'medium' }}</small></div>
+    <span class="status" [class.paid]="order.status==='PAID'" [class.refunded]="order.status==='REFUNDED'">{{ order.status }}</span>
+  </article>
+</section>
