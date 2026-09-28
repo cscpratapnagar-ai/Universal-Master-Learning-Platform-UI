@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'admin', loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule) },
   { path: 'super-admin', loadChildren: () => import('./features/super-admin/super-admin.module').then(m => m.SuperAdminModule) },
   { path: 'organization', loadChildren: () => import('./features/organization/organization.module').then(m => m.OrganizationModule) },
+  { path: 'academy', loadChildren: () => import('./features/academy/academy.module').then(m => m.AcademyModule) },
   // Public ecosystem aliases: keep these stable while reusing the existing authenticated workflows.
   { path: 'examiner', redirectTo: 'teacher/assessments', pathMatch: 'full' },
   { path: 'exam-portal', redirectTo: 'learner/quiz', pathMatch: 'full' },
