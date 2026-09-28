@@ -28,13 +28,17 @@
   <section class="lecture-grid">
     <div class="classroom">
       <div class="board">
-        <div class="board-head"><span>Digital Board</span><span>{{ response?.visualMode || 'TEACHER_AVATAR' }}</span></div>
-        <div class="board-content">
+        <div class="board-head"><span>Interactive Teaching Board</span><span>{{ visualModeLabel() }}</span></div>
+        <div class="board-content" [class.real-life]="response?.visualMode === 'REAL_LIFE_SCENE'" [class.summary]="response?.visualMode === 'SUMMARY_BOARD'">
+          <div class="visual-badge">{{ response?.visualMode === 'REAL_LIFE_SCENE' ? '🌍 REAL LIFE' : response?.visualMode === 'SUMMARY_BOARD' ? '📝 RECAP' : '✨ VISUAL EXPLANATION' }}</div>
           <div class="formula">{{ topic }}</div>
           <div class="trajectory"></div>
           <div class="axis x"></div>
           <div class="axis y"></div>
           <div class="ball"></div>
+          <div class="visual-story">
+            <span>1</span><span>2</span><span>3</span><span>4</span>
+          </div>
           <div class="board-note">{{ response?.teachingMode || 'WARM_INTRO' }}</div>
         </div>
       </div>
@@ -70,6 +74,7 @@
         <span class="phase-no">{{ item.icon }}</span>
         <div><strong>{{ item.label }}</strong><small>{{ i < phaseIndex ? 'Completed' : (i === phaseIndex ? 'Teaching now' : 'Coming next') }}</small></div>
       </div>
+      <div class="learning-tools"><strong>Visual learning engine</strong><p>Concept diagrams, animated explanations, real-life scenes, guided practice and recap are selected according to the teaching phase.</p></div>
       <div class="guardrail"><strong>Teacher memory</strong><p>Student answers become context for the next teaching turn. The lecture stays on-topic instead of becoming an unrestricted chat.</p></div>
     </aside>
   </section>
