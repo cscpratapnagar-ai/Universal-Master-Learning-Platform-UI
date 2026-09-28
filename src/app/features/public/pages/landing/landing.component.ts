@@ -139,7 +139,9 @@ export class LandingComponent implements OnInit {
     const routes: Record<string, string> = {
       organizations: '/organization',
       'private-teachers': '/teacher',
-      'learner-space': '/learner'
+      'learner-space': '/learner',
+      examiner: '/examiner',
+      'exam-portal': '/exam-portal'
     };
 
     const route = routes[target];
@@ -148,7 +150,7 @@ export class LandingComponent implements OnInit {
       return;
     }
 
-    if (target === 'ai-teacher' || target === 'academy' || target === 'examiner' || target === 'exam-portal') {
+    if (target === 'ai-teacher' || target === 'academy') {
       this.scrollTo(target);
     }
   }
