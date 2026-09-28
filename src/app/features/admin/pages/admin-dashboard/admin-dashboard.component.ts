@@ -8,7 +8,6 @@ import { AdminPortalService } from '../../../../core/services/admin-portal.servi
 
 interface Metric { label: string; value: string; icon: string; trend: string; }
 interface Activity { title: string; detail: string; time: string; type: string; }
-interface Activity { title: string; detail: string; time: string; type: string; }
 
 @Component({
   selector: 'app-admin-dashboard',
