@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SubscriptionPlan } from '../../../../core/models/subscription-plan.model';
+import { SubscriptionPlanService } from '../../../../core/services/subscription-plan.service';
 
 interface FeatureCard { icon: string; title: string; description: string; tone: string; }
 interface CourseCard { title: string; description: string; instructor: string; rating: string; students: string; level: string; image: string; tag: string; tagTone: string; duration: string; }
@@ -10,10 +12,15 @@ interface Story { name: string; role: string; quote: string; photo: string; }
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
+  constructor(private readonly subscriptionPlanService: SubscriptionPlanService) {}
   isDark = false;
   mobileMenuOpen = false;
   themeTransitioning = false;
   searchOpen = false;
+  pricingYearly = false;
+  pricingLoading = true;
+  pricingError = false;
+  subscriptionPlans: SubscriptionPlan[] = [];
 
   readonly platformAreas = [
     { icon: '▦', label: 'Organizations', title: 'Build your complete learning ecosystem', text: 'Manage programs, departments, cohorts, teachers, learners, analytics and governance in one place.', tone: 'blue', target: 'organizations' },
@@ -115,9 +122,46 @@ export class LandingComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.loadSubscriptionPlans();
     try { this.isDark = localStorage.getItem('mls-theme') === 'dark'; } catch {}
   }
 
+  loadSubscriptionPlans(): void {
+    this.pricingLoading = true;
+    this.pricingError = false;
+    this.subscriptionPlanService.getPlans().subscribe({
+      next: response => {
+        this.subscriptionPlans = response.data ?? [];
+        this.pricingLoading = false;
+      },
+      error: () => {
+        this.pricingLoading = false;
+        this.pricingError = true;
+      }
+    });
+  }
+
+  planPrice(plan: SubscriptionPlan): number {
+    return this.pricingYearly ? plan.yearlyPrice : plan.monthlyPrice;
+  }
+
+  planPeriod(): string { return this.pricingYearly ? 'year' : 'month'; }
+
+  planFeatureEntries(plan: SubscriptionPlan): string[] {
+    return Object.entries(plan.features ?? {}).map(([code, value]) => {
+      const label = code.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+      return value === 'true' ? label : label + ': ' + value;
+    });
+  }
+
+  pricingCta(plan: SubscriptionPlan): void {
+    if (plan.code === 'FREE') {
+      this.mobileMenuOpen = false;
+      window.location.assign('/auth/register');
+      return;
+    }
+    this.scrollTo('contact');
+  }
   toggleTheme(): void {
     this.themeTransitioning = true;
     this.isDark = !this.isDark;
