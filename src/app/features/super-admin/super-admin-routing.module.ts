@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: 'users', component: UserManagementComponent },
       { path: 'role-requests', component: RoleRequestsComponent },
       { path: 'organizations', component: OrganizationManagementComponent },
-      { path: 'plans', component: PlanManagementComponent }
+      { path: 'plans', component: PlanManagementComponent },
       { path: 'learning', redirectTo: '/admin', pathMatch: 'full' }
     ]
   }
