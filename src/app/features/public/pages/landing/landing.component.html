@@ -119,8 +119,8 @@
         <h3>{{ area.title }}</h3>
         <p>{{ area.text }}</p>
         <div class="platform-card-footer">
-          <span>{{ area.target === 'organizations' || area.target === 'private-teachers' || area.target === 'learner-space' ? 'Portal available' : 'Explore area' }}</span>
-          <button type="button" (click)="openPlatformArea(area.target)">{{ area.target === 'organizations' || area.target === 'private-teachers' || area.target === 'learner-space' ? 'Enter' : 'Explore' }} <b>→</b></button>
+          <span>{{ area.target === 'organizations' || area.target === 'private-teachers' || area.target === 'learner-space' || area.target === 'examiner' || area.target === 'exam-portal' ? 'Portal available' : 'Explore area' }}</span>
+          <button type="button" (click)="openPlatformArea(area.target)">{{ area.target === 'organizations' || area.target === 'private-teachers' || area.target === 'learner-space' || area.target === 'examiner' || area.target === 'exam-portal' ? 'Enter' : 'Explore' }} <b>→</b></button>
         </div>
       </article>
     </div>
