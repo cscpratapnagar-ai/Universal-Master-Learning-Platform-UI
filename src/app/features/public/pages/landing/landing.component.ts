@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
     { icon: '▣', label: 'Exam Portal', title: 'Secure online examinations', text: 'Deliver timed exams, attempt controls, automated evaluation and result workflows.', tone: 'green', target: 'exam-portal' },
     { icon: 'AI', label: 'AI Teacher', title: 'An intelligent teacher beside every learner', text: 'Interactive explanations, practice, voice input, personalized guidance and learning support.', tone: 'cyan', target: 'ai-teacher' },
     { icon: '★', label: 'Your Academy', title: 'Your flagship academy on MLS', text: 'Run your academy with courses, teachers, students, live learning, exams, certificates and AI.', tone: 'gold', target: 'academy' },
-    { icon: '◉', label: 'Learners', title: 'One intelligent learner journey', text: 'Goals, courses, skills, assessments, projects, certificates and recommendations stay connected.', tone: 'pink', target: 'learners' },
+    { icon: '◉', label: 'Learners', title: 'One intelligent learner journey', text: 'Goals, courses, skills, assessments, projects, certificates and recommendations stay connected.', tone: 'pink', target: 'learner-space' },
     { icon: '◎', label: 'About MLS', title: 'The vision behind the platform', text: 'A unified education operating system designed to connect people, learning and measurable growth.', tone: 'navy', target: 'about-mls' }
   ];
 
