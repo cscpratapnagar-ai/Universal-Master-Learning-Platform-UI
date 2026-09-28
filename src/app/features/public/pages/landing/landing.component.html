@@ -313,15 +313,58 @@
     </div>
   </section>
 
-  <section id="pricing" class="final-cta">
-    <div class="cta-landscape"></div>
-    <div class="container cta-inner">
-      <div class="cta-student">🎓</div>
-      <div><h2>Ready to Build a Better Future?</h2><p>Join thousands of learners and take the next step towards your goals.</p></div>
-      <div class="cta-actions"><a routerLink="/auth/register" class="orange-button">Get Started Free →</a><button type="button" class="explore-button" (click)="scrollTo('courses')">Explore Courses</button></div>
-      <div class="cta-note">Learn Today<br><strong>Lead Tomorrow</strong></div>
+  <section id="pricing" class="pricing-section section container">
+    <div class="pricing-head">
+      <div>
+        <span class="section-kicker">SIMPLE • TRANSPARENT • SCALABLE</span>
+        <h2>Plans that grow with your <span>learning ecosystem.</span></h2>
+        <p>Start free, then choose the workspace depth that matches your learners, teaching and organization needs.</p>
+      </div>
+      <div class="pricing-toggle" role="group" aria-label="Billing period">
+        <button type="button" [class.active]="!pricingYearly" (click)="pricingYearly = false">Monthly</button>
+        <button type="button" [class.active]="pricingYearly" (click)="pricingYearly = true">Yearly <span>Save</span></button>
+      </div>
+    </div>
+
+    <div class="pricing-state" *ngIf="pricingLoading">
+      <span class="pricing-spinner"></span>
+      <strong>Loading live plans...</strong>
+    </div>
+
+    <div class="pricing-state error" *ngIf="pricingError && !pricingLoading">
+      <strong>Plans are temporarily unavailable.</strong>
+      <button type="button" (click)="loadSubscriptionPlans()">Retry</button>
+    </div>
+
+    <div class="pricing-grid" *ngIf="!pricingLoading && !pricingError">
+      <article *ngFor="let plan of subscriptionPlans; let i = index" class="pricing-card" [class.featured]="plan.code === 'PRO'">
+        <div class="pricing-card-glow"></div>
+        <div class="pricing-card-top">
+          <span class="pricing-badge" *ngIf="plan.code === 'PRO'">MOST COMPLETE</span>
+          <span class="pricing-code">{{ plan.code }}</span>
+        </div>
+        <h3>{{ plan.name }}</h3>
+        <p>{{ plan.description }}</p>
+        <div class="pricing-price">
+          <span class="currency">{{ plan.currency }}</span>
+          <strong>{{ planPrice(plan) | number:'1.0-0' }}</strong>
+          <small>/ {{ planPeriod() }}</small>
+        </div>
+        <div class="pricing-annual" *ngIf="pricingYearly && plan.monthlyPrice > 0">
+          Equivalent to {{ (plan.yearlyPrice / 12) | number:'1.0-0' }} / month
+        </div>
+        <div class="pricing-features">
+          <div *ngFor="let feature of planFeatureEntries(plan)"><span>✓</span>{{ feature }}</div>
+          <div *ngIf="!planFeatureEntries(plan).length"><span>✓</span>Core MLS learning access</div>
+        </div>
+        <button type="button" class="pricing-cta" [class.primary]="plan.code === 'PRO'" (click)="pricingCta(plan)">
+          {{ plan.code === 'FREE' ? 'Start Free' : 'Talk to MLS' }} <span>→</span>
+        </button>
+      </article>
     </div>
   </section>
+
+  <section id="final-cta" class="final-cta">
 
   <footer class="footer container">
     <div class="footer-brand"><span class="logo-mark"><span></span><i></i></span><div><strong>MLS</strong><small>Master Learning System</small><p>Learn • Grow • Succeed</p></div></div>
