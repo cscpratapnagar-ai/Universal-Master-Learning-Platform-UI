@@ -5,7 +5,7 @@ import { API_CONFIG } from '../config/api.config';
 import { ApiResponse, StudentCourse, CourseLearning } from '../models/learning.model';
 import { AiLearningOrchestration, PersonalizationOrchestration } from '../models/ai-learning.model';
 import { AiTutorRequest, AiTutorResponse } from '../models/ai-tutor.model';
-import { AiTeacherTurnRequest, AiTeacherTurnResponse } from '../models/ai-teacher.model';
+import { AiTeacherQuotaResponse, AiTeacherTurnRequest, AiTeacherTurnResponse } from '../models/ai-teacher.model';
 import { OrganizationProjectEnrollment } from '../models/organization.model';
 
 export interface LearningProgressAnalytics { enrollmentId:string; courseId:string; courseTitle:string; completionPercent:number; completedLessons:number; totalLessons:number; remainingLessons:number; activeLessons:number; learningSeconds:number; learningMinutes:number; masteryScore:number; masteryLevel:'MASTERED'|'PROFICIENT'|'DEVELOPING'|'EMERGING'|'NOT_ASSESSED'; momentum:'EXCELLENT'|'ON_TRACK'|'BUILDING'|'STARTING'; assessmentCount:number; assessments:{assessmentId:string;lessonId?:string|null;title:string;score:number;masteryLevel:string;passed:boolean;submittedAt:string}[]; }
@@ -44,6 +44,7 @@ export class LearningService {
   getPersonalizationOrchestration(enrollmentId:string):Observable<ApiResponse<PersonalizationOrchestration>>{return this.http.get<ApiResponse<PersonalizationOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/personalization/orchestration`);}
   respondToAiTutor(enrollmentId:string,question:string):Observable<ApiResponse<AiTutorResponse>>{return this.http.post<ApiResponse<AiTutorResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-tutor/respond`,{question} satisfies AiTutorRequest);}
   aiTeacherTurn(enrollmentId:string,request:AiTeacherTurnRequest):Observable<ApiResponse<AiTeacherTurnResponse>>{return this.http.post<ApiResponse<AiTeacherTurnResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-teacher/turn`,request);}
+  aiTeacherQuota(enrollmentId:string):Observable<ApiResponse<AiTeacherQuotaResponse>>{return this.http.get<ApiResponse<AiTeacherQuotaResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-teacher/quota`);}
   completeLesson(enrollmentId:string,lessonId:string):Observable<unknown>{return this.http.post(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/lessons/${encodeURIComponent(lessonId)}/complete`,{});}
   getTeacherAnalytics():Observable<ApiResponse<TeacherAnalytics>>{return this.http.get<ApiResponse<TeacherAnalytics>>(`${this.base}/teacher/analytics`);}
   getTeacherLearners():Observable<ApiResponse<TeacherLearner[]>>{return this.http.get<ApiResponse<TeacherLearner[]>>(`${this.base}/teacher/learners`);}
