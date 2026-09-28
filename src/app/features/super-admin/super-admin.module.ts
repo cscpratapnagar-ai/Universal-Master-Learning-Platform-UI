@@ -10,6 +10,7 @@ import { SuperAdminDashboardComponent } from './pages/super-admin-dashboard/supe
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { RoleRequestsComponent } from './pages/role-requests/role-requests.component';
+import { PlanManagementComponent } from './pages/plan-management/plan-management.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RoleRequestsComponent } from './pages/role-requests/role-requests.compo
     SuperAdminDashboardComponent,
     OrganizationManagementComponent,
     UserManagementComponent,
-    RoleRequestsComponent
+    RoleRequestsComponent,
+    PlanManagementComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, SharedModule, SuperAdminRoutingModule]
 })
