@@ -35,7 +35,7 @@ export class BillingCheckoutComponent implements OnInit {
     this.selectedCode = this.route.snapshot.queryParamMap.get('plan')?.toUpperCase() || 'PRO';
     this.cycle = (this.route.snapshot.queryParamMap.get('cycle')?.toUpperCase() === 'YEARLY' ? 'YEARLY' : 'MONTHLY');
     this.billing.current().subscribe({
-      next: response => { this.currentPlan = response.data?.name || ''; },
+      next: response => { this.currentPlan = response.data?.planName || ''; },
       error: () => { this.currentPlan = ''; }
     });
 
@@ -108,7 +108,7 @@ export class BillingCheckoutComponent implements OnInit {
             this.message = 'Payment verified. Your subscription is now active.';
             this.paying = false;
             this.billing.current().subscribe({
-              next: current => { this.currentPlan = current.data?.name || ''; },
+              next: current => { this.currentPlan = current.data?.planName || ''; },
               error: () => {}
             });
             this.billing.orders().subscribe({
