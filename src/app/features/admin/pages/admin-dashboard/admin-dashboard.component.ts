@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 import { AdminPortalOverview } from '../../../../core/models/admin-portal.model';
 import { AdminPortalService } from '../../../../core/services/admin-portal.service';
 
@@ -52,6 +52,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     this.theme = this.themeService.theme;
     this.themeSubscription = this.themeService.theme$.subscribe(theme => this.theme = theme);
     this.loadOverview();
+    this.refreshSubscription.add(interval(30000).subscribe(() => this.loadOverview()));
   }
 
   ngOnDestroy(): void { this.themeSubscription?.unsubscribe(); this.refreshSubscription.unsubscribe(); }
