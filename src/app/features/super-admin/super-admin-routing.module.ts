@@ -8,6 +8,7 @@ import { SuperAdminDashboardComponent } from './pages/super-admin-dashboard/supe
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { RoleRequestsComponent } from './pages/role-requests/role-requests.component';
+import { PlanManagementComponent } from './pages/plan-management/plan-management.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'users', component: UserManagementComponent },
       { path: 'role-requests', component: RoleRequestsComponent },
       { path: 'organizations', component: OrganizationManagementComponent },
+      { path: 'plans', component: PlanManagementComponent }
       { path: 'learning', redirectTo: '/admin', pathMatch: 'full' }
     ]
   }
