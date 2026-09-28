@@ -32,6 +32,10 @@ export class PlanManagementComponent implements OnInit {
     });
   }
 
+  featureEntriesFor(plan: SubscriptionPlan): string[] {
+    return Object.entries(plan.features ?? {}).map(([code, value]) => value === 'true' ? code.replace(/_/g, ' ') : code.replace(/_/g, ' ') + ': ' + value);
+  }
+
   edit(plan: SubscriptionPlan): void {
     this.selected = { ...plan, features: { ...plan.features } };
     this.message = '';
