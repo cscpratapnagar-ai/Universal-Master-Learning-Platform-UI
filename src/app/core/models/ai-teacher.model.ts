@@ -1,5 +1,6 @@
 export interface AiTeacherTurnRequest {
   topic: string;
+  subject?: string;
   language: 'GU' | 'EN';
   phase: string;
   studentMessage?: string;
