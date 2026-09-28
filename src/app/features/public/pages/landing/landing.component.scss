@@ -851,3 +851,82 @@
   .mode-pill b{left:4px!important}
   .landing-page.dark .mode-pill b{transform:translateX(22px)!important}
 }
+
+
+/* =========================================================
+   PLATFORM ECOSYSTEM HUB
+   Audience-specific premium cards and tab navigation
+   ========================================================= */
+.platform-hub{position:relative}
+.platform-hub-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;margin-bottom:22px}
+.platform-hub-head>div:first-child{max-width:720px}
+.platform-hub-head h2{margin:7px 0 8px}
+.platform-hub-head h2 span{color:var(--blue)}
+.platform-hub-head p{max-width:650px}
+.platform-tabs{display:flex;align-items:center;gap:5px;padding:5px;border:1px solid var(--line);background:var(--surface);border-radius:13px;box-shadow:var(--shadow);white-space:nowrap}
+.platform-tabs button{border:0;background:transparent;color:var(--muted);font:700 9px 'Plus Jakarta Sans';padding:9px 12px;border-radius:9px;cursor:pointer;transition:.35s cubic-bezier(.22,1,.36,1)}
+.platform-tabs button:hover{color:var(--text);transform:translateY(-1px)}
+.platform-tabs button.active{background:var(--navy);color:#fff;box-shadow:0 7px 18px rgba(8,29,64,.18)}
+
+.platform-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.platform-card{position:relative;min-height:205px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden;box-shadow:0 12px 35px rgba(10,35,70,.055);transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease,border-color .5s ease}
+.platform-card:hover{transform:translateY(-7px);box-shadow:0 24px 55px rgba(10,35,70,.13);border-color:rgba(20,125,229,.3)}
+.platform-card-glow{position:absolute;width:120px;height:120px;right:-45px;top:-45px;border-radius:50%;background:var(--card-glow,rgba(20,125,229,.12));filter:blur(4px);transition:.5s}
+.platform-card:hover .platform-card-glow{transform:scale(1.35);opacity:.85}
+.platform-card.blue{--card-glow:rgba(20,125,229,.18)}
+.platform-card.orange{--card-glow:rgba(245,137,54,.18)}
+.platform-card.purple{--card-glow:rgba(139,92,246,.18)}
+.platform-card.green{--card-glow:rgba(34,197,94,.18)}
+.platform-card.cyan{--card-glow:rgba(34,211,238,.2)}
+.platform-card.gold{--card-glow:rgba(234,179,8,.2)}
+.platform-card.pink{--card-glow:rgba(236,72,153,.18)}
+.platform-card.navy{--card-glow:rgba(59,130,246,.15)}
+.platform-card-top{position:relative;z-index:1;display:flex;align-items:center;gap:8px}
+.platform-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:11px;background:var(--navy);color:#fff;font:800 12px 'Plus Jakarta Sans';box-shadow:0 8px 20px rgba(8,29,64,.16)}
+.platform-card.cyan .platform-icon{background:#0e7490}.platform-card.gold .platform-icon{background:#a16207}.platform-card.pink .platform-icon{background:#be185d}
+.platform-label{font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+.platform-card-top>b{margin-left:auto;font-size:14px;color:var(--muted);transition:.35s}
+.platform-card:hover .platform-card-top>b{color:var(--blue);transform:translate(3px,-3px)}
+.platform-card h3{position:relative;z-index:1;font:800 15px 'Plus Jakarta Sans';line-height:1.25;margin:17px 0 8px}
+.platform-card p{position:relative;z-index:1;font-size:9px;line-height:1.65;min-height:48px}
+.platform-card-footer{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;margin-top:17px;padding-top:12px;border-top:1px solid var(--line)}
+.platform-card-footer>span{font-size:8px;font-weight:800;color:var(--muted)}
+.platform-card-footer button{border:0;background:transparent;color:var(--blue);font:800 8px 'Plus Jakarta Sans';cursor:pointer;padding:4px}
+.platform-card-footer button b{margin-left:3px;transition:.3s}
+.platform-card-footer button:hover b{margin-left:7px}
+
+.platform-feature-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.platform-feature{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:15px;padding:20px 21px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,var(--surface),var(--surface2));overflow:hidden}
+.platform-feature:after{content:'';position:absolute;inset:auto -30px -55px auto;width:150px;height:150px;border-radius:50%;background:rgba(20,125,229,.08);filter:blur(5px)}
+.platform-feature .feature-symbol{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:var(--navy);color:#fff;font-size:17px}
+.platform-feature h3{font:800 14px 'Plus Jakarta Sans';margin:5px 0}
+.platform-feature p{font-size:8px;line-height:1.6;max-width:510px}
+.platform-feature button,.platform-feature a{position:relative;z-index:2;border:0;background:transparent;color:var(--blue);font:800 8px 'Plus Jakarta Sans';white-space:nowrap;cursor:pointer;text-decoration:none}
+.contact-feature .feature-symbol{background:#147de5}
+
+@media(max-width:1024px){
+  .platform-hub-head{align-items:flex-start;flex-direction:column}
+  .platform-tabs{width:100%;overflow:auto}
+  .platform-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .platform-hub-head{gap:14px}
+  .platform-tabs{border-radius:11px}
+  .platform-tabs button{padding:8px 10px;font-size:8px}
+  .platform-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .platform-card{min-height:190px;padding:13px;border-radius:14px}
+  .platform-icon{width:34px;height:34px;border-radius:9px;font-size:10px}
+  .platform-label{font-size:7px}
+  .platform-card h3{font-size:12px;margin-top:13px}
+  .platform-card p{font-size:8px;line-height:1.55;min-height:62px}
+  .platform-card-footer{margin-top:11px;padding-top:9px}
+  .platform-card-footer>span{font-size:7px}
+  .platform-card-footer button{font-size:7px}
+  .platform-feature-row{grid-template-columns:1fr;gap:8px}
+  .platform-feature{grid-template-columns:auto 1fr;gap:11px;padding:14px}
+  .platform-feature button,.platform-feature a{grid-column:2}
+}
+@media(max-width:360px){
+  .platform-grid{grid-template-columns:1fr}
+  .platform-card p{min-height:auto}
+}
