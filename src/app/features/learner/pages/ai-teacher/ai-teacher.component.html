@@ -53,7 +53,7 @@
           <h3>{{ response?.studentPrompt }}</h3>
         </div>
         <form (ngSubmit)="ask()">
-          <textarea [(ngModel)]="studentMessage" name="studentMessage" rows="3" placeholder="Type your answer or doubt…"></textarea>
+          <textarea [(ngModel)]="studentMessage" name="studentMessage" rows="3" placeholder="Type your answer or doubt…"></textarea><button type="button" class="mic" [class.active]="listening" (click)="startListening()">{{ listening ? "🎙 Listening…" : "🎤 Speak" }}</button>
           <button type="submit" [disabled]="loading || !studentMessage.trim()">{{ loading ? 'Teacher is thinking…' : 'Answer →' }}</button>
         </form>
       </div>
