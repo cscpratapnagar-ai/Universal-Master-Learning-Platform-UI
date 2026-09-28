@@ -89,6 +89,54 @@
     <div><b>24/7</b><small>AI guidance</small></div>
   </section>
 
+
+
+  <section id="platform-hub" class="platform-hub section container">
+    <div class="platform-hub-head">
+      <div>
+        <span class="section-kicker">ONE PLATFORM • MANY POSSIBILITIES</span>
+        <h2>Choose your <span>learning world.</span></h2>
+        <p>MLS is designed as a connected education ecosystem. Pick the space that matches what you want to build, teach, assess or learn.</p>
+      </div>
+      <div class="platform-tabs" aria-label="MLS platform areas">
+        <button type="button" class="active">All Areas</button>
+        <button type="button" (click)="scrollTo('ai-teacher')">AI Teacher</button>
+        <button type="button" (click)="scrollTo('academy')">Academy</button>
+        <button type="button" (click)="scrollTo('exam-portal')">Exams</button>
+      </div>
+    </div>
+
+    <div class="platform-grid">
+      <article *ngFor="let area of platformAreas" class="platform-card" [ngClass]="area.tone" [id]="area.target">
+        <div class="platform-card-glow"></div>
+        <div class="platform-card-top">
+          <span class="platform-icon">{{ area.icon }}</span>
+          <span class="platform-label">{{ area.label }}</span>
+          <b>↗</b>
+        </div>
+        <h3>{{ area.title }}</h3>
+        <p>{{ area.text }}</p>
+        <div class="platform-card-footer">
+          <span>Explore {{ area.label }}</span>
+          <button type="button" (click)="scrollTo(area.target)">Open <b>→</b></button>
+        </div>
+      </article>
+    </div>
+
+    <div class="platform-feature-row">
+      <article class="platform-feature about-feature" id="about-mls">
+        <span class="feature-symbol">◎</span>
+        <div><span class="section-kicker">ABOUT MLS</span><h3>Education, connected end-to-end.</h3><p>From the first learner question to teaching, assessment, certification and institutional analytics—every layer belongs to one intelligent system.</p></div>
+        <button type="button" (click)="scrollTo('about-mls')">Discover the vision →</button>
+      </article>
+      <article class="platform-feature contact-feature" id="contact">
+        <span class="feature-symbol">✉</span>
+        <div><span class="section-kicker">CONTACT US</span><h3>Let's build your learning ecosystem.</h3><p>Organization, teacher, academy, examiner or platform support—start the conversation from one place.</p></div>
+        <a routerLink="/auth/register">Contact MLS →</a>
+      </article>
+    </div>
+  </section>
+
   <section id="learners" class="section container">
     <div class="section-title-row">
       <div><h2>Why Choose MLS?</h2><p>More than just a learning platform — it's your growth partner.</p></div>
