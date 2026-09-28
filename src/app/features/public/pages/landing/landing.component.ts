@@ -132,4 +132,24 @@ export class LandingComponent implements OnInit {
     this.mobileMenuOpen = false;
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  openPlatformArea(target: string): void {
+    this.mobileMenuOpen = false;
+
+    const routes: Record<string, string> = {
+      organizations: '/organization',
+      'private-teachers': '/teacher',
+      'learner-space': '/learner'
+    };
+
+    const route = routes[target];
+    if (route) {
+      window.location.assign(route);
+      return;
+    }
+
+    if (target === 'ai-teacher' || target === 'academy' || target === 'examiner' || target === 'exam-portal') {
+      this.scrollTo(target);
+    }
+  }
 }
