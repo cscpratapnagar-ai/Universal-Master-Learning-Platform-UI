@@ -5,6 +5,19 @@ import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
 import { UserSubscription } from '../models/user-subscription.model';
 
+export interface BillingOrderSummary {
+  id: string;
+  userId: string;
+  planId: string;
+  billingCycle: string;
+  amount: number;
+  currency: string;
+  status: string;
+  externalOrderId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface BillingOrderResponse {
   orderId: string;
   planCode: string;
@@ -34,5 +47,9 @@ export class UserSubscriptionService {
 
   verifyPayment(orderId: string, payload: { razorpayOrderId: string; razorpayPaymentId: string; razorpaySignature: string }): Observable<ApiResponse<null>> {
     return this.http.post<ApiResponse<null>>(`${API_CONFIG.baseUrl}/student/billing/orders/${encodeURIComponent(orderId)}/verify`, payload);
+  }
+
+  orders(): Observable<ApiResponse<BillingOrderSummary[]>> {
+    return this.http.get<ApiResponse<BillingOrderSummary[]>>(`${API_CONFIG.baseUrl}/student/billing/orders/history`);
   }
 }
