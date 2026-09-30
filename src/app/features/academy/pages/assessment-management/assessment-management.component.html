@@ -1,0 +1,29 @@
+<main class="assessment-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · ASSESSMENTS</span>
+      <h1>Assessment Command Center</h1>
+      <p>Monitor assessment coverage and connect directly to the existing assessment authoring and question-bank workflow.</p>
+    </div>
+    <button class="primary" type="button" (click)="openAssessmentStudio()">Open Assessment Studio ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Assessment metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>TOTAL ASSESSMENTS</span><strong>{{ loading ? '—' : (overview?.totalAssessments ?? 0) }}</strong><small>Assessment records</small></article>
+    <article><span>COURSE LINKED</span><strong>{{ loading ? '—' : (overview?.assessmentsWithCourse ?? 0) }}</strong><small>Assessments attached to courses</small></article>
+    <article><span>AVG MAX ATTEMPTS</span><strong>{{ loading ? '—' : (overview?.averageAttempts ?? 0) }}</strong><small>Configured attempts across assessments</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> EXAM & ASSESSMENT OPERATIONS</div>
+    <h2>Assessment creation stays in the teaching studio.</h2>
+    <p>Academy provides operational visibility while the existing Teacher Assessment Studio handles assessment creation, question authoring, editing, rules and question-bank workflows.</p>
+    <div class="actions">
+      <button class="primary" (click)="openAssessmentStudio()">Open Assessment Studio</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>
