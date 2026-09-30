@@ -1,0 +1,29 @@
+<main class="teacher-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · TEACHERS</span>
+      <h1>Teacher Command Center</h1>
+      <p>Monitor the academy teaching workforce and open the full teaching studio for operational work.</p>
+    </div>
+    <button class="primary" type="button" (click)="openTeachingStudio()">Open Teaching Studio ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Teacher metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>ACTIVE TEACHERS</span><strong>{{ loading ? '—' : (overview?.activeTeachers ?? 0) }}</strong><small>Enabled users with Teacher role</small></article>
+    <article><span>TOTAL TEACHERS</span><strong>{{ loading ? '—' : (overview?.totalTeachers ?? 0) }}</strong><small>Teacher role assignments</small></article>
+    <article><span>ACTIVE INSTRUCTORS</span><strong>{{ loading ? '—' : (overview?.activeInstructors ?? 0) }}</strong><small>Enabled Instructor role users</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> TEACHING WORKSPACE</div>
+    <h2>Manage teaching operations from one place.</h2>
+    <p>Teacher creation, role assignment and learner-facing teaching workflows remain governed by the existing platform permissions. This Academy layer provides the command-center entry point and workforce visibility.</p>
+    <div class="actions">
+      <button class="primary" (click)="openTeachingStudio()">Open Teaching Studio</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>
