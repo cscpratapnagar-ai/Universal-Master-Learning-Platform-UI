@@ -28,6 +28,33 @@
     </div>
   </section>
 
+  <section class="academy-metrics" aria-label="Live academy metrics">
+    <article class="metric-card">
+      <span>ACTIVE USERS</span>
+      <strong>{{ overviewLoading ? '—' : (overview?.activeUsers ?? 0) }}</strong>
+      <small>Enabled platform users</small>
+    </article>
+    <article class="metric-card">
+      <span>PUBLISHED COURSES</span>
+      <strong>{{ overviewLoading ? '—' : (overview?.publishedCourses ?? 0) }}</strong>
+      <small>Ready-to-learn experiences</small>
+    </article>
+    <article class="metric-card">
+      <span>ACTIVE PROGRAMS</span>
+      <strong>{{ overviewLoading ? '—' : (overview?.activePrograms ?? 0) }}</strong>
+      <small>Programs currently running</small>
+    </article>
+    <article class="metric-card">
+      <span>PROGRAM LIFECYCLE</span>
+      <strong>{{ overviewLoading ? '—' : ((overview?.publishedPrograms ?? 0) + (overview?.pausedPrograms ?? 0) + (overview?.completedPrograms ?? 0)) }}</strong>
+      <small>Published + paused + completed</small>
+    </article>
+  </section>
+
+  <div *ngIf="overviewError" class="overview-status">
+    Live academy metrics could not be loaded. <button type="button" (click)="loadOverview()">Retry</button>
+  </div>
+
   <section class="area-grid">
     <article *ngFor="let area of areas" class="area-card" [ngClass]="area.tone" (click)="open(area.route)">
       <div class="area-icon">{{ area.icon }}</div>

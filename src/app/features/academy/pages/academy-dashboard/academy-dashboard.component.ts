@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { AcademyService } from '../../../../core/services/academy.service';
+import { AcademyOverview } from '../../../../core/models/academy.model';
 
 interface AcademyArea {
   title: string;
@@ -27,7 +29,32 @@ export class AcademyDashboardComponent {
     { title: 'Organization', description: 'Open the organization governance workspace when assigned.', icon: '▦', route: '/organization', tone: 'navy' }
   ];
 
-  constructor(private readonly router: Router, private readonly auth: AuthService) {}
+  overview: AcademyOverview | null = null;
+  overviewLoading = true;
+  overviewError = false;
+
+  constructor(
+    private readonly router: Router,
+    private readonly auth: AuthService,
+    private readonly academy: AcademyService
+  ) {
+    this.loadOverview();
+  }
+
+  loadOverview(): void {
+    this.overviewLoading = true;
+    this.overviewError = false;
+    this.academy.overview().subscribe({
+      next: response => {
+        this.overview = response.data;
+        this.overviewLoading = false;
+      },
+      error: () => {
+        this.overviewError = true;
+        this.overviewLoading = false;
+      }
+    });
+  }
 
   open(route: string): void {
     this.router.navigateByUrl(route);
