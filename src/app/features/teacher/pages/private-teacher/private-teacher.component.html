@@ -4,7 +4,7 @@
       <button class="back" type="button" (click)="back()">← Back to Teaching Studio</button>
       <span class="eyebrow">PRIVATE TEACHING · FOUNDATION</span>
       <h1>Private Teacher Workspace</h1>
-      <p>A dedicated foundation for one-to-one teaching, private learners and future availability, scheduling and session workflows.</p>
+      <p>One-to-one teaching, private learners and session operations in a dedicated workspace.</p>
     </div>
   </header>
 
@@ -13,14 +13,33 @@
   <section class="metrics">
     <article><span>ELIGIBLE TEACHERS</span><strong>{{ loading ? '—' : (overview?.eligibleTeachers ?? 0) }}</strong><small>Enabled Teacher + Instructor users</small></article>
     <article><span>ACTIVE PRIVATE TEACHERS</span><strong>{{ loading ? '—' : (overview?.activePrivateTeachers ?? 0) }}</strong><small>Private-teaching profiles currently active</small></article>
+    <article><span>ACTIVE AVAILABILITY</span><strong>{{ availability.length }}</strong><small>Recurring weekly slots</small></article>
   </section>
 
   <section class="workspace">
-    <div class="pulse"><i></i> PRIVATE TEACHING CORE</div>
-    <h2>Built separately from classroom teaching.</h2>
-    <p>The private-teacher domain will own teacher profiles, learner matching, availability, session scheduling, private resources and future billing. The existing Teacher Studio remains the classroom authoring surface.</p>
-    <div class="roadmap">
-      <span>01 Profile</span><span>02 Availability</span><span>03 Matching</span><span>04 Sessions</span><span>05 Billing</span>
+    <div class="pulse"><i></i> AVAILABILITY ENGINE</div>
+    <h2>Weekly teaching windows</h2>
+    <p>Set recurring windows now. Booking, learner matching and live sessions can consume the same schedule later.</p>
+
+    <form class="slot-form" (ngSubmit)="addSlot()">
+      <select [(ngModel)]="draft.dayOfWeek" name="dayOfWeek"><option *ngFor="let day of days" [value]="day">{{ day }}</option></select>
+      <input type="time" [(ngModel)]="draft.startTime" name="startTime" required>
+      <input type="time" [(ngModel)]="draft.endTime" name="endTime" required>
+      <input [(ngModel)]="draft.timezone" name="timezone" placeholder="Timezone" required>
+      <button type="submit" [disabled]="saving">+ Add Slot</button>
+    </form>
+
+    <div class="slots" *ngIf="availability.length; else empty">
+      <article *ngFor="let slot of availability">
+        <strong>{{ slot.dayOfWeek }}</strong>
+        <span>{{ slot.startTime }} — {{ slot.endTime }}</span>
+        <small>{{ slot.timezone }}</small>
+      </article>
     </div>
+    <ng-template #empty><div class="empty">No recurring availability yet. Add the first teaching window above.</div></ng-template>
+  </section>
+
+  <section class="roadmap">
+    <span>01 Profile</span><span class="active">02 Availability</span><span>03 Matching</span><span>04 Sessions</span><span>05 Billing</span>
   </section>
 </main>
