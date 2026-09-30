@@ -1,0 +1,30 @@
+<main class="course-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · COURSES</span>
+      <h1>Course Command Center</h1>
+      <p>Monitor the academy catalog and move directly into the existing course authoring workspace.</p>
+    </div>
+    <button class="primary" type="button" (click)="openCourseStudio()">Open Course Studio ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Course metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>TOTAL COURSES</span><strong>{{ loading ? '—' : (overview?.totalCourses ?? 0) }}</strong><small>Academy catalog records</small></article>
+    <article><span>PUBLISHED</span><strong>{{ loading ? '—' : (overview?.publishedCourses ?? 0) }}</strong><small>Available published courses</small></article>
+    <article><span>DRAFT</span><strong>{{ loading ? '—' : (overview?.draftCourses ?? 0) }}</strong><small>Courses still in authoring</small></article>
+    <article><span>ARCHIVED</span><strong>{{ loading ? '—' : (overview?.archivedCourses ?? 0) }}</strong><small>Retained historical courses</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> COURSE CATALOG</div>
+    <h2>One command center for the learning catalog.</h2>
+    <p>Academy visibility is separated from authoring. Catalog metrics are available here, while the existing Teacher Course Studio remains the operational surface for course creation and editing.</p>
+    <div class="actions">
+      <button class="primary" (click)="openCourseStudio()">Open Course Studio</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>

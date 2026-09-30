@@ -5,13 +5,15 @@ import { RoleGuard } from '../../core/guards/role.guard';
 import { AcademyDashboardComponent } from './pages/academy-dashboard/academy-dashboard.component';
 import { TeacherManagementComponent } from './pages/teacher-management/teacher-management.component';
 import { LearnerManagementComponent } from './pages/learner-management/learner-management.component';
+import { CourseManagementComponent } from './pages/course-management/course-management.component';
 
 const ACADEMY_ROLES = ['SUPER_ADMIN', 'ADMIN', 'ORG_ADMIN', 'INSTRUCTOR', 'TEACHER', 'LEARNER', 'STUDENT'];
 
 const routes: Routes = [
   { path: '', component: AcademyDashboardComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ACADEMY_ROLES } },
   { path: 'teachers', component: TeacherManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
-  { path: 'learners', component: LearnerManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } }
+  { path: 'learners', component: LearnerManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
+  { path: 'courses', component: CourseManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } }
 ];
 
 @NgModule({
