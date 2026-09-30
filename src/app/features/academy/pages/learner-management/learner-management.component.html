@@ -1,0 +1,29 @@
+<main class="learner-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · LEARNERS</span>
+      <h1>Learner Command Center</h1>
+      <p>Monitor learner participation and connect academy operations with the learner experience.</p>
+    </div>
+    <button class="primary" type="button" (click)="openLearnerPortal()">Open Learner Portal ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Learner metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>ACTIVE LEARNERS</span><strong>{{ loading ? '—' : (overview?.activeLearners ?? 0) }}</strong><small>Enabled users with Learner role</small></article>
+    <article><span>TOTAL LEARNERS</span><strong>{{ loading ? '—' : (overview?.totalLearners ?? 0) }}</strong><small>Learner role assignments</small></article>
+    <article><span>ACTIVE STUDENTS</span><strong>{{ loading ? '—' : (overview?.activeStudents ?? 0) }}</strong><small>Enabled Student role users</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> LEARNER EXPERIENCE</div>
+    <h2>Keep learner operations connected.</h2>
+    <p>This command center provides workforce visibility while the existing learner portal remains the execution surface for courses, learning progress, AI support and assessments.</p>
+    <div class="actions">
+      <button class="primary" (click)="openLearnerPortal()">Open Learner Portal</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>
