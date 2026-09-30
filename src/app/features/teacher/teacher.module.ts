@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 import { TeacherRoutingModule } from './teacher-routing.module';
 import { TeacherDashboardComponent } from './pages/teacher-dashboard/teacher-dashboard.component';
@@ -9,7 +10,7 @@ import { TeacherLearnersComponent } from './pages/teacher-learners/teacher-learn
 import { PrivateTeacherComponent } from './pages/private-teacher/private-teacher.component';
 
 @NgModule({
-  declarations: [TeacherDashboardComponent, TeacherCoursesComponent, TeacherAssessmentsComponent, TeacherQuestionBankComponent, TeacherLearnersComponent],
-  imports: [SharedModule, TeacherRoutingModule]
+  declarations: [TeacherDashboardComponent, TeacherCoursesComponent, TeacherAssessmentsComponent, TeacherQuestionBankComponent, TeacherLearnersComponent, PrivateTeacherComponent],
+  imports: [SharedModule, FormsModule, TeacherRoutingModule]
 })
 export class TeacherModule {}
