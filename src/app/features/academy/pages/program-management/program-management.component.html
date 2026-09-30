@@ -1,0 +1,33 @@
+<main class="program-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · PROGRAMS</span>
+      <h1>Program Command Center</h1>
+      <p>Monitor the full program lifecycle from draft through publication, activation, completion and archive.</p>
+    </div>
+    <button class="primary" type="button" (click)="openProgramWorkspace()">Open Program Workspace ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Program metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>TOTAL</span><strong>{{ loading ? '—' : (overview?.totalPrograms ?? 0) }}</strong><small>Program records</small></article>
+    <article><span>DRAFT</span><strong>{{ loading ? '—' : (overview?.draftPrograms ?? 0) }}</strong><small>Awaiting publication</small></article>
+    <article><span>PUBLISHED</span><strong>{{ loading ? '—' : (overview?.publishedPrograms ?? 0) }}</strong><small>Ready to start</small></article>
+    <article><span>ACTIVE</span><strong>{{ loading ? '—' : (overview?.activePrograms ?? 0) }}</strong><small>Currently running</small></article>
+    <article><span>PAUSED</span><strong>{{ loading ? '—' : (overview?.pausedPrograms ?? 0) }}</strong><small>Temporarily paused</small></article>
+    <article><span>COMPLETED</span><strong>{{ loading ? '—' : (overview?.completedPrograms ?? 0) }}</strong><small>Lifecycle completed</small></article>
+    <article><span>ARCHIVED</span><strong>{{ loading ? '—' : (overview?.archivedPrograms ?? 0) }}</strong><small>Historical records</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> PROGRAM LIFECYCLE</div>
+    <h2>Academy visibility over the complete program journey.</h2>
+    <p>The existing Program architecture owns lifecycle transitions, dependencies, learner intelligence and analytics. This Academy surface provides the operational overview and hands off into the established Program workspace.</p>
+    <div class="actions">
+      <button class="primary" (click)="openProgramWorkspace()">Open Program Workspace</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>

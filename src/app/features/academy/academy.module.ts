@@ -7,6 +7,7 @@ import { LearnerManagementComponent } from './pages/learner-management/learner-m
 import { CourseManagementComponent } from './pages/course-management/course-management.component';
 import { AssessmentManagementComponent } from './pages/assessment-management/assessment-management.component';
 import { QuestionBankManagementComponent } from './pages/question-bank-management/question-bank-management.component';
+import { ProgramManagementComponent } from './pages/program-management/program-management.component';
 
 @NgModule({
   declarations: [AcademyDashboardComponent],
