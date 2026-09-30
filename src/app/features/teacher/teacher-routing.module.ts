@@ -7,6 +7,7 @@ import { TeacherCoursesComponent } from './pages/teacher-courses/teacher-courses
 import { TeacherAssessmentsComponent } from './pages/teacher-assessments/teacher-assessments.component';
 import { TeacherQuestionBankComponent } from './pages/teacher-question-bank/teacher-question-bank.component';
 import { TeacherLearnersComponent } from './pages/teacher-learners/teacher-learners.component';
+import { PrivateTeacherComponent } from './pages/private-teacher/private-teacher.component';
 
 const TEACHER_ROLES = ['INSTRUCTOR', 'TEACHER'];
 
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'courses', component: TeacherCoursesComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN','INSTRUCTOR','TEACHER'] } },
   { path: 'assessments', component: TeacherAssessmentsComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
   { path: 'question-bank', component: TeacherQuestionBankComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
-  { path: 'learners', component: TeacherLearnersComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } }
+  { path: 'learners', component: TeacherLearnersComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } },
+  { path: 'private', component: PrivateTeacherComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: TEACHER_ROLES } }
 ];
 
 @NgModule({
