@@ -7,6 +7,7 @@ import { TeacherManagementComponent } from './pages/teacher-management/teacher-m
 import { LearnerManagementComponent } from './pages/learner-management/learner-management.component';
 import { CourseManagementComponent } from './pages/course-management/course-management.component';
 import { AssessmentManagementComponent } from './pages/assessment-management/assessment-management.component';
+import { QuestionBankManagementComponent } from './pages/question-bank-management/question-bank-management.component';
 
 const ACADEMY_ROLES = ['SUPER_ADMIN', 'ADMIN', 'ORG_ADMIN', 'INSTRUCTOR', 'TEACHER', 'LEARNER', 'STUDENT'];
 
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'teachers', component: TeacherManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
   { path: 'learners', component: LearnerManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
   { path: 'courses', component: CourseManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
-  { path: 'assessments', component: AssessmentManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } }
+  { path: 'assessments', component: AssessmentManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } },
+  { path: 'question-bank', component: QuestionBankManagementComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['SUPER_ADMIN','ADMIN','ORG_ADMIN'] } }
 ];
 
 @NgModule({

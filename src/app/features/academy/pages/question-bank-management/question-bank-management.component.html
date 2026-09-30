@@ -1,0 +1,30 @@
+<main class="question-bank-management">
+  <header class="head">
+    <div>
+      <button class="back" type="button" (click)="back()">← Back to Academy</button>
+      <span class="eyebrow">ACADEMY · QUESTION BANK</span>
+      <h1>Question Bank Command Center</h1>
+      <p>Monitor the assessment question inventory and move directly into the existing question-authoring workspace.</p>
+    </div>
+    <button class="primary" type="button" (click)="openQuestionBank()">Open Question Bank ↗</button>
+  </header>
+
+  <div *ngIf="error" class="error">Question-bank metrics could not be loaded. <button (click)="load()">Retry</button></div>
+
+  <section class="metrics">
+    <article><span>TOTAL QUESTIONS</span><strong>{{ loading ? '—' : (overview?.totalQuestions ?? 0) }}</strong><small>Assessment question inventory</small></article>
+    <article><span>SINGLE CHOICE</span><strong>{{ loading ? '—' : (overview?.singleChoiceQuestions ?? 0) }}</strong><small>Single-answer questions</small></article>
+    <article><span>MULTIPLE CHOICE</span><strong>{{ loading ? '—' : (overview?.multipleChoiceQuestions ?? 0) }}</strong><small>Multiple-answer questions</small></article>
+    <article><span>TRUE / FALSE</span><strong>{{ loading ? '—' : (overview?.trueFalseQuestions ?? 0) }}</strong><small>Binary questions</small></article>
+  </section>
+
+  <section class="workspace-card">
+    <div class="pulse"><i></i> QUESTION INVENTORY</div>
+    <h2>Central visibility, existing authoring preserved.</h2>
+    <p>Academy monitors the inventory without duplicating the established Teacher Question Bank. Authoring, editing and assessment linking continue through the existing operational workspace.</p>
+    <div class="actions">
+      <button class="primary" (click)="openQuestionBank()">Open Question Bank</button>
+      <button class="back" (click)="back()">Return to Academy</button>
+    </div>
+  </section>
+</main>
