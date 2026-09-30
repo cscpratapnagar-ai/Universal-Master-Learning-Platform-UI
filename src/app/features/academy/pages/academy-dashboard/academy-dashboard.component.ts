@@ -19,11 +19,12 @@ interface AcademyArea {
 })
 export class AcademyDashboardComponent {
   readonly areas: AcademyArea[] = [
-    { title: 'Courses', description: 'Create, manage and publish academy learning experiences.', icon: '▣', route: '/teacher/courses', tone: 'blue' },
-    { title: 'Teachers', description: 'Open the teaching studio and manage educator workflows.', icon: '✦', route: '/teacher', tone: 'purple' },
-    { title: 'Learners', description: 'Review learner activity, progress and engagement.', icon: '◉', route: '/teacher/learners', tone: 'cyan' },
-    { title: 'Assessments', description: 'Build knowledge checks and assessment experiences.', icon: '✓', route: '/teacher/assessments', tone: 'orange' },
-    { title: 'Question Bank', description: 'Organize reusable questions for academy assessments.', icon: '▤', route: '/teacher/question-bank', tone: 'green' },
+    { title: 'Courses', description: 'Catalog visibility, lifecycle metrics and course operations.', icon: '▣', route: '/academy/courses', tone: 'blue' },
+    { title: 'Teachers', description: 'Teacher workforce visibility and teaching operations.', icon: '✦', route: '/academy/teachers', tone: 'purple' },
+    { title: 'Learners', description: 'Learner workforce visibility and experience operations.', icon: '◉', route: '/academy/learners', tone: 'cyan' },
+    { title: 'Assessments', description: 'Assessment inventory, rules and exam operations.', icon: '✓', route: '/academy/assessments', tone: 'orange' },
+    { title: 'Question Bank', description: 'Central question inventory and authoring operations.', icon: '▤', route: '/academy/question-bank', tone: 'green' },
+    { title: 'Programs', description: 'Track program lifecycle from draft to completion.', icon: '◈', route: '/academy/programs', tone: 'violet' },
     { title: 'Exam Portal', description: 'Launch the secure examination experience.', icon: '▥', route: '/exam-portal', tone: 'pink' },
     { title: 'AI Teacher', description: 'Give learners intelligent teaching support inside courses.', icon: 'AI', route: '/learner', tone: 'gold' },
     { title: 'Organization', description: 'Open the organization governance workspace when assigned.', icon: '▦', route: '/organization', tone: 'navy' }
