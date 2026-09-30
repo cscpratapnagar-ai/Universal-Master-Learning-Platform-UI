@@ -20,6 +20,7 @@ export class SuperAdminShellComponent implements OnInit, OnDestroy {
     { label: 'Role Requests', route: '/super-admin/role-requests', icon: '◇' },
     { label: 'Organizations', route: '/super-admin/organizations', icon: '▦' },
     { label: 'Learning', route: '/admin', icon: '◇' },
+    { label: 'AI Teacher', route: '/super-admin/ai-teacher', icon: 'AI' },
     { label: 'Security', route: '/super-admin/security', icon: '◉' },
     { label: 'System', route: '/super-admin/system', icon: '⚙' }
   ];

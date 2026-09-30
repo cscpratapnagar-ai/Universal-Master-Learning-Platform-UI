@@ -1,0 +1,33 @@
+<section class="governance-page">
+  <header class="page-head">
+    <div>
+      <button type="button" class="back" (click)="back()">← Back to Overview</button>
+      <span class="eyebrow">AI GOVERNANCE</span>
+      <h1>AI Teacher Command Center</h1>
+      <p>Monitor platform-wide AI Teacher usage without changing learner-level teaching configuration.</p>
+    </div>
+    <button type="button" class="refresh" (click)="load()">↻ Refresh</button>
+  </header>
+
+  <div *ngIf="error" class="error">
+    Governance metrics could not be loaded. <button type="button" (click)="load()">Retry</button>
+  </div>
+
+  <section class="metrics">
+    <article><span>ACTIVE AI USERS</span><strong>{{ loading ? '—' : (overview?.activeAiTeacherUsers ?? 0) }}</strong><small>Learners using AI Teacher this month</small></article>
+    <article><span>MONTHLY TURNS</span><strong>{{ loading ? '—' : (overview?.monthlyTurns ?? 0) }}</strong><small>Total teaching turns consumed</small></article>
+    <article><span>AVG / USER</span><strong>{{ loading ? '—' : (overview?.averageTurnsPerUser ?? 0) }}</strong><small>Average turns per active user</small></article>
+    <article><span>PERIOD</span><strong>{{ loading ? '—' : (overview?.periodStart ?? '—') }}</strong><small>UTC monthly usage window</small></article>
+  </section>
+
+  <section class="governance-card">
+    <div class="status"><i></i><span>AI Teacher Usage Layer</span><b>MONITORED</b></div>
+    <h2>Governance foundation is connected.</h2>
+    <p>Quota, entitlement and usage tracking remain owned by the existing AI Teacher services. This workspace is the platform-level monitoring surface.</p>
+    <div class="next-grid">
+      <div><strong>01</strong><span>Model Governance</span><small>Model/provider configuration and controlled rollout.</small></div>
+      <div><strong>02</strong><span>Safety & Guardrails</span><small>Policy controls, response boundaries and audit visibility.</small></div>
+      <div><strong>03</strong><span>Knowledge / RAG</span><small>Grounding sources, indexing and content governance.</small></div>
+    </div>
+  </section>
+</section>

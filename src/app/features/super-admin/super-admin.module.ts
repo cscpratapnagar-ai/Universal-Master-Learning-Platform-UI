@@ -11,6 +11,7 @@ import { OrganizationManagementComponent } from './pages/organization-management
 import { UserManagementComponent } from './pages/user-management/user-management.component';
 import { RoleRequestsComponent } from './pages/role-requests/role-requests.component';
 import { PlanManagementComponent } from './pages/plan-management/plan-management.component';
+import { AiTeacherGovernanceComponent } from './pages/ai-teacher-governance/ai-teacher-governance.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PlanManagementComponent } from './pages/plan-management/plan-management
     OrganizationManagementComponent,
     UserManagementComponent,
     RoleRequestsComponent,
-    PlanManagementComponent
+    PlanManagementComponent,
+    AiTeacherGovernanceComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, SharedModule, SuperAdminRoutingModule]
 })
