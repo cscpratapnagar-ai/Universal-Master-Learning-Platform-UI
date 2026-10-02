@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,PrivateTeacherProfile,PrivateTeacherSession } from '../models/private-teacher.model';
+import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,PrivateTeacherProfile,PrivateTeacherSession,PrivateTeacherSessionRequest } from '../models/private-teacher.model';
 
 @Injectable({providedIn:'root'})
 export class PrivateTeacherService{
@@ -18,4 +18,6 @@ sessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get
 confirm(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/confirm`,{});}
 cancel(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/cancel`,{});}
 complete(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/complete`,{});}
+teacherAvailability(teacherId:string):Observable<ApiResponse<PrivateTeacherAvailability[]>>{return this.http.get<ApiResponse<PrivateTeacherAvailability[]>>(`${API_CONFIG.baseUrl}/private-teacher/${teacherId}/availability`);}
+requestSession(request:PrivateTeacherSessionRequest):Observable<ApiResponse<PrivateTeacherSession>>{return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/request`,request);}
 }

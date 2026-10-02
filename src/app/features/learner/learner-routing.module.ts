@@ -16,6 +16,7 @@ import { AiTeacherComponent } from './pages/ai-teacher/ai-teacher.component';
 import { MyProjectsComponent } from './pages/my-projects/my-projects.component';
 import { ProjectWorkspaceComponent } from './pages/project-workspace/project-workspace.component';
 import { BillingCheckoutComponent } from './pages/billing-checkout/billing-checkout.component';
+import { PrivateTeachersComponent } from './pages/private-teachers/private-teachers.component';
 
 const LEARNER_ROLES = ['LEARNER', 'STUDENT'];
 
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'assessment-result', component: AssessmentResultComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'course/:enrollmentId/ai-tutor', component: AiTutorComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'course/:enrollmentId/ai-teacher', component: AiTeacherComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
+  { path: 'private-teachers', component: PrivateTeachersComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'billing', component: BillingCheckoutComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } },
   { path: 'certificates', component: CertificateComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: LEARNER_ROLES } }
 ];
