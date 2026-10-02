@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,PrivateTeacherProfile,PrivateTeacherSession } from '../models/private-teacher.model';
+import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,PrivateTeacherProfile,PrivateTeacherSession,PrivateTeacherSessionRequest } from '../models/private-teacher.model';
 
 @Injectable({providedIn:'root'})
 export class PrivateTeacherService{
