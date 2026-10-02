@@ -5,7 +5,7 @@ import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,P
 
 @Component({selector:'app-private-teacher',templateUrl:'./private-teacher.component.html',styleUrls:['./private-teacher.component.scss']})
 export class PrivateTeacherComponent implements OnInit{
-overview:PrivateTeacherOverview|null=null;profileData:PrivateTeacherProfile={headline:'',bio:'',subjects:'',teachingModes:'',languages:'',hourlyRate:null,currency:'INR',acceptingLearners:true};availability:PrivateTeacherAvailability[]=[];matches:PrivateTeacherMatch[]=[];sessions:PrivateTeacherSession[]=[];loading=true;matching=false;saving=false;profileSaving=false;profileLoaded=false;error=false;profileMessage='';
+overview:PrivateTeacherOverview|null=null;profileData:PrivateTeacherProfile={headline:'',bio:'',subjects:'',teachingModes:'',languages:'',hourlyRate:null,currency:'INR',acceptingLearners:true};availability:PrivateTeacherAvailability[]=[];matches:PrivateTeacherMatch[]=[];sessions:PrivateTeacherSession[]=[];loading=true;matching=false;saving=false;profileSaving=false;profileLoaded=false;error=false;profileMessage='';actionMessage='';
 days=['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
 draft={dayOfWeek:'MONDAY',startTime:'09:00',endTime:'10:00',timezone:'Asia/Kolkata'};
 criteria={subject:'',language:'',teachingMode:'',maxHourlyRate:null as number|null};
