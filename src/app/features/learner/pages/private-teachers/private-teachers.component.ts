@@ -66,7 +66,7 @@ export class PrivateTeachersComponent implements OnInit {
     });
   }
 
-  loadSessions():void{this.service.sessions().subscribe({next:r=>this.sessions=(r.data||[]).filter(s=>!!s.learnerId),error:()=>undefined});}
+  loadSessions():void{this.service.learnerSessions().subscribe({next:r=>this.sessions=r.data||[],error:()=>undefined});}
   sessionCount(status:string):number{return this.sessions.filter(s=>s.status===status).length;}
   cancelSession(id:string):void{if(!id)return;this.error='';this.message='';this.service.cancel(id).subscribe({next:()=>{this.message='Session cancelled successfully.';this.loadSessions();},error:err=>{this.error=err?.error?.message||err?.error?.data?.message||'Session could not be cancelled.';}});}
   back():void{this.router.navigateByUrl('/learner');}
