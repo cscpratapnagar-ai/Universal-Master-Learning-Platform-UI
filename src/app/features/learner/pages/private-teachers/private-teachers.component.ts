@@ -84,7 +84,7 @@ export class PrivateTeachersComponent implements OnInit {
     for(let i=0;i<2;i++){
       const parts=new Intl.DateTimeFormat('en-US',{timeZone,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(new Date(guess));
       const map=Object.fromEntries(parts.filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
-      const asUtc=Date.UTC(Number(map.year),Number(map.month)-1,Number(map.day),Number(map.hour)%24,Number(map.minute),Number(map.second));
+      const asUtc=Date.UTC(Number(map['year']),Number(map['month'])-1,Number(map['day']),Number(map['hour'])%24,Number(map['minute']),Number(map['second']));
       guess+=Date.UTC(y,m-1,d,hh,mm)-asUtc;
     }
     return new Date(guess).toISOString();
