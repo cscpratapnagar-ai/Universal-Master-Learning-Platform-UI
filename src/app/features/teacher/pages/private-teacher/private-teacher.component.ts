@@ -14,7 +14,7 @@ ngOnInit(){this.load();}
 load(){this.loading=true;this.error=false;this.service.overview().subscribe({next:r=>{this.overview=r.data;this.loadProfile();this.loadAvailability();this.loadSessions()},error:()=>{this.error=true;this.loading=false}})}
 loadProfile(){this.service.profile().subscribe({next:r=>{if(r.data)this.profileData={...this.profileData,...r.data};this.profileLoaded=true},error:()=>{this.profileLoaded=true}})}
 loadAvailability(){this.service.availability().subscribe({next:r=>{this.availability=r.data||[];this.loading=false},error:()=>{this.error=true;this.loading=false}})}
-loadSessions(){this.service.sessions().subscribe({next:r=>this.sessions=r.data||[],error:()=>this.error=true})}
+loadSessions(){this.service.teacherSessions().subscribe({next:r=>this.sessions=r.data||[],error:()=>this.error=true})}
 saveProfile(){this.profileSaving=true;this.profileMessage='';this.service.saveProfile(this.profileData).subscribe({next:r=>{this.profileData={...this.profileData,...r.data};this.profileSaving=false;this.profileMessage='Profile saved successfully.'},error:()=>{this.profileSaving=false;this.profileMessage='Could not save profile. Please try again.'}})}
 addSlot(){if(this.draft.endTime<=this.draft.startTime)return;this.saving=true;this.service.addAvailability(this.draft).subscribe({next:r=>{this.availability=[...this.availability,r.data];this.saving=false},error:()=>{this.saving=false;this.error=true}})}
 findMatches(){this.matching=true;this.service.match(this.criteria).subscribe({next:r=>{this.matches=r.data||[];this.matching=false},error:()=>{this.matching=false;this.error=true}})}
