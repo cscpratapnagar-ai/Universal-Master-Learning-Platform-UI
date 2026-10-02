@@ -14,7 +14,10 @@ addAvailability(p:any):Observable<ApiResponse<PrivateTeacherAvailability>>{retur
 profile():Observable<ApiResponse<PrivateTeacherProfile>>{return this.http.get<ApiResponse<PrivateTeacherProfile>>(`${API_CONFIG.baseUrl}/private-teacher/profile/me`);}
 saveProfile(p:PrivateTeacherProfile):Observable<ApiResponse<PrivateTeacherProfile>>{return this.http.put<ApiResponse<PrivateTeacherProfile>>(`${API_CONFIG.baseUrl}/private-teacher/profile/me`,p);}
 match(p:any):Observable<ApiResponse<PrivateTeacherMatch[]>>{return this.http.post<ApiResponse<PrivateTeacherMatch[]>>(`${API_CONFIG.baseUrl}/private-teacher/matching/search`,p);}
-sessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get<ApiResponse<PrivateTeacherSession[]>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/mine`);}
+sessionInbox():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get<ApiResponse<PrivateTeacherSession[]>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/mine`);}
+teacherSessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get<ApiResponse<PrivateTeacherSession[]>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/teacher/mine`);}
+learnerSessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get<ApiResponse<PrivateTeacherSession[]>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/learner/mine`);}
+sessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.sessionInbox();}
 confirm(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/confirm`,{});}
 cancel(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/cancel`,{});}
 complete(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/complete`,{});}
