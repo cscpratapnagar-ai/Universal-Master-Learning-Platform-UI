@@ -17,5 +17,7 @@ match(p:any):Observable<ApiResponse<PrivateTeacherMatch[]>>{return this.http.pos
 sessions():Observable<ApiResponse<PrivateTeacherSession[]>>{return this.http.get<ApiResponse<PrivateTeacherSession[]>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/mine`);}
 confirm(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/confirm`,{});}
 cancel(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/cancel`,{});}
-complete(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/complete`,{});}\nteacherAvailability(teacherId:string):Observable<ApiResponse<PrivateTeacherAvailability[]>>{return this.http.get<ApiResponse<PrivateTeacherAvailability[]>>(`${API_CONFIG.baseUrl}/private-teacher/${teacherId}/availability`);}\nrequestSession(request:PrivateTeacherSessionRequest):Observable<ApiResponse<PrivateTeacherSession>>{return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/request`,request);}
+complete(id:string){return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/${id}/complete`,{});}
+teacherAvailability(teacherId:string):Observable<ApiResponse<PrivateTeacherAvailability[]>>{return this.http.get<ApiResponse<PrivateTeacherAvailability[]>>(`${API_CONFIG.baseUrl}/private-teacher/${teacherId}/availability`);}
+requestSession(request:PrivateTeacherSessionRequest):Observable<ApiResponse<PrivateTeacherSession>>{return this.http.post<ApiResponse<PrivateTeacherSession>>(`${API_CONFIG.baseUrl}/private-teacher/sessions/request`,request);}
 }
