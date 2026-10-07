@@ -5,7 +5,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
 import { LearningProgressAnalytics, LearningPathStatus, LearningService } from '../../../../core/services/learning.service';
 import { StudentCourse } from '../../../../core/models/learning.model';
-import { AiLearningOrchestration, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
+import { AiLearningOrchestration, NextBestLearningIntervention, PersonalizationOrchestration } from '../../../../core/models/ai-learning.model';
 import { UserSubscription } from '../../../../core/models/user-subscription.model';
 import { UserSubscriptionService } from '../../../../core/services/user-subscription.service';
 import { NotificationItem, NotificationService } from '../../../../core/services/notification.service';
@@ -23,6 +23,8 @@ export class LearnerDashboardComponent implements OnInit {
   profileMenuOpen = false;
   theme: ThemeMode = 'dark';
   courses: StudentCourse[] = [];
+  catalogCourses: { courseId:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; enrolled:boolean }[] = [];
+  nextBest: NextBestLearningIntervention | null = null;
   ai: AiLearningOrchestration | null = null;
   personalization: PersonalizationOrchestration | null = null;
   intelligenceLoading = false;
@@ -50,6 +52,9 @@ export class LearnerDashboardComponent implements OnInit {
   get nextAction(): string { return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING'; }
   get masteryLabel(): string { return this.progress ? `${Math.round(this.progress.masteryScore)}%` : '—'; }
   get masteryScore(): number { return this.progress ? Math.round(this.progress.masteryScore) : 0; }
+  get availableRecommendations() { return this.catalogCourses.filter(course => !course.enrolled).slice(0, 4); }
+  get interventionLabel(): string { return this.nextBest?.intervention?.replaceAll('_', ' ') || 'CONTINUE LEARNING'; }
+  get interventionPriority(): string { return this.nextBest?.priority || this.personalization?.priority || 'NORMAL'; }
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
   get todayLabel(): string { return new Intl.DateTimeFormat('en-IN', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(new Date()); }
 
@@ -62,6 +67,7 @@ export class LearnerDashboardComponent implements OnInit {
     this.user = this.authService.currentUser();
     this.subscriptionService.current().subscribe({ next: response => this.subscription = response.data, error: () => this.subscription = null });
     this.loadNotifications();
+    this.learning.availableCourses().subscribe({ next: response => this.catalogCourses = response.data || [], error: () => this.catalogCourses = [] });
     this.loadCourses();
   }
 
@@ -71,12 +77,12 @@ export class LearnerDashboardComponent implements OnInit {
         this.courses = response.data || [];
         this.loadIntelligence();
       },
-      error: () => { this.courses = []; this.progress = null; this.learningPath = null; }
+      error: () => { this.courses = []; this.progress = null; this.learningPath = null; this.nextBest = null; }
     });
   }
   private loadIntelligence(): void {
     const enrollmentId = this.courses.find(course => Number(course.progressPercent || 0) < 100)?.enrollmentId || this.courses[0]?.enrollmentId;
-    if (!enrollmentId) { this.ai = null; this.personalization = null; this.progress = null; this.learningPath = null; return; }
+    if (!enrollmentId) { this.ai = null; this.personalization = null; this.progress = null; this.learningPath = null; this.nextBest = null; return; }
 
     this.intelligenceLoading = true;
     this.progressLoading = true;
@@ -94,6 +100,7 @@ export class LearnerDashboardComponent implements OnInit {
       next: response => this.ai = response.data,
       error: () => this.ai = null
     });
+    this.learning.getNextBestLearningIntervention(enrollmentId).subscribe({ next: response => this.nextBest = response.data, error: () => this.nextBest = null });
     this.learning.getPersonalizationOrchestration(enrollmentId).subscribe({
       next: response => this.personalization = response.data,
       error: () => this.personalization = null,
