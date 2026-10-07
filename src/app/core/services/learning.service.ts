@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse, StudentCourse, CourseLearning } from '../models/learning.model';
-import { AiLearningOrchestration, PersonalizationOrchestration } from '../models/ai-learning.model';
+import { AiLearningOrchestration, NextBestLearningIntervention, PersonalizationOrchestration } from '../models/ai-learning.model';
 import { AiTutorRequest, AiTutorResponse } from '../models/ai-tutor.model';
 import { AiTeacherQuotaResponse, AiTeacherTurnRequest, AiTeacherTurnResponse } from '../models/ai-teacher.model';
 import { OrganizationProjectEnrollment } from '../models/organization.model';
@@ -42,6 +42,7 @@ export class LearningService {
   getLearningPath(enrollmentId:string):Observable<ApiResponse<LearningPathStatus>>{return this.http.get<ApiResponse<LearningPathStatus>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/learning-path`);}
   getAiOrchestration(enrollmentId:string):Observable<ApiResponse<AiLearningOrchestration>>{return this.http.get<ApiResponse<AiLearningOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai/orchestration`);}
   getPersonalizationOrchestration(enrollmentId:string):Observable<ApiResponse<PersonalizationOrchestration>>{return this.http.get<ApiResponse<PersonalizationOrchestration>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/personalization/orchestration`);}
+  getNextBestLearningIntervention(enrollmentId:string):Observable<ApiResponse<NextBestLearningIntervention>>{return this.http.get<ApiResponse<NextBestLearningIntervention>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai/next-best-learning`);}
   respondToAiTutor(enrollmentId:string,question:string):Observable<ApiResponse<AiTutorResponse>>{return this.http.post<ApiResponse<AiTutorResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-tutor/respond`,{question} satisfies AiTutorRequest);}
   aiTeacherTurn(enrollmentId:string,request:AiTeacherTurnRequest):Observable<ApiResponse<AiTeacherTurnResponse>>{return this.http.post<ApiResponse<AiTeacherTurnResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-teacher/turn`,request);}
   aiTeacherQuota(enrollmentId:string):Observable<ApiResponse<AiTeacherQuotaResponse>>{return this.http.get<ApiResponse<AiTeacherQuotaResponse>>(`${this.base}/student/learning/enrollments/${encodeURIComponent(enrollmentId)}/ai-teacher/quota`);}
