@@ -23,7 +23,22 @@ export interface PersonalizationOrchestration {
   signals: string[];
 }
 
+export interface NextBestLearningIntervention {
+  enrollmentId: string;
+  courseId: string;
+  intervention: string;
+  priority: string;
+  targetLessonId: string | null;
+  targetLessonTitle: string | null;
+  rationale: string;
+  expectedOutcome: string;
+  reasons: string[];
+  recentOutcome: string | null;
+  repeatRisk: boolean;
+}
+
 export interface DashboardIntelligence {
   ai: AiLearningOrchestration;
   personalization: PersonalizationOrchestration;
+  nextBest?: NextBestLearningIntervention;
 }
