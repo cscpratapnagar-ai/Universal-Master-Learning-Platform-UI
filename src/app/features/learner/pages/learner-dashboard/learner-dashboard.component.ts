@@ -25,6 +25,9 @@ export class LearnerDashboardComponent implements OnInit {
   courses: StudentCourse[] = [];
   catalogCourses: { courseId:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; enrolled:boolean }[] = [];
   nextBest: NextBestLearningIntervention | null = null;
+  interventionFeedback: 'HELPFUL' | 'NOT_HELPFUL' | null = null;
+  interventionFeedbackSaving = false;
+  interventionFeedbackMessage = '';
   ai: AiLearningOrchestration | null = null;
   personalization: PersonalizationOrchestration | null = null;
   intelligenceLoading = false;
@@ -107,6 +110,26 @@ export class LearnerDashboardComponent implements OnInit {
       complete: () => this.intelligenceLoading = false
     });
   }
+  recordInterventionFeedback(outcome: 'HELPFUL' | 'NOT_HELPFUL'): void {
+    const enrollmentId = this.nextBest?.enrollmentId || this.primaryEnrollmentId;
+    if (!enrollmentId || !this.nextBest || this.interventionFeedbackSaving || this.interventionFeedback) return;
+    this.interventionFeedbackSaving = true;
+    this.interventionFeedbackMessage = '';
+    this.learning.recordInterventionOutcome(enrollmentId, {
+      interventionType: this.nextBest.intervention,
+      targetLessonId: this.nextBest.targetLessonId,
+      outcome,
+      notes: outcome === 'HELPFUL' ? 'Learner marked the recommended action helpful.' : 'Learner marked the recommended action not helpful.'
+    }).subscribe({
+      next: () => {
+        this.interventionFeedback = outcome;
+        this.interventionFeedbackMessage = outcome === 'HELPFUL' ? 'Thanks — feedback saved.' : 'Thanks — your feedback will help improve future recommendations.';
+      },
+      error: () => { this.interventionFeedbackMessage = 'Feedback could not be saved. Please try again.'; },
+      complete: () => { this.interventionFeedbackSaving = false; }
+    });
+  }
+
   loadNotifications(): void {
     this.notificationService.list().subscribe({ next: response => this.notifications = response.data || [] });
     this.notificationService.unreadCount().subscribe({ next: response => this.unreadNotificationCount = response.data || 0 });
