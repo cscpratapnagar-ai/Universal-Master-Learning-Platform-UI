@@ -30,7 +30,12 @@
 
     <section class="catalog">
       <div class="section-head"><div><p class="eyebrow">COURSE CATALOG</p><h2>Your teaching workspace</h2></div><span>{{courses.length}} courses</span></div>
-      <div class="loading" *ngIf="loading">Loading course workspace…</div>
+      <div class="loading" *ngIf="loading" role="status" aria-live="polite">Loading course workspace…</div>
+      <div class="empty-state" *ngIf="!loading && courses.length===0">
+        <strong>No courses to show yet</strong>
+        <p>Create your first course above, or retry loading the workspace.</p>
+        <button class="secondary" type="button" (click)="load()">Retry</button>
+      </div>
 
       <article class="course" *ngFor="let course of courses">
         <div class="course-head" (click)="toggleCourse(course.id)">
