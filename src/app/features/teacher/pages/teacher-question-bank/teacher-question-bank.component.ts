@@ -12,12 +12,15 @@ export class TeacherQuestionBankComponent implements OnInit {
 
   constructor(private readonly learning:LearningService){}
   ngOnInit():void{this.learning.adminLearningCatalog().subscribe({next:r=>this.courses=r.data||[],error:()=>this.error='Unable to load courses.'});}
-  load():void{
-    this.message='';this.error='';
+  courseChanged():void{
     this.assessmentId='';
     this.assessments=[];
     this.questions=[];
-    if(!this.courseId){this.loading=false;return;}
+    this.load();
+  }
+  load():void{
+    this.message='';this.error='';
+    if(!this.courseId){this.loading=false;this.assessmentId='';this.questions=[];this.assessments=[];return;}
     const requestedCourseId=this.courseId;
     this.loading=true;
     this.learning.getCourseAssessments(requestedCourseId).subscribe({
