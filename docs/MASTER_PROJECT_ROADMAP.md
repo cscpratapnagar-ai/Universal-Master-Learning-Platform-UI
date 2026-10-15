@@ -263,3 +263,24 @@ Snapshot taken from the GitHub `main` trees during roadmap setup:
 3. Add automated tests for the critical paths, especially where the UI currently has no discovered spec files.
 4. Fix one verified gap at a time, commit, inspect CI, and update this ledger.
 5. Do not call a phase complete until its acceptance criteria and evidence are recorded.
+
+
+## Phase 1 — Audit findings added after initial route review
+
+### UI route inventory reviewed
+- Root routing lazy-loads public, auth, learner, teacher, admin, super-admin, organization and academy feature modules.
+- Compatibility aliases currently redirect `/examiner` to `/teacher/assessments` and `/exam-portal` to `/learner/quiz`.
+- Learner routes reviewed include dashboard, projects, courses, course detail/player/progress, quiz/results, AI tutor/teacher, private teachers, billing and certificates; these routes use authentication and learner/student role guards.
+- Teacher routes reviewed include dashboard, courses, assessments, question bank, learners and private teacher; assessment/question-bank routes use teacher/instructor role guards. Course route also explicitly permits admin roles.
+- This is route-level inspection only; it does not prove backend ownership checks or end-to-end behavior.
+
+### Backend route/security inventory reviewed
+- Backend uses stateless JWT authentication, method security, and JSON 401/403 responses in `security/config/SecurityConfig.java`.
+- Swagger/OpenAPI, auth lifecycle endpoints, public endpoints, Razorpay webhook and health/info endpoints are configured as permitted; most other requests require authentication.
+- Authentication at the HTTP layer does not replace endpoint-level role, ownership, tenant-isolation or webhook-signature checks. Those require separate audits/tests.
+
+### Assessment/question-bank integration — first trace
+- Teacher Assessment screen loads course assessments and course questions via `LearningService`, supports assessment/question editing, and creates an assessment followed by sequential question creation.
+- Teacher Question Bank screen loads course assessments/questions and offers a reuse action into a selected target assessment.
+- Learner-facing `AssessmentService` has separate lesson assessment fetch/get/submit methods.
+- **Status: Partial / not end-to-end verified.** Next checks: compare the exact UI service URLs/payloads with backend controller mappings and DTOs; verify target-assessment ownership and question reuse semantics; test partial failure when assessment creation succeeds but one question creation fails; verify learner attempt and result persistence.
