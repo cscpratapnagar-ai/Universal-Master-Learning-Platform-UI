@@ -36,7 +36,7 @@
         <div class="course-head" (click)="toggleCourse(course.id)">
           <div><span class="status" [class.published]="course.status==='PUBLISHED'">{{course.status}}</span><h3>{{course.title}}</h3><p>{{course.modules.length}} modules · {{totalLessons(course)}} lessons</p></div>
           <div class="course-actions">
-            <button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED' && course.status!=='ARCHIVED'" (click)="$event.stopPropagation();publish(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button>
+            <button type="button" class="secondary" *ngIf="course.status!=='PUBLISHED' && course.status!=='ARCHIVED'" (click)="$event.stopPropagation();publish(course)" [disabled]="publishing===course.id || !publishReady(course)">{{publishing===course.id?'Publishing…':'Publish'}}</button>
             <button type="button" class="secondary" *ngIf="course.status!=='ARCHIVED'" (click)="$event.stopPropagation();archive(course)">Archive</button>
             <b>{{expandedCourse===course.id?'−':'+'}}</b>
           </div>
