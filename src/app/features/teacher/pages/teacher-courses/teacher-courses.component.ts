@@ -179,7 +179,13 @@ export class TeacherCoursesComponent implements OnInit {
   }
 
   publish(course:LearningPathCourse):void{
-    if(course.status==='PUBLISHED')return;
+    if(course.status==='PUBLISHED'||course.status==='ARCHIVED'||this.publishing===course.id)return;
+    if(!this.publishReady(course)){
+      this.error='Complete every publish-readiness check before publishing this course.';
+      this.notice='';
+      this.expandedCourse=course.id;
+      return;
+    }
     this.publishing=course.id;this.error='';
     this.learning.publishCourse(course.id).subscribe({
       next:()=>{this.publishing='';this.notice='Course published.';this.load();},
