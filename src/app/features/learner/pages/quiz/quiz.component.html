@@ -20,7 +20,7 @@
     <div class="progress-meta"><small>{{progressPercent}}% complete</small><small>{{unansweredCount ? unansweredCount+' remaining' : 'All questions answered'}}</small></div>
   </section>
 
-  <div class="workspace">
+  <div class="workspace" *ngIf="questions.length > 0">
     <aside class="navigator">
       <div class="nav-title"><span>QUESTIONS</span><small>{{answeredCount}} answered</small></div>
       <div class="question-map">
@@ -55,6 +55,14 @@
       </div>
     </section>
   </div>
+</div>
+  <section class="no-questions" *ngIf="!loading && assessment && questions.length === 0" role="status">
+    <div class="no-questions-icon">!</div>
+    <span>ASSESSMENT CONTENT</span>
+    <h2>No questions are available yet</h2>
+    <p>This assessment has been created, but no questions are available to attempt. Return to your learning page and try again later.</p>
+    <button type="button" (click)="back()">← Back to Learning</button>
+  </section>
 </main>
 
 <ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p></section></ng-template>
