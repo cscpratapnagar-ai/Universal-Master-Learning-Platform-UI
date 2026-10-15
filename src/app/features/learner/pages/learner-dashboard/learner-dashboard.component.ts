@@ -125,7 +125,7 @@ export class LearnerDashboardComponent implements OnInit {
         this.interventionFeedback = outcome;
         this.interventionFeedbackMessage = outcome === 'HELPFUL' ? 'Thanks — feedback saved.' : 'Thanks — your feedback will help improve future recommendations.';
       },
-      error: () => { this.interventionFeedbackMessage = 'Feedback could not be saved. Please try again.'; },
+      error: () => { this.interventionFeedbackSaving = false; this.interventionFeedbackMessage = 'Feedback could not be saved. Please try again.'; },
       complete: () => { this.interventionFeedbackSaving = false; }
     });
   }
