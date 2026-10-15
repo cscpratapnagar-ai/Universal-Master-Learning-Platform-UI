@@ -1,7 +1,7 @@
 <section class="bank">
 <header class="header"><div><p class="eyebrow">TEACHER STUDIO / QUESTION BANK</p><h1>Reusable Question Bank</h1><p>Find existing questions, inspect difficulty and reuse them across assessments.</p></div><span class="badge">KNOWLEDGE LIBRARY</span></header>
 <section class="panel controls">
-<label>Course<select [(ngModel)]="courseId" (change)="load()"><option value="">Choose course</option><option *ngFor="let c of courses" [value]="c.id">{{c.title}}</option></select></label>
+<label>Course<select [(ngModel)]="courseId" (change)="courseChanged()"><option value="">Choose course</option><option *ngFor="let c of courses" [value]="c.id">{{c.title}}</option></select></label>
 <label>Target assessment<select [(ngModel)]="assessmentId"><option value="">Choose assessment</option><option *ngFor="let a of assessments" [value]="a.id">{{a.title}} · {{a.level}}</option></select></label>
 <label>Difficulty<select [(ngModel)]="difficulty" (change)="load()"><option value="">All levels</option><option value="EASY">Easy</option><option value="MEDIUM">Medium</option><option value="HARD">Hard</option></select></label>
 <label>Type<select [(ngModel)]="type" (change)="load()"><option value="">All types</option><option value="SINGLE_CHOICE">Single choice</option><option value="MULTIPLE_CHOICE">Multiple choice</option><option value="TRUE_FALSE">True / False</option></select></label>
