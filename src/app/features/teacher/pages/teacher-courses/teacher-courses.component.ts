@@ -57,7 +57,7 @@ export class TeacherCoursesComponent implements OnInit {
     this.loading=true;
     this.learning.adminLearningCatalog(this.organizationId||undefined).subscribe({
       next:r=>{this.courses=r.data||[];this.loading=false;},
-      error:()=>{this.error='Unable to load the course workspace.';this.loading=false;}
+      error:()=>{this.courses=[];this.error='Unable to load the course workspace. Check your connection and retry.';this.loading=false;}
     });
   }
 
