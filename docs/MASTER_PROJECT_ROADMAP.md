@@ -312,3 +312,13 @@ Security is a release gate for every phase, not a final-phase activity.
 - Add authorization regression tests for anonymous, wrong-role, cross-user and cross-organization access.
 - Review login/reset/refresh rate limiting, token revocation, CORS production origins, secret rotation, error/log redaction, upload validation and dependency vulnerabilities.
 - Security is **not certified** by source inspection or CI build alone. Release requires automated tests and a documented security review; unresolved critical/high findings block release.
+
+
+### Authentication and browser-origin audit (2026-10-15)
+- CORS currently uses an explicit configured origin list, allows credentials, and does not use a wildcard origin in the inspected configuration. Production must set only trusted HTTPS origins.
+- Refresh tokens are stored as SHA-256 hashes, rotated using an atomic conditional revoke, and password reset deletes the user's stored refresh tokens.
+- Password reset responses are written to avoid revealing whether an email exists.
+- Public registration assigns LEARNER by default; higher roles are recorded as role requests rather than directly granted.
+- **Open risk:** inspected authentication flow contains no visible application-level rate limit for login, registration, forgot-password, reset-password, or refresh endpoints. Confirm gateway/WAF protections and add application-level throttling/tests before production.
+- **Open risk:** after password reset, already-issued short-lived access JWTs remain valid until expiry unless another revocation/version check is added. Decide and test whether immediate access-token invalidation is required for the production threat model.
+- **Verification required:** test refresh-token replay/concurrent refresh, reset-token one-time use under concurrency, login/reset rate limiting, CORS preflight with trusted and untrusted origins, and role-request approval workflow.
