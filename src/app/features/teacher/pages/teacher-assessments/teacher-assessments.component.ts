@@ -36,7 +36,7 @@ export class TeacherAssessmentsComponent implements OnInit {
   loadExistingQuestions():void{
     if(!this.selectedCourseId)return;
     this.learning.getQuestionBank(this.selectedCourseId).subscribe({
-      next:r=>this.existingQuestions=(r.data||[]) as ExistingQuestion[],
+      next:r=>this.existingQuestions=(r.data||[]).map((item:any)=>({...item,options:(item.options||[]).map((option:any)=>({id:option.id,text:option.text??option.optionText??'',correct:!!option.correct}))})) as ExistingQuestion[],
       error:e=>this.error=e?.error?.message||'Unable to load existing questions.'
     });
   }
