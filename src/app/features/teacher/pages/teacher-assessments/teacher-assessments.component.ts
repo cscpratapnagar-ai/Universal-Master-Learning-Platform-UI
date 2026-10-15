@@ -16,7 +16,7 @@ export class TeacherAssessmentsComponent implements OnInit {
   courses:LearningPathCourse[]=[];
   selectedCourseId=''; title=''; passingScore=70;
   draft:DraftQuestion={questionText:'',questionType:'SINGLE_CHOICE',points:1,difficultyLevel:'MEDIUM',options:[{text:'',correct:false},{text:'',correct:false}]};
-  questions:DraftQuestion[]=[]; createdAssessmentId=''; busy=false; message=''; error='';
+  questions:DraftQuestion[]=[]; createdAssessmentId=''; questionCreationIndex=0; busy=false; message=''; error='';
   assessments:TeacherAssessment[]=[]; existingQuestions:ExistingQuestion[]=[]; selectedExistingAssessmentId='';
   editingAssessmentId=''; editAssessmentTitle=''; editPassingScore=70; editMaxAttempts=3;
   editingQuestionId=''; editQuestionText=''; editQuestionType:'SINGLE_CHOICE'|'MULTIPLE_CHOICE'|'TRUE_FALSE'='SINGLE_CHOICE'; editQuestionPoints=1; editQuestionDifficulty:'EASY'|'MEDIUM'|'HARD'='MEDIUM'; editQuestionOptions:{id?:string;text:string;correct:boolean}[]=[];
@@ -114,17 +114,37 @@ export class TeacherAssessmentsComponent implements OnInit {
     if(!this.selectedCourseId||!this.title.trim()){this.error='Select a course and enter an assessment title.';return;}
     if(!this.questions.length){this.error='Add at least one question before publishing.';return;}
     this.busy=true;
+    if(this.createdAssessmentId){
+      this.createQuestionsSequentially(this.questionCreationIndex);
+      return;
+    }
     this.learning.createAssessment(this.selectedCourseId,{title:this.title.trim(),passingScore:this.passingScore}).subscribe({
-      next:r=>{this.createdAssessmentId=r.data?.id||'';this.createQuestionsSequentially(0);this.onCourseChange();},
+      next:r=>{
+        this.createdAssessmentId=r.data?.id||'';
+        if(!this.createdAssessmentId){this.busy=false;this.error='Assessment was created but its ID was not returned. Reload the course assessments before retrying.';return;}
+        this.questionCreationIndex=0;
+        this.createQuestionsSequentially(this.questionCreationIndex);
+      },
       error:e=>{this.busy=false;this.error=e?.error?.message||'Assessment creation failed.';}
     });
   }
   private createQuestionsSequentially(index:number):void{
-    if(index>=this.questions.length){this.busy=false;this.message='Assessment published to the selected course.';return;}
+    this.questionCreationIndex=index;
+    if(index>=this.questions.length){
+      this.busy=false;
+      this.message='Assessment and all questions were saved successfully.';
+      this.createdAssessmentId='';
+      this.questionCreationIndex=0;
+      this.onCourseChange();
+      return;
+    }
     const q=this.questions[index];
     this.learning.createAssessmentQuestion(this.createdAssessmentId,{questionText:q.questionText.trim(),questionType:q.questionType,points:q.points,difficultyLevel:q.difficultyLevel,options:q.options.map(o=>({text:o.text.trim(),correct:o.correct}))}).subscribe({
       next:()=>this.createQuestionsSequentially(index+1),
-      error:e=>{this.busy=false;this.error=e?.error?.message||'Question could not be created.';}
+      error:e=>{
+        this.busy=false;
+        this.error=`Assessment exists; ${index} of ${this.questions.length} questions saved. Fix the issue and press publish again to resume with the remaining questions. ${e?.error?.message||''}`.trim();
+      }
     });
   }
 }
