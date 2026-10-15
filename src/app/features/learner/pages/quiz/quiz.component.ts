@@ -58,7 +58,7 @@ export class QuizComponent implements OnInit {
   next(): void { this.goTo(this.currentIndex + 1); }
 
   submit(): void {
-    if (!this.assessment || this.assessmentLocked || this.unansweredCount > 0 || this.submitting) return;
+    if (!this.assessment || this.questions.length === 0 || this.assessmentLocked || this.unansweredCount > 0 || this.submitting) return;
     const assessmentId = this.assessment.id;
     this.submitting = true;
     this.api.submit(assessmentId, this.answers).subscribe({
