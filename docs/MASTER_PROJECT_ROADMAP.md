@@ -293,3 +293,22 @@ Snapshot taken from the GitHub `main` trees during roadmap setup:
 - Fixed teacher question-bank stale-target behavior when switching courses, preserved the target assessment while changing difficulty/type filters, added assessment-load error feedback, and disabled the reuse button while its request is in flight.
 - Fixed a frontend/backend question-option contract mismatch by normalizing backend `optionText` to the teacher editor's `text` property; assessment publishing now resumes remaining question creation after partial failure instead of creating a duplicate assessment.
 - **Status remains Partial.** CI verifies frontend compilation only. Teacher-to-learner assessment journey, actual database persistence, attempt-limit behavior, lesson prerequisite gating, and duplicate question reuse across repeated completed clicks still need API/E2E tests.
+
+
+## Security-first execution gate (added 2026-10-15)
+Security is a release gate for every phase, not a final-phase activity.
+
+### Verified from source review so far
+- JWT validation uses a configured issuer, signature verification, and expiry parsing; the signing secret is rejected at startup if shorter than 32 UTF-8 bytes.
+- HTTP security is stateless, enables method security, and requires authentication for unmatched routes. Public endpoints are explicitly allowlisted.
+- Course-management authorization checks teacher ownership and organization access for non-super-admins.
+- Assessment submission checks enrollment, lesson prerequisites, attempt limits, and that selected options belong to the submitted question.
+- Razorpay webhook handler checks HMAC signature with constant-time comparison and stores provider/event identifiers for deduplication.
+
+### Security risks / tests still required — not cleared
+- JWT automated tests currently demonstrate successful token round-trip; explicit regression tests for expired tokens, wrong issuer and wrong signing key were not present in the inspected test file.
+- Verify webhook idempotency under concurrent duplicate deliveries and retries after processing failures; verify payment state transitions and reconciliation against provider state.
+- Audit every controller for role checks, object ownership and organization/tenant isolation, including read-only endpoints.
+- Add authorization regression tests for anonymous, wrong-role, cross-user and cross-organization access.
+- Review login/reset/refresh rate limiting, token revocation, CORS production origins, secret rotation, error/log redaction, upload validation and dependency vulnerabilities.
+- Security is **not certified** by source inspection or CI build alone. Release requires automated tests and a documented security review; unresolved critical/high findings block release.
