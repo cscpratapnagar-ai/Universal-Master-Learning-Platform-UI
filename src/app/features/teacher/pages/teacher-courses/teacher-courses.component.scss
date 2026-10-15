@@ -32,3 +32,7 @@
   .module-head{align-items:stretch;flex-direction:column}
   .module-edit-button{width:100%}
 }
+
+
+.empty-state{display:grid;justify-items:start;gap:.5rem;padding:1.5rem;border:1px dashed var(--border-color,rgba(148,163,184,.35));border-radius:1rem;color:var(--text-color,inherit)}
+.empty-state p{margin:0;opacity:.75}
