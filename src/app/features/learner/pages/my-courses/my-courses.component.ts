@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { LearningService } from '../../../../core/services/learning.service';
 import { ThemeMode, ThemeService } from '../../../../core/services/theme.service';
@@ -19,12 +19,13 @@ export class MyCoursesComponent implements OnInit {
   search = '';
   theme: ThemeMode = 'dark';
 
-  constructor(private readonly auth: AuthService, private readonly learning: LearningService, private readonly router: Router, private readonly themeService: ThemeService) {}
+  constructor(private readonly auth: AuthService, private readonly learning: LearningService, private readonly router: Router, private readonly route: ActivatedRoute, private readonly themeService: ThemeService) {}
 
   ngOnInit(): void {
     if (!this.auth.currentUser()) { this.router.navigateByUrl('/auth/login'); return; }
     this.theme = this.themeService.theme;
     this.themeService.theme$.subscribe(theme => this.theme = theme);
+    this.route.queryParamMap.subscribe(params => this.search = params.get('search') || '');
     this.learning.myCourses().subscribe({
       next: response => { this.courses = response.data || []; this.loading = false; this.loadCatalog(); },
       error: () => { this.error = 'Unable to load your courses right now.'; this.loading = false; this.loadCatalog(); }
@@ -39,6 +40,10 @@ export class MyCoursesComponent implements OnInit {
       const matchesSearch = !query || `${course.title} ${course.description || ''}`.toLowerCase().includes(query);
       return matchesFilter && matchesSearch;
     });
+  }
+  get filteredAvailableCourses(): AvailableCourse[] {
+    const query = this.search.trim().toLowerCase();
+    return this.availableCourses.filter(course => !query || `${course.title} ${course.description || ''}`.toLowerCase().includes(query));
   }
   loadCatalog(): void {
     this.catalogLoading = true;
