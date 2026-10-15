@@ -284,3 +284,12 @@ Snapshot taken from the GitHub `main` trees during roadmap setup:
 - Teacher Question Bank screen loads course assessments/questions and offers a reuse action into a selected target assessment.
 - Learner-facing `AssessmentService` has separate lesson assessment fetch/get/submit methods.
 - **Status: Partial / not end-to-end verified.** Next checks: compare the exact UI service URLs/payloads with backend controller mappings and DTOs; verify target-assessment ownership and question reuse semantics; test partial failure when assessment creation succeeds but one question creation fails; verify learner attempt and result persistence.
+
+
+### Assessment/question-bank trace — follow-up findings (2026-10-15)
+- Learner quiz loads an assessment from `GET /api/v1/student/assessments/{assessmentId}`, submits selected option IDs to `POST /api/v1/student/assessments/{assessmentId}/submit`, and the backend validates enrollment, lesson prerequisites, attempt limits, option/question association, calculates score, and persists attempt plus answer records in a transaction.
+- The result screen consumes the response fields `score`, `passed`, `correctAnswers`, `totalQuestions`, and `masteryLevel`; these match `AssessmentResultResponse`. Browser refresh/re-entry and full learner journey still require runtime verification.
+- Backend assessment response intentionally omits option correctness from learner question views. Teacher question-bank response includes correctness for teacher-authorized routes.
+- Fixed teacher question-bank stale-target behavior when switching courses, preserved the target assessment while changing difficulty/type filters, added assessment-load error feedback, and disabled the reuse button while its request is in flight.
+- Fixed a frontend/backend question-option contract mismatch by normalizing backend `optionText` to the teacher editor's `text` property; assessment publishing now resumes remaining question creation after partial failure instead of creating a duplicate assessment.
+- **Status remains Partial.** CI verifies frontend compilation only. Teacher-to-learner assessment journey, actual database persistence, attempt-limit behavior, lesson prerequisite gating, and duplicate question reuse across repeated completed clicks still need API/E2E tests.
