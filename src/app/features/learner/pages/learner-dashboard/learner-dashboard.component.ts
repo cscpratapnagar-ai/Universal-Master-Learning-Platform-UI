@@ -28,6 +28,8 @@ export class LearnerDashboardComponent implements OnInit {
   interventionFeedback: 'HELPFUL' | 'NOT_HELPFUL' | null = null;
   interventionFeedbackSaving = false;
   interventionFeedbackMessage = '';
+  enrollingCourseIds: string[] = [];
+  enrollmentMessage = '';
   ai: AiLearningOrchestration | null = null;
   personalization: PersonalizationOrchestration | null = null;
   intelligenceLoading = false;
@@ -92,7 +94,7 @@ export class LearnerDashboardComponent implements OnInit {
 
     this.learning.getProgressAnalytics(enrollmentId).subscribe({
       next: response => this.progress = response.data,
-      error: () => this.progress = null,
+      error: () => { this.progress = null; this.progressLoading = false; },
       complete: () => this.progressLoading = false
     });
     this.learning.getLearningPath(enrollmentId).subscribe({
@@ -106,10 +108,28 @@ export class LearnerDashboardComponent implements OnInit {
     this.learning.getNextBestLearningIntervention(enrollmentId).subscribe({ next: response => this.nextBest = response.data, error: () => this.nextBest = null });
     this.learning.getPersonalizationOrchestration(enrollmentId).subscribe({
       next: response => this.personalization = response.data,
-      error: () => this.personalization = null,
+      error: () => { this.personalization = null; this.intelligenceLoading = false; },
       complete: () => this.intelligenceLoading = false
     });
   }
+  enrollRecommendedCourse(course: { courseId: string; title: string }): void {
+    if (!course.courseId || this.enrollingCourseIds.includes(course.courseId)) return;
+    this.enrollmentMessage = '';
+    this.enrollingCourseIds = [...this.enrollingCourseIds, course.courseId];
+    this.learning.enrollCourse(course.courseId).subscribe({
+      next: () => {
+        this.catalogCourses = this.catalogCourses.map(item => item.courseId === course.courseId ? { ...item, enrolled: true } : item);
+        this.enrollmentMessage = 'Enrolled in “' + course.title + '”. It is now available in My Learning.';
+        this.loadCourses();
+      },
+      error: () => {
+        this.enrollmentMessage = 'Could not enroll in “' + course.title + '”. Please try again or open My Learning for details.';
+        this.enrollingCourseIds = this.enrollingCourseIds.filter(id => id !== course.courseId);
+      },
+      complete: () => { this.enrollingCourseIds = this.enrollingCourseIds.filter(id => id !== course.courseId); }
+    });
+  }
+
   recordInterventionFeedback(outcome: 'HELPFUL' | 'NOT_HELPFUL'): void {
     const enrollmentId = this.nextBest?.enrollmentId || this.primaryEnrollmentId;
     if (!enrollmentId || !this.nextBest || this.interventionFeedbackSaving || this.interventionFeedback) return;
