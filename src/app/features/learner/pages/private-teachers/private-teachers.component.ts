@@ -66,7 +66,7 @@ export class PrivateTeachersComponent implements OnInit {
     });
   }
 
-  loadSessions():void{this.sessionsLoading=true;this.service.learnerSessions().subscribe({next:r=>{this.sessions=r.data||[];this.sessionsLoading=false;},error:()=>{this.sessionsLoading=false;this.error='Your private sessions could not be refreshed.';}});}
+  loadSessions():void{if(this.sessionsLoading)return;this.sessionsLoading=true;this.service.learnerSessions().subscribe({next:r=>{this.sessions=r.data||[];this.sessionsLoading=false;},error:()=>{this.sessionsLoading=false;this.error='Your private sessions could not be refreshed.';}});}
   sessionCount(status:string):number{return this.sessions.filter(s=>s.status===status).length;}
   cancelSession(id:string):void{if(!id||this.sessionActionId)return;this.sessionActionId=id;this.error='';this.message='';this.service.cancel(id).subscribe({next:()=>{this.sessionActionId=null;this.message='Session cancelled successfully.';this.loadSessions();},error:err=>{this.sessionActionId=null;this.error=err?.error?.message||err?.error?.data?.message||'Session could not be cancelled.';}});}
   back():void{this.router.navigateByUrl('/learner');}
