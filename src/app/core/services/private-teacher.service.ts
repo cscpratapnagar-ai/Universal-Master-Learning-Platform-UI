@@ -11,6 +11,7 @@ constructor(private readonly http:HttpClient){}
 overview():Observable<ApiResponse<PrivateTeacherOverview>>{return this.http.get<ApiResponse<PrivateTeacherOverview>>(`${API_CONFIG.baseUrl}/private-teacher/overview`);}
 availability():Observable<ApiResponse<PrivateTeacherAvailability[]>>{return this.http.get<ApiResponse<PrivateTeacherAvailability[]>>(`${API_CONFIG.baseUrl}/private-teacher/availability/me`);}
 addAvailability(p:any):Observable<ApiResponse<PrivateTeacherAvailability>>{return this.http.post<ApiResponse<PrivateTeacherAvailability>>(`${API_CONFIG.baseUrl}/private-teacher/availability/me`,p);}
+disableAvailability(id:string):Observable<ApiResponse<void>>{return this.http.delete<ApiResponse<void>>(`${API_CONFIG.baseUrl}/private-teacher/availability/me/${id}`);}
 profile():Observable<ApiResponse<PrivateTeacherProfile>>{return this.http.get<ApiResponse<PrivateTeacherProfile>>(`${API_CONFIG.baseUrl}/private-teacher/profile/me`);}
 saveProfile(p:PrivateTeacherProfile):Observable<ApiResponse<PrivateTeacherProfile>>{return this.http.put<ApiResponse<PrivateTeacherProfile>>(`${API_CONFIG.baseUrl}/private-teacher/profile/me`,p);}
 match(p:any):Observable<ApiResponse<PrivateTeacherMatch[]>>{return this.http.post<ApiResponse<PrivateTeacherMatch[]>>(`${API_CONFIG.baseUrl}/private-teacher/matching/search`,p);}
