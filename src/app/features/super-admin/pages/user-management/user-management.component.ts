@@ -147,7 +147,18 @@ export class UserManagementComponent implements OnInit {
   private replaceUser(updated: ManagedUser): void {
     const index = this.users.findIndex(user => user.id === updated.id);
     if (index >= 0) this.users[index] = updated;
-    this.filtered = [...this.users];
+
+    const query = this.search.trim().toLowerCase();
+    this.filtered = this.users.filter(user => {
+      const matchesStatus = this.statusFilter === 'ALL'
+        || (this.statusFilter === 'ACTIVE' && user.enabled)
+        || (this.statusFilter === 'INACTIVE' && !user.enabled);
+      const fullName = [user.firstName, user.lastName || ''].join(' ').toLowerCase();
+      const matchesSearch = !query
+        || fullName.includes(query)
+        || user.email.toLowerCase().includes(query);
+      return matchesStatus && matchesSearch;
+    });
   }
 
   trackById(_: number, user: ManagedUser): string { return user.id; }
