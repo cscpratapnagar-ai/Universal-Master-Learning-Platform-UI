@@ -42,7 +42,7 @@ action(id:string,kind:'confirm'|'cancel'|'complete'){
  const call=kind==='confirm'?this.service.confirm(id):kind==='cancel'?this.service.cancel(id):this.service.complete(id);
  call.subscribe({
   next:()=>{this.sessionActionId=null;this.actionMessage=kind==='confirm'?'Session confirmed.':kind==='cancel'?'Session cancelled.':'Session marked completed.';this.loadSessions();},
-  error:()=>{this.sessionActionId=null;this.error=true;this.actionMessage='Session action could not be completed.';}
+  error:err=>{this.sessionActionId=null;this.error=true;const detail=String(err?.error?.message||err?.error?.data?.message||'');this.actionMessage=err?.status===409||/state|already|overlap|conflict/i.test(detail)?(detail||'This session changed before the action completed. Refresh the session list and try again.'):(detail||'Session action could not be completed. Please try again.');this.loadSessions();}
  });
 }
 back(){this.router.navigateByUrl('/teacher');}
