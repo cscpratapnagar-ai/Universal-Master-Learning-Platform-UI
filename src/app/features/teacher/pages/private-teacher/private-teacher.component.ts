@@ -5,7 +5,7 @@ import { PrivateTeacherAvailability,PrivateTeacherMatch,PrivateTeacherOverview,P
 
 @Component({selector:'app-private-teacher',templateUrl:'./private-teacher.component.html',styleUrls:['./private-teacher.component.scss']})
 export class PrivateTeacherComponent implements OnInit{
-overview:PrivateTeacherOverview|null=null;profileData:PrivateTeacherProfile={headline:'',bio:'',subjects:'',teachingModes:'',languages:'',hourlyRate:null,currency:'INR',acceptingLearners:true};availability:PrivateTeacherAvailability[]=[];matches:PrivateTeacherMatch[]=[];sessions:PrivateTeacherSession[]=[];loading=true;matching=false;saving=false;profileSaving=false;profileLoaded=false;error=false;profileMessage='';actionMessage='';availabilityActionId:string|null=null;availabilityMessage='';
+overview:PrivateTeacherOverview|null=null;profileData:PrivateTeacherProfile={headline:'',bio:'',subjects:'',teachingModes:'',languages:'',hourlyRate:null,currency:'INR',acceptingLearners:true};availability:PrivateTeacherAvailability[]=[];matches:PrivateTeacherMatch[]=[];sessions:PrivateTeacherSession[]=[];loading=true;matching=false;saving=false;profileSaving=false;profileLoaded=false;error=false;profileMessage='';actionMessage='';availabilityActionId:string|null=null;availabilityMessage='';sessionActionId:string|null=null;
 days=['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
 draft={dayOfWeek:'MONDAY',startTime:'09:00',endTime:'10:00',timezone:'Asia/Kolkata'};
 criteria={subject:'',language:'',teachingMode:'',maxHourlyRate:null as number|null};
@@ -37,10 +37,12 @@ disableSlot(slot:PrivateTeacherAvailability){
 }
 findMatches(){this.matching=true;this.service.match(this.criteria).subscribe({next:r=>{this.matches=r.data||[];this.matching=false},error:()=>{this.matching=false;this.error=true}})}
 action(id:string,kind:'confirm'|'cancel'|'complete'){
+ if(!id||this.sessionActionId)return;
+ this.sessionActionId=id;
  const call=kind==='confirm'?this.service.confirm(id):kind==='cancel'?this.service.cancel(id):this.service.complete(id);
  call.subscribe({
-  next:()=>{this.actionMessage=kind==='confirm'?'Session confirmed.':kind==='cancel'?'Session cancelled.':'Session marked completed.';this.loadSessions();},
-  error:()=>{this.error=true;this.actionMessage='Session action could not be completed.';}
+  next:()=>{this.sessionActionId=null;this.actionMessage=kind==='confirm'?'Session confirmed.':kind==='cancel'?'Session cancelled.':'Session marked completed.';this.loadSessions();},
+  error:()=>{this.sessionActionId=null;this.error=true;this.actionMessage='Session action could not be completed.';}
  });
 }
 back(){this.router.navigateByUrl('/teacher');}
