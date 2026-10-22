@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { PrivateTeacherService } from '../../../../core/services/private-teacher.service';
 import { PrivateTeacherAvailability, PrivateTeacherMatch, PrivateTeacherSession, PrivateTeacherSessionRequest } from '../../../../core/models/private-teacher.model';
 
-interface Slot { label:string; startsAt:string; endsAt:string; }
+interface Slot { label:string; startsAt:string; endsAt:string; timezone:string; }
 
 @Component({selector:'app-private-teachers',templateUrl:'./private-teachers.component.html',styleUrls:['./private-teachers.component.scss']})
 export class PrivateTeachersComponent implements OnInit {
@@ -41,13 +41,13 @@ export class PrivateTeachersComponent implements OnInit {
 
   buildSlots():void{
     this.slots=[];if(!this.selected||!this.selectedDate||!this.availability.length)return;
-    const day=this.dayName(this.selectedDate);const windows=this.availability.filter(a=>a.dayOfWeek===day);const now=Date.now();
+    const day=this.dayName(this.selectedDate);const windows=this.availability.filter(a=>a.dayOfWeek===day && a.active);const now=Date.now();
     for(const window of windows){
       let cursor=this.toMinutes(window.startTime);const end=this.toMinutes(window.endTime);
       while(cursor+this.duration<=end){
         const startTime=this.fromMinutes(cursor);const endTime=this.fromMinutes(cursor+this.duration);
         const startsAt=this.zonedInstant(this.selectedDate,startTime,window.timezone);const endsAt=this.zonedInstant(this.selectedDate,endTime,window.timezone);
-        if(new Date(startsAt).getTime()>now)this.slots.push({label:startTime+' – '+endTime,startsAt,endsAt});
+        if(new Date(startsAt).getTime()>now)this.slots.push({label:startTime+' – '+endTime,startsAt,endsAt,timezone:window.timezone});
         cursor+=30;
       }
     }
@@ -74,8 +74,7 @@ export class PrivateTeachersComponent implements OnInit {
   trackBySlot(_:number,item:Slot):string{return item.startsAt;}
 
   private timezoneForSelectedSlot():string{
-    const slot=this.availability.find(a=>a.dayOfWeek===this.dayName(this.selectedDate));
-    return slot?.timezone||Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
+    return this.selectedSlot?.timezone||Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
   }
   private dayName(iso:string):string{const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];return days[new Date(iso+'T12:00:00').getDay()];}
   private toMinutes(value:string):number{const [h,m]=value.split(':').map(Number);return h*60+m;}
