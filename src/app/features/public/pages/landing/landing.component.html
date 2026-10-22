@@ -7,6 +7,12 @@
         <span class="brand-copy"><strong>MLS</strong><small>Master Learning System</small></span>
       </a>
 
+      <div class="platform-status" [class.online]="platformOnline === true" [class.offline]="platformOnline === false" role="status" aria-live="polite" [attr.title]="statusCheckedAt ? 'Last checked: ' + statusCheckedAt : 'Checking backend connection'">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>{{ platformOnline === null ? 'Connecting…' : platformOnline ? 'Platform online' : 'Backend offline' }}</span>
+        <button *ngIf="platformOnline === false" type="button" (click)="checkPlatformStatus()" aria-label="Retry backend connection check">Retry</button>
+      </div>
+
       <nav class="main-nav" [class.open]="mobileMenuOpen">
         <button class="active" (click)="scrollTo('home')">Home</button>
         <button (click)="scrollTo('platform-hub')">Platform</button>
