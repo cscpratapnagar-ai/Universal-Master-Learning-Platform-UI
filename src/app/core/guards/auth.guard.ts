@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
@@ -10,16 +11,20 @@ export class AuthGuard implements CanActivate, CanLoad {
     private readonly router: Router
   ) {}
 
-  canActivate(): boolean | UrlTree {
-    return this.authorize();
+  canActivate(): Observable<boolean | UrlTree> {
+    return this.authService.restoreSession().pipe(
+      map((restored) => this.authorize(restored))
+    );
   }
 
-  canLoad(_route: Route, _segments: UrlSegment[]): boolean | UrlTree {
-    return this.authorize();
+  canLoad(_route: Route, _segments: UrlSegment[]): Observable<boolean | UrlTree> {
+    return this.authService.restoreSession().pipe(
+      map((restored) => this.authorize(restored))
+    );
   }
 
-  private authorize(): boolean | UrlTree {
-    if (this.authService.isAuthenticated()) {
+  private authorize(restored: boolean): boolean | UrlTree {
+    if (restored && this.authService.isAuthenticated()) {
       return true;
     }
 
