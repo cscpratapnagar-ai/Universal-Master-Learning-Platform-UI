@@ -52,7 +52,7 @@
         <div><span class="modal-icon">◎</span><h2 id="role-modal-title">Manage Roles</h2><p>{{ selected?.email }}</p></div>
         <button type="button" (click)="closeRoles()" [disabled]="saving" aria-label="Close role editor">×</button>
       </div>
-      <div class="role-list"><label *ngFor="let role of availableRoles" [class.selected]="editableRoles.includes(role)"><input type="checkbox" [checked]="editableRoles.includes(role)" (change)="toggleRole(role)" [disabled]="saving"><span><strong>{{ role }}</strong><small>Platform permission profile</small></span></label></div>
+      <div class="role-list"><label *ngFor="let role of roleOptions" [class.selected]="editableRoles.includes(role)" [class.protected]="!isAssignableRole(role)"><input type="checkbox" [checked]="editableRoles.includes(role)" (change)="toggleRole(role)" [disabled]="saving || !isAssignableRole(role)"><span><strong>{{ role }}</strong><small>{{ isAssignableRole(role) ? "Platform permission profile" : "Protected role · cannot be changed here" }}</small></span></label></div>
       <div class="modal-actions"><button type="button" class="secondary" (click)="closeRoles()" [disabled]="saving">Cancel</button><button class="primary" (click)="saveRoles()" [disabled]="saving || !editableRoles.length">{{ saving ? 'Saving…' : 'Save Roles' }}</button></div>
     </div>
   </div>
