@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, timeout } from 'rxjs';
 
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
@@ -16,6 +16,7 @@ export class PlatformStatusService {
         `${API_CONFIG.baseUrl}/public/status`
       )
       .pipe(
+        timeout({ first: 5000 }),
         map((response) => response.success && response.data.status === 'ONLINE'),
         catchError(() => of(false))
       );
