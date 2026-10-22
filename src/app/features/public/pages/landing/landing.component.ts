@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionPlan } from '../../../../core/models/subscription-plan.model';
 import { SubscriptionPlanService } from '../../../../core/services/subscription-plan.service';
+import { PlatformStatusService } from '../../../../core/services/platform-status.service';
 
 interface FeatureCard { icon: string; title: string; description: string; tone: string; }
 interface CourseCard { title: string; description: string; instructor: string; rating: string; students: string; level: string; image: string; tag: string; tagTone: string; duration: string; }
@@ -12,7 +13,13 @@ interface Story { name: string; role: string; quote: string; photo: string; }
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
-  constructor(private readonly subscriptionPlanService: SubscriptionPlanService) {}
+  constructor(
+    private readonly subscriptionPlanService: SubscriptionPlanService,
+    private readonly platformStatusService: PlatformStatusService
+  ) {}
+
+  platformOnline: boolean | null = null;
+  statusCheckedAt: string | null = null;
   isDark = false;
   mobileMenuOpen = false;
   themeTransitioning = false;
@@ -122,8 +129,16 @@ export class LandingComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.checkPlatformStatus();
     this.loadSubscriptionPlans();
     try { this.isDark = localStorage.getItem('mls-theme') === 'dark'; } catch {}
+  }
+
+  checkPlatformStatus(): void {
+    this.platformStatusService.check().subscribe(online => {
+      this.platformOnline = online;
+      this.statusCheckedAt = new Date().toISOString();
+    });
   }
 
   loadSubscriptionPlans(): void {
