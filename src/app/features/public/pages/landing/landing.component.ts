@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { catchError, of, timeout } from 'rxjs';
+import { API_CONFIG } from '../../../../core/config/api.config';
 import { SubscriptionPlan } from '../../../../core/models/subscription-plan.model';
 import { SubscriptionPlanService } from '../../../../core/services/subscription-plan.service';
 
@@ -12,7 +15,13 @@ interface Story { name: string; role: string; quote: string; photo: string; }
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
-  constructor(private readonly subscriptionPlanService: SubscriptionPlanService) {}
+  constructor(
+    private readonly subscriptionPlanService: SubscriptionPlanService,
+    private readonly http: HttpClient
+  ) {}
+
+  backendStatus: 'checking' | 'online' | 'offline' = 'checking';
+  backendStatusMessage = 'Connecting to platform services';
   isDark = false;
   mobileMenuOpen = false;
   themeTransitioning = false;
@@ -122,8 +131,30 @@ export class LandingComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    this.checkBackendStatus();
     this.loadSubscriptionPlans();
     try { this.isDark = localStorage.getItem('mls-theme') === 'dark'; } catch {}
+  }
+
+  checkBackendStatus(): void {
+    this.backendStatus = 'checking';
+    this.backendStatusMessage = 'Connecting to platform services';
+
+    this.http.get<{ success?: boolean; message?: string; data?: { status?: string; service?: string } }>(`${API_CONFIG.baseUrl}/public/status`)
+      .pipe(
+        timeout(5000),
+        catchError(() => of(null))
+      )
+      .subscribe(response => {
+        if (response?.success && response.data?.status === 'ONLINE') {
+          this.backendStatus = 'online';
+          this.backendStatusMessage = 'All core services are online';
+          return;
+        }
+
+        this.backendStatus = 'offline';
+        this.backendStatusMessage = 'Platform services are unavailable';
+      });
   }
 
   loadSubscriptionPlans(): void {
