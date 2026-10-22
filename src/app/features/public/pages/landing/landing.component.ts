@@ -82,8 +82,9 @@ export class LandingComponent implements OnInit {
     { title: 'Data Science with Python', description: 'Analyze Data, Build Models, Solve Real Problems', instructor: 'Emily Chen', rating: '4.9', students: '5.4K', level: 'Intermediate', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=85', tag: 'New', tagTone: 'green', duration: '14h' }
   ];
 
+  // Reuse an existing course image instead of referencing a missing local asset.
   readonly studentPhotos = [
-    'assets/images/mls-hero-mentor.webp'
+    'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=85'
   ];
 
   readonly journey = [
