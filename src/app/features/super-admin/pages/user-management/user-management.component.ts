@@ -91,7 +91,18 @@ export class UserManagementComponent implements OnInit {
     this.showRoles = true;
   }
 
+  get roleOptions(): string[] {
+    // Keep existing server-defined roles visible, even when this UI does not allow assigning them.
+    return [...new Set([...this.availableRoles, ...(this.selected?.roles ?? [])])].sort();
+  }
+
+  isAssignableRole(role: string): boolean {
+    return this.availableRoles.includes(role);
+  }
+
   toggleRole(role: string): void {
+    // Privileged or unknown roles must not be altered through the general role editor.
+    if (!this.isAssignableRole(role)) return;
     if (this.editableRoles.includes(role)) {
       if (this.editableRoles.length === 1) return;
       this.editableRoles = this.editableRoles.filter(item => item !== role);
