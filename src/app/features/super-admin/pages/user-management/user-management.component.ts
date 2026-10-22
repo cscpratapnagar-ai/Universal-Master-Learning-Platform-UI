@@ -146,19 +146,24 @@ export class UserManagementComponent implements OnInit {
 
   private replaceUser(updated: ManagedUser): void {
     const index = this.users.findIndex(user => user.id === updated.id);
-    if (index >= 0) this.users[index] = updated;
-
     const query = this.search.trim().toLowerCase();
-    this.filtered = this.users.filter(user => {
-      const matchesStatus = this.statusFilter === 'ALL'
-        || (this.statusFilter === 'ACTIVE' && user.enabled)
-        || (this.statusFilter === 'INACTIVE' && !user.enabled);
-      const fullName = [user.firstName, user.lastName || ''].join(' ').toLowerCase();
-      const matchesSearch = !query
-        || fullName.includes(query)
-        || user.email.toLowerCase().includes(query);
-      return matchesStatus && matchesSearch;
-    });
+    const fullName = [updated.firstName, updated.lastName || ''].join(' ').toLowerCase();
+    const matchesStatus = this.statusFilter === 'ALL'
+      || (this.statusFilter === 'ACTIVE' && updated.enabled)
+      || (this.statusFilter === 'INACTIVE' && !updated.enabled);
+    const matchesSearch = !query
+      || fullName.includes(query)
+      || updated.email.toLowerCase().includes(query);
+
+    if (index >= 0) {
+      if (matchesStatus && matchesSearch) {
+        this.users[index] = updated;
+      } else {
+        this.users.splice(index, 1);
+      }
+    }
+
+    this.filtered = [...this.users];
   }
 
   trackById(_: number, user: ManagedUser): string { return user.id; }
