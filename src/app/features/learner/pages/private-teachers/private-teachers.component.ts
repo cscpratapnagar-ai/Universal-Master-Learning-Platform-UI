@@ -9,7 +9,7 @@ interface Slot { label:string; startsAt:string; endsAt:string; timezone:string; 
 export class PrivateTeachersComponent implements OnInit {
   matches:PrivateTeacherMatch[]=[]; sessions:PrivateTeacherSession[]=[]; availability:PrivateTeacherAvailability[]=[];
   selected:PrivateTeacherMatch|null=null; slots:Slot[]=[]; selectedSlot:Slot|null=null;
-  loading=false; availabilityLoading=false; booking=false; message=''; error='';
+  loading=false; availabilityLoading=false; booking=false; sessionActionId:string|null=null; message=''; error='';
   criteria={subject:'',language:'',teachingMode:'',maxHourlyRate:null as number|null};
   selectedDate=this.tomorrowIso(); duration=60; topic=''; notes='';
 
@@ -68,7 +68,7 @@ export class PrivateTeachersComponent implements OnInit {
 
   loadSessions():void{this.service.learnerSessions().subscribe({next:r=>this.sessions=r.data||[],error:()=>undefined});}
   sessionCount(status:string):number{return this.sessions.filter(s=>s.status===status).length;}
-  cancelSession(id:string):void{if(!id)return;this.error='';this.message='';this.service.cancel(id).subscribe({next:()=>{this.message='Session cancelled successfully.';this.loadSessions();},error:err=>{this.error=err?.error?.message||err?.error?.data?.message||'Session could not be cancelled.';}});}
+  cancelSession(id:string):void{if(!id||this.sessionActionId)return;this.sessionActionId=id;this.error='';this.message='';this.service.cancel(id).subscribe({next:()=>{this.sessionActionId=null;this.message='Session cancelled successfully.';this.loadSessions();},error:err=>{this.sessionActionId=null;this.error=err?.error?.message||err?.error?.data?.message||'Session could not be cancelled.';}});}
   back():void{this.router.navigateByUrl('/learner');}
   trackByTeacher(_:number,item:PrivateTeacherMatch):string{return item.teacherId;}
   trackBySlot(_:number,item:Slot):string{return item.startsAt;}
@@ -79,7 +79,7 @@ export class PrivateTeachersComponent implements OnInit {
   private dayName(iso:string):string{const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];return days[new Date(iso+'T12:00:00').getDay()];}
   private toMinutes(value:string):number{const [h,m]=value.split(':').map(Number);return h*60+m;}
   private fromMinutes(value:number):string{return String(Math.floor(value/60)).padStart(2,'0')+':'+String(value%60).padStart(2,'0');}
-  private tomorrowIso():string{const d=new Date();d.setDate(d.getDate()+1);return d.toISOString().slice(0,10);}
+  private tomorrowIso():string{const d=new Date();d.setDate(d.getDate()+1);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');}
   private zonedInstant(date:string,time:string,timeZone:string):string{
     const [y,m,d]=date.split('-').map(Number);const [hh,mm]=time.split(':').map(Number);let guess=Date.UTC(y,m-1,d,hh,mm);
     for(let i=0;i<2;i++){
