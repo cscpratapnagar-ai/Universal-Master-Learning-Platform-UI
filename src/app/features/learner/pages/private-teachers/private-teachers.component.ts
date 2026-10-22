@@ -11,7 +11,7 @@ export class PrivateTeachersComponent implements OnInit {
   selected:PrivateTeacherMatch|null=null; slots:Slot[]=[]; selectedSlot:Slot|null=null;
   loading=false; availabilityLoading=false; booking=false; sessionsLoading=false; sessionActionId:string|null=null; message=''; error='';
   criteria={subject:'',language:'',teachingMode:'',maxHourlyRate:null as number|null};
-  selectedDate=this.tomorrowIso(); duration=60; topic=''; notes='';
+  selectedDate=this.tomorrowIso(); minBookingDate=this.todayIso(); duration=60; topic=''; notes='';
 
   constructor(private readonly service:PrivateTeacherService,private readonly router:Router){}
   ngOnInit():void{this.search();this.loadSessions();}
@@ -40,7 +40,7 @@ export class PrivateTeachersComponent implements OnInit {
   onDurationChange():void{this.selectedSlot=null;this.buildSlots();}
 
   buildSlots():void{
-    this.slots=[];if(!this.selected||!this.selectedDate||!this.availability.length)return;
+    this.slots=[];if(!this.selected||!this.selectedDate||this.selectedDate<this.minBookingDate||!this.availability.length||![30,60,90].includes(this.duration))return;
     const day=this.dayName(this.selectedDate);const windows=this.availability.filter(a=>a.dayOfWeek===day && a.active);const now=Date.now();
     for(const window of windows){
       let cursor=this.toMinutes(window.startTime);const end=this.toMinutes(window.endTime);
@@ -79,6 +79,7 @@ export class PrivateTeachersComponent implements OnInit {
   private dayName(iso:string):string{const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];return days[new Date(iso+'T12:00:00').getDay()];}
   private toMinutes(value:string):number{const [h,m]=value.split(':').map(Number);return h*60+m;}
   private fromMinutes(value:number):string{return String(Math.floor(value/60)).padStart(2,'0')+':'+String(value%60).padStart(2,'0');}
+  private todayIso():string{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');}
   private tomorrowIso():string{const d=new Date();d.setDate(d.getDate()+1);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');}
   private zonedInstant(date:string,time:string,timeZone:string):string{
     const [y,m,d]=date.split('-').map(Number);const [hh,mm]=time.split(':').map(Number);let guess=Date.UTC(y,m-1,d,hh,mm);
