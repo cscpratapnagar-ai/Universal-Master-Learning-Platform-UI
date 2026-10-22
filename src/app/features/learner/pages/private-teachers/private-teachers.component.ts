@@ -28,8 +28,8 @@ export class PrivateTeachersComponent implements OnInit {
     this.selected=teacher;this.selectedSlot=null;this.topic=this.topic||('Private '+(teacher.subjects?.split(',')[0]||'learning')+' session');this.loadAvailability(teacher);
   }
 
-  loadAvailability(teacher:PrivateTeacherMatch):void{
-    this.availabilityLoading=true;this.error='';this.availability=[];this.slots=[];
+  loadAvailability(teacher:PrivateTeacherMatch,preserveError=false):void{
+    this.availabilityLoading=true;if(!preserveError)this.error='';this.availability=[];this.slots=[];
     this.service.teacherAvailability(teacher.teacherId).subscribe({
       next:r=>{this.availability=r.data||[];this.availabilityLoading=false;this.buildSlots();},
       error:()=>{this.availabilityLoading=false;this.error='Teacher availability could not be loaded.';}
@@ -62,7 +62,7 @@ export class PrivateTeachersComponent implements OnInit {
     this.booking=true;this.error='';this.message='';
     this.service.requestSession(request).subscribe({
       next:r=>{this.booking=false;this.message='Request sent. Status: '+r.data.status+'.';this.loadSessions();this.selectedSlot=null;},
-      error:err=>{this.booking=false;this.error=err?.error?.message||err?.error?.data?.message||'Booking request could not be created. Please choose another slot.';this.buildSlots();}
+      error:err=>{this.booking=false;const detail=String(err?.error?.message||err?.error?.data?.message||'');const conflict=err?.status===409||/overlap|already booked|already has an overlapping session|exclusion constraint/i.test(detail);this.error=conflict?'This slot was just taken. Availability is refreshing—please choose another time.':(detail||'Booking request could not be created. Please try again.');this.selectedSlot=null;if(this.selected)this.loadAvailability(this.selected,true);else this.buildSlots();}
     });
   }
 
