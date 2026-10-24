@@ -128,6 +128,7 @@ export class RoleWorkspaceComponent implements OnInit {
   selectAssessment(assessmentId: string): void {
     this.selectedAssessmentId = assessmentId;
     this.selectedAttemptId = '';
+    this.attempts = [];
     this.detail = null;
     this.remarks = '';
     this.notice = '';
