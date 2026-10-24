@@ -9,7 +9,35 @@
       <span>Assigned role</span><strong>{{ roleLabel }}</strong>
     </div>
 
-    <section *ngIf="isEvaluator" class="evaluator-workspace">
+
+    <section *ngIf="isExaminer" class="evaluator-workspace">
+      <h2>Examination oversight</h2>
+      <p class="muted">Monitor assessment submissions and review evaluator coverage across the platform.</p>
+      <p *ngIf="loading" class="status" role="status">Loading…</p>
+      <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+      <div *ngIf="!loading && examinerAssessments.length === 0" class="empty">No assessments are currently available for oversight.</div>
+      <div class="assignment-list">
+        <article class="assignment" *ngFor="let assessment of examinerAssessments">
+          <strong>{{ assessment.assessmentTitle }}</strong>
+          <span>{{ assessment.courseTitle }} · {{ assessment.assessmentLevel }}</span>
+          <div class="score-summary">
+            <span>Submissions <strong>{{ assessment.submittedAttemptCount }}</strong></span>
+            <span>Evaluators <strong>{{ assessment.evaluatorAssignmentCount }}</strong></span>
+            <span>Pass mark <strong>{{ assessment.passingScore }}%</strong></span>
+          </div>
+          <button type="button" class="secondary-action" (click)="viewAssignedEvaluators(assessment.assessmentId)">View assigned evaluators</button>
+        </article>
+      </div>
+      <section *ngIf="selectedExaminerAssessmentId" class="attempt-panel">
+        <h2>Assigned evaluators</h2>
+        <p *ngIf="!loading && assignedEvaluators.length === 0" class="empty">No evaluators assigned to this assessment.</p>
+        <div class="attempt" *ngFor="let evaluator of assignedEvaluators">
+          <span><strong>{{ evaluator.evaluatorEmail || evaluator.evaluatorId }}</strong><small>Assigned {{ evaluator.assignedAt | date:'medium' }}</small></span>
+          <span class="score">Evaluator</span>
+        </div>
+      </section>
+    </section>
+\n    <section *ngIf="isEvaluator" class="evaluator-workspace">
       <h2>My assessment assignments</h2>
       <p class="muted">Choose an assigned assessment to review learner submissions and leave feedback.</p>
       <p *ngIf="loading" class="status" role="status">Loading…</p>
