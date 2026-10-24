@@ -64,4 +64,4 @@
   </section>
 </main>
 
-<ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p></section></ng-template>
+<ng-template #state><section class="state"><div class="orb">✦</div><h2>{{loading?'Preparing your adaptive assessment…':'Assessment unavailable'}}</h2><p>{{error||'Loading questions and learning context.'}}</p><button *ngIf="!loading && assessmentId && !assessment" type="button" class="primary" (click)="loadAssessment()">Retry loading assessment ↻</button></section></ng-template>
