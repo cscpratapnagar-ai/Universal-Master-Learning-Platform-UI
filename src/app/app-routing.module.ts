@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'organization', loadChildren: () => import('./features/organization/organization.module').then(m => m.OrganizationModule) },
   { path: 'academy', loadChildren: () => import('./features/academy/academy.module').then(m => m.AcademyModule) },
   { path: 'examiner', component: RoleWorkspaceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['EXAMINER'], title: 'Examiner Workspace', role: 'EXAMINER', description: 'Review assigned examination activity and follow examination governance procedures.' } },
-  { path: 'question-setter', component: RoleWorkspaceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['QUESTION_SETTER'], title: 'Question Paper Setter', role: 'QUESTION_SETTER', description: 'Prepare and review assessment questions in your authorized question-setting workflow.' } },
+  { path: 'question-setter', pathMatch: 'full', redirectTo: 'teacher/assessments' },
   { path: 'evaluator', component: RoleWorkspaceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['EVALUATOR'], title: 'Evaluator Workspace', role: 'EVALUATOR', description: 'Access evaluation work assigned to your account.' } },
   { path: 'proctor', component: RoleWorkspaceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['PROCTOR'], title: 'Exam Proctor Workspace', role: 'PROCTOR', description: 'Use your authorized examination monitoring workflow.' } },
   { path: 'parent', component: RoleWorkspaceComponent, canActivate: [AuthGuard, RoleGuard], data: { roles: ['PARENT'], title: 'Parent / Guardian', role: 'PARENT', description: 'Access progress for learners linked to your account.' } },
