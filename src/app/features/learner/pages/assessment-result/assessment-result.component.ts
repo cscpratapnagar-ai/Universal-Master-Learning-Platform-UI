@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AssessmentAttemptHistoryItem, AssessmentService } from '../../../../core/services/assessment.service';
+import { LearningService } from '../../../../core/services/learning.service';
 
 interface AssessmentResult {
   score?: number;
@@ -28,8 +29,11 @@ export class AssessmentResultComponent {
   attemptHistory: AssessmentAttemptHistoryItem[] = [];
   historyLoading = false;
   historyError = false;
+  lessonCompletionLoading = false;
+  lessonCompletionMessage = '';
+  lessonCompletionError = false;
 
-  constructor(private router: Router, private assessmentService: AssessmentService) {
+  constructor(private router: Router, private assessmentService: AssessmentService, private learningService: LearningService) {
     const state = history.state?.result as AssessmentResult | undefined;
     this.result = state || null;
     this.assessmentId = history.state?.assessmentId || state?.assessmentId || '';
@@ -49,6 +53,27 @@ export class AssessmentResultComponent {
         }
       });
     }
+    if (this.passed && this.enrollmentId && this.lessonId) {
+      this.completePassedLesson();
+    }
+  }
+
+  completePassedLesson(): void {
+    if (!this.passed || !this.enrollmentId || !this.lessonId || this.lessonCompletionLoading) return;
+    this.lessonCompletionLoading = true;
+    this.lessonCompletionError = false;
+    this.lessonCompletionMessage = '';
+    this.learningService.completeLesson(this.enrollmentId, this.lessonId).subscribe({
+      next: () => {
+        this.lessonCompletionLoading = false;
+        this.lessonCompletionMessage = 'Lesson completion and course progress have been updated.';
+      },
+      error: error => {
+        this.lessonCompletionLoading = false;
+        this.lessonCompletionError = true;
+        this.lessonCompletionMessage = error?.error?.message || 'Your assessment passed, but lesson progress could not be updated. Retry the progress update or return to learning.';
+      }
+    });
   }
 
   get score(): number { return Math.round(Number(this.result?.score ?? 0)); }
