@@ -90,4 +90,41 @@ describe('QuizComponent', () => {
     expect(component.submitting).toBeFalse();
     expect(component.error).toBe('Submission rejected');
   });
+  it('shows a useful error when loading the assessment fails', () => {
+    api = jasmine.createSpyObj<AssessmentService>('AssessmentService', ['get', 'submit']);
+    router = jasmine.createSpyObj<Router>('Router', ['navigate', 'navigateByUrl']);
+    const paramMap = { get: (key: string) => key === 'assessmentId' ? 'assessment-1' : null };
+    route = { snapshot: { queryParamMap: paramMap, paramMap } } as unknown as ActivatedRoute;
+    api.get.and.returnValue(throwError(() => ({ error: { message: 'Assessment service unavailable' } })) as any);
+    const component = new QuizComponent(api, route, router);
+
+    component.ngOnInit();
+
+    expect(component.loading).toBeFalse();
+    expect(component.error).toBe('Assessment service unavailable');
+    expect(component.assessment).toBeUndefined();
+  });
+
+  it('clears the load error and retrieves the assessment after retry', () => {
+    api = jasmine.createSpyObj<AssessmentService>('AssessmentService', ['get', 'submit']);
+    router = jasmine.createSpyObj<Router>('Router', ['navigate', 'navigateByUrl']);
+    const paramMap = { get: (key: string) => key === 'assessmentId' ? 'assessment-1' : null };
+    route = { snapshot: { queryParamMap: paramMap, paramMap } } as unknown as ActivatedRoute;
+    api.get.and.returnValues(
+      throwError(() => ({ error: { message: 'Temporary failure' } })) as any,
+      of({ data: assessment } as any)
+    );
+    const component = new QuizComponent(api, route, router);
+
+    component.ngOnInit();
+    expect(component.error).toBe('Temporary failure');
+
+    component.loadAssessment();
+
+    expect(api.get).toHaveBeenCalledTimes(2);
+    expect(component.error).toBe('');
+    expect(component.assessment?.id).toBe('assessment-1');
+    expect(component.loading).toBeFalse();
+  });
+
 });
