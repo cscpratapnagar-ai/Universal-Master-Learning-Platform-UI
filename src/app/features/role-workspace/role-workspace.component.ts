@@ -162,9 +162,15 @@ export class RoleWorkspaceComponent implements OnInit {
         if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
         this.detail = response.data;
         this.loading = false;
-        this.evaluatorService.getReview(this.selectedAssessmentId, attemptId).subscribe({
-          next: review => this.remarks = review.data?.remarks || '',
-          error: () => this.remarks = ''
+        this.evaluatorService.getReview(assessmentId, attemptId).subscribe({
+          next: review => {
+            if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+            this.remarks = review.data?.remarks || '';
+          },
+          error: () => {
+            if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+            this.remarks = '';
+          }
         });
       },
       error: () => {
@@ -176,17 +182,25 @@ export class RoleWorkspaceComponent implements OnInit {
   }
 
   saveFeedback(): void {
-    if (!this.selectedAssessmentId || !this.selectedAttemptId || !this.remarks.trim()) return;
+    if (!this.selectedAssessmentId || !this.selectedAttemptId || !this.remarks.trim() || this.saving) return;
+    const assessmentId = this.selectedAssessmentId;
+    const attemptId = this.selectedAttemptId;
+    const remarks = this.remarks.trim();
     this.saving = true;
     this.error = '';
     this.notice = '';
-    this.evaluatorService.saveReview(this.selectedAssessmentId, this.selectedAttemptId, this.remarks.trim()).subscribe({
+    this.evaluatorService.saveReview(assessmentId, attemptId, remarks).subscribe({
       next: response => {
-        this.remarks = response.data?.remarks || this.remarks.trim();
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+        this.remarks = response.data?.remarks || remarks;
         this.notice = 'Feedback saved. The automatic assessment score was not changed.';
         this.saving = false;
       },
-      error: () => { this.error = 'Feedback could not be saved. Check your assignment and try again.'; this.saving = false; }
+      error: () => {
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+        this.error = 'Feedback could not be saved. Check your assignment and try again.';
+        this.saving = false;
+      }
     });
   }
 }
