@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { ExaminerService, ExaminerAssessment, AssignedEvaluator } from '../../core/services/examiner.service';
+import { ExaminerService, ExaminerAssessment, AssignedEvaluator, EligibleEvaluator } from '../../core/services/examiner.service';
 import { EvaluatorService, EvaluatorAssignment, EvaluatorAttempt, EvaluatorAttemptDetail } from '../../core/services/evaluator.service';
 
 @Component({
@@ -19,6 +19,9 @@ export class RoleWorkspaceComponent implements OnInit {
   examinerAssessments: ExaminerAssessment[] = [];
   assignedEvaluators: AssignedEvaluator[] = [];
   selectedExaminerAssessmentId = '';
+  eligibleEvaluators: EligibleEvaluator[] = [];
+  selectedEvaluatorId = '';
+  assigningEvaluator = false;
   assignments: EvaluatorAssignment[] = [];
   attempts: EvaluatorAttempt[] = [];
   selectedAssessmentId = '';
@@ -45,7 +48,7 @@ export class RoleWorkspaceComponent implements OnInit {
     this.isEvaluator = this.roleLabel === 'EVALUATOR';
     if (this.isEvaluator) this.loadAssignments();
     this.isExaminer = this.roleLabel === 'EXAMINER';
-    if (this.isExaminer) this.loadExaminerOverview();
+    if (this.isExaminer) { this.loadExaminerOverview(); this.loadEligibleEvaluators(); }
   }
 
 
@@ -65,6 +68,34 @@ export class RoleWorkspaceComponent implements OnInit {
     this.examinerService.evaluators(assessmentId).subscribe({
       next: response => { this.assignedEvaluators = response.data || []; this.loading = false; },
       error: () => { this.error = 'Could not load evaluators assigned to this assessment.'; this.loading = false; }
+    });
+  }
+
+
+  loadEligibleEvaluators(): void {
+    this.examinerService.eligibleEvaluators().subscribe({
+      next: response => this.eligibleEvaluators = response.data || [],
+      error: () => this.error = 'Could not load eligible evaluators. Check your oversight permissions.'
+    });
+  }
+
+  assignEvaluator(): void {
+    if (!this.selectedExaminerAssessmentId || !this.selectedEvaluatorId || this.assigningEvaluator) return;
+    this.assigningEvaluator = true;
+    this.error = '';
+    this.notice = '';
+    this.examinerService.assignEvaluator(this.selectedExaminerAssessmentId, this.selectedEvaluatorId).subscribe({
+      next: () => {
+        this.notice = 'Evaluator assigned successfully.';
+        this.selectedEvaluatorId = '';
+        this.assigningEvaluator = false;
+        this.viewAssignedEvaluators(this.selectedExaminerAssessmentId);
+        this.loadExaminerOverview();
+      },
+      error: response => {
+        this.error = response?.error?.message || 'Could not assign evaluator. They may already be assigned.';
+        this.assigningEvaluator = false;
+      }
     });
   }
 
