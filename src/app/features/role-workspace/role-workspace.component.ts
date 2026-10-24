@@ -133,14 +133,16 @@ export class RoleWorkspaceComponent implements OnInit {
 
   selectAttempt(attemptId: string): void {
     if (!this.selectedAssessmentId) return;
+    const assessmentId = this.selectedAssessmentId;
     this.selectedAttemptId = attemptId;
     this.detail = null;
     this.remarks = '';
     this.notice = '';
     this.loading = true;
     this.error = '';
-    this.evaluatorService.attemptDetail(this.selectedAssessmentId, attemptId).subscribe({
+    this.evaluatorService.attemptDetail(assessmentId, attemptId).subscribe({
       next: response => {
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
         this.detail = response.data;
         this.loading = false;
         this.evaluatorService.getReview(this.selectedAssessmentId, attemptId).subscribe({
@@ -148,7 +150,11 @@ export class RoleWorkspaceComponent implements OnInit {
           error: () => this.remarks = ''
         });
       },
-      error: () => { this.error = 'Could not load this attempt.'; this.loading = false; }
+      error: () => {
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+        this.error = 'Could not load this attempt.';
+        this.loading = false;
+      }
     });
   }
 
