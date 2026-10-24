@@ -133,6 +133,14 @@ export class AuthService {
     if (roleSet.has('SUPER_ADMIN')) return '/super-admin';
     if (roleSet.has('ORG_ADMIN')) return '/organization';
     if (roleSet.has('ADMIN')) return '/admin';
+    if (roleSet.has('EXAMINER')) return '/examiner';
+    if (roleSet.has('QUESTION_SETTER')) return '/question-setter';
+    if (roleSet.has('EVALUATOR')) return '/evaluator';
+    if (roleSet.has('PROCTOR')) return '/proctor';
+    if (roleSet.has('PARENT')) return '/parent';
+    if (roleSet.has('FINANCE')) return '/finance';
+    if (roleSet.has('SUPPORT')) return '/support';
+    if (roleSet.has('PRIVATE_TEACHER')) return '/private-teacher';
     if (roleSet.has('INSTRUCTOR') || roleSet.has('TEACHER')) return '/teacher';
     if (roleSet.has('STUDENT') || roleSet.has('LEARNER')) return '/learner';
     return '/learner';
