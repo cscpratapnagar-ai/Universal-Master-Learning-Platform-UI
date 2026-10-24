@@ -43,7 +43,7 @@ export class CoursePlayerComponent implements OnInit {
     }
     this.issuingCertificate = true; this.certificateMessage = '';
     this.certificates.issue(this.data.courseId).subscribe({
-      next: r => { this.certificate = r.data; this.issuingCertificate = false; this.certificateMessage = 'Certificate issued successfully.'; },
+      next: r => { if (r?.data) { this.certificate = r.data; this.certificateMessage = 'Certificate issued successfully.'; } else { this.certificateMessage = 'The certificate service returned no certificate. Please refresh and try again.'; } this.issuingCertificate = false; },
       error: e => { this.issuingCertificate = false; this.certificateMessage = e?.error?.message || 'Certificate could not be issued right now.'; }
     });
   }
