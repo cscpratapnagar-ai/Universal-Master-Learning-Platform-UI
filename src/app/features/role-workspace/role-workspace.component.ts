@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { ExaminerService, ExaminerAssessment, AssignedEvaluator } from '../../core/services/examiner.service';
 import { EvaluatorService, EvaluatorAssignment, EvaluatorAttempt, EvaluatorAttemptDetail } from '../../core/services/evaluator.service';
 
 @Component({
@@ -14,6 +15,10 @@ export class RoleWorkspaceComponent implements OnInit {
   roleLabel = '';
   userEmail = '';
   isEvaluator = false;
+  isExaminer = false;
+  examinerAssessments: ExaminerAssessment[] = [];
+  assignedEvaluators: AssignedEvaluator[] = [];
+  selectedExaminerAssessmentId = '';
   assignments: EvaluatorAssignment[] = [];
   attempts: EvaluatorAttempt[] = [];
   selectedAssessmentId = '';
@@ -38,6 +43,8 @@ export class RoleWorkspaceComponent implements OnInit {
     this.userEmail = this.authService.currentUser()?.email || '';
     this.isEvaluator = this.roleLabel === 'EVALUATOR';
     if (this.isEvaluator) this.loadAssignments();
+    this.isExaminer = this.roleLabel === 'EXAMINER';
+    if (this.isExaminer) this.loadExaminerOverview();
   }
 
   loadAssignments(): void {
