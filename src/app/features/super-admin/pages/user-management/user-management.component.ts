@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ManagedUser } from '../../../../core/models/user-management.model';
+import { CreateUserRequest, ManagedUser } from '../../../../core/models/user-management.model';
 import { AuthService } from '../../../../core/services/auth.service';
 import { UserManagementService } from '../../../../core/services/user-management.service';
 
@@ -20,8 +20,11 @@ export class UserManagementComponent implements OnInit {
   statusFilter: 'ALL' | 'ACTIVE' | 'INACTIVE' = 'ALL';
   selected: ManagedUser | null = null;
   showRoles = false;
+  showCreate = false;
+  createForm = { email: '', temporaryPassword: '', firstName: '', lastName: '', role: 'LEARNER' };
+  readonly creationRoles = ['ADMIN', 'TEACHER', 'INSTRUCTOR', 'ORG_ADMIN', 'LEARNER', 'EXAMINER', 'QUESTION_SETTER', 'EVALUATOR', 'PROCTOR', 'PARENT', 'FINANCE', 'SUPPORT', 'PRIVATE_TEACHER'];
   editableRoles: string[] = [];
-  readonly availableRoles = ['ADMIN', 'TEACHER', 'INSTRUCTOR', 'ORG_ADMIN', 'LEARNER'];
+  readonly availableRoles = ['ADMIN', 'TEACHER', 'INSTRUCTOR', 'ORG_ADMIN', 'LEARNER', 'EXAMINER', 'QUESTION_SETTER', 'EVALUATOR', 'PROCTOR', 'PARENT', 'FINANCE', 'SUPPORT', 'PRIVATE_TEACHER'];
 
   constructor(
     private readonly usersService: UserManagementService,
@@ -45,6 +48,53 @@ export class UserManagementComponent implements OnInit {
       error: error => {
         this.errorMessage = error.error?.message || error.message || 'Unable to load users';
         this.loading = false;
+      }
+    });
+  }
+
+  openCreate(): void {
+    this.errorMessage = '';
+    this.noticeMessage = '';
+    this.createForm = { email: '', temporaryPassword: '', firstName: '', lastName: '', role: 'LEARNER' };
+    this.showCreate = true;
+  }
+
+  closeCreate(): void {
+    if (this.saving) return;
+    this.showCreate = false;
+  }
+
+  createAccount(): void {
+    if (this.saving) return;
+    const email = this.createForm.email.trim().toLowerCase();
+    const firstName = this.createForm.firstName.trim();
+    const password = this.createForm.temporaryPassword;
+    if (!email || !firstName || password.length < 12 || !this.createForm.role) {
+      this.errorMessage = 'Enter an email, first name, role, and temporary password of at least 12 characters.';
+      return;
+    }
+
+    const request: CreateUserRequest = {
+      email,
+      temporaryPassword: password,
+      firstName,
+      lastName: this.createForm.lastName.trim(),
+      roles: [this.createForm.role]
+    };
+    this.saving = true;
+    this.errorMessage = '';
+    this.noticeMessage = '';
+    this.usersService.createUser(request).subscribe({
+      next: response => {
+        this.saving = false;
+        this.showCreate = false;
+        this.users = [response.data, ...this.users.filter(user => user.id !== response.data.id)];
+        this.filtered = [...this.users];
+        this.noticeMessage = 'Account created for ' + response.data.email + '. Share the temporary password securely and ask the user to change it.';
+      },
+      error: error => {
+        this.saving = false;
+        this.errorMessage = error.error?.message || 'Unable to create account';
       }
     });
   }
