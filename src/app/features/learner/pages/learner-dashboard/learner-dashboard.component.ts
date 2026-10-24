@@ -72,6 +72,17 @@ export class LearnerDashboardComponent implements OnInit {
   clearSearch(): void {
     this.searchQuery = '';
   }
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape' && this.searchQuery) {
+      event.preventDefault();
+      this.clearSearch();
+    }
+  }
+  get searchResultSummary(): string {
+    const enrolled = this.filteredCourses.length;
+    const recommended = this.availableRecommendations.length;
+    return `${enrolled} enrolled ${enrolled === 1 ? 'course' : 'courses'} and ${recommended} ${recommended === 1 ? 'recommendation' : 'recommendations'} match`;
+  }
   get interventionLabel(): string { return this.nextBest?.intervention?.replaceAll('_', ' ') || 'CONTINUE LEARNING'; }
   get interventionPriority(): string { return this.nextBest?.priority || this.personalization?.priority || 'NORMAL'; }
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
