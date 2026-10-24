@@ -95,4 +95,38 @@ describe('CoursePlayerComponent assessment loading', () => {
     expect(learning.courseLearning).not.toHaveBeenCalled();
   });
 
+  it('issues a certificate after the course reaches 100 percent', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 100, modules: [] } as any;
+    certificates.issue.and.returnValue(of({ data: { id: 'cert-1', certificateNumber: 'CERT-001', courseId: 'course-1' } }) as any);
+
+    component.issueCertificate();
+
+    expect(certificates.issue).toHaveBeenCalledWith('course-1');
+    expect(component.certificate?.certificateNumber).toBe('CERT-001');
+    expect(component.issuingCertificate).toBeFalse();
+    expect(component.certificateMessage).toBe('Certificate issued successfully.');
+  });
+
+  it('shows an error and releases the issuing state when certificate issuance fails', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 100, modules: [] } as any;
+    certificates.issue.and.returnValue(throwError(() => ({ error: { message: 'Course completion is not verified' } })) as any);
+
+    component.issueCertificate();
+
+    expect(component.issuingCertificate).toBeFalse();
+    expect(component.certificate).toBeUndefined();
+    expect(component.certificateMessage).toBe('Course completion is not verified');
+  });
+
+  it('does not issue a certificate before course completion', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 99, modules: [] } as any;
+
+    component.issueCertificate();
+
+    expect(certificates.issue).not.toHaveBeenCalled();
+  });
+
 });
