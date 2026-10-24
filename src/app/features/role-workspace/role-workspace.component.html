@@ -8,7 +8,61 @@
       <span>Signed in as</span><strong>{{ userEmail }}</strong>
       <span>Assigned role</span><strong>{{ roleLabel }}</strong>
     </div>
-    <p class="notice">Your role-specific workspace is available. Exam assignments, linked records, and actions will appear here as their workflows are enabled for your account.</p>
+
+    <section *ngIf="isEvaluator" class="evaluator-workspace">
+      <h2>My assessment assignments</h2>
+      <p class="muted">Choose an assigned assessment to review learner submissions and leave feedback.</p>
+      <p *ngIf="loading" class="status" role="status">Loading…</p>
+      <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+      <p *ngIf="notice" class="success" role="status">{{ notice }}</p>
+      <div *ngIf="!loading && assignments.length === 0" class="empty">No assessment assignments found for your account.</div>
+      <div class="assignment-list">
+        <button type="button" class="assignment" *ngFor="let assignment of assignments"
+          [class.active]="selectedAssessmentId === assignment.assessmentId"
+          (click)="selectAssessment(assignment.assessmentId)">
+          <strong>{{ assignment.assessmentTitle }}</strong>
+          <span>{{ assignment.courseTitle || 'Assessment' }}</span>
+          <small>Open submissions →</small>
+        </button>
+      </div>
+
+      <section *ngIf="selectedAssessmentId" class="attempt-panel">
+        <h2>Submitted attempts</h2>
+        <p *ngIf="!loading && attempts.length === 0" class="empty">No submissions are available for this assessment yet.</p>
+        <button type="button" class="attempt" *ngFor="let attempt of attempts"
+          [class.active]="selectedAttemptId === attempt.attemptId" (click)="selectAttempt(attempt.attemptId)">
+          <span><strong>Attempt {{ attempt.attemptNumber || 1 }}</strong><small>{{ attempt.submittedAt | date:'medium' }}</small></span>
+          <span class="score">{{ attempt.score ?? 0 }} points · {{ attempt.passed ? 'Passed' : 'Not passed' }}</span>
+        </button>
+      </section>
+
+      <section *ngIf="detail" class="detail-panel">
+        <h2>Attempt review</h2>
+        <div class="score-summary">
+          <span>Score <strong>{{ detail.score ?? 0 }}</strong></span>
+          <span>Result <strong>{{ detail.passed ? 'Passed' : 'Not passed' }}</strong></span>
+          <span>Answers <strong>{{ detail.answers?.length || 0 }}</strong></span>
+        </div>
+        <article class="answer" *ngFor="let answer of detail.answers; let i = index">
+          <p class="question-label">Question {{ i + 1 }} · {{ answer.questionType }}</p>
+          <h3>{{ answer.questionText }}</h3>
+          <p class="answer-value">Learner response: {{ answer.selectedOptionText || 'No option response recorded' }}</p>
+          <div class="answer-meta">
+            <span [class.correct]="answer.correct" [class.incorrect]="answer.correct === false">{{ answer.correct ? 'Correct' : 'Incorrect / ungraded' }}</span>
+            <span>{{ answer.pointsAwarded ?? 0 }} / {{ answer.maxPoints }} points</span>
+          </div>
+        </article>
+        <form class="feedback-form" (ngSubmit)="saveFeedback()">
+          <label for="evaluator-remarks">Evaluator feedback</label>
+          <textarea id="evaluator-remarks" name="remarks" [(ngModel)]="remarks" required maxlength="5000" rows="5"
+            placeholder="Write constructive feedback for this submission…"></textarea>
+          <p class="muted">Saving feedback does not change the automatic score.</p>
+          <button type="submit" [disabled]="saving || !remarks.trim()">{{ saving ? 'Saving…' : 'Save feedback' }}</button>
+        </form>
+      </section>
+    </section>
+
+    <p *ngIf="!isEvaluator" class="notice">Your role-specific workspace is available. Exam assignments, linked records, and actions will appear here as their workflows are enabled for your account.</p>
     <a routerLink="/">Back to platform home</a>
   </section>
 </main>
