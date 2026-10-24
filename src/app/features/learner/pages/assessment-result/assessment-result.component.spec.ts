@@ -74,8 +74,11 @@ describe('AssessmentResultComponent', () => {
 
     component.retry();
 
-    expect(router.navigate).not.toHaveBeenCalled();
-    expect(router.navigateByUrl).toHaveBeenCalledWith('/learner');
+    expect(router.navigate).toHaveBeenCalledWith(
+      ['/learner/course', 'enrollment-1', 'learn'],
+      undefined
+    );
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 
 });
