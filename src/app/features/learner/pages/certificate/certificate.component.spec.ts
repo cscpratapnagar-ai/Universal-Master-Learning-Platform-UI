@@ -76,7 +76,7 @@ describe('CertificateComponent', () => {
 
     expect(certificates.verify).toHaveBeenCalledWith('CERT-001');
     expect(component.result).toEqual({ valid: true });
-    expect(component.loading).toBeFalse();
+    expect(component.verifying).toBeFalse();
   });
 
   it('shows a learning status error when course retrieval fails', () => {
@@ -136,14 +136,16 @@ describe('CertificateComponent', () => {
     expect(component.loading).toBeFalse();
   });
 
-  it('returns an invalid result when certificate verification fails', () => {
+  it('shows not found only when the verification API returns 404', () => {
     const component = setup();
     component.number = 'CERT-MISSING';
-    certificates.verify.and.returnValue(throwError(() => new Error('not found')) as any);
+    certificates.verify.and.returnValue(throwError(() => ({ status: 404 })) as any);
 
     component.verify();
 
     expect(component.result).toEqual({ valid: false });
-    expect(component.loading).toBeFalse();
+    expect(component.verificationError).toBe('');
+    expect(component.verifying).toBeFalse();
   });
 });
+
