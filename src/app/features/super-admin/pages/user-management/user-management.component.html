@@ -5,7 +5,7 @@
       <h1>Users</h1>
       <p>Manage platform identities, account access and role assignments from one control plane.</p>
     </div>
-    <div class="head-actions"><button class="refresh" (click)="load()" [disabled]="loading || !!processingUserId || saving">↻ Refresh</button></div>
+    <div class="head-actions"><button class="primary" (click)="openCreate()" [disabled]="saving">＋ Create Account</button><button class="refresh" (click)="load()" [disabled]="loading || !!processingUserId || saving">↻ Refresh</button></div>
   </header>
 
   <div class="error" *ngIf="errorMessage"><strong>Action failed</strong><span>{{ errorMessage }}</span></div>
@@ -45,6 +45,23 @@
       </table>
     </div>
   </section>
+
+  <div class="modal-backdrop" *ngIf="showCreate">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="create-user-title">
+      <div class="modal-head">
+        <div><span class="modal-icon">＋</span><h2 id="create-user-title">Create Account</h2><p>Create a least-privilege platform identity</p></div>
+        <button type="button" (click)="closeCreate()" [disabled]="saving" aria-label="Close account form">×</button>
+      </div>
+      <form class="create-user-form" (ngSubmit)="createAccount()">
+        <label>First name<input name="firstName" [(ngModel)]="createForm.firstName" required maxlength="100" autocomplete="given-name"></label>
+        <label>Last name<input name="lastName" [(ngModel)]="createForm.lastName" maxlength="100" autocomplete="family-name"></label>
+        <label>Email / Login ID<input name="email" type="email" [(ngModel)]="createForm.email" required maxlength="255" autocomplete="off"></label>
+        <label>Temporary password<input name="temporaryPassword" type="password" [(ngModel)]="createForm.temporaryPassword" required minlength="12" maxlength="128" autocomplete="new-password"><small>Use at least 12 characters. Share it securely.</small></label>
+        <label>Account role<select name="role" [(ngModel)]="createForm.role" required><option *ngFor="let role of creationRoles" [value]="role">{{ role }}</option></select></label>
+        <div class="modal-actions"><button type="button" class="secondary" (click)="closeCreate()" [disabled]="saving">Cancel</button><button type="submit" class="primary" [disabled]="saving">{{ saving ? 'Creating…' : 'Create Account' }}</button></div>
+      </form>
+    </div>
+  </div>
 
   <div class="modal-backdrop" *ngIf="showRoles">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="role-modal-title">
