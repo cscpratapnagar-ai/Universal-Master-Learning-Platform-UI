@@ -17,6 +17,7 @@ export class CertificateComponent implements OnInit {
   loading = false;
   verifying = false;
   verificationError = '';
+  loadError = false;
   issuingCourseId = '';
   error = '';
   message = '';
@@ -35,6 +36,7 @@ export class CertificateComponent implements OnInit {
 
   load(): void {
     this.loading = true;
+    this.loadError = false;
     this.error = '';
     this.certificatesApi.mine().subscribe({
       next: response => {
@@ -43,6 +45,7 @@ export class CertificateComponent implements OnInit {
       },
       error: () => {
         this.certificates = [];
+        this.loadError = true;
         this.error = 'Unable to load your certificates. You can retry or verify a certificate number below.';
         this.loadCourses();
       }
@@ -57,6 +60,7 @@ export class CertificateComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
+        this.loadError = true;
         this.error = 'Unable to load your learning completion status.';
       }
     });
