@@ -29,6 +29,24 @@ describe('CertificateComponent', () => {
     expect(component.loading).toBeFalse();
   });
 
+  it('allows retrying certificate and course status loading after a retrieval failure', () => {
+    const component = setup();
+    certificates.mine.and.returnValues(
+      throwError(() => new Error('network down')) as any,
+      of({ data: [{ id: 'cert-1', certificateNumber: 'CERT-001', courseId: 'course-1' }] } as any)
+    );
+    learning.myCourses.and.returnValue(of({ data: [{ courseId: 'course-1', progressPercent: 100 }] } as any));
+
+    component.load();
+    expect(component.loadError).toBeTrue();
+
+    component.load();
+
+    expect(component.loadError).toBeFalse();
+    expect(component.certificates).toEqual([{ id: 'cert-1', certificateNumber: 'CERT-001', courseId: 'course-1' }]);
+    expect(component.loading).toBeFalse();
+  });
+
   it('only lists courses at 100 percent as certificate-ready', () => {
     const component = setup();
     component.courses = [
