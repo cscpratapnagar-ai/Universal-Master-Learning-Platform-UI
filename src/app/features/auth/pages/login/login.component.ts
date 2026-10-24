@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -84,9 +85,17 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.errorMessage = `Unable to open the ${dashboard.replace('/', '') || 'learning'} workspace. Please refresh and try again.`;
         });
       },
-      error: (error: Error) => {
+      error: (error: HttpErrorResponse) => {
         this.isSubmitting = false;
-        this.errorMessage = error.message || 'Unable to sign in.';
+        if (error.status === 401) {
+          this.errorMessage = 'Invalid email or password. Please check your details and try again.';
+        } else if (error.status === 429) {
+          this.errorMessage = 'Too many sign-in attempts. Please wait a moment and try again.';
+        } else if (error.status === 0 || error.status >= 500) {
+          this.errorMessage = 'Unable to reach the learning service right now. Please check that the backend is running and try again.';
+        } else {
+          this.errorMessage = error.error?.message || 'Unable to sign in. Please try again.';
+        }
       }
     });
   }
