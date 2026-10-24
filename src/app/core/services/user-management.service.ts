@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
-import { ManagedUser, UpdateUserRolesRequest, UpdateUserStatusRequest } from '../models/user-management.model';
+import { CreateUserRequest, ManagedUser, UpdateUserRolesRequest, UpdateUserStatusRequest } from '../models/user-management.model';
 import { TokenService } from './token.service';
 
 @Injectable({ providedIn: 'root' })
@@ -15,6 +15,14 @@ export class UserManagementService {
     private readonly http: HttpClient,
     private readonly tokenService: TokenService
   ) {}
+
+  createUser(request: CreateUserRequest): Observable<ApiResponse<ManagedUser>> {
+    return this.http.post<ApiResponse<ManagedUser>>(
+      this.url,
+      request,
+      { headers: this.authHeaders() }
+    );
+  }
 
   getAll(query?: string, enabled?: boolean): Observable<ApiResponse<ManagedUser[]>> {
     const params: Record<string, string> = {};
