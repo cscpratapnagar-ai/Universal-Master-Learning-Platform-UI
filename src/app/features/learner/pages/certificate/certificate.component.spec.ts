@@ -73,6 +73,30 @@ describe('CertificateComponent', () => {
     expect(component.issuingCourseId).toBe('');
   });
 
+  it('replaces any existing course certificate and confirms successful issuance', () => {
+    const component = setup();
+    const existing = { id: 'old-cert', certificateNumber: 'CERT-OLD', courseId: 'course-1' };
+    const issued = { id: 'new-cert', certificateNumber: 'CERT-NEW', courseId: 'course-1' };
+    component.certificates = [existing];
+    certificates.issue.and.returnValue(of({ data: issued } as any));
+
+    component.issue({ courseId: 'course-1', progressPercent: 100 } as any);
+
+    expect(component.certificates).toEqual([issued]);
+    expect(component.message).toContain('Certificate issued successfully');
+    expect(component.issuingCourseId).toBe('');
+  });
+
+  it('shows a useful message when issuance returns no certificate', () => {
+    const component = setup();
+    certificates.issue.and.returnValue(of({ data: null } as any));
+
+    component.issue({ courseId: 'course-1', progressPercent: 100 } as any);
+
+    expect(component.error).toContain('returned no certificate');
+    expect(component.issuingCourseId).toBe('');
+  });
+
   it('does not call verification when the certificate number is blank', () => {
     const component = setup();
     component.number = '   ';
