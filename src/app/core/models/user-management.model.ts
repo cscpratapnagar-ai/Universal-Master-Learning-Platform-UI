@@ -9,3 +9,4 @@ export interface ManagedUser {
 
 export interface UpdateUserStatusRequest { enabled: boolean; }
 export interface UpdateUserRolesRequest { roles: string[]; }
+export interface CreateUserRequest { email: string; temporaryPassword: string; firstName: string; lastName?: string; roles: string[]; }
