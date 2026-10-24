@@ -72,6 +72,10 @@ export class RoleWorkspaceComponent implements OnInit {
   }
 
 
+  isEvaluatorAssigned(evaluatorId: string): boolean {
+    return this.assignedEvaluators.some(evaluator => evaluator.evaluatorId === evaluatorId);
+  }
+
   loadEligibleEvaluators(): void {
     this.examinerService.eligibleEvaluators().subscribe({
       next: response => this.eligibleEvaluators = response.data || [],
