@@ -168,6 +168,18 @@ describe('CoursePlayerComponent assessment loading', () => {
     expect(component.certificateMessage).toContain('Complete the course');
   });
 
+  it('does not claim success when issuance returns no certificate', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 100, modules: [] } as any;
+    certificates.issue.and.returnValue(of({ data: null } as any));
+
+    component.issueCertificate();
+
+    expect(component.certificate).toBeUndefined();
+    expect(component.certificateMessage).toContain('returned no certificate');
+    expect(component.issuingCertificate).toBeFalse();
+  });
+
   it('does not issue a certificate before course completion', () => {
     const component = setup();
     component.data = { courseId: 'course-1', progressPercent: 99, modules: [] } as any;
