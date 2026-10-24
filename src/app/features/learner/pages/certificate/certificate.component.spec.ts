@@ -29,6 +29,35 @@ describe('CertificateComponent', () => {
     expect(component.loading).toBeFalse();
   });
 
+  it('only lists courses at 100 percent as certificate-ready', () => {
+    const component = setup();
+    component.courses = [
+      { courseId: 'course-1', progressPercent: 100, title: 'Complete course' },
+      { courseId: 'course-2', progressPercent: 99, title: 'Almost complete' },
+      { courseId: 'course-3', progressPercent: 0, title: 'Not started' }
+    ] as any;
+
+    expect(component.completedCourses.map(course => course.courseId)).toEqual(['course-1']);
+  });
+
+  it('recognizes a certificate already issued for the course', () => {
+    const component = setup();
+    component.certificates = [{ id: 'cert-1', certificateNumber: 'CERT-001', courseId: 'course-1' }];
+
+    expect(component.hasCertificate({ courseId: 'course-1', progressPercent: 100 } as any)).toBeTrue();
+    expect(component.hasCertificate({ courseId: 'course-2', progressPercent: 100 } as any)).toBeFalse();
+  });
+
+  it('releases the issuing state and shows an error when issuance fails', () => {
+    const component = setup();
+    certificates.issue.and.returnValue(throwError(() => ({ error: { message: 'Course completion not confirmed' } })) as any);
+
+    component.issue({ courseId: 'course-1', progressPercent: 100 } as any);
+
+    expect(component.issuingCourseId).toBe('');
+    expect(component.error).toBe('Course completion not confirmed');
+  });
+
   it('does not request a certificate for an incomplete course', () => {
     const component = setup();
 
