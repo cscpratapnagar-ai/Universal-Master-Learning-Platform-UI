@@ -37,6 +37,10 @@ export class CoursePlayerComponent implements OnInit {
   }
   issueCertificate(): void {
     if (!this.data || this.issuingCertificate || this.certificate) return;
+    if (!this.data.courseId || Number(this.data.progressPercent || 0) < 100) {
+      this.certificateMessage = 'Complete the course before requesting a certificate.';
+      return;
+    }
     this.issuingCertificate = true; this.certificateMessage = '';
     this.certificates.issue(this.data.courseId).subscribe({
       next: r => { this.certificate = r.data; this.issuingCertificate = false; this.certificateMessage = 'Certificate issued successfully.'; },
