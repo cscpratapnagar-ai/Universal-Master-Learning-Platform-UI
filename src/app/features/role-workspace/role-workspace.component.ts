@@ -63,6 +63,8 @@ export class RoleWorkspaceComponent implements OnInit {
 
   viewAssignedEvaluators(assessmentId: string): void {
     this.selectedExaminerAssessmentId = assessmentId;
+    this.assignedEvaluators = [];
+    this.selectedEvaluatorId = '';
     this.loading = true;
     this.error = '';
     this.examinerService.evaluators(assessmentId).subscribe({
