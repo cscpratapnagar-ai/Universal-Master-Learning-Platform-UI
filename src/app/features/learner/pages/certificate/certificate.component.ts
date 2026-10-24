@@ -40,6 +40,7 @@ export class CertificateComponent implements OnInit {
       },
       error: () => {
         this.certificates = [];
+        this.error = 'Unable to load your certificates. You can retry or verify a certificate number below.';
         this.loadCourses();
       }
     });
