@@ -15,6 +15,7 @@
       <p class="muted">Monitor assessment submissions and review evaluator coverage across the platform.</p>
       <p *ngIf="loading" class="status" role="status">Loading…</p>
       <p *ngIf="error" class="error" role="alert">{{ error }}</p>
+      <p *ngIf="notice" class="success" role="status">{{ notice }}</p>
       <div *ngIf="!loading && examinerAssessments.length === 0" class="empty">No assessments are currently available for oversight.</div>
       <div class="assignment-list">
         <article class="assignment" *ngFor="let assessment of examinerAssessments">
@@ -29,6 +30,15 @@
         </article>
       </div>
       <section *ngIf="selectedExaminerAssessmentId" class="attempt-panel">
+        <h2>Assign an evaluator</h2>
+        <div class="feedback-form">
+          <label for="eligible-evaluator">Available evaluator</label>
+          <select id="eligible-evaluator" name="eligibleEvaluator" [(ngModel)]="selectedEvaluatorId">
+            <option value="">Choose an evaluator</option>
+            <option *ngFor="let candidate of eligibleEvaluators" [value]="candidate.evaluatorId" [disabled]="isEvaluatorAssigned(candidate.evaluatorId)">{{ candidate.displayName || candidate.email }} — {{ candidate.email }}{{ isEvaluatorAssigned(candidate.evaluatorId) ? ' (already assigned)' : '' }}</option>
+          </select>
+          <button type="button" [disabled]="assigningEvaluator || !selectedEvaluatorId" (click)="assignEvaluator()">{{ assigningEvaluator ? 'Assigning…' : 'Assign evaluator' }}</button>
+        </div>
         <h2>Assigned evaluators</h2>
         <p *ngIf="!loading && assignedEvaluators.length === 0" class="empty">No evaluators assigned to this assessment.</p>
         <div class="attempt" *ngFor="let evaluator of assignedEvaluators">
