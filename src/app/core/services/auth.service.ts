@@ -134,7 +134,7 @@ export class AuthService {
     if (roleSet.has('ORG_ADMIN')) return '/organization';
     if (roleSet.has('ADMIN')) return '/admin';
     if (roleSet.has('EXAMINER')) return '/examiner';
-    if (roleSet.has('QUESTION_SETTER')) return '/question-setter';
+    if (roleSet.has('QUESTION_SETTER')) return '/teacher/question-bank';
     if (roleSet.has('EVALUATOR')) return '/evaluator';
     if (roleSet.has('PROCTOR')) return '/proctor';
     if (roleSet.has('PARENT')) return '/parent';
