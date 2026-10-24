@@ -15,6 +15,8 @@ export class CertificateComponent implements OnInit {
   certificates: StudentCertificate[] = [];
   courses: StudentCourse[] = [];
   loading = false;
+  verifying = false;
+  verificationError = '';
   issuingCourseId = '';
   error = '';
   message = '';
@@ -93,11 +95,23 @@ export class CertificateComponent implements OnInit {
 
   verify(): void {
     if (!this.number.trim()) return;
-    this.loading = true;
+    this.verifying = true;
+    this.verificationError = '';
+    this.error = '';
     this.result = null;
     this.certificatesApi.verify(this.number.trim()).subscribe({
-      next: response => { this.result = response?.data ?? response; this.loading = false; },
-      error: () => { this.result = { valid:false }; this.loading = false; }
+      next: response => {
+        this.result = response?.data ?? response;
+        this.verifying = false;
+      },
+      error: e => {
+        if (e?.status === 404) {
+          this.result = { valid: false };
+        } else {
+          this.verificationError = 'We could not reach the verification service. Check your connection and try again.';
+        }
+        this.verifying = false;
+      }
     });
   }
 }
