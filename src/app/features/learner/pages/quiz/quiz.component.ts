@@ -27,9 +27,16 @@ export class QuizComponent implements OnInit {
     this.lessonId = this.route.snapshot.queryParamMap.get('lessonId') || '';
     this.adaptiveMode = this.route.snapshot.queryParamMap.get('mode') === 'adaptive';
     if (!this.assessmentId) { this.loading = false; this.error = 'No assessment was selected.'; return; }
+    this.loadAssessment();
+  }
+
+  loadAssessment(): void {
+    if (!this.assessmentId) { this.loading = false; this.error = 'No assessment was selected.'; return; }
+    this.loading = true;
+    this.error = '';
     this.api.get(this.assessmentId).subscribe({
       next: r => { this.assessment = r.data; this.loading = false; },
-      error: e => { this.loading = false; this.error = e?.error?.message || 'Unable to load this assessment.'; }
+      error: e => { this.loading = false; this.error = e?.error?.message || 'Unable to load this assessment. Check your connection and try again.'; }
     });
   }
 
