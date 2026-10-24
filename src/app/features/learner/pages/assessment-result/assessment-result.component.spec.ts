@@ -1,17 +1,37 @@
 import { Router } from '@angular/router';
 import { AssessmentResultComponent } from './assessment-result.component';
+import { AssessmentService } from '../../../../core/services/assessment.service';
+import { of } from 'rxjs';
 
 describe('AssessmentResultComponent', () => {
   let router: jasmine.SpyObj<Router>;
+  let assessmentService: jasmine.SpyObj<AssessmentService>;
 
   beforeEach(() => {
     router = jasmine.createSpyObj<Router>('Router', ['navigate', 'navigateByUrl']);
+    assessmentService = jasmine.createSpyObj<AssessmentService>('AssessmentService', ['attemptHistory']);
+    assessmentService.attemptHistory.and.returnValue(of({ success: true, message: 'ok', data: [], timestamp: '' }));
   });
 
   function createComponent(state: Record<string, unknown>): AssessmentResultComponent {
     spyOnProperty(window.history, 'state', 'get').and.returnValue(state);
-    return new AssessmentResultComponent(router);
+    return new AssessmentResultComponent(router, assessmentService);
   }
+
+  it('loads the signed-in learner assessment attempt history', () => {
+    assessmentService.attemptHistory.and.returnValue(of({
+      success: true,
+      message: 'ok',
+      data: [{ attemptId: 'attempt-1', attemptNumber: 2, score: 75, passed: true, masteryLevel: 'PROFICIENT', submittedAt: '2026-10-24T10:00:00Z' }],
+      timestamp: ''
+    }));
+
+    const component = createComponent({ assessmentId: 'assessment-1', result: { score: 75, passed: true } });
+
+    expect(assessmentService.attemptHistory).toHaveBeenCalledWith('assessment-1');
+    expect(component.attemptHistory.length).toBe(1);
+    expect(component.attemptHistory[0].attemptNumber).toBe(2);
+  });
 
   it('calculates score and accuracy from the submitted result', () => {
     const component = createComponent({
