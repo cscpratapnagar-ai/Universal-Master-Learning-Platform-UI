@@ -30,7 +30,9 @@ describe('CoursePlayerComponent assessment loading', () => {
     router = jasmine.createSpyObj<Router>('Router', ['navigate', 'navigateByUrl']);
     const paramMap = { get: (key: string) => key === 'enrollmentId' ? 'enrollment-1' : null };
     route = { snapshot: { paramMap, queryParamMap: paramMap } } as unknown as ActivatedRoute;
-    return new CoursePlayerComponent(route, learning, assessments, certificates, router);
+    const component = new CoursePlayerComponent(route, learning, assessments, certificates, router);
+    component.enrollmentId = 'enrollment-1';
+    return component;
   }
 
   it('shows a useful message when the lesson assessment cannot be loaded', () => {
