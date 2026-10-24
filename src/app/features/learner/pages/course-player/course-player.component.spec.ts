@@ -63,4 +63,34 @@ describe('CoursePlayerComponent assessment loading', () => {
     expect(component.assessment?.id).toBe('assessment-1');
     expect(component.assessmentLoading).toBeFalse();
   });
+  it('refreshes course progress after a lesson is completed', () => {
+    const component = setup();
+    const lesson = { id: 'lesson-1', title: 'Lesson 1', contentType: 'TEXT', content: '', sortOrder: 1, completed: false, locked: false, completionMode: 'MANUAL', unmetPrerequisiteLessonIds: [] };
+    component.selected = lesson as any;
+    learning.completeLesson.and.returnValue(of({}) as any);
+    learning.courseLearning.and.returnValue(of({ data: { courseId: 'course-1', progressPercent: 50, modules: [{ id: 'module-1', title: 'Module 1', lessons: [{ ...lesson, completed: true }] }] } } as any));
+    assessments.forLesson.and.returnValue(of({ data: [] } as any));
+
+    component.complete();
+
+    expect(learning.completeLesson).toHaveBeenCalledWith('enrollment-1', 'lesson-1');
+    expect(learning.courseLearning).toHaveBeenCalledWith('enrollment-1');
+    expect(component.completing).toBeFalse();
+    expect(component.data?.progressPercent).toBe(50);
+    expect(component.selected?.completed).toBeTrue();
+  });
+
+  it('keeps the lesson incomplete and shows an error when completion fails', () => {
+    const component = setup();
+    component.selected = { id: 'lesson-2', title: 'Lesson 2', contentType: 'TEXT', content: '', sortOrder: 2, completed: false, locked: false, completionMode: 'MANUAL', unmetPrerequisiteLessonIds: [] } as any;
+    learning.completeLesson.and.returnValue(throwError(() => ({ error: { message: 'Prerequisite is not complete' } })) as any);
+
+    component.complete();
+
+    expect(component.completing).toBeFalse();
+    expect(component.error).toBe('Prerequisite is not complete');
+    expect(component.selected?.completed).toBeFalse();
+    expect(learning.courseLearning).not.toHaveBeenCalled();
+  });
+
 });
