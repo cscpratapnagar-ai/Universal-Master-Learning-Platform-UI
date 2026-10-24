@@ -1,22 +1,52 @@
 import { Router } from '@angular/router';
 import { AssessmentResultComponent } from './assessment-result.component';
 import { AssessmentService } from '../../../../core/services/assessment.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
+import { LearningService } from '../../../../core/services/learning.service';
 
 describe('AssessmentResultComponent', () => {
   let router: jasmine.SpyObj<Router>;
   let assessmentService: jasmine.SpyObj<AssessmentService>;
+  let learningService: jasmine.SpyObj<LearningService>;
 
   beforeEach(() => {
     router = jasmine.createSpyObj<Router>('Router', ['navigate', 'navigateByUrl']);
     assessmentService = jasmine.createSpyObj<AssessmentService>('AssessmentService', ['attemptHistory']);
     assessmentService.attemptHistory.and.returnValue(of({ success: true, message: 'ok', data: [], timestamp: '' }));
+    learningService = jasmine.createSpyObj<LearningService>('LearningService', ['completeLesson']);
+    learningService.completeLesson.and.returnValue(of({}));
   });
 
   function createComponent(state: Record<string, unknown>): AssessmentResultComponent {
     spyOnProperty(window.history, 'state', 'get').and.returnValue(state);
-    return new AssessmentResultComponent(router, assessmentService);
+    return new AssessmentResultComponent(router, assessmentService, learningService);
   }
+
+  it('marks the lesson complete after a passed lesson assessment', () => {
+    const component = createComponent({
+      result: { score: 85, passed: true },
+      assessmentId: 'assessment-1',
+      enrollmentId: 'enrollment-1',
+      lessonId: 'lesson-1'
+    });
+
+    expect(learningService.completeLesson).toHaveBeenCalledWith('enrollment-1', 'lesson-1');
+    expect(component.lessonCompletionMessage).toBe('Lesson completion and course progress have been updated.');
+  });
+
+  it('shows a retryable message when lesson progress sync fails', () => {
+    learningService.completeLesson.and.returnValue(throwError(() => ({ error: { message: 'Progress service unavailable' } })));
+
+    const component = createComponent({
+      result: { score: 85, passed: true },
+      assessmentId: 'assessment-1',
+      enrollmentId: 'enrollment-1',
+      lessonId: 'lesson-1'
+    });
+
+    expect(component.lessonCompletionError).toBeTrue();
+    expect(component.lessonCompletionMessage).toBe('Progress service unavailable');
+  });
 
   it('loads the signed-in learner assessment attempt history', () => {
     assessmentService.attemptHistory.and.returnValue(of({
