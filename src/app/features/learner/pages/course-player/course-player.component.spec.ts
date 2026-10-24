@@ -120,6 +120,54 @@ describe('CoursePlayerComponent assessment loading', () => {
     expect(component.certificateMessage).toBe('Course completion is not verified');
   });
 
+  it('loads the existing certificate when course progress is 100 percent', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 100, modules: [] } as any;
+    certificates.mine.and.returnValue(of({ data: [
+      { id: 'other-cert', certificateNumber: 'CERT-OTHER', courseId: 'course-2' },
+      { id: 'course-cert', certificateNumber: 'CERT-001', courseId: 'course-1' }
+    ] } as any));
+
+    component.syncCertificateState();
+
+    expect(certificates.mine).toHaveBeenCalled();
+    expect(component.certificate?.certificateNumber).toBe('CERT-001');
+    expect(component.certificateLoading).toBeFalse();
+  });
+
+  it('does not fetch certificates when course progress is below 100 percent', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 99, modules: [] } as any;
+    component.certificate = { id: 'old-cert', certificateNumber: 'CERT-OLD', courseId: 'course-1' };
+
+    component.syncCertificateState();
+
+    expect(certificates.mine).not.toHaveBeenCalled();
+    expect(component.certificate).toBeUndefined();
+  });
+
+  it('clears certificate loading when certificate retrieval fails', () => {
+    const component = setup();
+    component.data = { courseId: 'course-1', progressPercent: 100, modules: [] } as any;
+    certificates.mine.and.returnValue(throwError(() => new Error('service unavailable')) as any);
+
+    component.syncCertificateState();
+
+    expect(component.certificateLoading).toBeFalse();
+    expect(component.certificate).toBeUndefined();
+  });
+
+  it('does not request issuance when the course has no course ID', () => {
+    const component = setup();
+    component.data = { courseId: '', progressPercent: 100, modules: [] } as any;
+
+    component.issueCertificate();
+
+    expect(certificates.issue).not.toHaveBeenCalled();
+    expect(component.issuingCertificate).toBeFalse();
+    expect(component.certificateMessage).toContain('Complete the course');
+  });
+
   it('does not issue a certificate before course completion', () => {
     const component = setup();
     component.data = { courseId: 'course-1', progressPercent: 99, modules: [] } as any;
