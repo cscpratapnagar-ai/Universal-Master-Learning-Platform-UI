@@ -23,6 +23,12 @@
 
     <div class="status" [class.pass]="passed"><i>{{passed?'✓':'→'}}</i>{{passed?'PASSED':'KEEP PRACTICING'}}</div>
 
+    <div class="lesson-completion" *ngIf="passed && enrollmentId && lessonId" [class.failed]="lessonCompletionError" role="status">
+      <span>{{lessonCompletionLoading ? 'SYNCING PROGRESS' : lessonCompletionError ? 'PROGRESS UPDATE NEEDS ATTENTION' : lessonCompletionMessage ? 'LESSON PROGRESS UPDATED' : 'LESSON PROGRESS'}}</span>
+      <p>{{lessonCompletionMessage || (lessonCompletionLoading ? 'Your passed assessment is being connected to lesson completion…' : 'Your lesson completion will update after this result is confirmed.')}}</p>
+      <button type="button" *ngIf="lessonCompletionError" (click)="completePassedLesson()" [disabled]="lessonCompletionLoading">Retry progress update</button>
+    </div>
+
     <div class="feedback">
       <span>✦</span>
       <div>
