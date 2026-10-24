@@ -35,7 +35,7 @@
           <label for="eligible-evaluator">Available evaluator</label>
           <select id="eligible-evaluator" name="eligibleEvaluator" [(ngModel)]="selectedEvaluatorId">
             <option value="">Choose an evaluator</option>
-            <option *ngFor="let candidate of eligibleEvaluators" [value]="candidate.evaluatorId" [disabled]="assignedEvaluators.some(e => e.evaluatorId === candidate.evaluatorId)">{{ candidate.displayName || candidate.email }} — {{ candidate.email }}{{ assignedEvaluators.some(e => e.evaluatorId === candidate.evaluatorId) ? ' (already assigned)' : '' }}</option>
+            <option *ngFor="let candidate of eligibleEvaluators" [value]="candidate.evaluatorId" [disabled]="isEvaluatorAssigned(candidate.evaluatorId)">{{ candidate.displayName || candidate.email }} — {{ candidate.email }}{{ assignedEvaluators.some(e => e.evaluatorId === candidate.evaluatorId) ? ' (already assigned)' : '' }}</option>
           </select>
           <button type="button" [disabled]="assigningEvaluator || !selectedEvaluatorId" (click)="assignEvaluator()">{{ assigningEvaluator ? 'Assigning…' : 'Assign evaluator' }}</button>
         </div>
