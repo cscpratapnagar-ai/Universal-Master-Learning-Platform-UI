@@ -45,4 +45,37 @@ describe('AssessmentResultComponent', () => {
       { queryParams: { lessonId: 'lesson-1' } }
     );
   });
+  it('preserves assessment and lesson context when retrying a failed assessment', () => {
+    const component = createComponent({
+      result: { score: 45, passed: false },
+      assessmentId: 'assessment-1',
+      enrollmentId: 'enrollment-1',
+      lessonId: 'lesson-1',
+      adaptiveMode: true
+    });
+
+    component.retry();
+
+    expect(router.navigate).toHaveBeenCalledWith(['/learner/quiz'], {
+      queryParams: {
+        assessmentId: 'assessment-1',
+        mode: 'adaptive',
+        enrollmentId: 'enrollment-1',
+        lessonId: 'lesson-1'
+      }
+    });
+  });
+
+  it('returns to learning if no assessment id is available for retry', () => {
+    const component = createComponent({
+      result: { score: 45, passed: false },
+      enrollmentId: 'enrollment-1'
+    });
+
+    component.retry();
+
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(router.navigateByUrl).toHaveBeenCalledWith('/learner');
+  });
+
 });
