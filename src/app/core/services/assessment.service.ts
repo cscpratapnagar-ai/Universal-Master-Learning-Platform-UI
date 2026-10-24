@@ -6,6 +6,15 @@ import { ApiResponse } from '../models/api-response.model';
 
 export interface AssessmentOption { id: string; optionText: string; }
 export interface AssessmentQuestion { id: string; questionText: string; questionType: string; points: number; options: AssessmentOption[]; }
+export interface AssessmentAttemptHistoryItem {
+  attemptId: string;
+  attemptNumber: number;
+  score: number;
+  passed: boolean;
+  masteryLevel: string;
+  submittedAt: string;
+}
+
 export interface AssessmentView { id: string; title: string; level: string; passingScore: number; maxAttempts: number; attemptsUsed: number; passed: boolean; questions: AssessmentQuestion[]; }
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +32,12 @@ export class AssessmentService {
   get(assessmentId: string): Observable<ApiResponse<AssessmentView>> {
     return this.http.get<ApiResponse<AssessmentView>>(
       `${this.base}/student/assessments/${encodeURIComponent(assessmentId)}`
+    );
+  }
+
+  attemptHistory(assessmentId: string): Observable<ApiResponse<AssessmentAttemptHistoryItem[]>> {
+    return this.http.get<ApiResponse<AssessmentAttemptHistoryItem[]>>(
+      `${this.base}/student/assessments/${encodeURIComponent(assessmentId)}/attempts`
     );
   }
 
