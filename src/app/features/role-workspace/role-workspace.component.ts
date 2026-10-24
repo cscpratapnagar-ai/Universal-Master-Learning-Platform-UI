@@ -33,7 +33,8 @@ export class RoleWorkspaceComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly authService: AuthService,
-    private readonly evaluatorService: EvaluatorService
+    private readonly evaluatorService: EvaluatorService,
+    private readonly examinerService: ExaminerService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +46,26 @@ export class RoleWorkspaceComponent implements OnInit {
     if (this.isEvaluator) this.loadAssignments();
     this.isExaminer = this.roleLabel === 'EXAMINER';
     if (this.isExaminer) this.loadExaminerOverview();
+  }
+
+
+  loadExaminerOverview(): void {
+    this.loading = true;
+    this.error = '';
+    this.examinerService.overview().subscribe({
+      next: response => { this.examinerAssessments = response.data || []; this.loading = false; },
+      error: () => { this.error = 'Could not load examination overview. Check your oversight permissions.'; this.loading = false; }
+    });
+  }
+
+  viewAssignedEvaluators(assessmentId: string): void {
+    this.selectedExaminerAssessmentId = assessmentId;
+    this.loading = true;
+    this.error = '';
+    this.examinerService.evaluators(assessmentId).subscribe({
+      next: response => { this.assignedEvaluators = response.data || []; this.loading = false; },
+      error: () => { this.error = 'Could not load evaluators assigned to this assessment.'; this.loading = false; }
+    });
   }
 
   loadAssignments(): void {
