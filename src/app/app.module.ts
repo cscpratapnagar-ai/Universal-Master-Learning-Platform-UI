@@ -5,9 +5,10 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RoleWorkspaceComponent } from './features/role-workspace/role-workspace.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, RoleWorkspaceComponent],
   imports: [
     BrowserModule,
     CoreModule,
