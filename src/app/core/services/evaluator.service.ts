@@ -5,7 +5,7 @@ import { API_CONFIG } from '../config/api.config';
 import { ApiResponse } from '../models/api-response.model';
 
 export interface EvaluatorAssignment {
-  id: string;
+  assignmentId: string;
   assessmentId: string;
   assessmentTitle: string;
   courseTitle?: string;
@@ -13,9 +13,7 @@ export interface EvaluatorAssignment {
 }
 export interface EvaluatorAttempt {
   attemptId: string;
-  userId?: string;
-  learnerName?: string;
-  learnerEmail?: string;
+  learnerId?: string;
   attemptNumber?: number;
   score?: number;
   passed?: boolean;

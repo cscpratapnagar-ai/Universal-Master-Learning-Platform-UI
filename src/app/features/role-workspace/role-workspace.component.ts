@@ -68,8 +68,16 @@ export class RoleWorkspaceComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.examinerService.evaluators(assessmentId).subscribe({
-      next: response => { this.assignedEvaluators = response.data || []; this.loading = false; },
-      error: () => { this.error = 'Could not load evaluators assigned to this assessment.'; this.loading = false; }
+      next: response => {
+        if (this.selectedExaminerAssessmentId !== assessmentId) return;
+        this.assignedEvaluators = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        if (this.selectedExaminerAssessmentId !== assessmentId) return;
+        this.error = 'Could not load evaluators assigned to this assessment.';
+        this.loading = false;
+      }
     });
   }
 
@@ -120,27 +128,38 @@ export class RoleWorkspaceComponent implements OnInit {
   selectAssessment(assessmentId: string): void {
     this.selectedAssessmentId = assessmentId;
     this.selectedAttemptId = '';
+    this.attempts = [];
     this.detail = null;
     this.remarks = '';
     this.notice = '';
     this.loading = true;
     this.error = '';
     this.evaluatorService.attempts(assessmentId).subscribe({
-      next: response => { this.attempts = response.data || []; this.loading = false; },
-      error: () => { this.error = 'Could not load submitted attempts for this assessment.'; this.loading = false; }
+      next: response => {
+        if (this.selectedAssessmentId !== assessmentId) return;
+        this.attempts = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        if (this.selectedAssessmentId !== assessmentId) return;
+        this.error = 'Could not load submitted attempts for this assessment.';
+        this.loading = false;
+      }
     });
   }
 
   selectAttempt(attemptId: string): void {
     if (!this.selectedAssessmentId) return;
+    const assessmentId = this.selectedAssessmentId;
     this.selectedAttemptId = attemptId;
     this.detail = null;
     this.remarks = '';
     this.notice = '';
     this.loading = true;
     this.error = '';
-    this.evaluatorService.attemptDetail(this.selectedAssessmentId, attemptId).subscribe({
+    this.evaluatorService.attemptDetail(assessmentId, attemptId).subscribe({
       next: response => {
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
         this.detail = response.data;
         this.loading = false;
         this.evaluatorService.getReview(this.selectedAssessmentId, attemptId).subscribe({
@@ -148,7 +167,11 @@ export class RoleWorkspaceComponent implements OnInit {
           error: () => this.remarks = ''
         });
       },
-      error: () => { this.error = 'Could not load this attempt.'; this.loading = false; }
+      error: () => {
+        if (this.selectedAssessmentId !== assessmentId || this.selectedAttemptId !== attemptId) return;
+        this.error = 'Could not load this attempt.';
+        this.loading = false;
+      }
     });
   }
 
