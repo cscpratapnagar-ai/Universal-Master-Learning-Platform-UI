@@ -31,6 +31,21 @@
       </div>
     </div>
 
+    <section class="attempt-history" *ngIf="assessmentId">
+      <div class="history-heading">
+        <div><span>PROGRESS TRACKER</span><h2>Previous attempts</h2></div>
+        <small *ngIf="!historyLoading && !historyError">{{attemptHistory.length}} recorded</small>
+      </div>
+      <p *ngIf="historyLoading" role="status">Loading your attempt history…</p>
+      <p *ngIf="historyError" role="status">Attempt history is temporarily unavailable.</p>
+      <p *ngIf="!historyLoading && !historyError && attemptHistory.length === 0">No previous attempts recorded for this assessment.</p>
+      <div class="attempt-row" *ngFor="let attempt of attemptHistory">
+        <div class="attempt-number"><strong>#{{attempt.attemptNumber}}</strong><small>{{attempt.submittedAt | date:'medium'}}</small></div>
+        <div class="attempt-score"><strong>{{attempt.score}}%</strong><small>{{attempt.masteryLevel | titlecase}}</small></div>
+        <span class="attempt-status" [class.pass]="attempt.passed">{{attempt.passed ? 'Passed' : 'Practice'}}</span>
+      </div>
+    </section>
+
     <div class="actions">
       <button type="button" class="primary" (click)="back()">Return to Learning <b>→</b></button>
       <button type="button" class="secondary" *ngIf="!passed && assessmentId" (click)="retry()">Retake Assessment</button>
