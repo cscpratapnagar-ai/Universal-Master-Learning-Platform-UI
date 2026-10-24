@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AssessmentAttemptHistoryItem, AssessmentService } from '../../../../core/services/assessment.service';
 
 interface AssessmentResult {
   score?: number;
@@ -24,14 +25,30 @@ export class AssessmentResultComponent {
   enrollmentId = '';
   lessonId = '';
   adaptiveMode = false;
+  attemptHistory: AssessmentAttemptHistoryItem[] = [];
+  historyLoading = false;
+  historyError = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private assessmentService: AssessmentService) {
     const state = history.state?.result as AssessmentResult | undefined;
     this.result = state || null;
     this.assessmentId = history.state?.assessmentId || state?.assessmentId || '';
     this.enrollmentId = history.state?.enrollmentId || '';
     this.lessonId = history.state?.lessonId || '';
     this.adaptiveMode = !!history.state?.adaptiveMode;
+    if (this.assessmentId) {
+      this.historyLoading = true;
+      this.assessmentService.attemptHistory(this.assessmentId).subscribe({
+        next: response => {
+          this.attemptHistory = response.data || [];
+          this.historyLoading = false;
+        },
+        error: () => {
+          this.historyError = true;
+          this.historyLoading = false;
+        }
+      });
+    }
   }
 
   get score(): number { return Math.round(Number(this.result?.score ?? 0)); }
