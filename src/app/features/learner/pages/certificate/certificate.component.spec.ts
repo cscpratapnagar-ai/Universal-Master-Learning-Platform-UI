@@ -50,6 +50,39 @@ describe('CertificateComponent', () => {
     expect(component.loading).toBeFalse();
   });
 
+  it('shows a learning status error when course retrieval fails', () => {
+    const component = setup();
+    certificates.mine.and.returnValue(of({ data: [] } as any));
+    learning.myCourses.and.returnValue(throwError(() => new Error('service unavailable')) as any);
+
+    component.load();
+
+    expect(component.loading).toBeFalse();
+    expect(component.error).toBe('Unable to load your learning completion status.');
+  });
+
+  it('adds an issued certificate and clears the issuing state', () => {
+    const component = setup();
+    const issued = { id: 'cert-1', certificateNumber: 'CERT-001', courseId: 'course-1' };
+    certificates.issue.and.returnValue(of({ data: issued } as any));
+
+    component.issue({ courseId: 'course-1', progressPercent: 100 } as any);
+
+    expect(certificates.issue).toHaveBeenCalledWith('course-1');
+    expect(component.certificates).toContain(issued);
+    expect(component.issuingCourseId).toBe('');
+  });
+
+  it('does not call verification when the certificate number is blank', () => {
+    const component = setup();
+    component.number = '   ';
+
+    component.verify();
+
+    expect(certificates.verify).not.toHaveBeenCalled();
+    expect(component.loading).toBeFalse();
+  });
+
   it('returns an invalid result when certificate verification fails', () => {
     const component = setup();
     component.number = 'CERT-MISSING';
