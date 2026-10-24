@@ -17,6 +17,7 @@ export class CertificateComponent implements OnInit {
   loading = false;
   issuingCourseId = '';
   error = '';
+  message = '';
 
   constructor(
     private readonly certificatesApi: CertificateService,
@@ -71,10 +72,16 @@ export class CertificateComponent implements OnInit {
     if (!course.courseId || Number(course.progressPercent || 0) < 100 || this.issuingCourseId) return;
     this.issuingCourseId = course.courseId;
     this.error = '';
+    this.message = '';
     this.certificatesApi.issue(course.courseId).subscribe({
       next: response => {
         const certificate = response?.data;
-        if (certificate) this.certificates = [...this.certificates.filter(c => c.certificateNumber !== certificate.certificateNumber), certificate];
+        if (certificate) {
+          this.certificates = [...this.certificates.filter(c => c.id !== certificate.id && c.courseId !== certificate.courseId), certificate];
+          this.message = 'Certificate issued successfully and added to your credentials.';
+        } else {
+          this.error = 'The certificate service returned no certificate. Please refresh and try again.';
+        }
         this.issuingCourseId = '';
       },
       error: e => {
