@@ -100,7 +100,7 @@
       </section>
     </section>
 
-    <p *ngIf="!isEvaluator" class="notice">Your role-specific workspace is available. Exam assignments, linked records, and actions will appear here as their workflows are enabled for your account.</p>
+    <p *ngIf="!isEvaluator && !isExaminer" class="notice">Your role-specific workspace is available. Exam assignments, linked records, and actions will appear here as their workflows are enabled for your account.</p>
     <a routerLink="/">Back to platform home</a>
   </section>
 </main>
