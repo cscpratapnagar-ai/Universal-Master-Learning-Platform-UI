@@ -23,6 +23,7 @@ export class LearnerDashboardComponent implements OnInit {
   profileMenuOpen = false;
   theme: ThemeMode = 'dark';
   courses: StudentCourse[] = [];
+  searchQuery = '';
   catalogCourses: { courseId:string; title:string; slug?:string; description?:string|null; status:string; organizationId?:string|null; enrolled:boolean }[] = [];
   nextBest: NextBestLearningIntervention | null = null;
   interventionFeedback: 'HELPFUL' | 'NOT_HELPFUL' | null = null;
@@ -57,7 +58,17 @@ export class LearnerDashboardComponent implements OnInit {
   get nextAction(): string { return this.personalization?.finalAction || this.ai?.recommendedAction || 'CONTINUE_LEARNING'; }
   get masteryLabel(): string { return this.progress ? `${Math.round(this.progress.masteryScore)}%` : '—'; }
   get masteryScore(): number { return this.progress ? Math.round(this.progress.masteryScore) : 0; }
-  get availableRecommendations() { return this.catalogCourses.filter(course => !course.enrolled).slice(0, 4); }
+  get filteredCourses(): StudentCourse[] {
+    const query = this.searchQuery.trim().toLocaleLowerCase();
+    return this.courses.filter(course => !query || `${course.title} ${course.description || ''} ${course.status || ''}`.toLocaleLowerCase().includes(query));
+  }
+  get availableRecommendations() {
+    const query = this.searchQuery.trim().toLocaleLowerCase();
+    return this.catalogCourses.filter(course => !course.enrolled && (!query || `${course.title} ${course.description || ''} ${course.status || ''}`.toLocaleLowerCase().includes(query))).slice(0, 4);
+  }
+  onSearchChange(event: Event): void {
+    this.searchQuery = (event.target as HTMLInputElement).value;
+  }
   get interventionLabel(): string { return this.nextBest?.intervention?.replaceAll('_', ' ') || 'CONTINUE LEARNING'; }
   get interventionPriority(): string { return this.nextBest?.priority || this.personalization?.priority || 'NORMAL'; }
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
