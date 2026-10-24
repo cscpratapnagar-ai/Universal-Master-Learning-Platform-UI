@@ -68,8 +68,16 @@ export class RoleWorkspaceComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.examinerService.evaluators(assessmentId).subscribe({
-      next: response => { this.assignedEvaluators = response.data || []; this.loading = false; },
-      error: () => { this.error = 'Could not load evaluators assigned to this assessment.'; this.loading = false; }
+      next: response => {
+        if (this.selectedExaminerAssessmentId !== assessmentId) return;
+        this.assignedEvaluators = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        if (this.selectedExaminerAssessmentId !== assessmentId) return;
+        this.error = 'Could not load evaluators assigned to this assessment.';
+        this.loading = false;
+      }
     });
   }
 
@@ -126,8 +134,16 @@ export class RoleWorkspaceComponent implements OnInit {
     this.loading = true;
     this.error = '';
     this.evaluatorService.attempts(assessmentId).subscribe({
-      next: response => { this.attempts = response.data || []; this.loading = false; },
-      error: () => { this.error = 'Could not load submitted attempts for this assessment.'; this.loading = false; }
+      next: response => {
+        if (this.selectedAssessmentId !== assessmentId) return;
+        this.attempts = response.data || [];
+        this.loading = false;
+      },
+      error: () => {
+        if (this.selectedAssessmentId !== assessmentId) return;
+        this.error = 'Could not load submitted attempts for this assessment.';
+        this.loading = false;
+      }
     });
   }
 
