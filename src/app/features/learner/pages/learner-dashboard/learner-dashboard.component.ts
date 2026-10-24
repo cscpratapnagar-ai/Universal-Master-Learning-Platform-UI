@@ -69,6 +69,9 @@ export class LearnerDashboardComponent implements OnInit {
   onSearchChange(event: Event): void {
     this.searchQuery = (event.target as HTMLInputElement).value;
   }
+  clearSearch(): void {
+    this.searchQuery = '';
+  }
   get interventionLabel(): string { return this.nextBest?.intervention?.replaceAll('_', ' ') || 'CONTINUE LEARNING'; }
   get interventionPriority(): string { return this.nextBest?.priority || this.personalization?.priority || 'NORMAL'; }
   get primaryEnrollmentId(): string { return this.learningPath?.enrollmentId || this.courses[0]?.enrollmentId || ''; }
